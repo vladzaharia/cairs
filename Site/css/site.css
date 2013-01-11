@@ -163,51 +163,63 @@ section#team #team .information {
 }
 
 section#team #team .photo.oliver {
-  background: url(../images/oliver.png) no-repeat center center;
+  background-image: url(../images/oliver.png);
+  background-repeat: no-repeat;
 }
 
 section#team #team .photo.oliver.hover {
-  background: url(../images/oliver_hover.png) no-repeat center center;
+  background-image: url(../images/oliver_hover.png);
+  background-repeat: no-repeat;
 }
 
 section#team #team .photo.michelle {
-  background: url(../images/michelle.png) no-repeat center center;
+  background-image: url(../images/michelle.png);
+  background-repeat: no-repeat;
 }
 
 section#team #team .photo.michelle.hover {
-  background: url(../images/michelle_hover.png) no-repeat center center;
+  background-image: url(../images/michelle_hover.png);
+  background-repeat: no-repeat;
 }
 
 section#team #team .photo.thea {
-  background: url(../images/thea.png) no-repeat center center;
+  background-image: url(../images/thea.png);
+  background-repeat: no-repeat;
 }
 
 section#team #team .photo.thea.hover {
-  background: url(../images/thea_hover.png) no-repeat center center;
+  background-image: url(../images/thea_hover.png);
+  background-repeat: no-repeat;
 }
 
 section#team #team .photo.hanna {
-  background: url(../images/hanna.png) no-repeat center center;
+  background-image: url(../images/hanna.png);
+  background-repeat: no-repeat;
 }
 
 section#team #team .photo.hanna.hover {
-  background: url(../images/hanna_hover.png) no-repeat center center;
+  background-image: url(../images/hanna_hover.png);
+  background-repeat: no-repeat;
 }
 
 section#team #team .photo.vlad {
-  background: url(../images/vlad.png) no-repeat center center;
+  background-image: url(../images/vlad.png);
+  background-repeat: no-repeat;
 }
 
 section#team #team .photo.vlad.hover {
-  background: url(../images/vlad_hover.png) no-repeat center center;
+  background-image: url(../images/vlad_hover.png);
+  background-repeat: no-repeat;
 }
 
 section#team #team .photo.jing {
-  background: url(../images/jing.png) no-repeat center center;
+  background-image: url(../images/jing.png);
+  background-repeat: no-repeat;
 }
 
 section#team #team .photo.jing.hover {
-  background: url(../images/jing_hover.png) no-repeat center center;
+  background-image: url(../images/jing_hover.png);
+  background-repeat: no-repeat;
 }
 
 section#resources {
