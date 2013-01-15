@@ -7,6 +7,8 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 	<link rel="stylesheet" type="text/css" href="css/site.css" />
 	<script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap-anim.min.js"></script>
 
 	<script type="text/javascript">
 		$(function() {
@@ -15,6 +17,8 @@
 			}).mouseleave(function() {
 				$(this).removeClass("hover");
 			});
+
+			$(".collapse").collapse()
 		});
 	</script>
 </head>
@@ -119,6 +123,151 @@
 		            </div>
 		        </div>
 		    </div>
+		</section>
+
+		<section id="progress">
+			<div class="container">
+	            <div class="row">
+	                <div class="span12 center">
+	                    <div class="title">
+	                        <h1>Progress</h1>
+	                    </div>
+	                </div>
+	            </div>
+
+	            <div class="row">
+	            	<div class="span12">
+	            		<h3>Overall Progress</h3>
+	            	</div>
+	            </div>
+	            <div class="row">
+	            	<div class="span12">
+		            	<div class="progress progress-striped">
+		            		<div class="bar" style="width: 25%;">In Progress</div>
+		            		<div class="bar bar-none" style="width: 25%;"></div>
+		            		<div class="bar bar-none" style="width: 25%;"></div>
+		            		<div class="bar bar-none" style="width: 25%;"></div>
+						</div>
+					</div>
+	            </div>
+	            <div class="row center progress-descriptions">
+	            	<div class="span3">
+	            		<h4>Requirements</h4>
+	            		Jan 14 - Feb 8
+	            	</div>
+	            	<div class="span3">
+	            		<h4>Design</h4>
+	            		Jan 28 - Feb 8
+	            	</div>
+	            	<div class="span3">
+	            		<h4>Implementation</h4>
+	            		Feb 11 - Mar 8
+	            	</div>
+	            	<div class="span3">
+	            		<h4>Testing</h4>
+	            		Mar 11 - Mar 29
+	            	</div>
+	            </div>
+	            <div class="row">
+	            	<div class="span12">
+	            		<h3>Weekly Progress</h3>
+	            	</div>
+	            </div>
+
+	            <div class="row">
+	            	<div class="span12">
+						<div class="accordion" id="accordion2">
+							<div class="accordion-group">
+							    <div class="accordion-heading">
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+										<span class="week">Week 1</span> <span class="date">Jan 14-19</span>
+									</a>
+							    </div>
+								<div id="collapseOne" class="accordion-body collapse in">
+							    	<div class="accordion-inner">
+							    		<div class="row">
+							    			<div class="span2 center">
+							    				<div class="photo oliver"></div>
+							    				<div class="hours"><span class="hour">0</span> hours</div>
+							    				<div class="progress progress-striped">
+							    					<div class="bar bar-success" style="width: 100%;">0/0 tasks</div>
+							    				</div>
+							    			</div>
+
+							    			<div class="span2 center">
+							    				<div class="photo michelle"></div>
+							    				<div class="hours"><span class="hour">0</span> hours</div>
+							    				<div class="progress progress-striped">
+							    					<div class="bar bar-success" style="width: 100%;">0/0 tasks</div>
+							    				</div>
+							    			</div>
+
+							    			<div class="span2 center">
+							    				<div class="photo thea"></div>
+							    				<div class="hours"><span class="hour">0</span> hours</div>
+							    				<div class="progress progress-striped">
+							    					<div class="bar bar-success" style="width: 100%;">0/0 tasks</div>
+							    				</div>
+							    			</div>
+
+							    			<div class="span2 center">
+							    				<div class="photo hanna"></div>
+							    				<div class="hours"><span class="hour">0</span> hours</div>
+							    				<div class="progress progress-striped">
+							    					<div class="bar bar-success" style="width: 100%;">0/0 tasks</div>
+							    				</div>
+							    			</div>
+
+							    			<div class="span2 center">
+							    				<div class="photo vlad"></div>
+							    				<div class="hours"><span class="hour">0</span> hours</div>
+							    				<div class="progress progress-striped">
+							    					<div class="bar bar-success" style="width: 100%;">0/0 tasks</div>
+							    				</div>
+							    			</div>
+
+							    			<div class="span2 center">
+							    				<div class="photo jing"></div>
+							    				<div class="hours"><span class="hour">0</span> hours</div>
+							    				<div class="progress progress-striped">
+							    					<div class="bar bar-success" style="width: 100%;">0/0 tasks</div>
+							    				</div>
+							    			</div>
+							    		</div>
+							    	</div>
+								</div>
+							</div>
+						</div>
+	            	</div>
+	            </div>
+	        </div>
+		</section>
+
+		<section id="minutes">
+			<div class="container">
+	            <div class="row">
+	                <div class="span12 center">
+	                    <div class="title">
+	                        <h1>Meeting Minutes</h1>
+	                    </div>
+	                </div>
+	            </div>
+
+	            <div class="row content center">
+	            	<div class="span4">
+	            		<h4>Team Meetings</h4>
+	            		Minutes will be posted here.
+	            	</div>
+	            	<div class="span4">
+	            		<h4>Cusotmer Meetings</h4>
+	            		Minutes will be posted here.
+	            	</div>
+	            	<div class="span4">
+	            		<h4>TA Meetings</h4>
+	            		Minutes will be posted here.
+	            	</div>
+	            </div>
+	        </div>
 		</section>
 
 		<section id="resources">

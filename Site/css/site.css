@@ -12,6 +12,10 @@ a:hover {
   color: #0b9ce0;
 }
 
+.bar-none {
+  background-color: #C1C1C1 !important;
+}
+
 div#box {
   margin: 0;
   max-width: none;
@@ -224,6 +228,167 @@ section#team #team .photo.jing {
 section#team #team .photo.jing.hover {
   background-image: url(../images/jing_hover.png);
   background-repeat: no-repeat;
+}
+
+section#progress {
+  background-color: #252629;
+  color: #cbcfd1;
+  text-shadow: 0 0 1px #515356;
+  padding-bottom: 50px;
+}
+
+section#progress h1,
+section#progress .title > h3 {
+  color: white;
+  text-shadow: 0 0 1px #515356;
+}
+
+section#progress .title {
+  background: url(../images/title-line-light.png) left center repeat-x;
+  margin-bottom: 4px;
+}
+
+section#progress .title > h1,
+section#progress .title > h2,
+section#progress .title > h3,
+section#progress .title > h4,
+section#progress .title > h5,
+section#progress .title > h6 {
+  background-color: #252629;
+}
+
+section#progress .title.indent {
+  margin-top: 67px;
+  margin-bottom: 38px;
+}
+
+section#progress .progress-descriptions {
+  position: relative;
+  top: -20px;
+}
+
+section#progress .accordion-group {
+  border: 0px;
+  border-bottom: 1px #919191;
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  background-color: #414141;
+}
+
+section#progress .accordion-toggle {
+  color: #CBCFD1;
+}
+
+.accordion-toggle:hover {
+  text-decoration: none;
+}
+
+.accordion-toggle .week {
+  font-size: 130%;
+}
+
+.accordion-toggle .date {
+  color: #919191;
+  float: right;
+}
+
+section#progress .span2 {
+  width: 14.5%;
+}
+
+section#progress .photo {
+  margin-top: 5px;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  height: 100px;
+  width: 100px;
+  display: inline-block;
+  background-size: 100px 100px;
+}
+
+section#progress .hours,
+section#progress .span2 .progress {
+  width: 100px;
+  display: inline-block;
+}
+
+section#progress .hours {
+  margin-top: 10px;
+}
+
+section#progress .progress {
+  margin-top: 5px;
+}
+
+section#progress .hours .hour {
+  font-size: 200%;
+}
+
+section#progress .photo.oliver {
+  background-image: url(../images/oliver.png);
+  background-repeat: no-repeat;
+}
+
+section#progress .photo.michelle {
+  background-image: url(../images/michelle.png);
+  background-repeat: no-repeat;
+}
+
+section#progress .photo.thea {
+  background-image: url(../images/thea.png);
+  background-repeat: no-repeat;
+}
+
+section#progress .photo.hanna {
+  background-image: url(../images/hanna.png);
+  background-repeat: no-repeat;
+}
+
+section#progress .photo.vlad {
+  background-image: url(../images/vlad.png);
+  background-repeat: no-repeat;
+}
+
+section#progress .photo.jing {
+  background-image: url(../images/jing.png);
+  background-repeat: no-repeat;
+}
+
+section#minutes {
+  z-index: 20;
+}
+
+section#minutes {
+  background-color: white;
+  color: #7c8387;
+  text-shadow: 0 0 1px #dcdedf;
+  padding-bottom: 75px;
+}
+
+section#minutes h1,
+section#minutes h2,
+section#minutes h3 {
+  color: black;
+  text-shadow: #9d9d9d;
+}
+
+section#minutes .title {
+  background: url(../images/title-line-dark.png) left center repeat-x;
+  margin-top: 31px;
+}
+
+section#minutes .title > h1,
+section#minutes .title > h2,
+section#minutes .title > h3,
+section#minutes .title > h4,
+section#minutes .title > h5,
+section#minutes .title > h6 {
+  background-color: white;
+}
+
+section#minutes .content {
+  margin-top: 15px;
 }
 
 section#resources {
