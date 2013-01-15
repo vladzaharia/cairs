@@ -159,7 +159,11 @@ section#team #team .photo.hover .information {
 }
 
 section#team #team .information {
-  padding-top: 80px;
+  padding-top: 60px;
+}
+
+section#team #team .information.three {
+  padding-top: 45px;
 }
 
 section#team #team .photo.oliver {
