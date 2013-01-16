@@ -402,8 +402,9 @@ section#progress table {
   text-align: left;
 }
 
-section#progress tr.archived td {
-  color: #717171;
+section#progress tr.archived td,
+section#progress tr.team td {
+  color: #717171 !important;
 }
 
 section#progress table th,

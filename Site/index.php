@@ -258,14 +258,18 @@
 							    				<?php foreach($tasks as $task) {
 							    					$cmpl_data = ($task['completed'] ? '&#x2713;' : 'x');
 							    					$hr_data = ($task['hours'] ? str_replace('.0', '', $task['hours']) : '0');
-
-							    					echo "<tr>";
+							    					if ($task['user'] === '0') {
+							    						echo "<tr class=\"team\">";
+							    					} else {
+							    						echo "<tr>";
+							    					}
+							    					
 							    					echo "<td>{$task['description']}</td>";
 							    					echo "<td>{$hr_data}</td>";
 							    					echo "<td>{$cmpl_data}</td>";
 							    					echo "</tr>";
 							    				}  ?></table>'></div>
-							    				<div class="hours"><span class="hour"><?php echo ($hours[0] ? str_replace('.0', '', $hours[0]) : '0'); ?></span> hours</div>
+							    				<div class="hours"><span class="hour"><?php echo ($hours[0] ? str_replace('.0', '', $hours[0]) : '0'); ?></span> hour(s)</div>
 							    				<div class="progress progress-striped">
 							    					<div class="bar bar-success" style="width: <?php echo $width_done; ?>;"></div>
 							    					<div class="bar bar-danger" style="width: <?php echo $width_not; ?>;"></div>
