@@ -213,14 +213,20 @@
 											foreach($users as $user) {
 												// Retrieve All Tasks for User
 												$tk_query = "SELECT * FROM `task` 
-															 WHERE `user` = '" . $user['id'] . "'
+															 WHERE (`user` = '" . $user['id'] . "' OR `user` = '0')
 															 AND `week` = '" . $week['id'] ."';";
 												$tk_result = mysql_query($tk_query);
 												$tasks = array();
 											    while ($tasks[] = mysql_fetch_assoc($tk_result)) {}
 											   	array_pop($tasks);
 
-												$count_query = "SELECT COUNT(*), SUM(`hours`) FROM `task`
+											   	$hours_query = "SELECT SUM(`hours`) FROM `task`
+																WHERE (`user` = '" . $user['id'] . "' OR `user` = '0')
+															 	AND `week` = '" . $week['id'] ."';";
+												$hours_result = mysql_query($hours_query);
+												$hours = mysql_fetch_array($hours_result);
+
+												$count_query = "SELECT COUNT(*) FROM `task`
 																WHERE `user` = '" . $user['id'] . "'
 															 	AND `week` = '" . $week['id'] ."';";
 												$count_result = mysql_query($count_query);
@@ -243,7 +249,7 @@
 										?>
 											<div class="span2 center">
 							    				<div class="photo <?php echo $user['username']; ?>"></div>
-							    				<div class="hours"><span class="hour"><?php echo ($counts[1] ? trim(trim($counts[1], '0'), '.') : '0'); ?></span> hours</div>
+							    				<div class="hours"><span class="hour"><?php echo ($hours[0] ? str_replace('.0', '', $hours[0]) : '0'); ?></span> hours</div>
 							    				<div class="progress progress-striped">
 							    					<div class="bar bar-success" style="width: <?php echo $width_done; ?>;"></div>
 							    					<div class="bar bar-danger" style="width: <?php echo $width_not; ?>;"></div>
