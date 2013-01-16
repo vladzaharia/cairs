@@ -21,9 +21,21 @@
 
 		mysql_query($update_query, $db);
 	} elseif ($_POST['user']) {
+		if (isset($_POST['ovr_usr']) && $_POST['ovr_usr'] !== '') {
+			$user = $_POST['ovr_usr'];
+		} else {
+			$user = $_REQUEST['user'];
+		}
+
+		if (isset($_POST['ovr_wk']) && $_POST['ovr_wk'] !== '') {
+			$week = $_POST['ovr_wk'];
+		} else {
+			$week = $_REQUEST['week'];
+		}
+
 		$insert_query = sprintf("INSERT INTO `task` (user, week, description, completed, hours) VALUES ('%s', '%s', '%s', '%s', '%s');",
-			$_REQUEST['user'], 
-			$_REQUEST['week'], 
+			$user, 
+			$week, 
 			$_REQUEST['description'], 
 			$_REQUEST['completed'], 
 			$_REQUEST['hours']);	
@@ -44,6 +56,11 @@
 	$tasks = array();
     while ($tasks[] = mysql_fetch_assoc($tk_result)) {}
    	array_pop($tasks);
+
+   // Retrieve User Info
+	$us_query = "SELECT * FROM `user` WHERE `id` = '" . $_REQUEST['user'] . "';";
+	$us_result = mysql_query($us_query, $db);
+	$user = mysql_fetch_assoc($us_result);
 
    	$max_query = "SELECT MAX(week) AS max FROM `task` WHERE `user` = '" . $_REQUEST['user'] . "' ORDER BY `week` DESC;";
    	$max_result = mysql_query($max_query);
@@ -225,6 +242,21 @@
 										</label>
 									</div>
 								</div>
+
+								<?php if ($user['manager'] === 'progress') { ?>
+								<div class="control-group right">
+									<h4>Progress Manager Use Only</h4>
+									<label class="control-label" for="ovr_usr">OVR USR</label>
+									<div class="controls">
+								    	<input type="text" id="ovr_usr" name="ovr_usr" class="input-small" placeholder="User" />
+									</div>
+									<br />
+									<label class="control-label" for="ovr_wk">OVR WK</label>
+									<div class="controls">
+								    	<input type="text" id="ovr_wk" name="ovr_wk" class="input-small" placeholder="Week" />
+									</div>
+								</div>
+								<?php } ?>
 
 								<div class="form-actions">
 									<input type="hidden" name="user" value="<?php echo $_REQUEST['user']; ?>" />

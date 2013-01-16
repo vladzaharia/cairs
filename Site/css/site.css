@@ -75,6 +75,29 @@ p, .description, label, input, button {
   font-size: 13px;
 }
 
+.popover {
+  z-index: 1000;
+}
+
+.popover th,
+.popover td {
+  font-style: normal !important;
+  color: #313131 !important;
+  font-size: 80%;
+}
+
+.popover th {
+  font-weight: 400 !important;
+}
+
+.popover td {
+  font-weight: 300 !important;
+}
+
+.popover-title {
+  display: none;
+}
+
 section {
   padding-top: 29px;
   position: relative;
@@ -309,6 +332,10 @@ section#progress .accordion-group {
   background-color: #414141;
 }
 
+section#progress .in.accordion-body {
+  overflow: visible !important;
+}
+
 section#progress .accordion-toggle {
   color: #CBCFD1;
 }
@@ -387,6 +414,30 @@ section#progress table td {
 
 section#progress table th {
   font-weight: 400;
+}
+
+section#progress .form-horizontal {
+  position: relative;
+}
+
+section#progress .control-group {
+  width: 50%;
+}
+
+section#progress .control-group.right {
+  width: 25%;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+section#progress .control-group.right .control-label {
+  width: auto;
+  margin-right: 10px;
+}
+
+section#progress .control-group.right .controls {
+  margin-left: 10px;
 }
 
 section#progress a:hover {

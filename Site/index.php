@@ -38,7 +38,13 @@
 				$(this).removeClass("hover");
 			});
 
-			$(".collapse").collapse()
+			$(".collapse").collapse();
+
+			$(".tasks-progress").popover({
+				'html': true,
+				'placement': 'right',
+				'trigger': 'hover'
+			});
 		});
 	</script>
 </head>
@@ -248,7 +254,17 @@
 												}
 										?>
 											<div class="span2 center">
-							    				<div class="photo <?php echo $user['username']; ?>"></div>
+							    				<div class="tasks-progress photo <?php echo $user['username']; ?>" data-placement="bottom" data-content='<table><tr><th width="80%">Task</th><th width="10%">hr</th><th width="10%">&#x2713;</th></tr>
+							    				<?php foreach($tasks as $task) {
+							    					$cmpl_data = ($task['completed'] ? '&#x2713;' : 'x');
+							    					$hr_data = ($task['hours'] ? str_replace('.0', '', $task['hours']) : '0');
+
+							    					echo "<tr>";
+							    					echo "<td>{$task['description']}</td>";
+							    					echo "<td>{$hr_data}</td>";
+							    					echo "<td>{$cmpl_data}</td>";
+							    					echo "</tr>";
+							    				}  ?></table>'></div>
 							    				<div class="hours"><span class="hour"><?php echo ($hours[0] ? str_replace('.0', '', $hours[0]) : '0'); ?></span> hours</div>
 							    				<div class="progress progress-striped">
 							    					<div class="bar bar-success" style="width: <?php echo $width_done; ?>;"></div>
