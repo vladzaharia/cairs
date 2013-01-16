@@ -70,7 +70,7 @@ h1, h2, h3, h4 {
   font-weight: 300;
 }
 
-p, .description {
+p, .description, label, input, button {
   font-weight: 300;
   font-size: 13px;
 }
