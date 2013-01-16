@@ -385,6 +385,10 @@ section#progress table th {
   font-weight: 400;
 }
 
+section#progress a:hover {
+  text-decoration: none;
+}
+
 section#progress .hours,
 section#progress .span2 .progress {
   width: 100px;

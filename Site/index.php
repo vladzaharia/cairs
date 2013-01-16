@@ -243,7 +243,7 @@
 										?>
 											<div class="span2 center">
 							    				<div class="photo <?php echo $user['username']; ?>"></div>
-							    				<div class="hours"><span class="hour"><?php echo ($counts[1] ? $counts[1] : '0'); ?></span> hours</div>
+							    				<div class="hours"><span class="hour"><?php echo ($counts[1] ? trim(trim($counts[1], '0'), '.') : '0'); ?></span> hours</div>
 							    				<div class="progress progress-striped">
 							    					<div class="bar bar-success" style="width: <?php echo $width_done; ?>;"></div>
 							    					<div class="bar bar-danger" style="width: <?php echo $width_not; ?>;"></div>

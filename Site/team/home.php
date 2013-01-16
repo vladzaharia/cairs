@@ -9,14 +9,15 @@
 	mysql_select_db('319', $db);
 
 	// Insert Task
-	if ($_POST['task']) {
+	if ($_GET['delete']) {
+		$delete_query = "DELETE FROM `task` WHERE id = '{$_REQUEST['task']}';";
+		mysql_query($delete_query, $db);
+	} elseif ($_POST['task']) {
 		$update_query = sprintf("UPDATE `task` SET description='%s', completed='%s', hours='%s' WHERE id = '%s';",
 			$_REQUEST['description'], 
 			$_REQUEST['completed'], 
 			$_REQUEST['hours'], 
 			$_REQUEST['task']);	
-
-		echo $update_query;
 
 		mysql_query($update_query, $db);
 	} elseif ($_POST['user']) {
@@ -38,7 +39,7 @@
    	array_pop($weeks);
 
 	// Retrieve All Tasks for User
-	$tk_query = "SELECT * FROM `task` WHERE `user` = '" . $_REQUEST['user'] . "';";
+	$tk_query = "SELECT * FROM `task` WHERE `user` = '" . $_REQUEST['user'] . "' ORDER BY `week` DESC;";
 	$tk_result = mysql_query($tk_query, $db);
 	$tasks = array();
     while ($tasks[] = mysql_fetch_assoc($tk_result)) {}
@@ -108,7 +109,7 @@
 		            				echo "<td>" . $task['description'] . "</td>";
 		            				echo "<td class='center'>" . $task['hours'] . "</td>";
 		            				echo "<td class='center'>" . ($task['completed'] ? "Yes" : "No") . "</td>";
-		            				echo "<td class='center'><a href='home.php?user={$_REQUEST['user']}&task={$task['id']}'><i class='icon-pencil icon-white'></i></a></td>";
+		            				echo "<td class='center'><a href='home.php?user={$_REQUEST['user']}&task={$task['id']}'><i class='icon-pencil icon-white'></i></a><a href='home.php?user={$_REQUEST['user']}&delete=1&task={$task['id']}'>&nbsp;&nbsp;<i class='icon-remove icon-white'></i></a></td>";
 		            				echo "</tr>";
 		            			}
 		            		?>
@@ -117,7 +118,7 @@
 	            </div>
 	            
 	            <?php 
-	            	if ($_GET['task']) { 
+	            	if ($_GET['task'] && !isset($_REQUEST['delete'])) { 
 	            		$tk_query = "SELECT * FROM `task` WHERE `id` = '" . $_REQUEST['task'] . "';";
 						$tk_result = mysql_query($tk_query, $db);
 						$edit_task = mysql_fetch_assoc($tk_result);
