@@ -375,6 +375,10 @@ section#progress table {
   text-align: left;
 }
 
+section#progress tr.archived td {
+  color: #717171;
+}
+
 section#progress table th,
 section#progress table td {
   color: #CBCFD1;

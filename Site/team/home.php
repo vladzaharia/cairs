@@ -44,6 +44,10 @@
 	$tasks = array();
     while ($tasks[] = mysql_fetch_assoc($tk_result)) {}
    	array_pop($tasks);
+
+   	$max_query = "SELECT MAX(week) AS max FROM `task` WHERE `user` = '" . $_REQUEST['user'] . "' ORDER BY `week` DESC;";
+   	$max_result = mysql_query($max_query);
+   	$max = mysql_fetch_assoc($max_result);
 ?>
 
 <html lang="en">
@@ -104,7 +108,11 @@
 		            		</tr>
 		            		<?php
 		            			foreach($tasks as $task) {
-		            				echo "<tr>";
+		            				if ($max['max'] > $task['week']) {
+		            					echo "<tr class='archived'>";
+		            				} else {
+		            					echo "<tr>";
+		            				}
 		            				echo "<td class='center'>" . $task['week'] . "</td>";
 		            				echo "<td>" . $task['description'] . "</td>";
 		            				echo "<td class='center'>" . ($task['hours'] ? $task['hours'] : '0') . "</td>";
