@@ -2,6 +2,7 @@ body {
   color: #2e2e2e;
   text-shadow: 0 0 1px #9d9d9d;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: 300;
 }
 
 a {
@@ -25,6 +26,10 @@ div#box {
 
 div#preload {
   display: none;
+}
+
+.row.spacer {
+  margin-top: 20px;
 }
 
 .center {
@@ -61,12 +66,12 @@ div#preload {
 }
 
 h1, h2, h3, h4 {
-  font-style: 300;
-  font-weight: normal;
+  font-style: normal;
+  font-weight: 300;
 }
 
 p, .description {
-  font-style: 300;
+  font-weight: 300;
   font-size: 13px;
 }
 
@@ -100,6 +105,31 @@ section#home h1 {
   font-weight: normal;
   text-transform: none;
   color: #ffffff;
+}
+
+section#home-team {
+  background: #FFFFFF;
+  height: 150px;
+  padding: 0;
+}
+
+section#home-team .logo {
+  display: inline-block;
+  background: url(../images/319.png) no-repeat center center;
+  height: 128px;
+  width: 128px;
+  position: relative;
+  top: 10px;
+  left: 10px;
+}
+
+section#home-team .text {
+  display: inline-block;
+  font-size: 400%;
+  font-weight: 300;
+  position: relative;
+  top: -45px;
+  left: 30px;
 }
 
 section#team {
@@ -164,6 +194,10 @@ section#team #team .photo.hover .information {
 
 section#team #team .information {
   padding-top: 60px;
+}
+
+section#team #team .information p {
+  color: #717171;
 }
 
 section#team #team .information.three {
@@ -307,6 +341,50 @@ section#progress .photo {
   background-size: 100px 100px;
 }
 
+section#progress .new-task {
+  background-color: #414141;
+  padding: 7px 10px;
+}
+
+.new-task input {
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  height: 30px;
+}
+
+.new-task input#completed {
+  position: relative;
+  top: -8px;
+}
+
+.new-task .control-group.first {
+  padding-top: 20px;
+}
+
+.new-task .form-actions {
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
+  border-width: 0;
+  background-color: inherit;
+}
+
+section#progress table {
+  width: 100%;  
+  text-align: left;
+}
+
+section#progress table th,
+section#progress table td {
+  color: #CBCFD1;
+  font-weight: 300;
+}
+
+section#progress table th {
+  font-weight: 400;
+}
+
 section#progress .hours,
 section#progress .span2 .progress {
   width: 100px;
@@ -319,6 +397,12 @@ section#progress .hours {
 
 section#progress .progress {
   margin-top: 5px;
+}
+
+section#progress .tasks {
+  position: relative;
+  top: -40px;
+  color: #FFFFFF;
 }
 
 section#progress .hours .hour {
@@ -475,6 +559,11 @@ section#footer {
   section#home .welcome {
     background: url(../images/home@2x.png) no-repeat center center;
     background-size: 950px 500px;
+  }
+
+  section#home-team .logo {
+    background: url(../images/319@2x.png) no-repeat center center;
+    background-size: 128px 128px;
   }
 
   section#resources .image.communication {

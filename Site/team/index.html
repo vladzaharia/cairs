@@ -1,0 +1,82 @@
+<html lang="en">
+<head>
+	<title>CS319 Project - Team Login</title>
+	<meta name="robots" content="noindex"> <!-- Prevent Google from crawling -->
+
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300,600' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="../css/site.css" />
+	<script type="text/javascript" src="../js/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/bootstrap-anim.min.js"></script>
+
+	<script type="text/javascript">
+		$(function() {
+			$(".photo").mouseenter(function() {
+				$(this).addClass("hover");
+			}).mouseleave(function() {
+				$(this).removeClass("hover");
+			});
+
+			$(".collapse").collapse()
+		});
+	</script>
+</head>
+<body>
+	<div id="container">
+		<section id="home-team">
+			<div class="logo"></div>
+			<div class="text">Team Area</div>
+		</section>
+
+		<section id="progress">
+			<div class="container">
+	            <div class="row">
+	                <div class="span12 center">
+	                    <div class="title">
+	                        <h1>Login</h1>
+	                    </div>
+	                </div>
+	            </div>
+
+	            <div class="row">
+	            	<div class="span12 center">
+	            		<br />&nbsp;
+	            		Please select your photo to continue.<br />&nbsp;
+	            	</div>
+	            </div>
+
+	            <div class="row">
+            		<div class="span2 center">
+	    				<a href="home.php?user=1" class="photo oliver"></a>
+	    			</div>
+
+	    			<div class="span2 center">
+	    				<a href="home.php?user=2" class="photo michelle"></a>
+	    			</div>
+
+	    			<div class="span2 center">
+	    				<a href="home.php?user=3" class="photo thea"></a>
+	    			</div>
+
+	    			<div class="span2 center">
+	    				<a href="home.php?user=4" class="photo hanna"></a>
+	    			</div>
+
+	    			<div class="span2 center">
+	    				<a href="home.php?user=5" class="photo vlad"></a>
+	    			</div>
+
+	    			<div class="span2 center">
+	    				<a href="home.php?user=6" class="photo jing"></a>
+	    			</div>
+	            </div>
+	        </div>
+		</section>
+
+		<section id="footer" class="center">
+			Site made by Vlad Zaharia for CS319.
+		</section>
+	</div>
+</body>
+</html>

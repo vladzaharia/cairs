@@ -1,3 +1,23 @@
+<?php
+	// CS319 Project - Team Task Entry
+	$db = mysql_connect('localhost', '319', 'foobar');
+	mysql_select_db('319');
+
+	// Retrieve All Weeks
+	$wk_query = "SELECT * FROM `week` WHERE `released` < '" . time() . "';";
+	$wk_result = mysql_query($wk_query);
+	$weeks = array();
+    while ($weeks[] = mysql_fetch_assoc($wk_result)) {}
+   	array_pop($weeks);
+
+	// Retrieve All Users
+	$us_query = "SELECT * FROM `user`;";
+	$us_result = mysql_query($us_query);
+	$users = array();
+    while ($users[] = mysql_fetch_assoc($us_result)) {}
+    array_pop($users);
+?>
+
 <html lang="en">
 <head>
 	<title>CS319 Project</title>
@@ -176,67 +196,68 @@
 
 	            <div class="row">
 	            	<div class="span12">
-						<div class="accordion" id="accordion2">
+						<div class="accordion" id="accordion">
+							<?php 
+								foreach($weeks as $week) {
+							?>
 							<div class="accordion-group">
 							    <div class="accordion-heading">
-									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-										<span class="week">Week 1</span> <span class="date">Jan 14-19</span>
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $week['id']; ?>">
+										<span class="week"><?php echo $week['name']; ?></span> <span class="date"><?php echo $week['date']; ?></span>
 									</a>
 							    </div>
-								<div id="collapseOne" class="accordion-body collapse in">
+								<div id="collapse<?php echo $week['id']; ?>" class="accordion-body collapse in">
 							    	<div class="accordion-inner">
 							    		<div class="row">
-							    			<div class="span2 center">
-							    				<div class="photo oliver"></div>
-							    				<div class="hours"><span class="hour">0</span> hours</div>
-							    				<div class="progress progress-striped">
-							    					<div class="bar bar-success" style="width: 100%;">0/0 tasks</div>
-							    				</div>
-							    			</div>
+							    		<?php
+											foreach($users as $user) {
+												// Retrieve All Tasks for User
+												$tk_query = "SELECT * FROM `task` 
+															 WHERE `user` = '" . $user['id'] . "'
+															 AND `week` = '" . $week['id'] ."';";
+												$tk_result = mysql_query($tk_query);
+												$tasks = array();
+											    while ($tasks[] = mysql_fetch_assoc($tk_result)) {}
+											   	array_pop($tasks);
 
-							    			<div class="span2 center">
-							    				<div class="photo michelle"></div>
-							    				<div class="hours"><span class="hour">0</span> hours</div>
-							    				<div class="progress progress-striped">
-							    					<div class="bar bar-success" style="width: 100%;">0/0 tasks</div>
-							    				</div>
-							    			</div>
+												$count_query = "SELECT COUNT(*), SUM(`hours`) FROM `task`
+																WHERE `user` = '" . $user['id'] . "'
+															 	AND `week` = '" . $week['id'] ."';";
+												$count_result = mysql_query($count_query);
+												$counts = mysql_fetch_array($count_result);
 
-							    			<div class="span2 center">
-							    				<div class="photo thea"></div>
-							    				<div class="hours"><span class="hour">0</span> hours</div>
-							    				<div class="progress progress-striped">
-							    					<div class="bar bar-success" style="width: 100%;">0/0 tasks</div>
-							    				</div>
-							    			</div>
+												$complete_query = "SELECT COUNT(*) FROM `task`
+																WHERE `user` = '" . $user['id'] . "'
+															 	AND `week` = '" . $week['id'] ."'
+															 	AND `completed` = '1';";
+												$complete_result = mysql_query($complete_query);
+												$completes = mysql_fetch_array($complete_result);
 
-							    			<div class="span2 center">
-							    				<div class="photo hanna"></div>
-							    				<div class="hours"><span class="hour">0</span> hours</div>
+												if ($counts[0]) {
+													$width_done = $completes[0] / $counts[0] * 100 . "%";
+													$width_not = 100 - ($completes[0] / $counts[0] * 100) . "%";
+												} else {
+													$width_done = "100%";
+													$width_not = "0%";
+												}
+										?>
+											<div class="span2 center">
+							    				<div class="photo <?php echo $user['username']; ?>"></div>
+							    				<div class="hours"><span class="hour"><?php echo ($counts[1] ? $counts[1] : '0'); ?></span> hours</div>
 							    				<div class="progress progress-striped">
-							    					<div class="bar bar-success" style="width: 100%;">0/0 tasks</div>
+							    					<div class="bar bar-success" style="width: <?php echo $width_done; ?>;"></div>
+							    					<div class="bar bar-danger" style="width: <?php echo $width_not; ?>;"></div>
 							    				</div>
+							    				<div class="tasks"><?php echo ($completes[0] ? $completes[0] : '0'); ?>/<?php echo ($counts[0] ? $counts[0] : '0'); ?> tasks</div>
 							    			</div>
-
-							    			<div class="span2 center">
-							    				<div class="photo vlad"></div>
-							    				<div class="hours"><span class="hour">0</span> hours</div>
-							    				<div class="progress progress-striped">
-							    					<div class="bar bar-success" style="width: 100%;">0/0 tasks</div>
-							    				</div>
-							    			</div>
-
-							    			<div class="span2 center">
-							    				<div class="photo jing"></div>
-							    				<div class="hours"><span class="hour">0</span> hours</div>
-							    				<div class="progress progress-striped">
-							    					<div class="bar bar-success" style="width: 100%;">0/0 tasks</div>
-							    				</div>
-							    			</div>
+										<?php
+											}
+										?>
 							    		</div>
 							    	</div>
 								</div>
 							</div>
+							<?php } ?>
 						</div>
 	            	</div>
 	            </div>
