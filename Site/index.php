@@ -280,7 +280,7 @@
 	            		Minutes will be posted here.
 	            	</div>
 	            	<div class="span4">
-	            		<h4>Cusotmer Meetings</h4>
+	            		<h4>Customer Meetings</h4>
 	            		Minutes will be posted here.
 	            	</div>
 	            	<div class="span4">
