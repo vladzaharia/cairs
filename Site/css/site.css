@@ -428,16 +428,33 @@ section#progress .control-group.right {
   width: 25%;
   position: absolute;
   top: 0px;
-  right: 0px;
+  right: 15px;
 }
 
 section#progress .control-group.right .control-label {
   width: auto;
   margin-right: 10px;
+  position: absolute;
+  right: 95px;
+}
+
+section#progress .control-group.right input {
+  position: absolute;
+  right: 0px;
+}
+
+section#progress .control-group.right .control-label[for=ovr_wk] {
+  top: 80px;
+}
+
+section#progress .control-group.right input#ovr_wk {
+  top: 20px;
 }
 
 section#progress .control-group.right .controls {
   margin-left: 10px;
+  position: absolute;
+  right: 0;
 }
 
 section#progress a:hover {
