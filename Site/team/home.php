@@ -107,7 +107,7 @@
 		            				echo "<tr>";
 		            				echo "<td class='center'>" . $task['week'] . "</td>";
 		            				echo "<td>" . $task['description'] . "</td>";
-		            				echo "<td class='center'>" . $task['hours'] . "</td>";
+		            				echo "<td class='center'>" . ($task['hours'] ? $task['hours'] : '0') . "</td>";
 		            				echo "<td class='center'>" . ($task['completed'] ? "Yes" : "No") . "</td>";
 		            				echo "<td class='center'><a href='home.php?user={$_REQUEST['user']}&task={$task['id']}'><i class='icon-pencil icon-white'></i></a><a href='home.php?user={$_REQUEST['user']}&delete=1&task={$task['id']}'>&nbsp;&nbsp;<i class='icon-remove icon-white'></i></a></td>";
 		            				echo "</tr>";
