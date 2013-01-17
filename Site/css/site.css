@@ -77,6 +77,7 @@ p, .description, label, input, button {
 
 .popover {
   z-index: 1000;
+  width: 325px;
 }
 
 .popover th,
@@ -84,6 +85,7 @@ p, .description, label, input, button {
   font-style: normal !important;
   color: #313131 !important;
   font-size: 80%;
+  padding-right: 3px;
 }
 
 .popover th {

@@ -256,7 +256,7 @@
 											<div class="span2 center">
 							    				<div class="tasks-progress photo <?php echo $user['username']; ?>" data-placement="bottom" data-content='<table><tr><th width="80%">Task</th><th width="10%">hr</th><th width="10%">&#x2713;</th></tr>
 							    				<?php foreach($tasks as $task) {
-							    					$cmpl_data = ($task['completed'] ? '&#x2713;' : 'x');
+							    					$cmpl_data = ($task['completed'] ? '&#x2713;' : '&#x2717;');
 							    					$hr_data = ($task['hours'] ? str_replace('.0', '', $task['hours']) : '0');
 							    					if ($task['user'] === '0') {
 							    						echo "<tr class=\"team\">";
