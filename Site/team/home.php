@@ -94,8 +94,13 @@
 <body>
 	<div id="container">
 		<section id="home-team">
-			<div class="logo"></div>
-			<div class="text">Team Area</div>
+			<div class="container">
+				<div class="row">
+					<div class="span12 center">
+						<div class="logo"></div>
+					</div>
+				</div>
+			</div>
 		</section>
 
 		<section id="progress">
@@ -269,8 +274,8 @@
 	        </div>
 		</section>
 
-		<section id="footer" class="center">
-			Site made by Vlad Zaharia for CS319.
+		<section id="footer">
+			Site handcrafted by Vlad Zaharia for sasquatch.
 		</section>
 	</div>
 </body>

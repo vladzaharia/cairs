@@ -50,6 +50,10 @@
 </head>
 <body>
 	<div id="container">
+		<section id="header">
+			<div class="wearesasquatch"></div>
+		</section>
+
 		<section id="home">
 			<div class="welcome"></div>
 		</section>
@@ -351,8 +355,8 @@
 	        </div>
 		</section>
 
-		<section id="footer" class="center">
-			Site made by Vlad Zaharia for CS319.
+		<section id="footer">
+			Site handcrafted by Vlad Zaharia for sasquatch.
 		</section>
 	</div>
 
