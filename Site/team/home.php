@@ -69,7 +69,7 @@
 
 <html lang="en">
 <head>
-	<title>CS319 Project - Team Area</title>
+	<title>/sasquatch/ Team Area</title>
 	<meta name="robots" content="noindex"> <!-- Prevent Google from crawling -->
 
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300,600' rel='stylesheet' type='text/css'>
