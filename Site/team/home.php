@@ -167,7 +167,7 @@
 								<div class="control-group first">
 									<label class="control-label" for="description">Description</label>
 									<div class="controls">
-								    	<input type="text" id="description" name="description" class="input-xlarge" placeholder="Description" value="<?php echo $edit_task['description']; ?>" />
+								    	<input type="text" id="description" name="description" class="input-xlarge" placeholder="Description" value="<?php echo $edit_task['description']; ?>" autocomplete="off" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -180,11 +180,11 @@
 									<label class="control-label" for="hours">Complete?</label>
 									<div class="controls">
 								    	<label class="radio">
-											<input type="radio" name="completed" id="completed" value="1" <?php if ($edit_task['completed']) { echo "checked"; } ?> />
+											<input type="radio" name="completed" id="completed" value="1" <?php if ($edit_task['completed']) { echo "checked"; } ?> autocomplete="off" />
 											Yes
 										</label>
 										<label class="radio">
-											<input type="radio" name="completed" id="completed" value="0" <?php if (!$edit_task['completed']) { echo "checked"; } ?> />
+											<input type="radio" name="completed" id="completed" value="0" <?php if (!$edit_task['completed']) { echo "checked"; } ?> autocomplete="off" />
 											No
 										</label>
 									</div>
@@ -226,13 +226,13 @@
 								<div class="control-group first">
 									<label class="control-label" for="description">Description</label>
 									<div class="controls">
-								    	<input type="text" id="description" name="description" class="input-xlarge" placeholder="Description" />
+								    	<input type="text" id="description" name="description" class="input-xlarge" placeholder="Description" autocomplete="off" />
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label" for="hours">Hours</label>
 									<div class="controls">
-								    	<input type="text" id="hours" name="hours" class="input-small" placeholder="Hours" />
+								    	<input type="text" id="hours" name="hours" class="input-small" placeholder="Hours" autocomplete="off" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -252,14 +252,14 @@
 								<?php if ($user['manager'] === 'progress') { ?>
 								<div class="control-group right">
 									<h4>Progress Manager Use Only</h4>
-									<label class="control-label" for="ovr_usr">OVR USR</label>
+									<label class="control-label" for="ovr_usr">Override User</label>
 									<div class="controls">
-								    	<input type="text" id="ovr_usr" name="ovr_usr" class="input-small" placeholder="User" />
+								    	<input type="text" id="ovr_usr" name="ovr_usr" class="input-small" placeholder="User" autocomplete="off" />
 									</div>
 									<br />
-									<label class="control-label" for="ovr_wk">OVR WK</label>
+									<label class="control-label" for="ovr_wk">Override Week</label>
 									<div class="controls">
-								    	<input type="text" id="ovr_wk" name="ovr_wk" class="input-small" placeholder="Week" />
+								    	<input type="text" id="ovr_wk" name="ovr_wk" class="input-small" placeholder="Week" autocomplete="off" />
 									</div>
 								</div>
 								<?php } ?>
