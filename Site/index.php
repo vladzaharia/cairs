@@ -31,6 +31,11 @@
 	<script type="text/javascript" src="js/bootstrap-anim.min.js"></script>
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 
+	<meta name="description" content="sasquatch is a group of 6 developers working on awesome software for CS 319 at UBC." />
+	<meta name="author" content="Vlad Zaharia" />
+	<meta name="keywords" content="ubc, cs, cs319, 319, sasquatch, software, software development, web, web development, vancouver, canada, bc, we are sasquatch, vlad, zaharia, vlad zaharia, michelle, chuang, michelle chuang, oliver, bozek, oliver bozek, thea, simpson, thea simpson, hanna, yoo, hanna yoo, jing, zhu, jing zhu" />
+	<meta name="copyright" content="2012 Vlad Zaharia" />
+
 	<script type="text/javascript">
 		$(function() {
 			$(".photo").mouseenter(function() {
