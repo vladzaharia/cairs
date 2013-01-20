@@ -176,7 +176,7 @@ section#team {
   background-color: white;
   color: #7c8387;
   text-shadow: 0 0 1px #dcdedf;
-  padding-bottom: 75px;
+  padding-bottom: 50px;
 }
 
 section#team h1,
@@ -298,6 +298,12 @@ section#team #team .photo.jing {
 section#team #team .photo.jing.hover {
   background-image: url(../images/jing_hover.png);
   background-repeat: no-repeat;
+}
+
+section#team .team-contact {
+  font-size: 110%;
+  font-style: italic;
+  padding-top: 40px;
 }
 
 section#progress {
