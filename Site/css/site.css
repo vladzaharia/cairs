@@ -32,6 +32,19 @@ div#preload {
   margin-top: 20px;
 }
 
+.row.login {
+  padding-left: 310px;
+}
+
+.row.password {
+  padding-left: 245px;
+  margin-top: 20px;
+}
+
+.row.password input {
+  height: 29px !important;
+}
+
 .center {
   text-align: center;
 }
@@ -535,6 +548,21 @@ section#progress .photo.jing {
   background-repeat: no-repeat;
 }
 
+section#progress .photo.prof {
+  background-image: url(../images/prof.png);
+  background-repeat: no-repeat;
+}
+
+section#progress .photo.ta {
+  background-image: url(../images/ta.png);
+  background-repeat: no-repeat;
+}
+
+section#progress .photo.team {
+  background-image: url(../images/teammbr.png);
+  background-repeat: no-repeat;
+}
+
 section#minutes {
   z-index: 20;
 }
@@ -640,6 +668,11 @@ section#resources .image.source {
   background-repeat: no-repeat;
 }
 
+section#resources .image.file {
+    background-image: url(../images/file.png);
+    background-repeat: no-repeat;
+}
+
 section#footer {
 	padding-bottom: 29px;
   padding-left: 20px;
@@ -656,6 +689,14 @@ section#footer.login {
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+section#footer .clickable {
+  height: 78px;
+  width: 120px;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 /* Retina */
@@ -680,6 +721,21 @@ section#footer.login {
     background-size: 950px 150px;
   }
 
+  section#progress .photo.prof {
+    background-image: url(../images/prof@2x.png);
+    background-size: 100px 100px;
+  }
+
+  section#progress .photo.ta {
+    background-image: url(../images/ta@2x.png);
+    background-size: 100px 100px;
+  }
+
+  section#progress .photo.team {
+    background-image: url(../images/teammbr@2x.png);
+    background-size: 100px 100px;
+  }
+
   section#resources .image.communication {
     background-image: url(../images/communication@2x.png) !important;
     background-size: 60px 60px;
@@ -692,6 +748,11 @@ section#footer.login {
 
   section#resources .image.source {
     background-image: url(../images/source@2x.png) !important;
+    background-size: 60px 60px;
+  }
+
+  section#resources .image.file {
+    background-image: url(../images/file@2x.png) !important;
     background-size: 60px 60px;
   }
 

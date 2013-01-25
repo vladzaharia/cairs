@@ -1,4 +1,21 @@
 <?php
+	session_start();
+
+	$db = mysql_connect('localhost', '319', 'foobar');
+	mysql_select_db('319');
+
+	if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
+		$login_query = "SELECT * FROM `protected_login` WHERE `username` = '" . $_SESSION['username'] . "';";
+		$login_result = mysql_query($login_query);
+		$login = mysql_fetch_assoc($login_result);
+	   	
+	   	if ($login['password'] !== $_SESSION['password']) {
+	   		header("location: index.php");
+	   	}
+	} else {
+		header("location: index.php");
+	}
+
 	// CS319 Project - Team Task Entry
 	$db = mysql_connect('localhost', '319', 'foobar');
 	mysql_select_db('319');
@@ -24,12 +41,12 @@
 	<meta name="robots" content="noindex"> <!-- Prevent Google from crawling -->
 
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300,600' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="css/site.css" />
-	<script type="text/javascript" src="js/jquery-1.8.3.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap-anim.min.js"></script>
-	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="../css/site.css" />
+	<script type="text/javascript" src="../js/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/bootstrap-anim.min.js"></script>
+	<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
 
 	<meta name="description" content="sasquatch is a group of 6 developers working on awesome software for CS 319 at UBC." />
 	<meta name="author" content="Vlad Zaharia" />
@@ -198,7 +215,7 @@
 	            	</div>
 	            	<div class="span3">
 	            		<h4>Design</h4>
-	            		Jan 28 - Feb 8
+	            		Jan 28 - Mar 1
 	            	</div>
 	            	<div class="span3">
 	            		<h4>Implementation</h4>
@@ -318,11 +335,11 @@
 	            <div class="row content center">
 	            	<div class="span4">
 	            		<h4>Team Meetings</h4>
-	            		Minutes will be posted here.
+	            		<a href="/meetings/team/jan24.pdf">January 24th, 2013</a>
 	            	</div>
 	            	<div class="span4">
-	            		<h4>Customer Meetings</h4>
-	            		Minutes will be posted here.
+	            		<h4>Client Meetings</h4>
+	            		<a href="/meetings/client/jan24.pdf">January 24th, 2013</a>
 	            	</div>
 	            	<div class="span4">
 	            		<h4>TA Meetings</h4>
@@ -363,6 +380,19 @@
 	            		Our Facebook group is located <a href="https://www.facebook.com/groups/ubc319/">here</a> for communication.
 	            	</div>
 	            </div>
+	            <?php if ($_SESSION['username'] === "team") { ?>
+	            <div class="row resource">
+	            	<div class="image file span1"></div>
+	            	<div class="description span6">
+	            		<h4>Books</h4>
+	            		<a href="../books/aspnet.pdf">Professional ASP.net MVC 4</a><br />
+	            		<a href="../books/hfhtml.pdf">Head-First HTML</a><br />
+	            		<a href="../books/hfhtml5.pdf">Head-First HTML5/Javascript</a><br />
+	            		<a href="../books/clrcs.pdf">CLR via C# 4th Edition</a><br />
+	            		<a href="../books/hfcs.pdf">Head-First C#</a>
+	            	</div>
+	            </div>
+	            <?php } ?>
 	        </div>
 		</section>
 
