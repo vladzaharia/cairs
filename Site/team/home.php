@@ -1,6 +1,8 @@
 <?php
 	// CS319 Project - Team Task Entry
-	if (!isset($_REQUEST['user'])) {
+
+	session_start();
+	if (!isset($_SESSION['user'])) {
 		header('Location: index.html');
 		exit;
 	}
@@ -24,7 +26,7 @@
 		if (isset($_POST['ovr_usr']) && $_POST['ovr_usr'] !== '') {
 			$user = $_POST['ovr_usr'];
 		} else {
-			$user = $_REQUEST['user'];
+			$user = $_SESSION['user'];
 		}
 
 		if (isset($_POST['ovr_wk']) && $_POST['ovr_wk'] !== '') {
@@ -51,18 +53,18 @@
    	array_pop($weeks);
 
 	// Retrieve All Tasks for User
-	$tk_query = "SELECT * FROM `task` WHERE `user` = '" . $_REQUEST['user'] . "' ORDER BY `week` DESC;";
+	$tk_query = "SELECT * FROM `task` WHERE `user` = '" . $_SESSION['user'] . "' ORDER BY `week` DESC;";
 	$tk_result = mysql_query($tk_query, $db);
 	$tasks = array();
     while ($tasks[] = mysql_fetch_assoc($tk_result)) {}
    	array_pop($tasks);
 
    // Retrieve User Info
-	$us_query = "SELECT * FROM `user` WHERE `id` = '" . $_REQUEST['user'] . "';";
+	$us_query = "SELECT * FROM `user` WHERE `id` = '" . $_SESSION['user'] . "';";
 	$us_result = mysql_query($us_query, $db);
 	$user = mysql_fetch_assoc($us_result);
 
-   	$max_query = "SELECT MAX(week) AS max FROM `task` WHERE `user` = '" . $_REQUEST['user'] . "' ORDER BY `week` DESC;";
+   	$max_query = "SELECT MAX(week) AS max FROM `task` WHERE `user` = '" . $_SESSION['user'] . "' ORDER BY `week` DESC;";
    	$max_result = mysql_query($max_query);
    	$max = mysql_fetch_assoc($max_result);
 ?>
@@ -140,7 +142,7 @@
 		            				echo "<td>" . $task['description'] . "</td>";
 		            				echo "<td class='center'>" . ($task['hours'] ? $task['hours'] : '0') . "</td>";
 		            				echo "<td class='center'>" . ($task['completed'] ? "Yes" : "No") . "</td>";
-		            				echo "<td class='center'><a href='home.php?user={$_REQUEST['user']}&task={$task['id']}'><i class='icon-pencil icon-white'></i></a><a href='home.php?user={$_REQUEST['user']}&delete=1&task={$task['id']}'>&nbsp;&nbsp;<i class='icon-remove icon-white'></i></a></td>";
+		            				echo "<td class='center'><a href='home.php?user={$_SESSION['user']}&task={$task['id']}'><i class='icon-pencil icon-white'></i></a><a href='home.php?user={$_SESSION['user']}&delete=1&task={$task['id']}'>&nbsp;&nbsp;<i class='icon-remove icon-white'></i></a></td>";
 		            				echo "</tr>";
 		            			}
 		            		?>
@@ -191,7 +193,7 @@
 								</div>
 
 								<div class="form-actions">
-									<input type="hidden" name="user" value="<?php echo $_REQUEST['user']; ?>" />
+									<input type="hidden" name="user" value="<?php echo $_SESSION['user']; ?>" />
 									<input type="hidden" name="task" value="<?php echo $_REQUEST['task']; ?>" />
 									<button type="submit" class="btn btn-primary">Edit Task</button>
 								</div>
@@ -210,7 +212,7 @@
 	            <div class="row">
 	            	<div class="span12">
 						<div class="new-task">
-							<form action="home.php?user=<?php echo $_REQUEST['user']; ?>" method="POST" class="form-horizontal">
+							<form action="home.php?user=<?php echo $_SESSION['user']; ?>" method="POST" class="form-horizontal">
 								<div class="control-group first">
 									<label class="control-label" for="week">Week</label>
 									<div class="controls">
@@ -265,7 +267,7 @@
 								<?php } ?>
 
 								<div class="form-actions">
-									<input type="hidden" name="user" value="<?php echo $_REQUEST['user']; ?>" />
+									<input type="hidden" name="user" value="<?php echo $_SESSION['user']; ?>" />
 									<button type="submit" class="btn btn-primary">Add Task</button>
 								</div>
 							</form>

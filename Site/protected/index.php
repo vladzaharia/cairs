@@ -3,7 +3,6 @@
 	$db = mysql_connect('localhost', '319', 'foobar');
 	mysql_select_db('319');
 
-
 	if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
 
 		$login_query = "SELECT * FROM `protected_login` WHERE `username` = '" . $_SESSION['username'] . "';";
@@ -80,7 +79,7 @@
 	    			</div>
 
 	    			<div class="span2 center">
-	    				<a href="index.php?user=team" class="photo team"></a>
+	    				<a href="../team/login.php?state=protected" class="photo team"></a>
 	    			</div>
 	            </div>
 

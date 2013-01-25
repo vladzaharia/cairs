@@ -5,6 +5,10 @@ body {
   font-weight: 300;
 }
 
+body.login {
+  background: #0b9ce0 url(../images/pattern.png);
+}
+
 a {
   color: #0b9ce0;
 }
@@ -163,6 +167,10 @@ section#home-team {
   background: #FFFFFF;
   height: 150px;
   padding: 0;
+}
+
+section#home-team.login {
+  margin-top: 150px;
 }
 
 section#home-team .logo {
@@ -398,6 +406,15 @@ section#progress .photo {
   width: 100px;
   display: inline-block;
   background-size: 100px 100px;
+}
+
+section#progress .login_google {
+  margin-top: 25px;
+  height: 50px;
+  width: 300px;
+  display: inline-block;
+  background-image: url(../images/login_google.png);
+  background-size: 300px 50px;
 }
 
 section#progress .new-task {
@@ -734,6 +751,11 @@ section#footer .clickable {
   section#progress .photo.team {
     background-image: url(../images/teammbr@2x.png);
     background-size: 100px 100px;
+  }
+
+  section#progress .login_google {
+    background-image: url(../images/login_google@2x.png);
+    background-size: 300px 50px;
   }
 
   section#resources .image.communication {
