@@ -42,17 +42,13 @@
 	<script type="text/javascript" src="../js/bootstrap-anim.min.js"></script>
 	<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
 </head>
-<body>
+<body class="login">
 	<div id="container">
-		<section id="header">
+		<section id="header" class="login">
 			<div class="wearesasquatch"></div>
 		</section>
 
-		<section id="home">
-			<div class="welcome"></div>
-		</section>
-
-		<section id="progress">
+		<section id="progress" class="login">
 			<div class="container">
 	            <div class="row">
 	                <div class="span12 center">
@@ -97,7 +93,7 @@
 	        </div>
 		</section>
 
-		<section id="footer">
+		<section id="footer" class="login">
 			Site handcrafted by Vlad Zaharia for sasquatch.
 		</section>
 	</div>

@@ -128,6 +128,12 @@ section#header {
   padding: 0 0 10px 0;
 }
 
+section#header.login {
+  margin-top: 125px;
+  background: #252629 !important;
+  padding-bottom: 0;
+}
+
 section#header .wearesasquatch {
   background: url(../images/header.png) no-repeat center center;
   height: 100px;
@@ -332,6 +338,14 @@ section#progress {
   color: #cbcfd1;
   text-shadow: 0 0 1px #515356;
   padding-bottom: 50px;
+}
+
+section#progress.login {
+  padding-top: 0 !important;
+}
+
+section#progress.login .title {
+  margin-top: 15px;
 }
 
 section#progress h1,

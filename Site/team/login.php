@@ -63,12 +63,12 @@ if ($client->getAccessToken()) {
   } else {
     unset($_SESSION['token']);
     $client->revokeToken();
-    header('Location: index.html');
+    header('Location: index.php');
     exit;
   }
 } else {
   if (isset($_REQUEST['error'])) 
-    header('Location: index.html');
+    header('Location: index.php');
   else 
     header('Location: ' . $client->createAuthUrl());
 	exit;
