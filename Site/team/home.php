@@ -193,7 +193,6 @@
 								</div>
 
 								<div class="form-actions">
-									<input type="hidden" name="user" value="<?php echo $_SESSION['user']; ?>" />
 									<input type="hidden" name="task" value="<?php echo $_REQUEST['task']; ?>" />
 									<button type="submit" class="btn btn-primary">Edit Task</button>
 								</div>
@@ -267,7 +266,6 @@
 								<?php } ?>
 
 								<div class="form-actions">
-									<input type="hidden" name="user" value="<?php echo $_SESSION['user']; ?>" />
 									<button type="submit" class="btn btn-primary">Add Task</button>
 								</div>
 							</form>
