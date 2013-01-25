@@ -1,3 +1,10 @@
+<?php
+	session_start();
+	if (isset($_SESSION['user'])) {
+		header('location: home.php');
+	}
+?>
+
 <html lang="en">
 <head>
 	<title>/sasquatch/ Team Area Login</title>
