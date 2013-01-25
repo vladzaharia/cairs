@@ -35,7 +35,7 @@ if ($client->getAccessToken()) {
   $db = mysql_connect('localhost', '319', 'foobar');
   mysql_select_db('319');
 
-  $login_query = "SELECT * FROM `user` WHERE `email` = '" . $email . "';";
+  $login_query = "SELECT * FROM `user` WHERE `email` LIKE '%" . $email . "%';";
   $login_result = mysql_query($login_query);
   $login = mysql_fetch_assoc($login_result);
 
