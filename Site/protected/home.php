@@ -53,6 +53,12 @@
 	<meta name="keywords" content="ubc, cs, cs319, 319, sasquatch, software, software development, web, web development, vancouver, canada, bc, we are sasquatch, vlad, zaharia, vlad zaharia, michelle, chuang, michelle chuang, oliver, bozek, oliver bozek, thea, simpson, thea simpson, hanna, yoo, hanna yoo, jing, zhu, jing zhu" />
 	<meta name="copyright" content="2012 Vlad Zaharia" />
 
+	<script type="text/javascript" src="//www.hellobar.com/hellobar.js"></script>
+	<script type="text/javascript">
+	    new HelloBar(18603,90652);
+	</script>
+
+
 	<script type="text/javascript">
 		$(function() {
 			$(".photo").mouseenter(function() {
@@ -410,12 +416,12 @@
 
 	<!-- Preloading mouseover images -->
 	<div id="preload">
-		<img src="images/oliver_hover.png" />
-		<img src="images/michelle_hover.png" />
-		<img src="images/thea_hover.png" />
-		<img src="images/hanna_hover.png" />
-		<img src="images/vlad_hover.png" />
-		<img src="images/jing_hover.png" />
+		<img src="../images/oliver_hover.png" />
+		<img src="../images/michelle_hover.png" />
+		<img src="../images/thea_hover.png" />
+		<img src="../images/hanna_hover.png" />
+		<img src="../images/vlad_hover.png" />
+		<img src="../images/jing_hover.png" />
 	</div>
 </body>
 </html>

@@ -82,6 +82,11 @@
 	<script type="text/javascript" src="../js/bootstrap-anim.min.js"></script>
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 
+	<script type="text/javascript" src="//www.hellobar.com/hellobar.js"></script>
+	<script type="text/javascript">
+	    new HelloBar(18603,90652);
+	</script>
+
 	<script type="text/javascript">
 		$(function() {
 			$(".photo").mouseenter(function() {
