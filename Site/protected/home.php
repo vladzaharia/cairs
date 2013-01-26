@@ -319,6 +319,13 @@
 						</div>
 	            	</div>
 	            </div>
+	            <?php if ($_SESSION['username'] === "team") { ?>
+	            <div class="row">
+	            	<div class="span2" style="float: right; width: 70px;">
+	            		<a href="/team/home.php">Add Tasks</a>
+	            	</div>
+	            </div>
+	            <?php } ?>
 	        </div>
 		</section>
 

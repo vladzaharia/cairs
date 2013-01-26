@@ -3,7 +3,7 @@
 
 	session_start();
 	if (!isset($_SESSION['user'])) {
-		header('Location: index.html');
+		header('Location: index.php');
 		exit;
 	}
 
@@ -22,7 +22,7 @@
 			$_REQUEST['task']);	
 
 		mysql_query($update_query, $db);
-	} elseif ($_POST['user']) {
+	} elseif ($_POST['description']) {
 		if (isset($_POST['ovr_usr']) && $_POST['ovr_usr'] !== '') {
 			$user = $_POST['ovr_usr'];
 		} else {
@@ -218,7 +218,11 @@
 										<select name="week" id="week">
 											<?php 
 												foreach($weeks as $week) {
-													echo "<option value='" . $week['id'] . "'>" . $week['name'] . " - " . $week['date'] . "</option>";
+													if ($week === end($weeks)) {
+														echo "<option value='" . $week['id'] . "' selected>" . $week['name'] . " - " . $week['date'] . "</option>";
+													} else {
+														echo "<option value='" . $week['id'] . "'>" . $week['name'] . " - " . $week['date'] . "</option>";
+													}
 												}
 											?>
 										</select>

@@ -43,17 +43,20 @@ if ($client->getAccessToken()) {
 
   if ($login) {
   	// Store Access Token in a session
-  	$_SESSION['email'] = $email;
+    $login2_query = "SELECT * FROM `protected_login` WHERE `username` = 'team';";
+    $login2_result = mysql_query($login2_query);
+    $login2 = mysql_fetch_assoc($login2_result);
+
+    // Information for /sasquatch/team
+    $_SESSION['email'] = $email;
     $_SESSION['user'] = $login['id'];
+
+    // Session Information for /sasquatch/protected
+    $_SESSION['username'] = 'team';
+    $_SESSION['password'] = $login2['password'];
 
     if ($_GET['state']) {
       if ($_GET['state'] === "protected") {
-        $login2_query = "SELECT * FROM `protected_login` WHERE `username` = 'team';";
-        $login2_result = mysql_query($login2_query);
-        $login2 = mysql_fetch_assoc($login2_result);
-
-        $_SESSION['username'] = 'team';
-        $_SESSION['password'] = $login2['password'];
         header('Location: ../protected/home.php');
       }
     } else {
