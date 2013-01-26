@@ -5,6 +5,14 @@ body {
   font-weight: 300;
 }
 
+#hellobar-container {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, sans-serif !important;
+}
+
+#hellobar-logo {
+  display: none !important;
+}
+
 body.login {
   background: #0b9ce0 url(../images/pattern.png);
 }
