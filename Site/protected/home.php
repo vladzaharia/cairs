@@ -78,7 +78,21 @@
 	</script>
 </head>
 <body>
-	<div id="container">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+	  	<div class="navbar-inner">
+	    	<a class="brand" href="#"></a>
+	    	<ul class="nav">
+	      		<li><a href="/">home</a></li>
+	      		<li class="active"><a href="/protected">/protected</a></li>
+	      		<?php if ($_SESSION['username'] === 'team') { ?> <li><a href="/team">/team</a></li> <?php } ?>
+	      		<li><a href="http://repo.vladzaharia.com/sasquatch-repo">/repo</a></li>
+	      		<li><a href="http://blossom.io">/tasks</a></li>
+	      		<li><a href="https://www.facebook.com/groups/ubc319/">/fb</a></li>
+	      		<li><a href="https://docs.google.com/folder/d/0BwY0CeqgUaLQYlpZT2RnTWJBUkk/edit">/docs</a></li>
+	    	</ul>
+	  	</div>
+	</div>
+	<div id="container" style="margin-top: 40px;">
 		<section id="header">
 			<div class="wearesasquatch"></div>
 		</section>
@@ -348,15 +362,17 @@
 	            <div class="row content center">
 	            	<div class="span4">
 	            		<h4>Team Meetings</h4>
-	            		<a href="/meetings/team/jan24.pdf">January 24th, 2013</a>
+	            		<a href="/meetings/team/jan24.pdf">January 24th, 2013</a><br />
+	            		<a href="/meetings/team/jan28.pdf">January 28th, 2013</a>
 	            	</div>
 	            	<div class="span4">
 	            		<h4>Client Meetings</h4>
-	            		<a href="/meetings/client/jan24.pdf">January 24th, 2013</a>
+	            		<a href="/meetings/client/jan24.pdf">January 24th, 2013</a><br />
+	            		<a href="/meetings/client/jan25.pdf">January 25th, 2013</a>
 	            	</div>
 	            	<div class="span4">
 	            		<h4>TA Meetings</h4>
-	            		Minutes will be posted here.
+	            		<a href="/meetings/ta/jan28.pdf">January 28th, 2013</a>
 	            	</div>
 	            </div>
 	        </div>
@@ -376,7 +392,7 @@
 	            	<div class="image source span1"></div>
 	            	<div class="description span6">
 	            		<h4>Source Control</h4>
-	            		Source control is hosted by BitBucket, and located <a href="http://repo.vladzaharia.com/cpsc-319-project">here</a>.
+	            		Source control is hosted by BitBucket, and located <a href="http://repo.vladzaharia.com/sasquatch-repo">here</a>.
 	            	</div>
 	            </div>
 	            <div class="row resource">
@@ -403,6 +419,32 @@
 	            		<a href="../books/hfhtml5.pdf">Head-First HTML5/Javascript</a><br />
 	            		<a href="../books/clrcs.pdf">CLR via C# 4th Edition</a><br />
 	            		<a href="../books/hfcs.pdf">Head-First C#</a>
+	            	</div>
+	            </div>
+
+	            <div class="row resource">
+	            	<div class="image system span1"></div>
+	            	<div class="description span6">
+	            		<h4>Testing Server</h4>
+	            		We have a single Windows Azure VM running Windows Server 2008. <br />
+	            		<strong>Server URL:</strong> sasquatch.cloudapp.net <br />
+	            		<strong>Server IP:</strong> 168.61.20.17 <br />
+	            		<strong>Username:</strong> team <br />
+	            		<strong>Password:</strong> trecU5He </br />
+	            		<a href="sasquatch.rdp">Connect via Remote Desktop</a>
+	            	</div>
+	            </div>
+
+	            <div class="row resource">
+	            	<div class="image system span1"></div>
+	            	<div class="description span6">
+	            		<h4>SQL Server</h4>
+	            		We have a SQL Azure instance running, as well. <br />
+	            		<strong>Server URL:</strong> q1z8wwq8to.database.windows.net <br />
+	            		<strong>Username:</strong> team <br />
+	            		<strong>Password:</strong> trecU5He </br />
+	            		<strong>Database:</strong> sasquatch </br />
+	            		<a href="https://wp4r5egpm7.database.windows.net/#$database=sasquatch">Manage the Database</a>
 	            	</div>
 	            </div>
 	            <?php } ?>

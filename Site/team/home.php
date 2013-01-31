@@ -100,7 +100,22 @@
 	</script>
 </head>
 <body>
-	<div id="container">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+	  	<div class="navbar-inner">
+	    	<a class="brand" href="#"></a>
+	    	<ul class="nav">
+	      		<li><a href="/">home</a></li>
+	      		<li><a href="/protected">/protected</a></li>
+	      		<li class="active"><a href="/team">/team</a></li>
+	      		<?php if ($user['manager'] === 'progress') { ?> <li><a href="/team/report.php">/team Reports</a></li> <?php } ?>
+	      		<li><a href="http://repo.vladzaharia.com/sasquatch-repo">/repo</a></li>
+	      		<li><a href="http://blossom.io">/tasks</a></li>
+	      		<li><a href="https://www.facebook.com/groups/ubc319/">/fb</a></li>
+	      		<li><a href="https://docs.google.com/folder/d/0BwY0CeqgUaLQYlpZT2RnTWJBUkk/edit">/docs</a></li>
+	    	</ul>
+	  	</div>
+	</div>
+	<div id="container" style="margin-top: 40px;">
 		<section id="home-team">
 			<div class="container">
 				<div class="row">

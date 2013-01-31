@@ -1,3 +1,8 @@
+<?php
+	// CS319 Project - Team Task Entry
+	session_start();
+?>
+
 <html lang="en">
 <head>
 	<title>/sasquatch/</title>
@@ -35,7 +40,25 @@
 	</script>
 </head>
 <body>
-	<div id="container">
+	<?php if (isset($_SESSION['username'])) { ?>
+		<div class="navbar navbar-fixed-top navbar-inverse">
+		  	<div class="navbar-inner">
+		    	<a class="brand" href="#"></a>
+		    	<ul class="nav">
+		      		<li class="active"><a href="/">home</a></li>
+		      		<li><a href="/protected">/protected</a></li>
+		      		<?php if ($_SESSION['username'] === 'team') { ?> <li><a href="/team">/team</a></li> <?php } ?>
+		      		<li><a href="http://repo.vladzaharia.com/sasquatch-repo">/repo</a></li>
+		      		<li><a href="http://blossom.io">/tasks</a></li>
+		      		<li><a href="https://www.facebook.com/groups/ubc319/">/fb</a></li>
+		      		<li><a href="https://docs.google.com/folder/d/0BwY0CeqgUaLQYlpZT2RnTWJBUkk/edit">/docs</a></li>
+		    	</ul>
+		  	</div>
+		</div>
+		<div id="container" style="margin-top: 40px;">
+	<?php } else { ?>
+		<div id="container">
+	<?php } ?>
 		<section id="header">
 			<div class="wearesasquatch"></div>
 		</section>
