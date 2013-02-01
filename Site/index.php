@@ -48,7 +48,8 @@
 		      		<li class="active"><a href="/">home</a></li>
 		      		<li><a href="/protected">/protected</a></li>
 		      		<?php if ($_SESSION['username'] === 'team') { ?> <li><a href="/team">/team</a></li> <?php } ?>
-		      		<li><a href="http://repo.vladzaharia.com/sasquatch-repo">/repo</a></li>
+		      		<li><a href="https://github.com/vladzaharia/cloaked-octo-bear">/repo</a></li>
+	      			<li><a href="http://review.wearesasquatch.com/">/review</a></li>
 		      		<li><a href="http://blossom.io">/tasks</a></li>
 		      		<li><a href="https://www.facebook.com/groups/ubc319/">/fb</a></li>
 		      		<li><a href="https://docs.google.com/folder/d/0BwY0CeqgUaLQYlpZT2RnTWJBUkk/edit">/docs</a></li>
