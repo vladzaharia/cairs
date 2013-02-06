@@ -1,1 +1,0 @@
-This is the repository for the sasquatch CAIRS project, including all the documentation, shared documents, and various code used for the project. 
