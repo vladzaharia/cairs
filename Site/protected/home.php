@@ -364,7 +364,9 @@
 	            	<div class="span4">
 	            		<h4>Team Meetings</h4>
 	            		<a href="/meetings/team/jan24.pdf">January 24th, 2013</a><br />
-	            		<a href="/meetings/team/jan28.pdf">January 28th, 2013</a>
+	            		<a href="/meetings/team/jan28.pdf">January 28th, 2013</a><br />
+	            		<a href="/meetings/team/jan30.pdf">January 30th, 2013</a><br />
+	            		<a href="/meetings/team/jan31.pdf">January 31th, 2013</a><br />
 	            	</div>
 	            	<div class="span4">
 	            		<h4>Client Meetings</h4>

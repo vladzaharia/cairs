@@ -21,6 +21,12 @@
 	$mw_result = mysql_query($mw_query, $db);
 	$max_week = mysql_fetch_assoc($mw_result);
 
+	if (isset($_GET['week'])) {
+		$week = $_GET['week'];
+	} else {
+		$week = $max_week['max'];
+	}
+
    	// All Users
    	$uss_query = "SELECT * FROM `user`;";
 	$uss_result = mysql_query($uss_query);
@@ -46,7 +52,7 @@
 	echo "</tr>";
 	foreach ($users as $user) {
 		// All Tasks for Week
-		$tk_query = "SELECT * FROM `task` WHERE `week`='{$max_week[max]}' AND `user`='{$user['id']}';";
+		$tk_query = "SELECT * FROM `task` WHERE `week`='$week' AND `user`='{$user['id']}';";
 		$tk_result = mysql_query($tk_query, $db);
 		$tasks = array();
 		while ($tasks[] = mysql_fetch_assoc($tk_result)) {}
@@ -77,7 +83,7 @@
 	}
 
 	// All Tasks for Week
-	$tk_query = "SELECT * FROM `task` WHERE `week`='{$max_week[max]}' AND `user`='0';";
+	$tk_query = "SELECT * FROM `task` WHERE `week`='$week' AND `user`='0';";
 	$tk_result = mysql_query($tk_query, $db);
 	$tasks = array();
     while ($tasks[] = mysql_fetch_assoc($tk_result)) {}
