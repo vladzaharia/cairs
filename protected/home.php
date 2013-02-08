@@ -399,7 +399,7 @@
 	            	<div class="image source span1"></div>
 	            	<div class="description span6">
 	            		<h4>Source Control</h4>
-	            		Source control is hosted by GitHub, and located <a href="https://github.com/vladzaharia/cloaked-octo-bear">here</a>. Code Reviews are done through <a href="http://review.wearesasquatch.com/">Review Board</a>.
+	            		Source control is hosted by GitHub, and located <a href="https://github.com/vladzaharia/cloaked-octo-bear">here</a>. Code Reviews are done through <a href="http://review.wearesasquatch.com/">Review Board</a>. Automatic CI Builds are hosted on <a href="http://sasq-bamboo.cloudapp.net/">Bamboo</a>.
 	            	</div>
 	            </div>
 	            <div class="row resource">
