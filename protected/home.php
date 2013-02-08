@@ -379,7 +379,9 @@
 	            	<div class="span4">
 	            		<h4>TA Meetings</h4>
 	            		<a href="/meetings/ta/jan28.pdf">January 28th, 2013</a><br />
-	            		<a href="/meetings/ta/feb4.pdf">February 4th, 2013</a>
+	            		<a href="/meetings/ta/feb4.pdf">February 4th, 2013</a><br />
+	            		<strike>February 11th, 2013</strike> (Cancelled - Family Day)<br />
+	            		February 18th, 2013
 	            	</div>
 	            </div>
 	        </div>
