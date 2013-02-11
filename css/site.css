@@ -680,6 +680,7 @@ section#risks .table-striped tbody>tr:nth-child(odd)>th {
 section#risks table td {
   border-top-color: #616161;
   color: #cbcfd1 !important;
+  font-weight: 300;
 }
 
 section#risks ul {
