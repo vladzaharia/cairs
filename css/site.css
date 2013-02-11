@@ -618,7 +618,7 @@ section#progress .summary-table {
   font-size: 13px !important;
 }
 
-section#progress th {
+section#progress .summary-table th {
   font-weight: 300 !important;
   font-variant: normal;
   font-size: 120%;
