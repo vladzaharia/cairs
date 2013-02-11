@@ -350,6 +350,108 @@
 	        </div>
 		</section>
 
+		<section id="risks">
+			<div class="container">
+	            <div class="row">
+	                <div class="span12 center">
+	                    <div class="title">
+	                        <h1>Risks</h1>
+	                    </div>
+	                </div>
+	            </div>
+
+	            <div class="row content center">
+	            	<div class="span12">
+	            		<table width="100%" class="table">
+	            			<tr>
+	            				<th width="30%">Risk</th>
+	            				<th width="15%">Likelihood</th>
+	            				<th width="15%">Risk Level</th>
+	            				<th width="40%">Mitigation Strategy</th>
+	            			</tr>
+
+	            			<tr>
+	            				<td>Scope Creep</td>
+	            				<td><span class="label label-success">Unlikely</span></td>
+	            				<td><span class="label label-important">High</span></td>
+	            				<td><ul><li>Well-Defined requirements with client meetings and approvals up-front.</li>
+	            				 <li>Whenever needed, clients are contacted to provide input in order to lower the chance of scopes changing mid-project.</li></ul></td>
+	            			</tr>
+
+	            			<tr>
+	            				<td>Schedule Overrun</td>
+	            				<td><span class="label label-warning">Moderate</span></td>
+	            				<td><span class="label label-inverse">Very High</span></td>
+	            				<td><ul><li>Keep close track of progress to ensure any lags are noticed and rectified early, helping prevent a chain reaction of delays.</li>
+	            				 <li>Team members communicate regularly with each other and seek assistance if needed.</li></ul></td>
+	            			</tr>
+
+	            			<tr>
+	            				<td>Requirements Not Met</td>
+	            				<td><span class="label label-success">Unlikely</span></td>
+	            				<td><span class="label label-important">High</span></td>
+	            				<td><ul><li>Constantly verify that features being worked on and recently completed meet the requirements originally specified in the SRS.</li></ul></td>
+	            			</tr>
+
+	            			<tr>
+	            				<td>Poor Quality, Buggy Software</td>
+	            				<td><span class="label label-warning">Moderate</span></td>
+	            				<td><span class="label label-important">High</span></td>
+	            				<td><ul><li>Ensure proper code review system is in place, as well as adequate testing after implementation and proper documentation to allow for future revisions.</li></ul></td>
+	            			</tr>
+
+	            			<tr>
+	            				<td>Testing Reveals Significant Flaw In Design Logic</td>
+	            				<td><span class="label label-success">Unlikely</span></td>
+	            				<td><span class="label label-important">High</span></td>
+	            				<td><ul><li>Background in database and software design from team members.</li>
+	            				<li>Specifications and design are reviewed by entire team and supervisor prior to project completion to ensure proper direction for project.</li></ul></td>
+	            			</tr>
+
+	            			<tr>
+	            				<td>Absence of Commitment Level of Users</td>
+	            				<td><span class="label label-success">Unlikely</span></td>
+	            				<td><span class="label label-warning">Moderate</span></td>
+	            				<td><ul><li>UX Design by team members to ensure a consistent and easy-to-use interface which rivals existing interface, while providing a new and improved experience.</li></ul></td>
+	            			</tr>
+
+	            			<tr>
+	            				<td>Poor Working Relationship within Team</td>
+	            				<td><span class="label label-success">Unlikely</span></td>
+	            				<td><span class="label label-warning">Moderate</span></td>
+	            				<td><ul><li>Experience working on diverse development teams.</li>
+	            				 <li>Mutual interest in performing strongly and delivering a suitable product.</li></ul></td>
+	            			</tr>
+
+	            			<tr>
+	            				<td>Project Team Availability</td>
+	            				<td><span class="label label-warning">Moderate</span></td>
+	            				<td><span class="label label-warning">Moderate</span></td>
+	            				<td><ul><li>Common meeting times have been agreed upon for entire term, and ad-hoc meetings will be created as needed, including on weekends and during breaks if necessary. </li>
+	            				 <li>Strong work ethic contributes to willingness to be available during agreed-upon meeting times.</li></ul></td>
+	            			</tr>
+
+	            			<tr>
+	            				<td>Software Engineering Practices Used Foreign to Team</td>
+	            				<td><span class="label label-success">Unlikely</span></td>
+	            				<td><span class="label label-success">Low</span></td>
+	            				<td><ul><li>Experience following a waterfall lifecycle.</li>
+	            				 <li>Additionally, members have experience or are willing to learn other practices such as source control, proper commenting and code style, documentation, and code review practices.</li></ul></td>
+	            			</tr>
+
+	            			<tr>
+	            				<td>Team’s Lack of Knowledge of Required Technologies</td>
+	            				<td><span class="label label-warning">Moderate</span></td>
+	            				<td><span class="label label-success">Low</span></td>
+	            				<td><ul><li>Members are quick learners and have experience picking up new technologies.</li>
+	            				 <li>Research Manager will find resources to support the learning process.</li></ul></td>
+	            			</tr>
+	            		</table>
+	            	</div>
+	            </div>
+	        </div>
+		</section>
+
 		<section id="minutes">
 			<div class="container">
 	            <div class="row">
@@ -384,6 +486,44 @@
 	            		<a href="/meetings/ta/feb4.pdf">February 4th, 2013</a><br />
 	            		<strike>February 11th, 2013</strike> (Cancelled - Family Day)<br />
 	            		February 18th, 2013
+	            	</div>
+	            </div>
+	        </div>
+		</section>
+
+		<section id="servers">
+			<div class="container">
+	            <div class="row">
+	                <div class="span12 center">
+	                    <div class="title">
+	                        <h1>Deployment Servers</h1>
+	                    </div>
+	                </div>
+	            </div>
+
+	            <div class="row content center">
+	            	<div class="span1 pre">
+	            		&nbsp;
+	            	</div>
+	            	<div class="span4 hero-unit">
+	            		<h4>Application Server</h4>
+	            		<strong>Server URL:</strong> sasquatch.cloudapp.net <br />
+	            		<?php if ($_SESSION['username'] === "team") { ?>
+	            		<strong>Server IP:</strong> 168.61.20.17 <br />
+	            		<strong>Username:</strong> team <br />
+	            		<strong>Password:</strong> trecU5He </br /><br />
+	            		<a href="sasquatch.rdp">Connect via Remote Desktop</a>
+	            		<?php } ?>
+	            	</div>
+	            	<div class="span4 hero-unit">
+	            		<h4>Database Server</h4>
+	            		<strong>Server:</strong> q1z8wwq8to.database.windows.net <br />
+	            		<?php if ($_SESSION['username'] === "team") { ?>
+	            		<strong>Username:</strong> team <br />
+	            		<strong>Password:</strong> trecU5He </br />
+	            		<strong>Database:</strong> sasquatch </br /><br />
+	            		<a href="https://wp4r5egpm7.database.windows.net/#$database=sasquatch">Manage the Database</a>
+	            		<?php } ?>
 	            	</div>
 	            </div>
 	        </div>
@@ -430,32 +570,6 @@
 	            		<a href="../books/hfhtml5.pdf">Head-First HTML5/Javascript</a><br />
 	            		<a href="../books/clrcs.pdf">CLR via C# 4th Edition</a><br />
 	            		<a href="../books/hfcs.pdf">Head-First C#</a>
-	            	</div>
-	            </div>
-
-	            <div class="row resource">
-	            	<div class="image system span1"></div>
-	            	<div class="description span6">
-	            		<h4>Testing Server</h4>
-	            		We have a single Windows Azure VM running Windows Server 2008. <br />
-	            		<strong>Server URL:</strong> sasquatch.cloudapp.net <br />
-	            		<strong>Server IP:</strong> 168.61.20.17 <br />
-	            		<strong>Username:</strong> team <br />
-	            		<strong>Password:</strong> trecU5He </br />
-	            		<a href="sasquatch.rdp">Connect via Remote Desktop</a>
-	            	</div>
-	            </div>
-
-	            <div class="row resource">
-	            	<div class="image system span1"></div>
-	            	<div class="description span6">
-	            		<h4>SQL Server</h4>
-	            		We have a SQL Azure instance running, as well. <br />
-	            		<strong>Server URL:</strong> q1z8wwq8to.database.windows.net <br />
-	            		<strong>Username:</strong> team <br />
-	            		<strong>Password:</strong> trecU5He </br />
-	            		<strong>Database:</strong> sasquatch </br />
-	            		<a href="https://wp4r5egpm7.database.windows.net/#$database=sasquatch">Manage the Database</a>
 	            	</div>
 	            </div>
 	            <?php } ?>

@@ -612,26 +612,129 @@ section#progress .photo.team {
   background-repeat: no-repeat;
 }
 
-section#minutes {
+section#risks {
   z-index: 20;
 }
 
-section#minutes {
+section#risks {
+  background-color: white;
+  color: #7c8387;
+  text-shadow: 0 0 1px #dcdedf;
+  padding-bottom: 50px;
+}
+
+section#risks h1,
+section#risks h2,
+section#risks h3 {
+  color: black;
+  text-shadow: #9d9d9d;
+}
+
+section#risks .title {
+  background: url(../images/title-line-dark.png) left center repeat-x;
+  margin-top: 31px;
+}
+
+section#risks .title > h1,
+section#risks .title > h2,
+section#risks .title > h3,
+section#risks .title > h4,
+section#risks .title > h5,
+section#risks .title > h6 {
+  background-color: white;
+}
+
+section#risks .content {
+  margin-top: 15px;
+}
+
+section#risks th {
+  font-weight: 300;
+  font-variant: normal;
+  font-size: 120%;
+  text-align: left;
+}
+
+section#risks table {
+  font-size: 13px !important;
+
+}
+
+section#risks ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+section#servers {
+  z-index: 20;
+}
+
+section#servers {
   background-color: white;
   color: #7c8387;
   text-shadow: 0 0 1px #dcdedf;
   padding-bottom: 75px;
 }
 
-section#minutes h1,
-section#minutes h2,
-section#minutes h3 {
+section#servers h1,
+section#servers h2,
+section#servers h3 {
   color: black;
   text-shadow: #9d9d9d;
 }
 
-section#minutes .title {
+section#servers .title {
   background: url(../images/title-line-dark.png) left center repeat-x;
+  margin-top: 31px;
+}
+
+section#servers .title > h1,
+section#servers .title > h2,
+section#servers .title > h3,
+section#servers .title > h4,
+section#servers .title > h5,
+section#servers .title > h6 {
+  background-color: white;
+}
+
+section#servers .content {
+  margin-top: 15px;
+}
+
+section#servers .hero-unit {
+  padding: 20px;
+  font-size: 14px;
+}
+
+section#servers .hero-unit h4 {
+  font-weight: 400;
+}
+
+section#servers .span1.pre {
+  margin-right: 50px;
+}
+
+section#minutes {
+  z-index: 20;
+}
+
+section#minutes {
+  background-color: #252629;
+  color: #cbcfd1;
+  text-shadow: 0 0 1px #515356;
+  padding-bottom: 50px;
+}
+
+section#minutes h1,
+section#minutes h2,
+section#minutes h3 {
+  color: white;
+  text-shadow: 0 0 1px #515356;
+}
+
+section#minutes .title {
+  background: url(../images/title-line-light.png) left center repeat-x;
   margin-top: 31px;
 }
 
@@ -641,7 +744,7 @@ section#minutes .title > h3,
 section#minutes .title > h4,
 section#minutes .title > h5,
 section#minutes .title > h6 {
-  background-color: white;
+  background-color: #252629;
 }
 
 section#minutes .content {
