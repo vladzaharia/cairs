@@ -258,6 +258,7 @@
 						<div class="accordion" id="accordion">
 							<?php 
 								foreach($weeks as $week) {
+									$total_hours = 0;
 							?>
 							<div class="accordion-group">
 							    <div class="accordion-heading">
@@ -284,6 +285,7 @@
 															 	AND `week` = '" . $week['id'] ."';";
 												$hours_result = mysql_query($hours_query);
 												$hours = mysql_fetch_array($hours_result);
+												$total_hours += $hours[0];
 
 												$count_query = "SELECT COUNT(*) FROM `task`
 																WHERE `user` = '" . $user['id'] . "'
@@ -332,6 +334,42 @@
 										<?php
 											}
 										?>
+							    		</div>
+							    		<div class="row">
+							    			<table width="100%" class="summary-table">
+							    				<thead>
+							    					<tr>
+							    						<th width="17.5%">Total Hours</th>
+							    						<th width="18%">Risk Status</th>
+							    						<th width="66.5%">Comments</th>
+							    					</tr>
+							    				</thead>
+							    				<tbody>
+							    					<tr>
+							    						<td><span class="hour"><?php echo $total_hours; ?></span> hour(s)</td>
+							    						<td><?php 
+									    					if ($week['risk_status'] === '1') {
+									    						$risk_msg = "Not at Risk";
+									    						$risk_class = "success";
+									    					} elseif ($week['risk_status'] === '2') {
+									    						$risk_msg = "Slipping";
+									    						$risk_class = "warning";
+									    					} elseif ($week['risk_status'] === '3') {
+									    						$risk_msg = "At Risk";
+									    						$risk_class = "danger";
+									    					} elseif ($week['risk_status'] === '4') {
+									    						$risk_msg = "Behind";
+									    						$risk_class = "inverse";
+									    					} else {
+									    						$risk_msg = "Week not Complete";
+									    						$risk_class = "info";
+									    					}
+									    					echo "<span class='label label-{$risk_class}'>{$risk_msg}</span>";
+									    				?></td>
+							    						<td><?php echo $week['week_info']; ?></td>
+							    					</tr>
+							    				</tbody>
+							    			</table>
 							    		</div>
 							    	</div>
 								</div>

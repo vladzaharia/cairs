@@ -563,7 +563,7 @@ section#progress .tasks {
   color: #FFFFFF;
 }
 
-section#progress .hours .hour {
+section#progress .hour {
   font-size: 190%;
 }
 
@@ -610,6 +610,18 @@ section#progress .photo.ta {
 section#progress .photo.team {
   background-image: url(../images/teammbr.png);
   background-repeat: no-repeat;
+}
+
+section#progress .summary-table {
+  width: 94%;
+  margin-left: 35px;
+  font-size: 13px !important;
+}
+
+section#progress th {
+  font-weight: 300 !important;
+  font-variant: normal;
+  font-size: 120%;
 }
 
 section#risks {
