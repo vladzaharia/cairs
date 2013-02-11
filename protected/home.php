@@ -349,7 +349,7 @@
 							    						<td><span class="hour"><?php echo $total_hours; ?></span> hour(s)</td>
 							    						<td><?php 
 									    					if ($week['risk_status'] === '1') {
-									    						$risk_msg = "Not at Risk";
+									    						$risk_msg = "On Track";
 									    						$risk_class = "success";
 									    					} elseif ($week['risk_status'] === '2') {
 									    						$risk_msg = "Slipping";
@@ -385,6 +385,45 @@
 	            	</div>
 	            </div>
 	            <?php } ?>
+	        </div>
+		</section>
+
+		<section id="minutes">
+			<div class="container">
+	            <div class="row">
+	                <div class="span12 center">
+	                    <div class="title">
+	                        <h1>Meeting Minutes</h1>
+	                    </div>
+	                </div>
+	            </div>
+
+	            <div class="row content center">
+	            	<div class="span4">
+	            		<h4>Team Meetings</h4>
+	            		<a href="/meetings/team/jan24.pdf">January 24th, 2013</a><br />
+	            		<a href="/meetings/team/jan28.pdf">January 28th, 2013</a><br />
+	            		<a href="/meetings/team/jan30.pdf">January 30th, 2013</a><br />
+	            		<a href="/meetings/team/jan31.pdf">January 31th, 2013</a><br />
+	            		<a href="/meetings/team/feb1.pdf">February 1st, 2013</a><br />
+	            		<a href="/meetings/team/feb3.pdf">February 3rd, 2013</a><br />
+	            		<a href="/meetings/team/feb6.pdf">February 6th, 2013</a><br />
+	            		<a href="/meetings/team/feb7.pdf">February 7th, 2013</a><br />
+	            		<a href="/meetings/team/feb11.pdf">February 11th, 2013</a><br />
+	            	</div>
+	            	<div class="span4">
+	            		<h4>Client Meetings</h4>
+	            		<a href="/meetings/client/jan24.pdf">January 24th, 2013</a><br />
+	            		<a href="/meetings/client/jan25.pdf">January 25th, 2013</a>
+	            	</div>
+	            	<div class="span4">
+	            		<h4>TA Meetings</h4>
+	            		<a href="/meetings/ta/jan28.pdf">January 28th, 2013</a><br />
+	            		<a href="/meetings/ta/feb4.pdf">February 4th, 2013</a><br />
+	            		<strike>February 11th, 2013</strike> (Cancelled - Family Day)<br />
+	            		February 18th, 2013
+	            	</div>
+	            </div>
 	        </div>
 		</section>
 
@@ -488,45 +527,6 @@
 		            			</tr>
 	            			</tbody>
 	            		</table>
-	            	</div>
-	            </div>
-	        </div>
-		</section>
-
-		<section id="minutes">
-			<div class="container">
-	            <div class="row">
-	                <div class="span12 center">
-	                    <div class="title">
-	                        <h1>Meeting Minutes</h1>
-	                    </div>
-	                </div>
-	            </div>
-
-	            <div class="row content center">
-	            	<div class="span4">
-	            		<h4>Team Meetings</h4>
-	            		<a href="/meetings/team/jan24.pdf">January 24th, 2013</a><br />
-	            		<a href="/meetings/team/jan28.pdf">January 28th, 2013</a><br />
-	            		<a href="/meetings/team/jan30.pdf">January 30th, 2013</a><br />
-	            		<a href="/meetings/team/jan31.pdf">January 31th, 2013</a><br />
-	            		<a href="/meetings/team/feb1.pdf">February 1st, 2013</a><br />
-	            		<a href="/meetings/team/feb3.pdf">February 3rd, 2013</a><br />
-	            		<a href="/meetings/team/feb6.pdf">February 6th, 2013</a><br />
-	            		<a href="/meetings/team/feb7.pdf">February 7th, 2013</a><br />
-	            		<a href="/meetings/team/feb11.pdf">February 11th, 2013</a><br />
-	            	</div>
-	            	<div class="span4">
-	            		<h4>Client Meetings</h4>
-	            		<a href="/meetings/client/jan24.pdf">January 24th, 2013</a><br />
-	            		<a href="/meetings/client/jan25.pdf">January 25th, 2013</a>
-	            	</div>
-	            	<div class="span4">
-	            		<h4>TA Meetings</h4>
-	            		<a href="/meetings/ta/jan28.pdf">January 28th, 2013</a><br />
-	            		<a href="/meetings/ta/feb4.pdf">February 4th, 2013</a><br />
-	            		<strike>February 11th, 2013</strike> (Cancelled - Family Day)<br />
-	            		February 18th, 2013
 	            	</div>
 	            </div>
 	        </div>

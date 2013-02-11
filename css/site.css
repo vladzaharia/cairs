@@ -629,21 +629,21 @@ section#risks {
 }
 
 section#risks {
-  background-color: white;
-  color: #7c8387;
-  text-shadow: 0 0 1px #dcdedf;
+  background-color: #252629;
+  color: #cbcfd1 !important;
+  text-shadow: 0 0 1px #515356;
   padding-bottom: 50px;
 }
 
 section#risks h1,
 section#risks h2,
 section#risks h3 {
-  color: black;
-  text-shadow: #9d9d9d;
+  color: white;
+  text-shadow: 0 0 1px #515356;
 }
 
 section#risks .title {
-  background: url(../images/title-line-dark.png) left center repeat-x;
+  background: url(../images/title-line-light.png) left center repeat-x;
   margin-top: 31px;
 }
 
@@ -653,7 +653,7 @@ section#risks .title > h3,
 section#risks .title > h4,
 section#risks .title > h5,
 section#risks .title > h6 {
-  background-color: white;
+  background-color: #252629;
 }
 
 section#risks .content {
@@ -665,11 +665,21 @@ section#risks th {
   font-variant: normal;
   font-size: 120%;
   text-align: left;
+  color: #cbcfd1 !important;
 }
 
 section#risks table {
   font-size: 13px !important;
+}
 
+section#risks .table-striped tbody>tr:nth-child(odd)>td,
+section#risks .table-striped tbody>tr:nth-child(odd)>th {
+  background-color: #414141 !important;
+}
+
+section#risks table td {
+  border-top-color: #616161;
+  color: #cbcfd1 !important;
 }
 
 section#risks ul {
@@ -732,21 +742,21 @@ section#minutes {
 }
 
 section#minutes {
-  background-color: #252629;
-  color: #cbcfd1;
-  text-shadow: 0 0 1px #515356;
+  background-color: white;
+  color: #7c8387;
+  text-shadow: 0 0 1px #dcdedf;
   padding-bottom: 50px;
 }
 
 section#minutes h1,
 section#minutes h2,
 section#minutes h3 {
-  color: white;
-  text-shadow: 0 0 1px #515356;
+  color: black;
+  text-shadow: #9d9d9d;
 }
 
 section#minutes .title {
-  background: url(../images/title-line-light.png) left center repeat-x;
+  background: url(../images/title-line-dark.png) left center repeat-x;
   margin-top: 31px;
 }
 
@@ -756,7 +766,7 @@ section#minutes .title > h3,
 section#minutes .title > h4,
 section#minutes .title > h5,
 section#minutes .title > h6 {
-  background-color: #252629;
+  background-color: white;
 }
 
 section#minutes .content {
