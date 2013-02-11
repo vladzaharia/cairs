@@ -362,90 +362,93 @@
 
 	            <div class="row content center">
 	            	<div class="span12">
-	            		<table width="100%" class="table">
-	            			<tr>
-	            				<th width="30%">Risk</th>
-	            				<th width="15%">Likelihood</th>
-	            				<th width="15%">Risk Level</th>
-	            				<th width="40%">Mitigation Strategy</th>
-	            			</tr>
+	            		<table width="100%" class="table table-striped">
+	            			<thead>
+		            			<tr>
+		            				<th width="30%">Risk</th>
+		            				<th width="15%">Likelihood</th>
+		            				<th width="15%">Risk Level</th>
+		            				<th width="40%">Mitigation Strategy</th>
+		            			</tr>
+	            			</thead>
+	            			<tbody>
+		            			<tr>
+		            				<td>Scope Creep</td>
+		            				<td><span class="label label-success">Unlikely</span></td>
+		            				<td><span class="label label-important">High</span></td>
+		            				<td><ul><li>Well-Defined requirements with client meetings and approvals up-front.</li>
+		            				 <li>Whenever needed, clients are contacted to provide input in order to lower the chance of scopes changing mid-project.</li></ul></td>
+		            			</tr>
 
-	            			<tr>
-	            				<td>Scope Creep</td>
-	            				<td><span class="label label-success">Unlikely</span></td>
-	            				<td><span class="label label-important">High</span></td>
-	            				<td><ul><li>Well-Defined requirements with client meetings and approvals up-front.</li>
-	            				 <li>Whenever needed, clients are contacted to provide input in order to lower the chance of scopes changing mid-project.</li></ul></td>
-	            			</tr>
+		            			<tr>
+		            				<td>Schedule Overrun</td>
+		            				<td><span class="label label-warning">Moderate</span></td>
+		            				<td><span class="label label-inverse">Very High</span></td>
+		            				<td><ul><li>Keep close track of progress to ensure any lags are noticed and rectified early, helping prevent a chain reaction of delays.</li>
+		            				 <li>Team members communicate regularly with each other and seek assistance if needed.</li></ul></td>
+		            			</tr>
 
-	            			<tr>
-	            				<td>Schedule Overrun</td>
-	            				<td><span class="label label-warning">Moderate</span></td>
-	            				<td><span class="label label-inverse">Very High</span></td>
-	            				<td><ul><li>Keep close track of progress to ensure any lags are noticed and rectified early, helping prevent a chain reaction of delays.</li>
-	            				 <li>Team members communicate regularly with each other and seek assistance if needed.</li></ul></td>
-	            			</tr>
+		            			<tr>
+		            				<td>Requirements Not Met</td>
+		            				<td><span class="label label-success">Unlikely</span></td>
+		            				<td><span class="label label-important">High</span></td>
+		            				<td><ul><li>Constantly verify that features being worked on and recently completed meet the requirements originally specified in the SRS.</li></ul></td>
+		            			</tr>
 
-	            			<tr>
-	            				<td>Requirements Not Met</td>
-	            				<td><span class="label label-success">Unlikely</span></td>
-	            				<td><span class="label label-important">High</span></td>
-	            				<td><ul><li>Constantly verify that features being worked on and recently completed meet the requirements originally specified in the SRS.</li></ul></td>
-	            			</tr>
+		            			<tr>
+		            				<td>Poor Quality, Buggy Software</td>
+		            				<td><span class="label label-warning">Moderate</span></td>
+		            				<td><span class="label label-important">High</span></td>
+		            				<td><ul><li>Ensure proper code review system is in place, as well as adequate testing after implementation and proper documentation to allow for future revisions.</li></ul></td>
+		            			</tr>
 
-	            			<tr>
-	            				<td>Poor Quality, Buggy Software</td>
-	            				<td><span class="label label-warning">Moderate</span></td>
-	            				<td><span class="label label-important">High</span></td>
-	            				<td><ul><li>Ensure proper code review system is in place, as well as adequate testing after implementation and proper documentation to allow for future revisions.</li></ul></td>
-	            			</tr>
+		            			<tr>
+		            				<td>Testing Reveals Significant Flaw In Design Logic</td>
+		            				<td><span class="label label-success">Unlikely</span></td>
+		            				<td><span class="label label-important">High</span></td>
+		            				<td><ul><li>Background in database and software design from team members.</li>
+		            				<li>Specifications and design are reviewed by entire team and supervisor prior to project completion to ensure proper direction for project.</li></ul></td>
+		            			</tr>
 
-	            			<tr>
-	            				<td>Testing Reveals Significant Flaw In Design Logic</td>
-	            				<td><span class="label label-success">Unlikely</span></td>
-	            				<td><span class="label label-important">High</span></td>
-	            				<td><ul><li>Background in database and software design from team members.</li>
-	            				<li>Specifications and design are reviewed by entire team and supervisor prior to project completion to ensure proper direction for project.</li></ul></td>
-	            			</tr>
+		            			<tr>
+		            				<td>Absence of Commitment Level of Users</td>
+		            				<td><span class="label label-success">Unlikely</span></td>
+		            				<td><span class="label label-warning">Moderate</span></td>
+		            				<td><ul><li>UX Design by team members to ensure a consistent and easy-to-use interface which rivals existing interface, while providing a new and improved experience.</li></ul></td>
+		            			</tr>
 
-	            			<tr>
-	            				<td>Absence of Commitment Level of Users</td>
-	            				<td><span class="label label-success">Unlikely</span></td>
-	            				<td><span class="label label-warning">Moderate</span></td>
-	            				<td><ul><li>UX Design by team members to ensure a consistent and easy-to-use interface which rivals existing interface, while providing a new and improved experience.</li></ul></td>
-	            			</tr>
+		            			<tr>
+		            				<td>Poor Working Relationship within Team</td>
+		            				<td><span class="label label-success">Unlikely</span></td>
+		            				<td><span class="label label-warning">Moderate</span></td>
+		            				<td><ul><li>Experience working on diverse development teams.</li>
+		            				 <li>Mutual interest in performing strongly and delivering a suitable product.</li></ul></td>
+		            			</tr>
 
-	            			<tr>
-	            				<td>Poor Working Relationship within Team</td>
-	            				<td><span class="label label-success">Unlikely</span></td>
-	            				<td><span class="label label-warning">Moderate</span></td>
-	            				<td><ul><li>Experience working on diverse development teams.</li>
-	            				 <li>Mutual interest in performing strongly and delivering a suitable product.</li></ul></td>
-	            			</tr>
+		            			<tr>
+		            				<td>Project Team Availability</td>
+		            				<td><span class="label label-warning">Moderate</span></td>
+		            				<td><span class="label label-warning">Moderate</span></td>
+		            				<td><ul><li>Common meeting times have been agreed upon for entire term, and ad-hoc meetings will be created as needed, including on weekends and during breaks if necessary. </li>
+		            				 <li>Strong work ethic contributes to willingness to be available during agreed-upon meeting times.</li></ul></td>
+		            			</tr>
 
-	            			<tr>
-	            				<td>Project Team Availability</td>
-	            				<td><span class="label label-warning">Moderate</span></td>
-	            				<td><span class="label label-warning">Moderate</span></td>
-	            				<td><ul><li>Common meeting times have been agreed upon for entire term, and ad-hoc meetings will be created as needed, including on weekends and during breaks if necessary. </li>
-	            				 <li>Strong work ethic contributes to willingness to be available during agreed-upon meeting times.</li></ul></td>
-	            			</tr>
+		            			<tr>
+		            				<td>Software Engineering Practices Used Foreign to Team</td>
+		            				<td><span class="label label-success">Unlikely</span></td>
+		            				<td><span class="label label-success">Low</span></td>
+		            				<td><ul><li>Experience following a waterfall lifecycle.</li>
+		            				 <li>Additionally, members have experience or are willing to learn other practices such as source control, proper commenting and code style, documentation, and code review practices.</li></ul></td>
+		            			</tr>
 
-	            			<tr>
-	            				<td>Software Engineering Practices Used Foreign to Team</td>
-	            				<td><span class="label label-success">Unlikely</span></td>
-	            				<td><span class="label label-success">Low</span></td>
-	            				<td><ul><li>Experience following a waterfall lifecycle.</li>
-	            				 <li>Additionally, members have experience or are willing to learn other practices such as source control, proper commenting and code style, documentation, and code review practices.</li></ul></td>
-	            			</tr>
-
-	            			<tr>
-	            				<td>Team’s Lack of Knowledge of Required Technologies</td>
-	            				<td><span class="label label-warning">Moderate</span></td>
-	            				<td><span class="label label-success">Low</span></td>
-	            				<td><ul><li>Members are quick learners and have experience picking up new technologies.</li>
-	            				 <li>Research Manager will find resources to support the learning process.</li></ul></td>
-	            			</tr>
+		            			<tr>
+		            				<td>Team's Lack of Knowledge of Required Technologies</td>
+		            				<td><span class="label label-warning">Moderate</span></td>
+		            				<td><span class="label label-success">Low</span></td>
+		            				<td><ul><li>Members are quick learners and have experience picking up new technologies.</li>
+		            				 <li>Research Manager will find resources to support the learning process.</li></ul></td>
+		            			</tr>
+	            			</tbody>
 	            		</table>
 	            	</div>
 	            </div>
