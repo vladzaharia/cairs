@@ -370,6 +370,8 @@
 	            		<a href="/meetings/team/feb1.pdf">February 1st, 2013</a><br />
 	            		<a href="/meetings/team/feb3.pdf">February 3rd, 2013</a><br />
 	            		<a href="/meetings/team/feb6.pdf">February 6th, 2013</a><br />
+	            		<a href="/meetings/team/feb7.pdf">February 7th, 2013</a><br />
+	            		<a href="/meetings/team/feb11.pdf">February 11th, 2013</a><br />
 	            	</div>
 	            	<div class="span4">
 	            		<h4>Client Meetings</h4>
