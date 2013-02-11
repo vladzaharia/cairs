@@ -222,9 +222,9 @@
 	            <div class="row">
 	            	<div class="span12">
 		            	<div class="progress progress-striped">
+		            		<div class="bar bar-success" style="width: 25%;">Complete</div>
 		            		<div class="bar" style="width: 25%;">In Progress</div>
-		            		<div class="bar bar-none" style="width: 25%;"></div>
-		            		<div class="bar bar-none" style="width: 25%;"></div>
+		            		<div class="bar" style="width: 25%;">In Progress</div>
 		            		<div class="bar bar-none" style="width: 25%;"></div>
 						</div>
 					</div>
