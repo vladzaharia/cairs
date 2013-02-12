@@ -622,6 +622,7 @@ section#progress .summary-table th {
   font-weight: 300 !important;
   font-variant: normal;
   font-size: 120%;
+  text-align: left !important;
 }
 
 section#risks {
