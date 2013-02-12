@@ -520,7 +520,7 @@
 
 		            			<tr>
 		            				<td>Team's Lack of Knowledge of Required Technologies</td>
-		            				<td><span class="label label-danger">Likely</span></td>
+		            				<td><span class="label label-important">Likely</span></td>
 		            				<td><span class="label label-success">Low</span></td>
 		            				<td><ul><li>Members are quick learners and have experience picking up new technologies.</li>
 		            				 <li>Research Manager will find resources to support the learning process.</li></ul></td>
