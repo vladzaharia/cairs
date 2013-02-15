@@ -563,7 +563,7 @@
 	            		<strong>Username:</strong> team <br />
 	            		<strong>Password:</strong> trecU5He </br />
 	            		<strong>Database:</strong> sasquatch </br /><br />
-	            		<a href="https://wp4r5egpm7.database.windows.net/#$database=sasquatch">Manage the Database</a>
+	            		<a href="https://q1z8wwq8to.database.windows.net/#$database=sasquatch">Manage the Database</a>
 	            		<?php } ?>
 	            	</div>
 	            </div>
