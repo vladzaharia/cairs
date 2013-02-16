@@ -551,8 +551,7 @@
 	            		<strong>Server URL:</strong> sasquatch.cloudapp.net <br />
 	            		<?php if ($_SESSION['username'] === "team") { ?>
 	            		<strong>Server IP:</strong> 168.61.20.17 <br />
-	            		<strong>Username:</strong> team <br />
-	            		<strong>Password:</strong> trecU5He </br />
+	            		<strong>Username</strong> and <strong>Password</strong> are per-member.<br />
 	            		<strong>Domain:</strong> sasquatch.cloudapp.net </br /><br />
 	            		<a href="sasquatch.rdp">Connect via Remote Desktop</a>
 	            		<?php } ?>
