@@ -93,10 +93,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         }
 
         public void edit(RequestContent reqContent) {
-            Request req = (from reqs in db.Requests
-                           where reqs.RequestID == reqContent.requestID
-                           select reqs).First();
-
+            
         }
 
         /// <summary>
