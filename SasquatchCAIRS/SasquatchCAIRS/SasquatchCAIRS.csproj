@@ -176,6 +176,10 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\ServiceSystem\DropdownManager.cs" />
+    <Compile Include="Models\ServiceSystem\Request.cs" />
+    <Compile Include="Models\ServiceSystem\RequestManager.cs" />
+    <Compile Include="Models\ServiceSystem\ServiceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
