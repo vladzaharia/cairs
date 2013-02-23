@@ -1,5 +1,6 @@
 ﻿using SasquatchCAIRS.Filters;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace SasquatchCAIRS.Controllers {
     [Authorize]
@@ -31,6 +32,21 @@ namespace SasquatchCAIRS.Controllers {
 
             return View();
         }
+
+        //
+        // GET: /Account/RoleManager
+        // ONLY HERE UNTIL ADMIN WORKS
+        [Authorize]
+        public ActionResult RoleManager(string roleAction, string role) {
+            if (roleAction.Equals("add")) {
+                Roles.AddUserToRole(User.Identity.Name, role);
+            } else if (roleAction.Equals("remove")) {
+                Roles.RemoveUserFromRole(User.Identity.Name, role);
+            }
+
+            return RedirectToLocal("/Account/Manage");
+        }
+
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl) {
             if (Url.IsLocalUrl(returnUrl)) {
