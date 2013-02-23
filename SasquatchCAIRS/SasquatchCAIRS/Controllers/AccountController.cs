@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Transactions;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
-using DotNetOpenAuth.AspNet;
-using Microsoft.Web.WebPages.OAuth;
-using WebMatrix.WebData;
+﻿using Microsoft.Web.WebPages.OAuth;
 using SasquatchCAIRS.Filters;
 using SasquatchCAIRS.Models;
+using System;
+using System.Web.Mvc;
+using System.Web.Security;
+using WebMatrix.WebData;
 
 namespace SasquatchCAIRS.Controllers {
     [Authorize]
@@ -106,7 +101,8 @@ namespace SasquatchCAIRS.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Manage(LocalPasswordModel model) {
-            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            bool hasLocalAccount = OAuthWebSecurity
+                .HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.HasLocalPassword = hasLocalAccount;
             ViewBag.ReturnUrl = Url.Action("Manage");
             if (hasLocalAccount) {
