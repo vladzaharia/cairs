@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web.Hosting;
 
 namespace SasquatchCAIRS.Controllers {
-    public class UserProfileManager {
+    public class UserProfileController {
         public const string USER_DISPLAY_NAME = "displayName";
         public const string USER_EMAIL = "mail";
 
@@ -41,8 +41,8 @@ namespace SasquatchCAIRS.Controllers {
                     "CN=Users,DC=sasquatch,DC=cloudapp,DC=net")) {
 
                     using (DirectorySearcher adSearch = new DirectorySearcher(de)) {
-                        adSearch.PropertiesToLoad.Add(UserProfileManager.USER_DISPLAY_NAME);
-                        adSearch.PropertiesToLoad.Add(UserProfileManager.USER_EMAIL);
+                        adSearch.PropertiesToLoad.Add(UserProfileController.USER_DISPLAY_NAME);
+                        adSearch.PropertiesToLoad.Add(UserProfileController.USER_EMAIL);
                         String username = loginUsername.Split('\\')[1];
 
                         adSearch.Filter = "(sAMAccountName=" + username + ")";
@@ -56,22 +56,22 @@ namespace SasquatchCAIRS.Controllers {
                         }
 
                         if (adSearchResult
-                            .Properties[UserProfileManager.USER_DISPLAY_NAME]
+                            .Properties[UserProfileController.USER_DISPLAY_NAME]
                             .Count == 0) {
                             adInfo[0] = "";
                         } else {
                             adInfo[0] = adSearchResult
-                                .Properties[UserProfileManager.USER_DISPLAY_NAME][0]
+                                .Properties[UserProfileController.USER_DISPLAY_NAME][0]
                                 .ToString();
                         }
 
                         if (adSearchResult
-                            .Properties[UserProfileManager.USER_EMAIL]
+                            .Properties[UserProfileController.USER_EMAIL]
                             .Count == 0) {
                             adInfo[1] = "";
                         } else {
                             adInfo[1] = adSearchResult
-                                .Properties[UserProfileManager.USER_EMAIL][0]
+                                .Properties[UserProfileController.USER_EMAIL][0]
                                 .ToString();
                         }
 

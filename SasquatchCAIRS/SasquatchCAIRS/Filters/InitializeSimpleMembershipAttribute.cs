@@ -5,6 +5,7 @@ using System.Threading;
 using System.Web.Mvc;
 using WebMatrix.WebData;
 using SasquatchCAIRS.Models;
+using System.Web.Security;
 
 namespace SasquatchCAIRS.Filters {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
@@ -25,14 +26,35 @@ namespace SasquatchCAIRS.Filters {
                 try {
                     using (var context = new UsersContext()) {
                         if (!context.Database.Exists()) {
-                            // Create the SimpleMembership database without Entity Framework migration schema
-                            ((IObjectContextAdapter) context).ObjectContext.CreateDatabase();
+                            // Create the SimpleMembership database without 
+                            // Entity Framework migration schema
+                            ((IObjectContextAdapter) context)
+                                .ObjectContext
+                                .CreateDatabase();
                         }
                     }
 
-                    WebSecurity.InitializeDatabaseConnection("sasquatchConnectionString", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                    WebSecurity.InitializeDatabaseConnection(
+                        "sasquatchConnectionString", 
+                        "UserProfile", 
+                        "UserId", 
+                        "UserName", 
+                        autoCreateTables: true);
+
+                    // Initialize Roles
+                    initializeRole("Administrator");
+                    initializeRole("ReportGenerator");
+                    initializeRole("RequestEditor");
+                    initializeRole("Viewer");
                 } catch (Exception ex) {
-                    throw new InvalidOperationException("The ASP.NET Simple Membership database could not be initialized. For more information, please see http://go.microsoft.com/fwlink/?LinkId=256588", ex);
+                    throw new InvalidOperationException(
+                        "Database could not be initialized!", ex);
+                }
+            }
+
+            private void initializeRole(string role) {
+                if (!Roles.RoleExists(role)) {
+                    Roles.CreateRole(role);
                 }
             }
         }
