@@ -8,28 +8,28 @@
 <!-- This is only here until we get an admin page up -->
 <h3>Role Information</h3>
 <p>
-    Viewer: @System.Web.Security.Roles.IsUserInRole("Viewer") - 
-            @Html.ActionLink("Add", "RoleManager", "Account", 
-                new { roleAction = "add", role = "Viewer" }, null) / 
-            @Html.ActionLink("Remove", "RoleManager", "Account", 
-                new { roleAction = "remove", role = "Viewer" }, null) 
+    Viewer: @System.Web.Security.Roles.IsUserInRole("Viewer") -
+            @Html.ActionLink("Add", "RoleManager", "Account",
+                new { roleAction = "add", role = "Viewer" }, null) /
+            @Html.ActionLink("Remove", "RoleManager", "Account",
+                new { roleAction = "remove", role = "Viewer" }, null)
                 <br />
-    Request Editor: @System.Web.Security.Roles.IsUserInRole("RequestEditor") - 
-            @Html.ActionLink("Add", "RoleManager", "Account", 
-                new { roleAction = "add", role = "RequestEditor" }, null) / 
-            @Html.ActionLink("Remove", "RoleManager", "Account", 
-                new { roleAction = "remove", role = "RequestEditor" }, null) 
+    Request Editor: @System.Web.Security.Roles.IsUserInRole("RequestEditor") -
+            @Html.ActionLink("Add", "RoleManager", "Account",
+                new { roleAction = "add", role = "RequestEditor" }, null) /
+            @Html.ActionLink("Remove", "RoleManager", "Account",
+                new { roleAction = "remove", role = "RequestEditor" }, null)
                 <br />
-    Report Generator: @System.Web.Security.Roles.IsUserInRole("ReportGenerator") - 
-            @Html.ActionLink("Add", "RoleManager", "Account", 
-                new { roleAction = "add", role = "ReportGenerator" }, null) / 
-            @Html.ActionLink("Remove", "RoleManager", "Account", 
-                new { roleAction = "remove", role = "ReportGenerator" }, null) 
+    Report Generator: @System.Web.Security.Roles.IsUserInRole("ReportGenerator") -
+            @Html.ActionLink("Add", "RoleManager", "Account",
+                new { roleAction = "add", role = "ReportGenerator" }, null) /
+            @Html.ActionLink("Remove", "RoleManager", "Account",
+                new { roleAction = "remove", role = "ReportGenerator" }, null)
                 <br />
-    Administrator: @System.Web.Security.Roles.IsUserInRole("Administrator") - 
-            @Html.ActionLink("Add", "RoleManager", "Account", 
-                new { roleAction = "add", role = "Administrator" }, null) / 
-            @Html.ActionLink("Remove", "RoleManager", "Account", 
-                new { roleAction = "remove", role = "Administrator" }, null) 
+    Administrator: @System.Web.Security.Roles.IsUserInRole("Administrator") -
+            @Html.ActionLink("Add", "RoleManager", "Account",
+                new { roleAction = "add", role = "Administrator" }, null) /
+            @Html.ActionLink("Remove", "RoleManager", "Account",
+                new { roleAction = "remove", role = "Administrator" }, null)
                 <br />
 </p>
