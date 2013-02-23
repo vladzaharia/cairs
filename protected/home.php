@@ -558,12 +558,12 @@
 	            	</div>
 	            	<div class="span4 hero-unit">
 	            		<h4>Database Server</h4>
-	            		<strong>Server:</strong> q1z8wwq8to.database.windows.net <br />
+	            		<strong>Server:</strong> sasquatch.cloudapp.net <br />
 	            		<?php if ($_SESSION['username'] === "team") { ?>
 	            		<strong>Username:</strong> team <br />
 	            		<strong>Password:</strong> trecU5He </br />
 	            		<strong>Database:</strong> sasquatch </br /><br />
-	            		<a href="https://q1z8wwq8to.database.windows.net/#$database=sasquatch">Manage the Database</a>
+	            		<a href="http://www.microsoft.com/en-us/download/details.aspx?id=22985">Download Manager Tools</a>
 	            		<?php } ?>
 	            	</div>
 	            </div>
