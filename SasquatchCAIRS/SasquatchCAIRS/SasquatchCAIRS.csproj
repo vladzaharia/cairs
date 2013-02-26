@@ -186,7 +186,6 @@
     <Compile Include="Models\ServiceSystem\Request.cs" />
     <Compile Include="Controllers\ServiceSystem\RequestManagementController.cs" />
     <Compile Include="Controllers\ServiceSystem\ServiceManager.cs" />
-    <Compile Include="Models\XSLContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CAIRS.designer.cs">
       <AutoGen>True</AutoGen>
@@ -333,6 +332,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
