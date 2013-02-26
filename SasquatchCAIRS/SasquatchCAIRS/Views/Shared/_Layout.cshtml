@@ -18,15 +18,15 @@
                     <nav>
                         <ul id="menu">
                             <li>@Html.ActionLink("Dashboard", "Index", "Home")</li>
-                            
+
                             @if (User.IsInRole("RequestEditor")) {
                             <li>@Html.ActionLink("Add New Request", "About", "Home")</li>
                             }
-                            
+
                             @if (User.IsInRole("ReportGenerator")) {
                             <li>@Html.ActionLink("Reports", "Contact", "Home")</li>
                             }
-                            
+
                             @if (User.IsInRole("Administrator")) {
                             <li>@Html.ActionLink("Admin", "Index", "Home")</li>
                             }
