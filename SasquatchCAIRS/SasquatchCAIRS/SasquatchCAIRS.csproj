@@ -190,7 +190,6 @@
     <Compile Include="Models\ServiceSystem\Request.cs" />
     <Compile Include="Models\ServiceSystem\RequestManager.cs" />
     <Compile Include="Models\ServiceSystem\ServiceManager.cs" />
-    <Compile Include="Models\XSLContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -331,6 +330,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
