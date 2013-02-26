@@ -4,9 +4,7 @@ using System.Web.Security;
 
 namespace SasquatchCAIRS.Controllers {
     [Authorize]
-    [InitializeSimpleMembership]
     public class AccountController : Controller {
-        UserProfileController profileController = new UserProfileController();
         
         //
         // GET: /Account/Auth
@@ -14,7 +12,6 @@ namespace SasquatchCAIRS.Controllers {
         [AllowAnonymous]
         public ActionResult Auth(string returnUrl) {
             ViewBag.ReturnUrl = returnUrl;
-            ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
 
             if (returnUrl == "/") {
                 return RedirectToLocal(returnUrl);
@@ -28,7 +25,6 @@ namespace SasquatchCAIRS.Controllers {
         [Authorize]
         public ActionResult Manage() {
             ViewBag.ReturnUrl = Url.Action("Manage");
-            ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
 
             return View();
         }
