@@ -76,6 +76,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -169,6 +170,7 @@
       <DependentUpon>CAIRS.dbml</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -179,7 +181,7 @@
     <Compile Include="Models\SearchCriteria.cs" />
 =======
     <Compile Include="Models\Constants.cs" />
->>>>>>> 0d3258fc9d8faceda4d1be346fa409ba23efd8a4
+>>>>>>> 0f0b7b7d47cb2f4b59578589b4fa67800b40a574
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -258,6 +260,7 @@
       <LastGenOutput>CAIRS.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Images\logo.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
@@ -275,9 +278,13 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
+<<<<<<< HEAD
+    <Content Include="Scripts\modernizr-2.5.3.js" />
+=======
     <Content Include="Scripts\knockout-2.2.1.debug.js" />
     <Content Include="Scripts\knockout-2.2.1.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+>>>>>>> 0f0b7b7d47cb2f4b59578589b4fa67800b40a574
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -303,15 +310,7 @@
     <Content Include="Images\orderedList8.png" />
     <Content Include="Images\orderedList9.png" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\_RemoveExternalLoginsPartial.cshtml" />
-    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -319,14 +318,19 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
+<<<<<<< HEAD
     <Content Include="Views\Shared\_SearchPartial.cshtml" />
+=======
+    <Content Include="Views\Account\_ViewUserInfo.cshtml" />
+    <Content Include="Views\Account\Auth.cshtml" />
+>>>>>>> 0f0b7b7d47cb2f4b59578589b4fa67800b40a574
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="Scripts\packages.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CAIRS.dbml.layout">
