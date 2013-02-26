@@ -5,8 +5,7 @@
 }
 
 body {
-    background-color: #fff;
-    border-top: solid 10px #000;
+    background-color: #023187;
     color: #333;
     font-size: .85em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
@@ -93,6 +92,13 @@ h5, h6 {
 
 /* main layout
 ----------------------------------------------------------*/
+.logo {
+    height: 35px;
+    width: 300px;
+    background: url("../Images/logo.png") no-repeat !important;
+    display: block;
+}
+
 .content-wrapper {
     margin: 0 auto;
     max-width: 960px;
@@ -105,13 +111,8 @@ h5, h6 {
 }
 
     .main-content {
-        background: url("../Images/accent.png") no-repeat;
         padding-left: 10px;
-        padding-top: 30px;
-    }
-
-    .featured + .main-content {
-        background: url("../Images/heroAccent.png") no-repeat;
+        padding-top: 10px;
     }
 
 header .content-wrapper {
@@ -121,7 +122,8 @@ header .content-wrapper {
 footer {
     clear: both;
     background-color: #e2e2e2;
-    font-size: .8em;
+    font-size: .9em;
+    padding-top: 10px;
     height: 100px;
 }
 
@@ -133,6 +135,8 @@ footer {
     font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
     font-size: 2.3em;
     margin: 0;
+    position: relative;
+    top: -10px;
 }
 
 .site-title a, .site-title a:hover, .site-title a:active {
@@ -150,10 +154,11 @@ footer {
     font-size: .85em;
     margin: 0 0 10px;
     text-align: right;
+    color: #FFFFFF;
 }
 
     #login a {
-        background-color: #d3dce0;
+        color: #FFFFFF;
         margin-left: 10px;
         margin-right: 3px;
         padding: 2px 3px;
@@ -180,27 +185,26 @@ footer {
 /* menu
 ----------------------------------------------------------*/
 ul#menu {
-    font-size: 1.3em;
-    font-weight: 600;
-    margin: 0 0 5px;
+    font-size: 1.1em;
+    font-weight: 400;
+    margin: -10px 0 12px 2px;
     padding: 0;
-    text-align: right;
 }
 
     ul#menu li {
         display: inline;
         list-style: none;
-        padding-left: 15px;
+        padding-left: 5px;
     }
 
         ul#menu li a {
             background: none;
-            color: #999;
+            color: #FFF;
             text-decoration: none;
         }
 
         ul#menu li a:hover {
-            color: #333;
+            color: #AAA;
             text-decoration: none;
         }
 
