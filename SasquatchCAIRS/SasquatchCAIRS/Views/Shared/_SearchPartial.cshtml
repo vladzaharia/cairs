@@ -1,0 +1,13 @@
+﻿@if (!Request.IsAuthenticated) {
+    <ul>
+        <li>
+            @using (Html.BeginForm()) {
+                @Html.TextBox("searchString")
+                <input type="submit" value="Search!"/>
+            }
+        </li>
+        <li>
+            @Html.ActionLink("Advanced Search", "Index", "Home")
+        </li>
+    </ul>
+}
