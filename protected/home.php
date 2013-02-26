@@ -410,6 +410,7 @@
 	            		<a href="/meetings/team/feb6.pdf">February 6th, 2013</a><br />
 	            		<a href="/meetings/team/feb7.pdf">February 7th, 2013</a><br />
 	            		<a href="/meetings/team/feb11.pdf">February 11th, 2013</a><br />
+	            		<a href="/meetings/team/feb14.pdf">February 14th, 2013</a><br />
 	            	</div>
 	            	<div class="span4">
 	            		<h4>Client Meetings</h4>
@@ -422,7 +423,7 @@
 	            		<a href="/meetings/ta/feb4.pdf">February 4th, 2013</a><br />
 	            		<strike>February 11th, 2013</strike> (Cancelled - Family Day)<br />
 	            		<strike>February 18th, 2013</strike> (Cancelled - Reading Week)<br />
-	            		February 25th, 2013 - <a href="/meetings/ta/feb25a.pdf">Agenda</a> / Minutes
+	            		February 25th, 2013 - <a href="/meetings/ta/feb25a.pdf">Agenda</a> / <a href="/meetings/ta/feb25.pdf">Minutes</a>
 	            	</div>
 	            </div>
 	        </div>
