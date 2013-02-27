@@ -105,14 +105,13 @@
 	    	<a class="brand" href="#"></a>
 	    	<ul class="nav">
 	      		<li><a href="/">home</a></li>
-	      		<li><a href="/protected">/protected</a></li>
-	      		<li class="active"><a href="/team">/team</a></li>
-	      		<?php if ($user['manager'] === 'progress') { ?> <li><a href="/team/report.php">/team Reports</a></li> <?php } ?>
-	      		<li><a href="https://github.com/vladzaharia/cloaked-octo-bear">/repo</a></li>
-	      		<li><a href="http://review.wearesasquatch.com/">/review</a></li>
-	      		<li><a href="http://blossom.io">/tasks</a></li>
-	      		<li><a href="https://www.facebook.com/groups/ubc319/">/fb</a></li>
-	      		<li><a href="https://docs.google.com/folder/d/0BwY0CeqgUaLQYlpZT2RnTWJBUkk/edit">/docs</a></li>
+	      		<li class="active"><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Protected']);" href="/protected">/protected</a></li>
+	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Team']);" href="/team">/team</a></li>
+	      		<?php if ($user['manager'] === 'progress') { ?> <li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Team Report']);" href="/team/report.php">/team Reports</a></li> <?php } ?>
+	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Repo']);" href="https://github.com/vladzaharia/cloaked-octo-bear">/repo</a></li>
+	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Review']);" href="http://review.wearesasquatch.com/">/review</a></li>
+	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Facebook']);" href="https://www.facebook.com/groups/ubc319/">/fb</a></li>
+	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Docs']);" href="https://docs.google.com/folder/d/0BwY0CeqgUaLQYlpZT2RnTWJBUkk/edit">/docs</a></li>
 	    	</ul>
 	  	</div>
 	</div>

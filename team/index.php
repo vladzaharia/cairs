@@ -46,7 +46,7 @@
 			<div class="container">
 	            <div class="row">
             		<div class="span12 center">
-	    				<a href="login.php" class="login_google"></a>
+	    				<a onClick="_gaq.push(['_trackEvent', 'Login', 'Click', 'Team']);" ref="login.php" class="login_google"></a>
 	    			</div>
 	            </div>
 	        </div>

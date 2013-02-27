@@ -261,7 +261,7 @@
 							?>
 							<div class="accordion-group">
 							    <div class="accordion-heading">
-									<a onClick="_gaq.push(['_trackEvent', 'Progress', 'Click', 'Week <?php echo $week['date']; ?>']);" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $week['id']; ?>">
+									<a onClick="_gaq.push(['_trackEvent', 'Progress', 'Click', 'Week <?php echo $week['name']; ?>']);" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $week['id']; ?>">
 										<span class="week"><?php echo $week['name']; ?></span> <span class="date"><?php echo $week['date']; ?></span>
 									</a>
 							    </div>

@@ -67,15 +67,15 @@
 
 	            <div class="row login">
             		<div class="span2 center">
-	    				<a href="index.php?user=prof" class="photo prof"></a>
+	    				<a onClick="_gaq.push(['_trackEvent', 'Login', 'Click', 'Prof']);" href="index.php?user=prof" class="photo prof"></a>
 	    			</div>
 
 	    			<div class="span2 center">
-	    				<a href="index.php?user=ta" class="photo ta"></a>
+	    				<a onClick="_gaq.push(['_trackEvent', 'Login', 'Click', 'TA']);" href="index.php?user=ta" class="photo ta"></a>
 	    			</div>
 
 	    			<div class="span2 center">
-	    				<a href="../team/login.php?state=protected" class="photo team"></a>
+	    				<a onClick="_gaq.push(['_trackEvent', 'Login', 'Click', 'Ream']);" href="../team/login.php?state=protected" class="photo team"></a>
 	    			</div>
 	            </div>
 
