@@ -83,13 +83,12 @@
 	    	<a class="brand" href="#"></a>
 	    	<ul class="nav">
 	      		<li><a href="/">home</a></li>
-	      		<li class="active"><a href="/protected">/protected</a></li>
-	      		<?php if ($_SESSION['username'] === 'team') { ?> <li><a href="/team">/team</a></li> <?php } ?>
-	      		<li><a href="https://github.com/vladzaharia/cloaked-octo-bear">/repo</a></li>
-	      		<li><a href="http://review.wearesasquatch.com/">/review</a></li>
-	      		<li><a href="http://blossom.io">/tasks</a></li>
-	      		<li><a href="https://www.facebook.com/groups/ubc319/">/fb</a></li>
-	      		<li><a href="https://docs.google.com/folder/d/0BwY0CeqgUaLQYlpZT2RnTWJBUkk/edit">/docs</a></li>
+	      		<li class="active"><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Protected']);" href="/protected">/protected</a></li>
+	      		<?php if ($_SESSION['username'] === 'team') { ?> <li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Team']);" href="/team">/team</a></li> <?php } ?>
+	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Repo']);" href="https://github.com/vladzaharia/cloaked-octo-bear">/repo</a></li>
+	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Review']);" href="http://review.wearesasquatch.com/">/review</a></li>
+	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Facebook']);" href="https://www.facebook.com/groups/ubc319/">/fb</a></li>
+	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Docs']);" href="https://docs.google.com/folder/d/0BwY0CeqgUaLQYlpZT2RnTWJBUkk/edit">/docs</a></li>
 	    	</ul>
 	  	</div>
 	</div>
@@ -124,7 +123,7 @@
 			            			System Design Lead
 			            		</p>
 			            		<p>
-			            			<a href="mailto:&#111;&#108;&#105;&#118;&#101;&#114;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;">&#111;&#108;&#105;&#118;&#101;&#114;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;</a>
+			            			<a onClick="_gaq.push(['_trackEvent', 'Email', 'Click', 'Oliver']);" href="mailto:&#111;&#108;&#105;&#118;&#101;&#114;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;">&#111;&#108;&#105;&#118;&#101;&#114;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;</a>
 			            		</p>
 			            	</div>
 			            </div>
@@ -138,7 +137,7 @@
 			            			Project Manager<br />
 			            			Coding Lead
 			            		</p>
-			            		<p><a href="mailto:&#109;&#105;&#099;&#104;&#101;&#108;&#108;&#101;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;">&#109;&#105;&#099;&#104;&#101;&#108;&#108;&#101;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;</a></p>
+			            		<p><a onClick="_gaq.push(['_trackEvent', 'Email', 'Click', 'Michelle']);" href="mailto:&#109;&#105;&#099;&#104;&#101;&#108;&#108;&#101;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;">&#109;&#105;&#099;&#104;&#101;&#108;&#108;&#101;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;</a></p>
 			            	</div>
 			            </div>
 			        </div>
@@ -150,7 +149,7 @@
 			            			Communication Manager<br />
 			            			System/Acceptance Testing Lead
 			            		</p>
-			            		<p><a href="mailto:&#116;&#104;&#101;&#097;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;">&#116;&#104;&#101;&#097;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;</a></p>
+			            		<p><a onClick="_gaq.push(['_trackEvent', 'Email', 'Click', 'Thea']);" href="mailto:&#116;&#104;&#101;&#097;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;">&#116;&#104;&#101;&#097;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;</a></p>
 			            	</div>
 			            </div>
 			        </div>
@@ -164,7 +163,7 @@
 			            			Configuration Manager<br />
 			            			Unit/Integration Testing Lead
 			            		</p>
-			            		<p><a href="mailto:&#104;&#097;&#110;&#110;&#097;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;">&#104;&#097;&#110;&#110;&#097;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;</a></p>
+			            		<p><a onClick="_gaq.push(['_trackEvent', 'Email', 'Click', 'Hanna']);" href="mailto:&#104;&#097;&#110;&#110;&#097;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;">&#104;&#097;&#110;&#110;&#097;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;</a></p>
 			            	</div>
 			            </div>
 		            </div>
@@ -177,7 +176,7 @@
 			            			Progress Manager<br />
 			            			Program Design Lead
 			            		</p>
-			            		<p><a href="mailto:&#118;&#108;&#097;&#100;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;">&#118;&#108;&#097;&#100;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;</a></p>
+			            		<p><a onClick="_gaq.push(['_trackEvent', 'Email', 'Click', 'Vlad']);" href="mailto:&#118;&#108;&#097;&#100;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;">&#118;&#108;&#097;&#100;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;</a></p>
 			            	</div>
 			            </div>
 		            </div>
@@ -191,14 +190,14 @@
 			            			Requirements Lead
 			            		</p>
 			            		<p>
-			            		<p><a href="mailto:&#106;&#105;&#110;&#103;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;">&#106;&#105;&#110;&#103;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;</a></p>
+			            		<p><a onClick="_gaq.push(['_trackEvent', 'Email', 'Click', 'Jing']);" href="mailto:&#106;&#105;&#110;&#103;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;">&#106;&#105;&#110;&#103;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;</a></p>
 			            	</div>
 			            </div>
 		            </div>
 		        </div>
 		        <div class="row">
 		        	<div class="span12 center team-contact">
-		        		Or you can contact our entire team at <a href="mailto:&#116;&#101;&#097;&#109;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;">&#116;&#101;&#097;&#109;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;</a>.
+		        		Or you can contact our entire team at <a onClick="_gaq.push(['_trackEvent', 'Email', 'Click', 'Team']);" href="mailto:&#116;&#101;&#097;&#109;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;">&#116;&#101;&#097;&#109;&#064;&#119;&#101;&#097;&#114;&#101;&#115;&#097;&#115;&#113;&#117;&#097;&#116;&#099;&#104;&#046;&#099;&#111;&#109;</a>.
 		        	</div>
 		        </div>
 		    </div>
@@ -262,7 +261,7 @@
 							?>
 							<div class="accordion-group">
 							    <div class="accordion-heading">
-									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $week['id']; ?>">
+									<a onClick="_gaq.push(['_trackEvent', 'Progress', 'Click', 'Week <?php echo $week['date']; ?>']);" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $week['id']; ?>">
 										<span class="week"><?php echo $week['name']; ?></span> <span class="date"><?php echo $week['date']; ?></span>
 									</a>
 							    </div>
@@ -381,7 +380,7 @@
 	            <?php if ($_SESSION['username'] === "team") { ?>
 	            <div class="row">
 	            	<div class="span2" style="float: right; width: 70px;">
-	            		<a href="/team/home.php">Add Tasks</a>
+	            		<a onClick="_gaq.push(['_trackEvent', 'Progress', 'Click', 'Team']);" href="/team/home.php">Add Tasks</a>
 	            	</div>
 	            </div>
 	            <?php } ?>
@@ -401,29 +400,29 @@
 	            <div class="row content center">
 	            	<div class="span4">
 	            		<h4>Team Meetings</h4>
-	            		<a href="/meetings/team/jan24.pdf">January 24th, 2013</a><br />
-	            		<a href="/meetings/team/jan28.pdf">January 28th, 2013</a><br />
-	            		<a href="/meetings/team/jan30.pdf">January 30th, 2013</a><br />
-	            		<a href="/meetings/team/jan31.pdf">January 31th, 2013</a><br />
-	            		<a href="/meetings/team/feb1.pdf">February 1st, 2013</a><br />
-	            		<a href="/meetings/team/feb3.pdf">February 3rd, 2013</a><br />
-	            		<a href="/meetings/team/feb6.pdf">February 6th, 2013</a><br />
-	            		<a href="/meetings/team/feb7.pdf">February 7th, 2013</a><br />
-	            		<a href="/meetings/team/feb11.pdf">February 11th, 2013</a><br />
-	            		<a href="/meetings/team/feb14.pdf">February 14th, 2013</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Team', 'January 24']);" href="/meetings/team/jan24.pdf">January 24th, 2013</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Team', 'January 28']);" href="/meetings/team/jan28.pdf">January 28th, 2013</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Team', 'January 30']);" href="/meetings/team/jan30.pdf">January 30th, 2013</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Team', 'January 31']);" href="/meetings/team/jan31.pdf">January 31th, 2013</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Team', 'February 1']);" href="/meetings/team/feb1.pdf">February 1st, 2013</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Team', 'February 3']);" href="/meetings/team/feb3.pdf">February 3rd, 2013</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Team', 'February 6']);" href="/meetings/team/feb6.pdf">February 6th, 2013</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Team', 'February 7']);" href="/meetings/team/feb7.pdf">February 7th, 2013</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Team', 'February 11']);" href="/meetings/team/feb11.pdf">February 11th, 2013</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Team', 'February 14']);" href="/meetings/team/feb14.pdf">February 14th, 2013</a><br />
 	            	</div>
 	            	<div class="span4">
 	            		<h4>Client Meetings</h4>
-	            		<a href="/meetings/client/jan24.pdf">January 24th, 2013</a><br />
-	            		<a href="/meetings/client/jan25.pdf">January 25th, 2013</a>
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Client', 'January 24']);" href="/meetings/client/jan24.pdf">January 24th, 2013</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Client', 'January 25']);" href="/meetings/client/jan25.pdf">January 25th, 2013</a>
 	            	</div>
 	            	<div class="span4">
 	            		<h4>TA Meetings</h4>
-	            		<a href="/meetings/ta/jan28.pdf">January 28th, 2013</a><br />
-	            		<a href="/meetings/ta/feb4.pdf">February 4th, 2013</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'January 28']);" href="/meetings/ta/jan28.pdf">January 28th, 2013</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'February 4']);" href="/meetings/ta/feb4.pdf">February 4th, 2013</a><br />
 	            		<strike>February 11th, 2013</strike> (Cancelled - Family Day)<br />
 	            		<strike>February 18th, 2013</strike> (Cancelled - Reading Week)<br />
-	            		February 25th, 2013 - <a href="/meetings/ta/feb25a.pdf">Agenda</a> / <a href="/meetings/ta/feb25.pdf">Minutes</a>
+	            		February 25th, 2013 - <a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'February 25 Agenda']);" href="/meetings/ta/feb25a.pdf">Agenda</a> / <a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'February 25']);" href="/meetings/ta/feb25.pdf">Minutes</a>
 	            	</div>
 	            </div>
 	        </div>
@@ -555,7 +554,7 @@
 	            		<strong>Server IP:</strong> 168.61.20.17 <br />
 	            		<strong>Username</strong> and <strong>Password</strong> are per-member.<br />
 	            		<strong>Domain:</strong> sasquatch.cloudapp.net </br /><br />
-	            		<a href="sasquatch.rdp">Connect via Remote Desktop</a>
+	            		<a onClick="_gaq.push(['_trackEvent', 'Servers', 'Click', 'RDP']);" href="sasquatch.rdp">Connect via Remote Desktop</a>
 	            		<?php } ?>
 	            	</div>
 	            	<div class="span4 hero-unit">
@@ -565,7 +564,7 @@
 	            		<strong>Username:</strong> team <br />
 	            		<strong>Password:</strong> trecU5He </br />
 	            		<strong>Database:</strong> sasquatch </br /><br />
-	            		<a href="http://www.microsoft.com/en-us/download/details.aspx?id=22985">Download Manager Tools</a>
+	            		<a onClick="_gaq.push(['_trackEvent', 'Servers', 'Click', 'SQL Management']);" href="http://www.microsoft.com/en-us/download/details.aspx?id=22985">Download Manager Tools</a>
 	            		<?php } ?>
 	            	</div>
 	            </div>
@@ -586,21 +585,14 @@
 	            	<div class="image source span1"></div>
 	            	<div class="description span6">
 	            		<h4>Source Control</h4>
-	            		Source control is hosted by GitHub, and located <a href="https://github.com/vladzaharia/cloaked-octo-bear">here</a>. Code Reviews are done through <a href="http://review.wearesasquatch.com/">Review Board</a>. Automatic CI Builds are hosted on <a href="http://sasq-bamboo.cloudapp.net/">Bamboo</a>.
-	            	</div>
-	            </div>
-	            <div class="row resource">
-	            	<div class="image management span1"></div>
-	            	<div class="description span6">
-	            		<h4>Project Management</h4>
-	            		The tasks/project management are hosted by Blossom.io, found <a href="http://blossom.io">here</a>.
+	            		Source control is hosted by GitHub, and located <a onClick="_gaq.push(['_trackEvent', 'Resource', 'Click', 'GitHub']);" href="https://github.com/vladzaharia/cloaked-octo-bear">here</a>. Code Reviews are done through <a href="http://review.wearesasquatch.com/">Review Board</a>. Automatic CI Builds are hosted on <a href="http://sasq-bamboo.cloudapp.net/">Bamboo</a>.
 	            	</div>
 	            </div>
 	            <div class="row resource">
 	            	<div class="image communication span1"></div>
 	            	<div class="description span6">
 	            		<h4>Communication</h4>
-	            		Our Facebook group is located <a href="https://www.facebook.com/groups/ubc319/">here</a> for communication.
+	            		Our Facebook group is located <a onClick="_gaq.push(['_trackEvent', 'Resource', 'Click', 'Facebook']);" href="https://www.facebook.com/groups/ubc319/">here</a> for communication.
 	            	</div>
 	            </div>
 	            <?php if ($_SESSION['username'] === "team") { ?>
@@ -608,11 +600,11 @@
 	            	<div class="image file span1"></div>
 	            	<div class="description span6">
 	            		<h4>Books</h4>
-	            		<a href="../books/aspnet.pdf">Professional ASP.net MVC 4</a><br />
-	            		<a href="../books/hfhtml.pdf">Head-First HTML</a><br />
-	            		<a href="../books/hfhtml5.pdf">Head-First HTML5/Javascript</a><br />
-	            		<a href="../books/clrcs.pdf">CLR via C# 4th Edition</a><br />
-	            		<a href="../books/hfcs.pdf">Head-First C#</a>
+	            		<a onClick="_gaq.push(['_trackEvent', 'Resource', 'Book', 'ASP.net MVC']);" href="../books/aspnet.pdf">Professional ASP.net MVC 4</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Resource', 'Book', 'Head-First HTML']);" href="../books/hfhtml.pdf">Head-First HTML</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Resource', 'Book', 'Head-First HTML5/JS']);" href="../books/hfhtml5.pdf">Head-First HTML5/Javascript</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Resource', 'Book', 'CLR via C#']);" href="../books/clrcs.pdf">CLR via C# 4th Edition</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Resource', 'Book', 'Head-First C#']);" href="../books/hfcs.pdf">Head-First C#</a>
 	            	</div>
 	            </div>
 	            <?php } ?>
