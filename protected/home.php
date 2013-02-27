@@ -82,7 +82,7 @@
 	  	<div class="navbar-inner">
 	    	<a class="brand" href="#"></a>
 	    	<ul class="nav">
-	      		<li><a href="/">home</a></li>
+	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Home']);" href="/">home</a></li>
 	      		<li class="active"><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Protected']);" href="/protected">/protected</a></li>
 	      		<?php if ($_SESSION['username'] === 'team') { ?> <li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Team']);" href="/team">/team</a></li> <?php } ?>
 	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Repo']);" href="https://github.com/vladzaharia/cloaked-octo-bear">/repo</a></li>

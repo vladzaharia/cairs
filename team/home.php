@@ -104,7 +104,7 @@
 	  	<div class="navbar-inner">
 	    	<a class="brand" href="#"></a>
 	    	<ul class="nav">
-	      		<li><a href="/">home</a></li>
+	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Home']);" href="/">home</a></li>
 	      		<li class="active"><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Protected']);" href="/protected">/protected</a></li>
 	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Team']);" href="/team">/team</a></li>
 	      		<?php if ($user['manager'] === 'progress') { ?> <li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Team Report']);" href="/team/report.php">/team Reports</a></li> <?php } ?>
