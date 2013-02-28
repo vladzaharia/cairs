@@ -1,0 +1,141 @@
+﻿@model SasquatchCAIRS.Request
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Request</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ParentRequestID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ParentRequestID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.RequestorFName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RequestorFName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.RequestorLName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RequestorLName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.RequestorPhone)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RequestorPhone)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.RequestorPhoneExt)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RequestorPhoneExt)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.RequestorEmail)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RequestorEmail)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PatientFName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PatientFName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PatientLName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PatientLName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PatientGender)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PatientGender)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PatientAge)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PatientAge)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PatientAgencyID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PatientAgencyID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.RequestStatus)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RequestStatus)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.TimeOpened)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TimeOpened)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.TimeClosed)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TimeClosed)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Priority)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Priority)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Severity)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Severity)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.RegionID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RegionID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.RequestorTypeID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RequestorTypeID)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.RequestID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
