@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
@@ -12,46 +13,70 @@ namespace SasquatchCAIRS.Models {
             get;
             set;
         }
+
         public Int16 questionTypeId {
             get;
             set;
         }
+
         public Int16 tumorGroupId {
             get;
             set;
         }
+
         public Int16 requestStatus {
             get;
             set;
         }
+
+        [DataType(DataType.Date)]
         public DateTime startTime {
             get;
             set;
         }
+
+        [DataType(DataType.Date)]
         public DateTime completionTime {
             get;
             set;
         }
-        public String callerName {
+
+        [DataType(DataType.Text)]
+        public String callerFirstName {
             get;
             set;
         }
+
+
+        [DataType(DataType.Text)]
+        public String callerLastName {
+            get;
+            set;
+        }
+
         public Int16 severity {
             get;
             set;
         }
+
         public Int16 priority {
             get;
             set;
         }
+
+        public Int16 status {
+            get;
+            set;
+        }
+
     }
 
     public class SearchCriteriaContext : DbContext {
         public SearchCriteriaContext()
-            : base("DefaultConnection") {
+            : base("sasquatchConnectionString") {
         }
 
-        public DbSet<SearchCriteria> SearchResults {
+        public DbSet<SearchCriteria> SearchCriterias {
             get;
             set;
         }

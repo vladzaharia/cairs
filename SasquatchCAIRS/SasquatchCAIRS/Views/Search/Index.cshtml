@@ -1,0 +1,135 @@
+﻿@model IEnumerable<SasquatchCAIRS.Request>
+
+@{
+    ViewBag.Title = "Request List";
+}
+
+<h2>View1</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ParentRequestID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequestorFName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequestorLName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequestorPhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequestorPhoneExt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequestorEmail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PatientFName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PatientLName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PatientGender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PatientAge)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PatientAgencyID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequestStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeOpened)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeClosed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Priority)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Severity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RegionID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequestorTypeID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ParentRequestID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequestorFName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequestorLName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequestorPhone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequestorPhoneExt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequestorEmail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PatientFName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PatientLName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PatientGender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PatientAge)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PatientAgencyID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequestStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeOpened)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeClosed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Priority)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Severity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RegionID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequestorTypeID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.RequestID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.RequestID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.RequestID })
+        </td>
+    </tr>
+}
+
+</table>

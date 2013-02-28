@@ -182,6 +182,41 @@ footer {
     }
 
 
+/* search
+----------------------------------------------------------*/
+#search {
+    display: block;
+    font-size: .85em;
+    margin: 0 0 10px;
+    text-align: right;
+    color: #FFFFFF;
+}
+
+    #search a {
+        color: #FFFFFF;
+        margin-left: 10px;
+        margin-right: 3px;
+        padding: 2px 3px;
+        text-decoration: none;
+    }
+
+    #search a.username {
+        background: none;
+        margin: 0;
+        padding: 0;
+        text-decoration: underline;
+    }
+
+    #search ul {
+        margin: 0;
+    }
+
+    #search li {
+        display: inline;
+        list-style: none;
+    }
+
+
 /* menu
 ----------------------------------------------------------*/
 ul#menu {

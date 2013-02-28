@@ -1,9 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
 namespace SasquatchCAIRS.Models.ServiceSystem {
+
+    public class SearchContext : DbContext {
+        public SearchContext()
+            : base("sasquatchConnectionString") {
+        }
+
+        public DbSet<Request> SearchResults {
+            get;
+            set;
+        }
+    }
+
     public class RequestContent {
         private SasquatchCAIRS.Request _request;
         private List<QuestionResponseContent> _questionResponseList
@@ -368,7 +381,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             return false;
         }
     }
-   
+
     public class ReferenceContent {
         private SasquatchCAIRS.Reference _reference;
 
