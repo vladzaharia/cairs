@@ -32,21 +32,26 @@ namespace SasquatchCAIRS.Models {
             get;
             set;
         }
-        public String RequestorLName {
-            get;
-            set;
-        }
-        public String RequestorFName
+        public Int16 status
         {
             get;
             set;
         }
-        public String PatientLName
+        public String requestorLName {
+            get;
+            set;
+        }
+        public String requestorFName
         {
             get;
             set;
         }
-        public String PatientFName
+        public String patientLName
+        {
+            get;
+            set;
+        }
+        public String patientFName
         {
             get;
             set;
