@@ -1,10 +1,22 @@
 ﻿@if (Request.IsAuthenticated) {
     <ul>
-        @using (Html.BeginForm("Search", "Search", FormMethod.Post)) {
-            @Html.TextBox("searchText")
-            <input class="btn btn-success" type="submit" value="Search!"\>
-            <br />
-            @Html.ActionLink("Advanced Search", "Advanced", "Search")
+        @using (Html.BeginForm("Search", "Search", FormMethod.Post,
+            new { @class="form form-search quick-search" })) {
+            <div class="input-append quick-search-div">
+                @Html.TextBox("searchText", "", 
+                    new { @class="span2 search-query", @placeholder="Quick Search" })
+                <button class="btn quick-search-button" type="submit">
+                    <i class="icon-search"></i>
+                </button>
+            </div>
+
+            <div class="adv-search-div">
+                @Html.ActionLink("Advanced", "Advanced", "Search",
+                    new { @class="adv-search-top" })
+                <br />
+                @Html.ActionLink("Search", "Advanced", "Search",
+                    new { @class="adv-search-bottom" })
+            </div>
         }
     </ul>
         
