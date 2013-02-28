@@ -32,7 +32,22 @@ namespace SasquatchCAIRS.Models {
             get;
             set;
         }
-        public String callerName {
+        public String RequestorLName {
+            get;
+            set;
+        }
+        public String RequestorFName
+        {
+            get;
+            set;
+        }
+        public String PatientLName
+        {
+            get;
+            set;
+        }
+        public String PatientFName
+        {
             get;
             set;
         }
@@ -40,7 +55,7 @@ namespace SasquatchCAIRS.Models {
             get;
             set;
         }
-        public Int16 priority {
+        public Int16 probability {
             get;
             set;
         }
