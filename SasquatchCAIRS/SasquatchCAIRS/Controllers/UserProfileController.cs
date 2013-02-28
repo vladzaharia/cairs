@@ -1,5 +1,6 @@
 ﻿using SasquatchCAIRS.Models;
 using System;
+using System.Configuration;
 using System.DirectoryServices;
 using System.Linq;
 using System.Web.Hosting;
@@ -8,6 +9,19 @@ namespace SasquatchCAIRS.Controllers {
     public class UserProfileController {
         public const string USER_DISPLAY_NAME = "displayName";
         public const string USER_EMAIL = "mail";
+
+        /// <summary>
+        /// Read-only UserProfileController singleton
+        /// </summary>
+        private static readonly UserProfileController _instance = new UserProfileController();
+
+        private UserProfileController() {}
+
+        public static UserProfileController instance {
+            get {
+                return _instance;
+            }
+        }
 
         public UserProfile getUserProfile(string username) {
             using (UsersContext db = new UsersContext()) {
@@ -37,8 +51,7 @@ namespace SasquatchCAIRS.Controllers {
             String[] adInfo = new String[2];
             using (HostingEnvironment.Impersonate()) {
                 using (DirectoryEntry de = new DirectoryEntry(
-                    "LDAP://sasquatch.cloudapp.net/" +
-                    "CN=Users,DC=sasquatch,DC=cloudapp,DC=net")) {
+                    ConfigurationManager.ConnectionStrings["ADConn"].ConnectionString)) {
 
                     using (DirectorySearcher adSearch = new DirectorySearcher(de)) {
                         adSearch.PropertiesToLoad.Add(UserProfileController.USER_DISPLAY_NAME);
