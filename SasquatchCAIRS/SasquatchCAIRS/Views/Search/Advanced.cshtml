@@ -1,0 +1,87 @@
+﻿@model SasquatchCAIRS.Models.SearchCriteria
+
+@{
+    ViewBag.Title = "Advanced Search";
+}
+
+<h2>Advanced Search</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>SearchCriteria</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.questionTypeId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.questionTypeId)  
+            @Html.ValidationMessageFor(model => model.questionTypeId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.tumorGroupId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.tumorGroupId)
+            @Html.ValidationMessageFor(model => model.tumorGroupId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.requestStatus)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.requestStatus)
+            @Html.ValidationMessageFor(model => model.requestStatus)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.startTime)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.startTime)
+            @Html.ValidationMessageFor(model => model.startTime)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.completionTime)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.completionTime)
+            @Html.ValidationMessageFor(model => model.completionTime)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.callerName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.callerName)
+            @Html.ValidationMessageFor(model => model.callerName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.severity)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.severity)
+            @Html.ValidationMessageFor(model => model.severity)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.priority)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.priority)
+            @Html.ValidationMessageFor(model => model.priority)
+        </div>
+
+        <p>
+            <input class="btn btn-success" type="submit" value="Search!" />
+        </p>
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
