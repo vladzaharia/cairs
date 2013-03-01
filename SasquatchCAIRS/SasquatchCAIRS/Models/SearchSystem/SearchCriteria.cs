@@ -54,12 +54,27 @@ namespace SasquatchCAIRS.Models {
             set;
         }
 
+
+
+        [DataType(DataType.Text)]
+        public String patientFirstName {
+            get;
+            set;
+        }
+
+
+        [DataType(DataType.Text)]
+        public String patientLastName {
+            get;
+            set;
+        }
+
         public Int16 severity {
             get;
             set;
         }
 
-        public Int16 priority {
+        public Int16 consequence {
             get;
             set;
         }

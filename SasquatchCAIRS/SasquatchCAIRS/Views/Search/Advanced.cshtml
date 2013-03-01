@@ -12,29 +12,6 @@
     <fieldset>
         <legend>SearchCriteria</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.questionTypeId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.questionTypeId)  
-            @Html.ValidationMessageFor(model => model.questionTypeId)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.tumorGroupId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.tumorGroupId)
-            @Html.ValidationMessageFor(model => model.tumorGroupId)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.requestStatus)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.requestStatus)
-            @Html.ValidationMessageFor(model => model.requestStatus)
-        </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.startTime)
@@ -52,12 +29,143 @@
             @Html.ValidationMessageFor(model => model.completionTime)
         </div>
 
+        <div class="editor-field">
+        
+        <label class="checkbox inline">
+            <input type="checkbox" id="inlineCheckbox1" value="1">
+            Open
+        </label>
+        <label class="checkbox inline">
+            <input type="checkbox" id="inlineCheckbox2" value="2">
+            Closed
+        </label>
+        <label class="checkbox inline">
+            <input type="checkbox" id="inlineCheckbox3" value="3">
+            Inactive
+        </label>
+        </div>
+
         <div class="editor-label">
-            @Html.LabelFor(model => model.callerName)
+            @Html.Label("Requestor Name")
+        </div>
+
+        <div class="editor-field">
+            <form class="form-inline">
+                <input type="text" class="input-medium" placeholder="First Name">
+                <input type="text" class="input-medium" placeholder="Last Name">
+            </form>
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Patient Name")
+        </div>
+
+        <div class="editor-field">
+            <form class="form-inline">
+                <input type="text" class="input-medium" placeholder="First Name">
+                <input type="text" class="input-medium" placeholder="Last Name">
+            </form>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.tumorGroupId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.callerName)
-            @Html.ValidationMessageFor(model => model.callerName)
+@*            @Html.EditorFor(model => model.tumorGroupId)
+            @Html.ValidationMessageFor(model => model.tumorGroupId)*@
+            <select multiple="multiple">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </div>
+
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.questionTypeId)
+        </div>
+        <div class="editor-field">
+@*            @Html.EditorFor(model => model.questionTypeId)
+            @Html.ValidationMessageFor(model => model.questionTypeId)*@
+            <select multiple="multiple">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>    
+            </select>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.severity)
+        </div>
+        <div class="editor-field">
+
+            <label class="checkbox inline">
+                <input type="checkbox" id="inlineCheckbox1" value="1">
+                Major
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" id="inlineCheckbox2" value="2">
+                Moderate
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" id="inlineCheckbox3" value="3">
+                Minor
+            </label>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.consequence)
+        </div>
+        <div class="editor-field">
+
+            <label class="checkbox inline">
+                <input type="checkbox" id="inlineCheckbox1" value="1">
+                Certain
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" id="inlineCheckbox2" value="2">
+                Probable
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" id="inlineCheckbox3" value="3">
+                Possible
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" id="inlineCheckbox3" value="4">
+                Unlikely
+            </label>
+        </div>
+
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.requestStatus)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.requestStatus)
+            @Html.ValidationMessageFor(model => model.requestStatus)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.callerFirstName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.callerFirstName)
+            @Html.ValidationMessageFor(model => model.callerFirstName)
+        </div>
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.callerLastName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.callerLastName)
+            @Html.ValidationMessageFor(model => model.callerLastName)
         </div>
 
         <div class="editor-label">
@@ -66,14 +174,6 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.severity)
             @Html.ValidationMessageFor(model => model.severity)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.priority)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.priority)
-            @Html.ValidationMessageFor(model => model.priority)
         </div>
 
         <p>
