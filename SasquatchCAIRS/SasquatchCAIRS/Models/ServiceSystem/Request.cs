@@ -5,213 +5,217 @@ using System.Web;
 
 namespace SasquatchCAIRS.Models.ServiceSystem {
     public class RequestContent {
-        private long _requestID = -1;
-        private long? _parentRequestID = null;
-
-        private string _requestorFName = null;
-        private string _requestorLName = null;
-        private string _requestorPhoneNum = null;
-        private string _requestorPhoneExt = null;
-        private string _requestorEmail = null;
-
-        private string _patientFName = null;
-        private string _patientLName = null;
-        private Constants.Gender _patientGender = Constants.Gender.None;
-        private string _patientAgencyID = null;
-        private byte? _patientAge = null;
-
-        private Constants.RequestStatus _requestStatus =
-            Constants.RequestStatus.Open;
-        private DateTime _timeOpened = new DateTime();
-        private DateTime? _timeClosed = null;
-
-        private byte? _regionID = null;
-        private byte? _requestorTypeID = null;
-
+        private Request _request;
         private List<QuestionResponseContent> _questionResponseList
             = new List<QuestionResponseContent>();
         private List<Reference> _referenceList = new List<Reference>();
 
         public RequestContent(Request req) {
-            _requestID = req.RequestID;
-            _parentRequestID = req.ParentRequestID;
-
-            _requestorFName = req.RequestorFName;
-            _requestorLName = req.RequestorLName;
-            _requestorPhoneNum = req.RequestorPhone;
-            _requestorPhoneExt = req.RequestorPhoneExt;
-            _requestorEmail = req.RequestorEmail;
-
-            _patientFName = req.PatientFName;
-            _patientLName = req.PatientLName;
-
-            if (req.PatientGender != null) {
-                _patientGender = (Constants.Gender) req.PatientGender;
-            }
-
-            _patientAgencyID = req.PatientAgencyID;
-            _patientAge = req.PatientAge;
-
-            _requestStatus = (Constants.RequestStatus) req.RequestStatus;
-            _timeOpened = req.TimeOpened;
-            _timeClosed = req.TimeClosed;
-
-            _regionID = req.RegionID;
-            _requestorTypeID = req.RequestorTypeID;
+            _request = req;
         }
 
-        public RequestContent() {}
+        public RequestContent() {
+            _request = new Request();
+        }
+
+        public Request request {
+            get {
+                return _request;
+            }
+        }
 
         public long requestID {
             get {
-                return _requestID;
+                return _request.RequestID;
             }
             set {
-                _requestID = value;
+                _request.RequestID = value;
             }
         }
 
         public long? parentRequestID {
             get {
-                return _parentRequestID;
+                return _request.ParentRequestID;
             }
             set {
-                _parentRequestID = value;
+                _request.ParentRequestID = value;
             }
         }
 
         public string requestorFirstName {
             get {
-                return _requestorFName;
+                return _request.RequestorFName;
             }
             set {
-                _requestorFName = value;
+                _request.RequestorFName = value;
             }
         }
 
         public string requestorLastName {
             get {
-                return _requestorLName;
+                return _request.RequestorLName;
             }
             set {
-                _requestorLName = value;
+                _request.RequestorLName = value;
             }
         }
 
         public string requestorPhoneNum {
             get {
-                return _requestorPhoneNum;
+                return _request.RequestorPhone;
             }
             set {
-                _requestorPhoneNum = value;
+                _request.RequestorPhone = value;
             }
         }
 
         public string requestorPhoneExt {
             get {
-                return _requestorPhoneExt;
+                return _request.RequestorPhoneExt;
             }
             set {
-                _requestorPhoneExt = value;
+                _request.RequestorPhoneExt = value;
             }
         }
 
         public string requestorEmail {
             get {
-                return _requestorEmail;
+                return _request.RequestorEmail;
             }
             set {
-                _requestorEmail = value;
+                _request.RequestorEmail = value;
             }
         }
 
-        public string patientFName {
+        public string patientFirstName {
             get {
-                return _patientFName;
+                return _request.PatientFName;
             }
             set {
-                _patientFName = value;
+                _request.PatientFName = value;
             }
         }
 
-        public string patientLName {
+        public string patientLastName {
             get {
-                return _patientLName;
+                return _request.PatientLName;
             }
             set {
-                _patientLName = value;
+                _request.PatientLName = value;
             }
         }
 
         public Constants.Gender patientGender {
             get {
-                return _patientGender;
+                if (_request.PatientGender != null) {
+                    return (Constants.Gender) _request.PatientGender;
+                } else {
+                    return Constants.Gender.None;
+                }
             }
             set {
-                _patientGender = value;
+                if (value != Constants.Gender.None) {
+                    _request.PatientGender = (byte) value;
+                } else {
+                    _request.PatientGender = null;
+                }
             }
         }
 
         public string patientAgencyID {
             get {
-                return _patientAgencyID;
+                return _request.PatientAgencyID;
             }
             set {
-                _patientAgencyID = value;
+                _request.PatientAgencyID = value;
             }
         }
 
         public byte? patientAge {
             get {
-                return _patientAge;
+                return _request.PatientAge;
             }
             set {
-                _patientAge = value;
+                _request.PatientAge = value;
             }
         }
 
         public Constants.RequestStatus requestStatus {
             get {
-                return _requestStatus;
+                return (Constants.RequestStatus) _request.RequestStatus;
             }
             set {
-                _requestStatus = value;
+                _request.RequestStatus = (byte) value;
             }
         }
 
         public DateTime timeOpened {
             get {
-                return _timeOpened;
+                return _request.TimeOpened;
             }
             set {
-                _timeOpened = value;
+                _request.TimeOpened = value;
             }
         }
 
         public DateTime? timeClosed {
             get {
-                return _timeClosed;
+                return _request.TimeClosed;
             }
             set {
-                _timeClosed = value;
+                _request.TimeClosed = value;
+            }
+        }
+
+        public Constants.Priority priority {
+            get {
+                if (_request.Priority != null) {
+                    return (Constants.Priority) _request.Priority;
+                } else {
+                    return Constants.Priority.None;
+                }
+            }
+            set {
+                if (value != Constants.Priority.None) {
+                    _request.Priority = (byte) value;
+                } else {
+                    _request.Priority = null;
+                }
+            }
+        }
+
+        public Constants.Consequence consequence {
+            get {
+                if (_request.Consequence != null) {
+                    return (Constants.Consequence) _request.Consequence;
+                } else {
+                    return Constants.Consequence.None;
+                }
+            }
+            set {
+                if (value != Constants.Consequence.None) {
+                    _request.Consequence = (byte) value;
+                } else {
+                    _request.Consequence = null;
+                }
             }
         }
 
         public byte? regionID {
             get {
-                return _regionID;
+                return _request.RegionID;
             }
             set {
-                _regionID = value;
+                _request.RegionID = value;
             }
         }
 
         public byte? requestorTypeID {
             get {
-                return _requestorTypeID;
+                return _request.RequestorTypeID;
             }
             set {
-                _requestorTypeID = value;
+                _request.RequestorTypeID = value;
             }
         }
 
@@ -235,134 +239,94 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
     }
 
     public class QuestionResponseContent : IComparable {
-        private long _requestID = -1;
-        private long _questionResponseID = -1;
+        private QuestionResponse _questionResponse;
 
-        private string _question = null;
-        private string _response = null;
-        private short? _timeSpent = null;
-        private string _specialNotes = null;
-        private byte? _questionTypeID = null;
-        private byte? _tumourGroupID = null;
-
-        private Constants.Severity _severity = Constants.Severity.None;
-        private Constants.Consequence _consequence =
-            Constants.Consequence.None;
-
-        private List<ReferenceContent> _referenceList =
+        private List<ReferenceContent> _referenceList = 
             new List<ReferenceContent>();
 
-        private List<KeywordContent> _keywords = new List<KeywordContent>();
-
         public QuestionResponseContent(QuestionResponse qr) {
-            _requestID = qr.RequestID;
-            _questionResponseID = qr.QuestionResponseID;
+            _questionResponse = qr;
+        }
 
-            _question = qr.Question;
-            _response = qr.Response;
-            _timeSpent = qr.TimeSpent;
-            _specialNotes = qr.SpecialNotes;
-            _questionTypeID = qr.QuestionTypeID;
-            _tumourGroupID = qr.TumourGroupID;
+        public QuestionResponseContent() {
+            _questionResponse = new QuestionResponse();
+        }
 
-            if (qr.Severity != null) {
-                _severity = (Constants.Severity) qr.Severity;
-            }
-
-            if (qr.Consequence != null) {
-                _consequence = (Constants.Consequence) qr.Consequence;
+        public QuestionResponse questionResponse {
+            get {
+                return _questionResponse;
             }
         }
 
-        public QuestionResponseContent() {}
-
         public long requestID {
             get {
-                return _requestID;
+                return _questionResponse.RequestID;
             }
             set {
-                _requestID = value;
+                _questionResponse.RequestID = value;
             }
         }
 
         public long questionResponseID {
             get {
-                return _questionResponseID;
+                return _questionResponse.QuestionResponseID;
             }
             set {
-                _questionResponseID = value;
+                _questionResponse.QuestionResponseID = value;
             }
         }
 
         public string question {
             get {
-                return _question;
+                return _questionResponse.Question;
             }
             set {
-                _question = value;
+                _questionResponse.Question = value;
             }
         }
 
         public string response {
             get {
-                return _response;
+                return _questionResponse.Response;
             }
             set {
-                _response = value;
+                _questionResponse.Response = value;
             }
         }
 
         public short? timeSpent {
             get {
-                return _timeSpent;
+                return _questionResponse.TimeSpent;
             }
             set {
-                _timeSpent = value;
+                _questionResponse.TimeSpent = value;
             }
         }
 
         public string specialNotes {
             get {
-                return _specialNotes;
+                return _questionResponse.SpecialNotes;
             }
             set {
-                _specialNotes = value;
+                _questionResponse.SpecialNotes = value;
             }
         }
 
         public byte? questionTypeID {
             get {
-                return _questionTypeID;
+                return _questionResponse.QuestionTypeID;
             }
             set {
-                _questionTypeID = value;
+                _questionResponse.QuestionTypeID = value;
             }
         }
 
         public byte? tumourGroupID {
             get {
-                return _tumourGroupID;
+                return _questionResponse.TumourGroupID;
             }
             set {
-                _tumourGroupID = value;
-            }
-        }
-
-        public Constants.Severity severity {
-            get {
-                return _severity;
-            }
-            set {
-                _severity = value;
-            }
-        }
-
-        public Constants.Consequence consequence {
-            get {
-                return _consequence;
-            }
-            set {
-                _consequence = value;
+                _questionResponse.TumourGroupID = value;
             }
         }
 
@@ -380,24 +344,6 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             foreach (ReferenceContent r in _referenceList) {
                 if (r.referenceID == referenceID) {
                     _referenceList.Remove(r);
-                }
-            }
-        }
-
-        public List<KeywordContent> keywords {
-            get {
-                return _keywords;
-            }
-        }
-
-        public void addKeyword(KeywordContent newKeyword) {
-            _keywords.Add(newKeyword);
-        }
-
-        public void removeKeyword(int keywordId) {
-            foreach (KeywordContent kw in _keywords) {
-                if (kw.keywordId == keywordId) {
-                    _keywords.Remove(kw);
                 }
             }
         }
@@ -435,100 +381,66 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
     }
-
+   
     public class ReferenceContent {
-        private long _requestID;
-        private long _questionResponseID;
-        private long _referenceID;
+        private Reference _reference;
 
-        private Constants.ReferenceType _referenceType =
-            Constants.ReferenceType.Text;
-        private string _referenceString = "";
-
-        public ReferenceContent(Reference r) {
-            _requestID = r.RequestID;
-            _questionResponseID = r.QuestionResponseID;
-            _referenceID = r.ReferenceID;
-
-            _referenceType = (Constants.ReferenceType) r.ReferenceType;
-            _referenceString = r.ReferenceString;
+        public ReferenceContent(Reference qr) {
+            _reference = qr;
         }
 
-        public ReferenceContent() {}
+        public ReferenceContent() {
+            _reference = new Reference();
+        }
+
+        public Reference reference {
+            get {
+                return _reference;
+            }
+        }
 
         public long requestID {
             get {
-                return _requestID;
+                return _reference.RequestID;
             }
             set {
-                _requestID = value;
+                _reference.RequestID = value;
             }
         }
 
         public long questionResponseID {
             get {
-                return _questionResponseID;
+                return _reference.QuestionResponseID;
             }
             set {
-                _questionResponseID = value;
+                _reference.QuestionResponseID = value;
             }
         }
 
         public long referenceID {
             get {
-                return _referenceID;
+                return reference.ReferenceID;
             }
             set {
-                _referenceID = value;
+                reference.ReferenceID = value;
             }
         }
 
         public Constants.ReferenceType referenceType {
             get {
-                return _referenceType;
+                return (Constants.ReferenceType) _reference.ReferenceType;
             }
             set {
-                _referenceType = value;
+                _reference.ReferenceType = (byte) value;
             }
         }
 
         public string referenceString {
             get {
-                return _referenceString;
+                return _reference.ReferenceString;
             }
             set {
-                _referenceString = value;
-            }
-        }
-    }
-
-    public class KeywordContent {
-        private int _keywordID = -1;
-        private string _keywordStr = null;
-
-        public KeywordContent(Keyword kw) {
-            _keywordID = kw.KeywordID;
-            _keywordStr = kw.KeywordValue;
-        }
-
-        public KeywordContent() {
-        }
-
-        public int keywordId {
-            get {
-                return _keywordID;
-            }
-            set {
-                _keywordID = value;
-            }
-        }
-
-        public string keywordStr {
-            get {
-                return _keywordStr;
-            }
-            set {
-                _keywordStr = value;
+                _reference.ReferenceString = value;
             }
         }
     }
