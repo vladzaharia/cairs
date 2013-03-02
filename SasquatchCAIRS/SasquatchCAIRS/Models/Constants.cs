@@ -25,7 +25,7 @@ namespace SasquatchCAIRS.Models {
             Minor = 2
         }
 
-        public enum Severity {
+        public enum Consequence {
             None = -1,
             Certain = 0,
             Probable = 1,

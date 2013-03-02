@@ -1,37 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.75" name="CAIRS">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="SasquatchCAIRS">
   <DataContextMoniker Name="/CAIRSDataContext" />
   <nestedChildShapes>
-    <classShape Id="44a6ddf7-bdd9-46a8-b547-0a1505673c24" absoluteBounds="8.625, 3.25, 2, 2.3478011067708335">
+    <classShape Id="7356732f-a356-4d26-8e60-701cd2bf05eb" absoluteBounds="5.375, 2.5, 2, 2.3478011067708335">
       <DataClassMoniker Name="/CAIRSDataContext/QuestionResponse" />
       <nestedChildShapes>
-        <elementListCompartment Id="a0f7f7dc-4898-4f8b-bedf-2ff1788f6013" absoluteBounds="8.64, 3.71, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="d40a7cd9-c2c8-41ea-bd9c-cb8bf63358d5" absoluteBounds="5.39, 2.96, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="70fe3e47-0fab-4d52-90ce-c6c66cf85742" absoluteBounds="7.875, 6.75, 2, 1.7708968098958331">
-      <DataClassMoniker Name="/CAIRSDataContext/Reference" />
-      <nestedChildShapes>
-        <elementListCompartment Id="bfd22c17-3d4d-42da-a5d3-da85be6ad0b8" absoluteBounds="7.8900000000000006, 7.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <associationConnector edgePoints="[(9.25 : 5.59780110677083); (9.25 : 6.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/CAIRSDataContext/QuestionResponse/QuestionResponse_Reference" />
-      <nodes>
-        <classShapeMoniker Id="44a6ddf7-bdd9-46a8-b547-0a1505673c24" />
-        <classShapeMoniker Id="70fe3e47-0fab-4d52-90ce-c6c66cf85742" />
-      </nodes>
-    </associationConnector>
-    <classShape Id="204ca41f-bf72-4cd0-a914-5d5e190c79d8" absoluteBounds="5.625, 3.625, 2, 4.4631168619791666">
+    <classShape Id="33bda840-1010-4540-829d-83514542ee36" absoluteBounds="1.75, 3, 2, 4.4631168619791666">
       <DataClassMoniker Name="/CAIRSDataContext/Request" />
       <nestedChildShapes>
-        <elementListCompartment Id="8fa1ff74-e8d3-4aae-b93b-eb9b776bf305" absoluteBounds="5.64, 4.085, 1.9700000000000002, 3.903116861979167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="9fc3eee2-74de-41dd-8df8-21f69c04c892" absoluteBounds="1.7650000000000001, 3.46, 1.9700000000000002, 3.903116861979167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(7.625 : 4.61140055338542); (8.625 : 4.61140055338542)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(3.75 : 3.92390055338542); (5.375 : 3.92390055338542)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/CAIRSDataContext/Request/Request_QuestionResponse" />
       <nodes>
-        <classShapeMoniker Id="204ca41f-bf72-4cd0-a914-5d5e190c79d8" />
-        <classShapeMoniker Id="44a6ddf7-bdd9-46a8-b547-0a1505673c24" />
+        <classShapeMoniker Id="33bda840-1010-4540-829d-83514542ee36" />
+        <classShapeMoniker Id="7356732f-a356-4d26-8e60-701cd2bf05eb" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.45923076923077 : 7.46311686197917); (2.45923076923077 : 7.71311686197917); (3.05461538461538 : 7.71311686197917); (3.05461538461538 : 7.46311686197917)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/CAIRSDataContext/Request/Request_Request" />
+      <nodes>
+        <classShapeMoniker Id="33bda840-1010-4540-829d-83514542ee36" />
+        <classShapeMoniker Id="33bda840-1010-4540-829d-83514542ee36" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="5cedc61b-65ee-4536-8f43-b7cabfcd3e33" absoluteBounds="1.875, 0.875, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/CAIRSDataContext/Reference" />
+      <nestedChildShapes>
+        <elementListCompartment Id="34ff23da-5240-4c70-8f34-09897074ce27" absoluteBounds="1.8900000000000001, 1.335, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.375 : 2.5); (6.375 : 1.6874995); (3.875 : 1.6874995)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CAIRSDataContext/QuestionResponse/QuestionResponse_Reference" />
+      <nodes>
+        <classShapeMoniker Id="7356732f-a356-4d26-8e60-701cd2bf05eb" />
+        <classShapeMoniker Id="5cedc61b-65ee-4536-8f43-b7cabfcd3e33" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

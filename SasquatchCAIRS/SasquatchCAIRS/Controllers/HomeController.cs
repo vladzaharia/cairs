@@ -1,10 +1,12 @@
 ﻿using SasquatchCAIRS.Filters;
 using System.Web.Mvc;
+using SasquatchCAIRS.Controllers.ServiceSystem;
 
 namespace SasquatchCAIRS.Controllers {
     [InitializeSimpleMembership]
     public class HomeController : Controller {
         UserProfileController profileController = new UserProfileController();
+        RequestController reqController = RequestController.instance;
 
         [Authorize]
         public ActionResult Index() {

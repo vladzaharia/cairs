@@ -33,12 +33,12 @@ namespace SasquatchCAIRS
     partial void InsertQuestionResponse(QuestionResponse instance);
     partial void UpdateQuestionResponse(QuestionResponse instance);
     partial void DeleteQuestionResponse(QuestionResponse instance);
-    partial void InsertReference(Reference instance);
-    partial void UpdateReference(Reference instance);
-    partial void DeleteReference(Reference instance);
     partial void InsertRequest(Request instance);
     partial void UpdateRequest(Request instance);
     partial void DeleteRequest(Request instance);
+    partial void InsertReference(Reference instance);
+    partial void UpdateReference(Reference instance);
+    partial void DeleteReference(Reference instance);
     #endregion
 		
 		public CAIRSDataContext() : 
@@ -79,19 +79,19 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		public System.Data.Linq.Table<Reference> References
-		{
-			get
-			{
-				return this.GetTable<Reference>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Request> Requests
 		{
 			get
 			{
 				return this.GetTable<Request>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Reference> References
+		{
+			get
+			{
+				return this.GetTable<Reference>();
 			}
 		}
 	}
@@ -395,211 +395,6 @@ namespace SasquatchCAIRS
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Reference")]
-	public partial class Reference : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ReferenceID;
-		
-		private long _QuestionResponseID;
-		
-		private long _RequestID;
-		
-		private byte _ReferenceType;
-		
-		private string _ReferenceString;
-		
-		private EntityRef<QuestionResponse> _QuestionResponse;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnReferenceIDChanging(int value);
-    partial void OnReferenceIDChanged();
-    partial void OnQuestionResponseIDChanging(long value);
-    partial void OnQuestionResponseIDChanged();
-    partial void OnRequestIDChanging(long value);
-    partial void OnRequestIDChanged();
-    partial void OnReferenceTypeChanging(byte value);
-    partial void OnReferenceTypeChanged();
-    partial void OnReferenceStringChanging(string value);
-    partial void OnReferenceStringChanged();
-    #endregion
-		
-		public Reference()
-		{
-			this._QuestionResponse = default(EntityRef<QuestionResponse>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int ReferenceID
-		{
-			get
-			{
-				return this._ReferenceID;
-			}
-			set
-			{
-				if ((this._ReferenceID != value))
-				{
-					this.OnReferenceIDChanging(value);
-					this.SendPropertyChanging();
-					this._ReferenceID = value;
-					this.SendPropertyChanged("ReferenceID");
-					this.OnReferenceIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionResponseID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
-		public long QuestionResponseID
-		{
-			get
-			{
-				return this._QuestionResponseID;
-			}
-			set
-			{
-				if ((this._QuestionResponseID != value))
-				{
-					if (this._QuestionResponse.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnQuestionResponseIDChanging(value);
-					this.SendPropertyChanging();
-					this._QuestionResponseID = value;
-					this.SendPropertyChanged("QuestionResponseID");
-					this.OnQuestionResponseIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
-		public long RequestID
-		{
-			get
-			{
-				return this._RequestID;
-			}
-			set
-			{
-				if ((this._RequestID != value))
-				{
-					if (this._QuestionResponse.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRequestIDChanging(value);
-					this.SendPropertyChanging();
-					this._RequestID = value;
-					this.SendPropertyChanged("RequestID");
-					this.OnRequestIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceType", DbType="TinyInt NOT NULL")]
-		public byte ReferenceType
-		{
-			get
-			{
-				return this._ReferenceType;
-			}
-			set
-			{
-				if ((this._ReferenceType != value))
-				{
-					this.OnReferenceTypeChanging(value);
-					this.SendPropertyChanging();
-					this._ReferenceType = value;
-					this.SendPropertyChanged("ReferenceType");
-					this.OnReferenceTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceString", DbType="NVarChar(1024) NOT NULL", CanBeNull=false)]
-		public string ReferenceString
-		{
-			get
-			{
-				return this._ReferenceString;
-			}
-			set
-			{
-				if ((this._ReferenceString != value))
-				{
-					this.OnReferenceStringChanging(value);
-					this.SendPropertyChanging();
-					this._ReferenceString = value;
-					this.SendPropertyChanged("ReferenceString");
-					this.OnReferenceStringChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_Reference", Storage="_QuestionResponse", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID", IsForeignKey=true)]
-		public QuestionResponse QuestionResponse
-		{
-			get
-			{
-				return this._QuestionResponse.Entity;
-			}
-			set
-			{
-				QuestionResponse previousValue = this._QuestionResponse.Entity;
-				if (((previousValue != value) 
-							|| (this._QuestionResponse.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._QuestionResponse.Entity = null;
-						previousValue.References.Remove(this);
-					}
-					this._QuestionResponse.Entity = value;
-					if ((value != null))
-					{
-						value.References.Add(this);
-						this._QuestionResponseID = value.QuestionResponseID;
-						this._RequestID = value.RequestID;
-					}
-					else
-					{
-						this._QuestionResponseID = default(long);
-						this._RequestID = default(long);
-					}
-					this.SendPropertyChanged("QuestionResponse");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Request")]
 	public partial class Request : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -638,13 +433,17 @@ namespace SasquatchCAIRS
 		
 		private System.Nullable<byte> _Priority;
 		
-		private System.Nullable<byte> _Severity;
+		private System.Nullable<byte> _Consequence;
 		
 		private System.Nullable<byte> _RegionID;
 		
 		private System.Nullable<byte> _RequestorTypeID;
 		
 		private EntitySet<QuestionResponse> _QuestionResponses;
+		
+		private EntitySet<Request> _Requests;
+		
+		private EntityRef<Request> _Request1;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -682,8 +481,8 @@ namespace SasquatchCAIRS
     partial void OnTimeClosedChanged();
     partial void OnPriorityChanging(System.Nullable<byte> value);
     partial void OnPriorityChanged();
-    partial void OnSeverityChanging(System.Nullable<byte> value);
-    partial void OnSeverityChanged();
+    partial void OnConsequenceChanging(System.Nullable<byte> value);
+    partial void OnConsequenceChanged();
     partial void OnRegionIDChanging(System.Nullable<byte> value);
     partial void OnRegionIDChanged();
     partial void OnRequestorTypeIDChanging(System.Nullable<byte> value);
@@ -693,6 +492,8 @@ namespace SasquatchCAIRS
 		public Request()
 		{
 			this._QuestionResponses = new EntitySet<QuestionResponse>(new Action<QuestionResponse>(this.attach_QuestionResponses), new Action<QuestionResponse>(this.detach_QuestionResponses));
+			this._Requests = new EntitySet<Request>(new Action<Request>(this.attach_Requests), new Action<Request>(this.detach_Requests));
+			this._Request1 = default(EntityRef<Request>);
 			OnCreated();
 		}
 		
@@ -727,6 +528,10 @@ namespace SasquatchCAIRS
 			{
 				if ((this._ParentRequestID != value))
 				{
+					if (this._Request1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnParentRequestIDChanging(value);
 					this.SendPropertyChanging();
 					this._ParentRequestID = value;
@@ -1016,22 +821,22 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Severity", DbType="TinyInt")]
-		public System.Nullable<byte> Severity
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Consequence", DbType="TinyInt")]
+		public System.Nullable<byte> Consequence
 		{
 			get
 			{
-				return this._Severity;
+				return this._Consequence;
 			}
 			set
 			{
-				if ((this._Severity != value))
+				if ((this._Consequence != value))
 				{
-					this.OnSeverityChanging(value);
+					this.OnConsequenceChanging(value);
 					this.SendPropertyChanging();
-					this._Severity = value;
-					this.SendPropertyChanged("Severity");
-					this.OnSeverityChanged();
+					this._Consequence = value;
+					this.SendPropertyChanged("Consequence");
+					this.OnConsequenceChanged();
 				}
 			}
 		}
@@ -1089,6 +894,53 @@ namespace SasquatchCAIRS
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_Request", Storage="_Requests", ThisKey="RequestID", OtherKey="ParentRequestID")]
+		public EntitySet<Request> Requests
+		{
+			get
+			{
+				return this._Requests;
+			}
+			set
+			{
+				this._Requests.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_Request", Storage="_Request1", ThisKey="ParentRequestID", OtherKey="RequestID", IsForeignKey=true)]
+		public Request Request1
+		{
+			get
+			{
+				return this._Request1.Entity;
+			}
+			set
+			{
+				Request previousValue = this._Request1.Entity;
+				if (((previousValue != value) 
+							|| (this._Request1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Request1.Entity = null;
+						previousValue.Requests.Remove(this);
+					}
+					this._Request1.Entity = value;
+					if ((value != null))
+					{
+						value.Requests.Add(this);
+						this._ParentRequestID = value.RequestID;
+					}
+					else
+					{
+						this._ParentRequestID = default(Nullable<long>);
+					}
+					this.SendPropertyChanged("Request1");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1119,6 +971,223 @@ namespace SasquatchCAIRS
 		{
 			this.SendPropertyChanging();
 			entity.Request = null;
+		}
+		
+		private void attach_Requests(Request entity)
+		{
+			this.SendPropertyChanging();
+			entity.Request1 = this;
+		}
+		
+		private void detach_Requests(Request entity)
+		{
+			this.SendPropertyChanging();
+			entity.Request1 = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Reference")]
+	public partial class Reference : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private long _ReferenceID;
+		
+		private long _QuestionResponseID;
+		
+		private long _RequestID;
+		
+		private byte _ReferenceType;
+		
+		private string _ReferenceString;
+		
+		private EntityRef<QuestionResponse> _QuestionResponse;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnReferenceIDChanging(long value);
+    partial void OnReferenceIDChanged();
+    partial void OnQuestionResponseIDChanging(long value);
+    partial void OnQuestionResponseIDChanged();
+    partial void OnRequestIDChanging(long value);
+    partial void OnRequestIDChanged();
+    partial void OnReferenceTypeChanging(byte value);
+    partial void OnReferenceTypeChanged();
+    partial void OnReferenceStringChanging(string value);
+    partial void OnReferenceStringChanged();
+    #endregion
+		
+		public Reference()
+		{
+			this._QuestionResponse = default(EntityRef<QuestionResponse>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceID", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public long ReferenceID
+		{
+			get
+			{
+				return this._ReferenceID;
+			}
+			set
+			{
+				if ((this._ReferenceID != value))
+				{
+					this.OnReferenceIDChanging(value);
+					this.SendPropertyChanging();
+					this._ReferenceID = value;
+					this.SendPropertyChanged("ReferenceID");
+					this.OnReferenceIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionResponseID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long QuestionResponseID
+		{
+			get
+			{
+				return this._QuestionResponseID;
+			}
+			set
+			{
+				if ((this._QuestionResponseID != value))
+				{
+					if (this._QuestionResponse.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnQuestionResponseIDChanging(value);
+					this.SendPropertyChanging();
+					this._QuestionResponseID = value;
+					this.SendPropertyChanged("QuestionResponseID");
+					this.OnQuestionResponseIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long RequestID
+		{
+			get
+			{
+				return this._RequestID;
+			}
+			set
+			{
+				if ((this._RequestID != value))
+				{
+					if (this._QuestionResponse.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRequestIDChanging(value);
+					this.SendPropertyChanging();
+					this._RequestID = value;
+					this.SendPropertyChanged("RequestID");
+					this.OnRequestIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceType", DbType="TinyInt NOT NULL")]
+		public byte ReferenceType
+		{
+			get
+			{
+				return this._ReferenceType;
+			}
+			set
+			{
+				if ((this._ReferenceType != value))
+				{
+					this.OnReferenceTypeChanging(value);
+					this.SendPropertyChanging();
+					this._ReferenceType = value;
+					this.SendPropertyChanged("ReferenceType");
+					this.OnReferenceTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceString", DbType="NVarChar(1024) NOT NULL", CanBeNull=false)]
+		public string ReferenceString
+		{
+			get
+			{
+				return this._ReferenceString;
+			}
+			set
+			{
+				if ((this._ReferenceString != value))
+				{
+					this.OnReferenceStringChanging(value);
+					this.SendPropertyChanging();
+					this._ReferenceString = value;
+					this.SendPropertyChanged("ReferenceString");
+					this.OnReferenceStringChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_Reference", Storage="_QuestionResponse", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID", IsForeignKey=true)]
+		public QuestionResponse QuestionResponse
+		{
+			get
+			{
+				return this._QuestionResponse.Entity;
+			}
+			set
+			{
+				QuestionResponse previousValue = this._QuestionResponse.Entity;
+				if (((previousValue != value) 
+							|| (this._QuestionResponse.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._QuestionResponse.Entity = null;
+						previousValue.References.Remove(this);
+					}
+					this._QuestionResponse.Entity = value;
+					if ((value != null))
+					{
+						value.References.Add(this);
+						this._QuestionResponseID = value.QuestionResponseID;
+						this._RequestID = value.RequestID;
+					}
+					else
+					{
+						this._QuestionResponseID = default(long);
+						this._RequestID = default(long);
+					}
+					this.SendPropertyChanged("QuestionResponse");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }
