@@ -5,21 +5,20 @@ using System.Web;
 
 namespace SasquatchCAIRS.Models.ServiceSystem {
     public class RequestContent {
-        private SasquatchCAIRS.Request _request;
+        private Request _request;
         private List<QuestionResponseContent> _questionResponseList
             = new List<QuestionResponseContent>();
-        private List<SasquatchCAIRS.Reference> _referenceList
-            = new List<SasquatchCAIRS.Reference>();
+        private List<Reference> _referenceList = new List<Reference>();
 
-        public RequestContent(SasquatchCAIRS.Request req) {
+        public RequestContent(Request req) {
             _request = req;
         }
 
         public RequestContent() {
-            _request = new SasquatchCAIRS.Request();
+            _request = new Request();
         }
 
-        public SasquatchCAIRS.Request request {
+        public Request request {
             get {
                 return _request;
             }
@@ -34,7 +33,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public System.Nullable<long> parentRequestID {
+        public long? parentRequestID {
             get {
                 return _request.ParentRequestID;
             }
@@ -115,7 +114,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
                 }
             }
             set {
-                if (value != null) {
+                if (value != Constants.Gender.None) {
                     _request.PatientGender = (byte) value;
                 } else {
                     _request.PatientGender = null;
@@ -132,7 +131,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public System.Nullable<byte> patientAge {
+        public byte? patientAge {
             get {
                 return _request.PatientAge;
             }
@@ -159,6 +158,15 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
+        public DateTime? timeClosed {
+            get {
+                return _request.TimeClosed;
+            }
+            set {
+                _request.TimeClosed = value;
+            }
+        }
+
         public Constants.Priority priority {
             get {
                 if (_request.Priority != null) {
@@ -168,7 +176,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
                 }
             }
             set {
-                if (value != null) {
+                if (value != Constants.Priority.None) {
                     _request.Priority = (byte) value;
                 } else {
                     _request.Priority = null;
@@ -176,24 +184,24 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public Constants.Severity severity {
+        public Constants.Consequence consequence {
             get {
-                if (_request.Severity != null) {
-                    return (Constants.Severity) _request.Severity;
+                if (_request.Consequence != null) {
+                    return (Constants.Consequence) _request.Consequence;
                 } else {
-                    return Constants.Severity.None;
+                    return Constants.Consequence.None;
                 }
             }
             set {
-                if (value != null) {
-                    _request.Severity = (byte) value;
+                if (value != Constants.Consequence.None) {
+                    _request.Consequence = (byte) value;
                 } else {
-                    _request.Severity = null;
+                    _request.Consequence = null;
                 }
             }
         }
 
-        public System.Nullable<byte> regionID {
+        public byte? regionID {
             get {
                 return _request.RegionID;
             }
@@ -202,7 +210,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public System.Nullable<byte> requestorTypeID {
+        public byte? requestorTypeID {
             get {
                 return _request.RequestorTypeID;
             }
@@ -217,47 +225,34 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public Boolean addQuestionResponse(QuestionResponseContent newQR) {
-            if (newQR.requestID != requestID) {
-                return false;
-            }
-
-            foreach (QuestionResponseContent qr in _questionResponseList) {
-                if (qr.questionResponseID == newQR.questionResponseID) {
-                    return false;
-                }
-            }
-
+        public void addQuestionResponse(QuestionResponseContent newQR) {
             _questionResponseList.Add(newQR);
-            return true;
         }
 
-        public Boolean removeQuestionResponse(long questionResponseID) {
+        public void removeQuestionResponse(long questionResponseID) {
             foreach (QuestionResponseContent qr in _questionResponseList) {
                 if (qr.questionResponseID == questionResponseID) {
                     _questionResponseList.Remove(qr);
-                    return true;
                 }
             }
-
-            return false;
         }
     }
 
-    public class QuestionResponseContent {
-        private SasquatchCAIRS.QuestionResponse _questionResponse;
+    public class QuestionResponseContent : IComparable {
+        private QuestionResponse _questionResponse;
 
-        private List<ReferenceContent> _referenceList = new List<ReferenceContent>();
+        private List<ReferenceContent> _referenceList = 
+            new List<ReferenceContent>();
 
-        public QuestionResponseContent(SasquatchCAIRS.QuestionResponse qr) {
+        public QuestionResponseContent(QuestionResponse qr) {
             _questionResponse = qr;
         }
 
         public QuestionResponseContent() {
-            _questionResponse = new SasquatchCAIRS.QuestionResponse();
+            _questionResponse = new QuestionResponse();
         }
 
-        public SasquatchCAIRS.QuestionResponse questionResponse {
+        public QuestionResponse questionResponse {
             get {
                 return _questionResponse;
             }
@@ -299,7 +294,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public System.Nullable<short> timeSpent {
+        public short? timeSpent {
             get {
                 return _questionResponse.TimeSpent;
             }
@@ -317,7 +312,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public System.Nullable<byte> questionTypeID {
+        public byte? questionTypeID {
             get {
                 return _questionResponse.QuestionTypeID;
             }
@@ -326,7 +321,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public System.Nullable<byte> tumourGroupID {
+        public byte? tumourGroupID {
             get {
                 return _questionResponse.TumourGroupID;
             }
@@ -341,46 +336,64 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public Boolean addReference(ReferenceContent newRef) {
-            if (newRef.requestID != requestID ||
-                newRef.questionResponseID != questionResponseID) {
-                return false;
-            }
-
-            foreach (ReferenceContent r in _referenceList) {
-                if (r.questionResponseID == newRef.questionResponseID) {
-                    return false;
-                }
-            }
-
+        public void addReference(ReferenceContent newRef) {
             _referenceList.Add(newRef);
-            return true;
         }
 
-        public Boolean removeReference(long referenceID) {
+        public void removeReference(long referenceID) {
             foreach (ReferenceContent r in _referenceList) {
-                if (r.questionResponseID == questionResponseID) {
+                if (r.referenceID == referenceID) {
                     _referenceList.Remove(r);
-                    return true;
                 }
             }
+        }
 
-            return false;
+        /// <summary>
+        /// Compares the current instance with another QuestionResponseContent
+        /// object and returns an integer that indicates whether the current
+        /// instance precedes, follows, or occurs in the same position in the
+        /// sort order as the other object.
+        /// </summary>
+        /// <param name="obj">An object to compare with this instance.</param>
+        /// <returns>
+        /// Less than zero if this instance precedes obj in the sort order.
+        /// Zero if this instance occurs in the same position in the sort order
+        /// as obj.
+        /// Greater than zero if this instance follows obj in the sort order.
+        /// </returns>
+        public int CompareTo(object obj) {
+            if (obj == null) {
+                return 1;
+            }
+
+            QuestionResponseContent otherQRContent = 
+                obj as QuestionResponseContent;
+            if (otherQRContent != null) {
+                if (requestID == otherQRContent.requestID) {
+                    return questionResponseID.CompareTo(
+                        otherQRContent.questionResponseID);
+                } else {
+                    return requestID.CompareTo(otherQRContent.requestID);
+                }
+            } else {
+                throw new ArgumentException(
+                    "Object is not a QuestionResponseContent");
+            }
         }
     }
    
     public class ReferenceContent {
-        private SasquatchCAIRS.Reference _reference;
+        private Reference _reference;
 
-        public ReferenceContent(SasquatchCAIRS.Reference qr) {
+        public ReferenceContent(Reference qr) {
             _reference = qr;
         }
 
         public ReferenceContent() {
-            _reference = new SasquatchCAIRS.Reference();
+            _reference = new Reference();
         }
 
-        public SasquatchCAIRS.Reference reference {
+        public Reference reference {
             get {
                 return _reference;
             }
@@ -404,7 +417,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public int referenceID {
+        public long referenceID {
             get {
                 return reference.ReferenceID;
             }
