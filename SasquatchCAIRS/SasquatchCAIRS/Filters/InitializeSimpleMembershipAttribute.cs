@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Web.Mvc;
 using WebMatrix.WebData;
-using SasquatchCAIRS.Models;
 using System.Web.Security;
 using SasquatchCAIRS.Controllers;
 
@@ -27,11 +25,9 @@ namespace SasquatchCAIRS.Filters {
 
         private class SimpleMembershipInitializer {
             public SimpleMembershipInitializer() {
-                Database.SetInitializer<UsersContext>(null);
-
                 try {
-                    using (var context = new UsersContext()) {
-                        if (!context.Database.Exists()) {
+                    using (var context = new CAIRSDataContext()) {
+                        if (!context.DatabaseExists()) {
                             // Create the SimpleMembership database without 
                             // Entity Framework migration schema
                             ((IObjectContextAdapter) context)

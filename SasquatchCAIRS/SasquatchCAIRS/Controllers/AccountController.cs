@@ -1,5 +1,4 @@
-﻿using SasquatchCAIRS.Filters;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Security;
 
 namespace SasquatchCAIRS.Controllers {
@@ -15,9 +14,9 @@ namespace SasquatchCAIRS.Controllers {
 
             if (returnUrl == "/") {
                 return RedirectToLocal(returnUrl);
-            } else {
-                return View();
             }
+
+            return View();
         }
 
         //
@@ -47,10 +46,11 @@ namespace SasquatchCAIRS.Controllers {
         private ActionResult RedirectToLocal(string returnUrl) {
             if (Url.IsLocalUrl(returnUrl)) {
                 return Redirect(returnUrl);
-            } else {
-                return RedirectToAction("Index", "Home");
             }
+
+            return RedirectToAction("Index", "Home");
         }
+
         #endregion
     }
 }
