@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="sasquatch" Class="CAIRSDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=q1z8wwq8to.database.windows.net;Initial Catalog=sasquatch;Persist Security Info=True;User ID=team" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="sasquatchConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=sasquatch.cloudapp.net;Initial Catalog=sasquatch;Persist Security Info=True;User ID=team" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="sasquatchConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.QuestionResponse" Member="QuestionResponses">
     <Type Name="QuestionResponse">
       <Column Name="QuestionResponseID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -46,6 +46,38 @@
       <Column Name="RegionID" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="RequestorTypeID" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Association Name="Request_QuestionResponse" Member="QuestionResponses" ThisKey="RequestID" OtherKey="RequestID" Type="QuestionResponse" />
+      <Association Name="Request_AuditLog" Member="AuditLogs" ThisKey="RequestID" OtherKey="RequestID" Type="AuditLog" />
+      <Association Name="Request_RequestLock" Member="RequestLocks" ThisKey="RequestID" OtherKey="RequestID" Type="RequestLock" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AuditLog" Member="AuditLogs">
+    <Type Name="AuditLog">
+      <Column Name="RequestID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AuditType" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AuditDate" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="AuditLog_UserProfile" Member="UserProfiles" ThisKey="UserID" OtherKey="UserId" Type="UserProfile" />
+      <Association Name="Request_AuditLog" Member="Request" ThisKey="RequestID" OtherKey="RequestID" Type="Request" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserProfile" Member="UserProfiles">
+    <Type Name="UserProfile">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(56) NOT NULL" CanBeNull="false" />
+      <Column Name="UserFullName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="UserEmail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="UserStatus" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="AuditLog_UserProfile" Member="AuditLog" ThisKey="UserId" OtherKey="UserID" Type="AuditLog" IsForeignKey="true" />
+      <Association Name="RequestLock_UserProfile" Member="RequestLock" ThisKey="UserId" OtherKey="UserID" Type="RequestLock" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RequestLock" Member="RequestLocks">
+    <Type Name="RequestLock">
+      <Column Name="RequestID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="StartTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="RequestLock_UserProfile" Member="UserProfiles" ThisKey="UserID" OtherKey="UserId" Type="UserProfile" />
+      <Association Name="Request_RequestLock" Member="Request" ThisKey="RequestID" OtherKey="RequestID" Type="Request" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace SasquatchCAIRS.Models {
-    public class Constants {
+﻿namespace SasquatchCAIRS.Models {
+    public static class Constants {
         public enum Gender {
             None = -1,
             Female = 0,

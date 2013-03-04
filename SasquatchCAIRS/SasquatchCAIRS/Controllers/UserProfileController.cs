@@ -1,31 +1,44 @@
-﻿using SasquatchCAIRS.Models;
-using System;
+﻿using System;
+using System.Configuration;
 using System.DirectoryServices;
 using System.Linq;
 using System.Web.Hosting;
 
 namespace SasquatchCAIRS.Controllers {
     public class UserProfileController {
-        public const string USER_DISPLAY_NAME = "displayName";
-        public const string USER_EMAIL = "mail";
+        private const string USER_DISPLAY_NAME = "displayName";
+        private const string USER_EMAIL = "mail";
+
+        /// <summary>
+        /// Read-only UserProfileController singleton
+        /// </summary>
+        private static readonly UserProfileController _instance = new UserProfileController();
+
+        private UserProfileController() {}
+
+        public static UserProfileController instance {
+            get {
+                return _instance;
+            }
+        }
 
         public UserProfile getUserProfile(string username) {
-            using (UsersContext db = new UsersContext()) {
+            using (CAIRSDataContext db = new CAIRSDataContext()) {
                 UserProfile user = db.UserProfiles.FirstOrDefault(u => 
                     u.UserName.ToLower() == username.ToLower());
                 // Check if user already exists
                 if (user == null) {
                     // Get User Info
-                    String[] ADUser = getADInformation(username.ToLower());
+                    var adUser = getADInformation(username.ToLower());
 
                     // Insert name into the profile table
-                    db.UserProfiles.Add(new UserProfile {
+                    db.UserProfiles.InsertOnSubmit(new UserProfile {
                         UserName = username,
-                        UserFullName = ADUser[0],
-                        UserEmail = ADUser[1],
+                        UserFullName = adUser[0],
+                        UserEmail = adUser[1],
                         UserStatus = true
                     });
-                    db.SaveChanges();
+                    db.SubmitChanges();
                 }
 
                 return db.UserProfiles.FirstOrDefault(u => 
@@ -33,16 +46,15 @@ namespace SasquatchCAIRS.Controllers {
             }
         }
 
-        public String[] getADInformation(string loginUsername) {
+        private String[] getADInformation(string loginUsername) {
             String[] adInfo = new String[2];
             using (HostingEnvironment.Impersonate()) {
                 using (DirectoryEntry de = new DirectoryEntry(
-                    "LDAP://sasquatch.cloudapp.net/" +
-                    "CN=Users,DC=sasquatch,DC=cloudapp,DC=net")) {
+                    ConfigurationManager.ConnectionStrings["ADConn"].ConnectionString)) {
 
                     using (DirectorySearcher adSearch = new DirectorySearcher(de)) {
-                        adSearch.PropertiesToLoad.Add(UserProfileController.USER_DISPLAY_NAME);
-                        adSearch.PropertiesToLoad.Add(UserProfileController.USER_EMAIL);
+                        adSearch.PropertiesToLoad.Add(USER_DISPLAY_NAME);
+                        adSearch.PropertiesToLoad.Add(USER_EMAIL);
                         String username = loginUsername.Split('\\')[1];
 
                         adSearch.Filter = "(sAMAccountName=" + username + ")";
@@ -56,22 +68,22 @@ namespace SasquatchCAIRS.Controllers {
                         }
 
                         if (adSearchResult
-                            .Properties[UserProfileController.USER_DISPLAY_NAME]
+                            .Properties[USER_DISPLAY_NAME]
                             .Count == 0) {
                             adInfo[0] = "";
                         } else {
                             adInfo[0] = adSearchResult
-                                .Properties[UserProfileController.USER_DISPLAY_NAME][0]
+                                .Properties[USER_DISPLAY_NAME][0]
                                 .ToString();
                         }
 
                         if (adSearchResult
-                            .Properties[UserProfileController.USER_EMAIL]
+                            .Properties[USER_EMAIL]
                             .Count == 0) {
                             adInfo[1] = "";
                         } else {
                             adInfo[1] = adSearchResult
-                                .Properties[UserProfileController.USER_EMAIL][0]
+                                .Properties[USER_EMAIL][0]
                                 .ToString();
                         }
 
