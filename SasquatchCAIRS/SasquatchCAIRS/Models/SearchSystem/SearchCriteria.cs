@@ -9,22 +9,8 @@ namespace SasquatchCAIRS.Models {
 
     public class SearchCriteria {
 
+        [DataType(DataType.Text)]
         public String keywordString {
-            get;
-            set;
-        }
-
-        public Int16 questionTypeId {
-            get;
-            set;
-        }
-
-        public Int16 tumorGroupId {
-            get;
-            set;
-        }
-
-        public Int16 requestStatus {
             get;
             set;
         }
@@ -41,8 +27,25 @@ namespace SasquatchCAIRS.Models {
             set;
         }
 
+        public String requestStatus {
+            get;
+            set;
+        }
+
         [DataType(DataType.Text)]
-        public String callerFirstName {
+        public String requestorFirstName {
+            get;
+            set;
+        }
+
+        [DataType(DataType.Text)]
+        public String requestorLastName {
+            get;
+            set;
+        }
+
+        [DataType(DataType.Text)]
+        public String patientFirstName {
             set;
         }
         public String requestorLName {
@@ -65,27 +68,31 @@ namespace SasquatchCAIRS.Models {
             set;
         }
 
-
         [DataType(DataType.Text)]
-        public String callerLastName {
+        public String patientLastName {
             get;
             set;
         }
 
-        public Int16 severity {
+        public String tumorGroup {
             get;
             set;
         }
         public Int16 probability {
+        public String questionType {
             get;
             set;
         }
 
-        public Int16 status {
+        public String severity {
             get;
             set;
         }
 
+        public String consequence {
+            get;
+            set;
+        }
     }
 
     public class SearchCriteriaContext : DbContext {

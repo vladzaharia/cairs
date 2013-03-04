@@ -1,0 +1,102 @@
+﻿@model SasquatchCAIRS.Models.SearchCriteria
+
+@{
+    ViewBag.Title = "Results";
+}
+
+<h2>Results</h2>
+
+<fieldset>
+    <legend>SearchCriteria</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.keywordString)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.keywordString)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.startTime)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.startTime)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.completionTime)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.completionTime)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.requestStatus)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.requestStatus)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.requestorFirstName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.requestorFirstName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.requestorLastName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.requestorLastName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.patientFirstName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.patientFirstName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.patientLastName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.patientLastName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.questionType)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.questionType)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.tumorGroup)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.tumorGroup)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.requestStatus)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.requestStatus)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.severity)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.severity)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.consequence)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.consequence)
+    </div>
+</fieldset>
