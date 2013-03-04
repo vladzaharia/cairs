@@ -76,7 +76,7 @@ namespace SasquatchCAIRS.Models {
             get;
             set;
         }
-
+        public Int16 probability {
             get;
             set;
         }
