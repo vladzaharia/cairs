@@ -1,9 +1,7 @@
 ﻿@if (Request.IsAuthenticated) {
     String name =  User.Identity.Name;
-    if (name == null) {
         if (ViewBag.Profile.UserFullName != null && !string.Equals("",ViewBag.Profile.UserFullName)) {
             name = ViewBag.Profile.UserFullName;
-        }
     }
 
     <text>

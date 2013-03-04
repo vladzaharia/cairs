@@ -6,15 +6,27 @@
 
 <h2>Advanced Search</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Results", "Search", FormMethod.Post,
+    new {
+        @class = "form form-search advanced-search"
+    })) {
     @Html.ValidationSummary(true)
 
     <fieldset>
         <legend>SearchCriteria</legend>
 
+        <div class="editor-label">
+            <br />
+            @Html.Label("Keywords")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.keywordString)
+            @Html.ValidationMessageFor(model => model.keywordString)
+        </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.startTime)
+            <br />
+            @Html.Label("Start Time")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.startTime)
@@ -22,58 +34,62 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.completionTime)
+            <br />
+            @Html.Label("Completion Time")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.completionTime)
             @Html.ValidationMessageFor(model => model.completionTime)
         </div>
 
+        <div class="editor-label">
+            <br />
+            @Html.Label("Status")
+        </div>
+
         <div class="editor-field">
-        
-        <label class="checkbox inline">
-            <input type="checkbox" id="inlineCheckbox1" value="1">
-            Open
-        </label>
-        <label class="checkbox inline">
-            <input type="checkbox" id="inlineCheckbox2" value="2">
-            Closed
-        </label>
-        <label class="checkbox inline">
-            <input type="checkbox" id="inlineCheckbox3" value="3">
-            Inactive
-        </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name="status" id="Open" value="Open">
+                Open
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name="status" id="Closed" value="Closed">
+                Closed
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name="status" id="Inactive" value="Inactive">
+                Inactive
+            </label>
         </div>
 
         <div class="editor-label">
+            <br />
             @Html.Label("Requestor Name")
         </div>
 
         <div class="editor-field">
-            <form class="form-inline">
-                <input type="text" class="input-medium" placeholder="First Name">
-                <input type="text" class="input-medium" placeholder="Last Name">
-            </form>
+            <input type="text" class="input-medium" name="requestorFirst" placeholder="First Name">
+            <input type="text" class="input-medium" name="requestorLast" placeholder="Last Name">
         </div>
 
         <div class="editor-label">
+            <br />
             @Html.Label("Patient Name")
         </div>
 
         <div class="editor-field">
-            <form class="form-inline">
-                <input type="text" class="input-medium" placeholder="First Name">
-                <input type="text" class="input-medium" placeholder="Last Name">
-            </form>
+            <input type="text" class="input-medium" name="patientFirst" placeholder="First Name">
+            <input type="text" class="input-medium" name="patientLast" placeholder="Last Name">
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.tumorGroupId)
+            <br />
+            @Html.Label("Tumor Group")
         </div>
+
         <div class="editor-field">
-@*            @Html.EditorFor(model => model.tumorGroupId)
-            @Html.ValidationMessageFor(model => model.tumorGroupId)*@
-            <select multiple="multiple">
+            @*TODO REPLACE WITH CHECKBOXLIST*@
+            <select multiple="multiple" name="tumorGroup">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -82,106 +98,71 @@
             </select>
         </div>
 
-
-
         <div class="editor-label">
-            @Html.LabelFor(model => model.questionTypeId)
+            <br />
+            @Html.Label("Question Type")
         </div>
         <div class="editor-field">
-@*            @Html.EditorFor(model => model.questionTypeId)
-            @Html.ValidationMessageFor(model => model.questionTypeId)*@
-            <select multiple="multiple">
+            @*TODO REPLACE WITH CHECKBOXLIST*@
+            <select multiple="multiple" name="questionType">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
                 <option>4</option>
-                <option>5</option>    
+                <option>5</option>
             </select>
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.severity)
+            <br />
+            @Html.Label("Severity")
         </div>
         <div class="editor-field">
 
             <label class="checkbox inline">
-                <input type="checkbox" id="inlineCheckbox1" value="1">
+                <input type="checkbox" name="severity" id="Major" value="Major">
                 Major
             </label>
             <label class="checkbox inline">
-                <input type="checkbox" id="inlineCheckbox2" value="2">
+                <input type="checkbox" name="severity" id="Moderate" value="Moderate">
                 Moderate
             </label>
             <label class="checkbox inline">
-                <input type="checkbox" id="inlineCheckbox3" value="3">
+                <input type="checkbox" name="severity" id="Minor" value="Minor">
                 Minor
             </label>
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.consequence)
+            <br />
+            @Html.Label("Consequence")
         </div>
-        <div class="editor-field">
 
+        <div class="editor-field">
             <label class="checkbox inline">
-                <input type="checkbox" id="inlineCheckbox1" value="1">
+                <input type="checkbox" name="consequence" id="Certain" value="Certain">
                 Certain
             </label>
             <label class="checkbox inline">
-                <input type="checkbox" id="inlineCheckbox2" value="2">
+                <input type="checkbox" name="consequence" id="Probable" value="Probable">
                 Probable
             </label>
             <label class="checkbox inline">
-                <input type="checkbox" id="inlineCheckbox3" value="3">
+                <input type="checkbox" name="consequence" id="Possible" value="Possible">
                 Possible
             </label>
             <label class="checkbox inline">
-                <input type="checkbox" id="inlineCheckbox3" value="4">
+                <input type="checkbox" name="consequence" id="Unlikely" value="Unlikely">
                 Unlikely
             </label>
         </div>
 
-
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.requestStatus)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.requestStatus)
-            @Html.ValidationMessageFor(model => model.requestStatus)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.callerFirstName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.callerFirstName)
-            @Html.ValidationMessageFor(model => model.callerFirstName)
-        </div>
-
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.callerLastName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.callerLastName)
-            @Html.ValidationMessageFor(model => model.callerLastName)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.severity)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.severity)
-            @Html.ValidationMessageFor(model => model.severity)
-        </div>
-
         <p>
-            <input class="btn btn-success" type="submit" value="Search!" />
+            <br />
+            <input class="btn" type="submit" value="Search!" />
         </p>
     </fieldset>
 }
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
