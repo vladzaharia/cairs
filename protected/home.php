@@ -74,6 +74,10 @@
 				'placement': 'right',
 				'trigger': 'hover'
 			});
+
+			$(".tasks-progress").mouseenter(function() {
+				_gaq.push(['_trackEvent', 'Menu', 'Click', 'Protected']);
+			});
 		});
 	</script>
 </head>
@@ -423,6 +427,7 @@
 	            		<strike>February 11th, 2013</strike> (Cancelled - Family Day)<br />
 	            		<strike>February 18th, 2013</strike> (Cancelled - Reading Week)<br />
 	            		February 25th, 2013 - <a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'February 25 Agenda']);" href="/meetings/ta/feb25a.pdf">Agenda</a> / <a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'February 25']);" href="/meetings/ta/feb25.pdf">Minutes</a>
+	            		February 25th, 2013 - <a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'March 4 Agenda']);" href="/meetings/ta/mar4a.pdf">Agenda</a> / Minutes
 	            	</div>
 	            </div>
 	        </div>
