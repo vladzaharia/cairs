@@ -6,11 +6,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SasquatchCAIRS.Models.ServiceSystem;
+using SasquatchCAIRS.Models;
 
 namespace SasquatchCAIRS.Controllers
 {
     public class SearchController : Controller
     {
+        UserProfileController profileController = new UserProfileController();
         private SearchContext db = new SearchContext();
 
         //
@@ -18,6 +20,7 @@ namespace SasquatchCAIRS.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
             return View(db.SearchResults.ToList());
         }
 
@@ -26,13 +29,34 @@ namespace SasquatchCAIRS.Controllers
 
         [HttpPost]
         public ActionResult Search(String searchText) {
+            ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
             ViewBag.searchText = searchText;
             return View();
         }
 
         public ActionResult Advanced() {
+            ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Results(SearchCriteria criteria, FormCollection form) {
+            ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
+            criteria.requestStatus = form["status"];
+            criteria.severity = form["severity"];
+            criteria.consequence = form["consequence"];
+            criteria.patientFirstName = form["patientFirst"];
+            criteria.patientLastName = form["patientLast"];
+            criteria.tumorGroup = form["tumorGroup"];
+            criteria.questionType = form["questionType"];
+            criteria.requestorFirstName = form["requestorFirst"];
+            criteria.requestorLastName = form["requestorLast"];
+            criteria.patientFirstName = form["patientFirst"];
+            criteria.patientLastName = form["patientLast"];
+
+            return View(criteria);
+        }
+
 
         //
         // GET: /Search/Details/5

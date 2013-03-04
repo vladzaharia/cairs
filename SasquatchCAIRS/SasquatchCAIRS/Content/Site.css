@@ -26,10 +26,6 @@ a {
         color: #333;
     }
 
-    a:hover {
-        background-color: #c7d1d6;
-    }
-
 header, footer, hgroup,
 nav, section {
     display: block;
@@ -155,6 +151,9 @@ footer {
     margin: 0 0 10px;
     text-align: right;
     color: #FFFFFF;
+    position: relative;
+    top: -5px;
+    margin: 0px;
 }
 
     #login a {
@@ -184,12 +183,44 @@ footer {
 
 /* search
 ----------------------------------------------------------*/
+.quick-search {
+    display: inline-block;
+    height: 35px;
+}
+
+.quick-search-div {
+    position: relative;
+    left: 16px;
+    top: -9px;
+}
+
+.quick-search-button {
+    position: relative;
+    top: 5px;
+}
+
+.adv-search-div {
+    display: inline-block;
+    text-align: left;
+    line-height: 15px;
+    position: relative;
+    top: 3px;
+    left: 6px;
+}
+
+.adv-search-top {
+}
+
+.adv-search-bottom {
+}
+
 #search {
     display: block;
     font-size: .85em;
     margin: 0 0 10px;
     text-align: right;
     color: #FFFFFF;
+    height: 35px;
 }
 
     #search a {
@@ -224,6 +255,8 @@ ul#menu {
     font-weight: 400;
     margin: -10px 0 12px 2px;
     padding: 0;
+    position: relative;
+    top: 7px;
 }
 
     ul#menu li {
