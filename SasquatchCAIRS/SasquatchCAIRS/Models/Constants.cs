@@ -7,17 +7,23 @@
             Other = 3
         }
 
-        public enum RequestStatus {
-            Open = 0,
-            Completed = 1,
-            Invalid = 2
-        }
-
         public enum Priority {
             None = -1,
             Major = 0,
             Moderate = 1,
             Minor = 2
+        }
+
+        public enum ReferenceType {
+            URL = 0,
+            File = 1,
+            Text = 2
+        }
+
+        public enum RequestStatus {
+            Open = 0,
+            Completed = 1,
+            Invalid = 2
         }
 
         public enum Severity {
@@ -26,12 +32,6 @@
             Probable = 1,
             Possible = 2,
             Unlikely = 3
-        }
-
-        public enum ReferenceType {
-            URL = 0,
-            File = 1,
-            Text = 2
         }
     }
 }
