@@ -4,7 +4,7 @@ using System.DirectoryServices;
 using System.Linq;
 using System.Web.Hosting;
 
-namespace SasquatchCAIRS.Controllers {
+namespace SasquatchCAIRS.Controllers.Security {
     public class UserProfileController {
         private const string USER_DISPLAY_NAME = "displayName";
         private const string USER_EMAIL = "mail";
@@ -22,6 +22,11 @@ namespace SasquatchCAIRS.Controllers {
             }
         }
 
+        /// <summary>
+        /// Get the User Profile for the entered username.
+        /// </summary>
+        /// <param name="username">Username to look for.</param>
+        /// <returns>The UserProfile for the user.</returns>
         public UserProfile getUserProfile(string username) {
             using (CAIRSDataContext db = new CAIRSDataContext()) {
                 UserProfile user = db.UserProfiles.FirstOrDefault(u => 
@@ -46,6 +51,11 @@ namespace SasquatchCAIRS.Controllers {
             }
         }
 
+        /// <summary>
+        /// Get the Active Directory information for the user.
+        /// </summary>
+        /// <param name="loginUsername">Username to search for.</param>
+        /// <returns>An array containing the user information from AD.</returns>
         private String[] getADInformation(string loginUsername) {
             String[] adInfo = new String[2];
             using (HostingEnvironment.Impersonate()) {

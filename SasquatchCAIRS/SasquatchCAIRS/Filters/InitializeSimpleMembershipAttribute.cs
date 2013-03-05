@@ -2,6 +2,7 @@
 using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Web.Mvc;
+using SasquatchCAIRS.Controllers.Security;
 using WebMatrix.WebData;
 using System.Web.Security;
 using SasquatchCAIRS.Controllers;
