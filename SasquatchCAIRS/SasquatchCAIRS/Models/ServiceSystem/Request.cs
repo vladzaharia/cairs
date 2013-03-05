@@ -266,7 +266,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
     public class QuestionResponseContent : IComparable {
         private long _requestID = -1;
         private long _questionResponseID = -1;
-        
+
         private string _question = null;
         private string _response = null;
         private short? _timeSpent = null;
@@ -274,7 +274,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         private byte? _questionTypeID = null;
         private byte? _tumourGroupID = null;
 
-        private List<ReferenceContent> _referenceList = 
+        private List<ReferenceContent> _referenceList =
             new List<ReferenceContent>();
 
         public QuestionResponseContent(QuestionResponse qr) {
@@ -414,7 +414,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
     }
-   
+
     public class ReferenceContent {
         private long _requestID;
         private long _questionResponseID;
@@ -424,8 +424,13 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             Constants.ReferenceType.Text;
         private string _referenceString = "";
 
-        public ReferenceContent(Reference qr) {
-            
+        public ReferenceContent(Reference r) {
+            _requestID = r.RequestID;
+            _questionResponseID = r.QuestionResponseID;
+            _referenceID = r.ReferenceID;
+
+            _referenceType = (Constants.ReferenceType) r.ReferenceType;
+            _referenceString = r.ReferenceString;
         }
 
         public ReferenceContent() {}
