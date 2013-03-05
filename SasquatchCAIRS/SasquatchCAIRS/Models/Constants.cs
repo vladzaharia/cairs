@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 
 namespace SasquatchCAIRS.Models {
-    public class Constants {
+    public static class Constants {
         public enum Gender {
             None = -1,
             Female = 0,
@@ -38,5 +38,43 @@ namespace SasquatchCAIRS.Models {
             File = 1,
             Text = 2
         }
+
+        public enum DropdownTable {
+            Keyword,
+            QuestionType,
+            Region,
+            RequestorType,
+            TumourGroup,
+            UserGroup
+        }
+
+        public static string KEYWORD_TBL_ID_ATTR = "KeywordID";
+        public static string KEYWORD_TBL_KEYWORD_ATTR = "Keyword";
+        public static string KEYWORD_TBL_ACTIVE_ATTR = "Active";
+
+        public static string QUESTIONTYPE_TBL_ID_ATTR = "QuestionTypeID";
+        public static string QUESTIONTYPE_TBL_VALUE_ATTR = "Value";
+        public static string QUESTIONTYPE_TBL_CODE_ATTR = "Code";
+        public static string QUESTIONTYPE_TBL_ACTIVE_ATTR = "Active";
+
+        public static string REGION_TBL_ID_ATTR = "RegionID";
+        public static string REGION_TBL_VALUE_ATTR = "Value";
+        public static string REGION_TBL_CODE_ATTR = "Code";
+        public static string REGION_TBL_ACTIVE_ATTR = "Active";
+
+        public static string REQUESTORTYPE_TBL_ID_ATTR = "RequestorTypeID";
+        public static string REQUESTORTYPE_TBL_VALUE_ATTR = "Value";
+        public static string REQUESTORTYPE_TBL_CODE_ATTR = "Code";
+        public static string REQUESTORTYPE_TBL_ACTIVE_ATTR = "Active";
+
+        public static string TUMOURGROUP_TBL_ID_ATTR = "TumourGroupID";
+        public static string TUMOURGROUP_TBL_VALUE_ATTR = "Value";
+        public static string TUMOURGROUP_TBL_CODE_ATTR = "Code";
+        public static string TUMOURGROUP_TBL_ACTIVE_ATTR = "Active";
+
+        public static string USERGROUP_TBL_ID_ATTR = "GroupID";
+        public static string USERGROUP_TBL_VALUE_ATTR = "Value";
+        public static string USERGROUP_TBL_CODE_ATTR = "Code";
+        public static string USERGROUP_TBL_ACTIVE_ATTR = "Active";
     }
 }

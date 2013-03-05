@@ -6,7 +6,6 @@ namespace SasquatchCAIRS.Controllers {
     [InitializeSimpleMembership]
     public class HomeController : Controller {
         UserProfileController profileController = new UserProfileController();
-        RequestController reqController = RequestController.instance;
 
         [Authorize]
         public ActionResult Index() {

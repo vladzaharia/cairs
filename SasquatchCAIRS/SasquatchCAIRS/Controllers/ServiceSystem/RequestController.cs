@@ -10,7 +10,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
     public sealed class RequestController {
         private static readonly RequestController _instance =
             new RequestController();
-        private CAIRSDataContext db = new CAIRSDataContext();
+        private CAIRSDataContext _db = new CAIRSDataContext();
 
         private RequestController() {
         }
@@ -77,7 +77,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         }
 
         /// <summary>
-        /// Create a QuestionResponse entity based off of the 
+        /// Create a QuestionResponse entity based off of the
         /// QuestionResponseContent.
         /// </summary>
         /// <param name="content">QuestionResponse content holder.</param>
@@ -103,6 +103,11 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
             return qr;
         }
 
+        /// <summary>
+        /// Create a Reference entity based off of the ReferenceContent.
+        /// </summary>
+        /// <param name="content">Reference content holder.</param>
+        /// <returns></returns>
         private Reference createReferenceEntity(ReferenceContent content) {
             Reference r = new Reference();
 
@@ -130,8 +135,8 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                 using (TransactionScope trans = new TransactionScope()) {
                     // Insert new Request entity
                     Request req = createRequestEntity(reqContent);
-                    db.Requests.InsertOnSubmit(req);
-                    db.SubmitChanges();
+                    _db.Requests.InsertOnSubmit(req);
+                    _db.SubmitChanges();
 
                     // For each QuestionResponse associated with the request
                     foreach (QuestionResponseContent qrContent
@@ -143,10 +148,10 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                         // Insert new QuestionResponse entity
                         QuestionResponse qr =
                             createQuestionResponseEntity(qrContent);
-                        db.QuestionResponses.InsertOnSubmit(qr);
-                        db.SubmitChanges();
+                        _db.QuestionResponses.InsertOnSubmit(qr);
+                        _db.SubmitChanges();
 
-                        // For each Reference associated with the 
+                        // For each Reference associated with the
                         // QuestionResponse
                         foreach (ReferenceContent refContent
                             in qrContent.referenceList) {
@@ -158,41 +163,41 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                                 qr.QuestionResponseID;
 
                             // Insert new Reference entity
-                            db.References.InsertOnSubmit(
+                            _db.References.InsertOnSubmit(
                                 createReferenceEntity(refContent));
-                            db.SubmitChanges();
+                            _db.SubmitChanges();
                         }
                     }
 
                     trans.Complete();
                 }
             } catch (Exception ex) {
-                // Do something
+                // TODO: Do something
             }
         }
 
         /// <summary>
-        /// Retrieves all of the request information and content from the 
+        /// Retrieves all of the request information and content from the
         /// database for a given request ID.
         /// </summary>
         /// <param name="requestID"></param>
         /// <returns></returns>
-        public RequestContent view(long requestID) {
+        public RequestContent getRequestDetails(long requestID) {
             Request reqResult =
-                (from reqs in db.Requests
+                (from reqs in _db.Requests
                  where reqs.RequestID == requestID
                  select reqs)
                  .First();
 
             List<QuestionResponse> qrResults =
-                (from qrs in db.QuestionResponses
+                (from qrs in _db.QuestionResponses
                  where qrs.RequestID == requestID
                  orderby qrs.QuestionResponseID
                  select qrs)
                  .ToList();
 
             List<Reference> refResults =
-                (from refs in db.References
+                (from refs in _db.References
                  where refs.RequestID == requestID
                  orderby refs.QuestionResponseID
                  select refs)
@@ -227,7 +232,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         }
 
         /// <summary>
-        /// Modify a request properties, question-response pairs and references
+        /// Edit a request properties, question-response pairs and references
         /// for a given request ID.
         /// </summary>
         /// <param name="reqContent">
@@ -238,7 +243,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                 using (TransactionScope trans = new TransactionScope()) {
                     // Check if the request exists
                     int exists =
-                        (from reqs in db.Requests
+                        (from reqs in _db.Requests
                          where reqs.RequestID == reqContent.requestID
                          select reqs.RequestID).Count();
 
@@ -248,12 +253,12 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
 
                     // Update the Request entity
                     Request req = createRequestEntity(reqContent);
-                    db.SubmitChanges();
+                    _db.SubmitChanges();
 
                     // Get the list of QuestionResponseIDs in the database
                     // for the given RequestIDs
                     List<long> qrResults =
-                        (from qrs in db.QuestionResponses
+                        (from qrs in _db.QuestionResponses
                          where qrs.RequestID == reqContent.requestID
                          orderby qrs.QuestionResponseID
                          select qrs.QuestionResponseID)
@@ -274,26 +279,26 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                             // Update QuestionResponse and References
                             QuestionResponse qr =
                                 createQuestionResponseEntity(qrContent);
-                            db.SubmitChanges();
+                            _db.SubmitChanges();
                         } else {
                             // Insert new QuestionResponse
                             QuestionResponse qr =
                                 createQuestionResponseEntity(qrContent);
-                            db.QuestionResponses.InsertOnSubmit(qr);
-                            db.SubmitChanges();
+                            _db.QuestionResponses.InsertOnSubmit(qr);
+                            _db.SubmitChanges();
 
                             // Insert new References
                             foreach (ReferenceContent refContent
                                 in qrContent.referenceList) {
 
                                 // Set new QuestionResponseID
-                                refContent.questionResponseID = 
+                                refContent.questionResponseID =
                                     qr.QuestionResponseID;
 
-                                Reference r = 
+                                Reference r =
                                     createReferenceEntity(refContent);
-                                db.References.InsertOnSubmit(r);
-                                db.SubmitChanges();
+                                _db.References.InsertOnSubmit(r);
+                                _db.SubmitChanges();
                             }
                         }
                     }
@@ -303,30 +308,30 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                     foreach (long qrID in qrResults) {
                         // Must delete References before QuestionResponse
                         List<Reference> refList =
-                            (from refs in db.References
+                            (from refs in _db.References
                              where refs.RequestID == req.RequestID &&
                                    refs.QuestionResponseID == qrID
                              select refs)
                              .ToList();
 
-                        db.References.DeleteAllOnSubmit(refList);
-                        db.SubmitChanges();
+                        _db.References.DeleteAllOnSubmit(refList);
+                        _db.SubmitChanges();
 
                         QuestionResponse qr =
-                            (from qrs in db.QuestionResponses
+                            (from qrs in _db.QuestionResponses
                              where qrs.RequestID == req.RequestID &&
                                    qrs.QuestionResponseID == qrID
                              select qrs)
                              .First();
 
-                        db.QuestionResponses.DeleteOnSubmit(qr);
-                        db.SubmitChanges();
+                        _db.QuestionResponses.DeleteOnSubmit(qr);
+                        _db.SubmitChanges();
                     }
 
                     trans.Complete();
                 }
             } catch (Exception ex) {
-                // Do something
+                // TODO: Do something
             }
         }
 
@@ -337,16 +342,16 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         public void invalidate(long requestID) {
             try {
                 using (TransactionScope trans = new TransactionScope()) {
-                    Request req = (from reqs in db.Requests
+                    Request req = (from reqs in _db.Requests
                                    where reqs.RequestID == requestID
                                    select reqs).First();
                     req.RequestStatus = (byte) Constants.RequestStatus.Invalid;
-                    db.SubmitChanges();
+                    _db.SubmitChanges();
 
                     trans.Complete();
                 }
             } catch (Exception ex) {
-                // Do something
+                // TODO: Do something
             }
         }
     }

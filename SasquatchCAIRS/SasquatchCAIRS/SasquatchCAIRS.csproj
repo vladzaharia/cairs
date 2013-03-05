@@ -173,7 +173,8 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Constants.cs" />
-    <Compile Include="Controllers\ServiceSystem\DropdownManager.cs" />
+    <Compile Include="Controllers\ServiceSystem\DropdownController.cs" />
+    <Compile Include="Models\ServiceSystem\DropdownEntry.cs" />
     <Compile Include="Models\ServiceSystem\Request.cs" />
     <Compile Include="Controllers\ServiceSystem\RequestController.cs" />
     <Compile Include="Controllers\ServiceSystem\ServiceManager.cs" />
