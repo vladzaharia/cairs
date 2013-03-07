@@ -87,8 +87,8 @@
 	    	<a class="brand" href="#"></a>
 	    	<ul class="nav">
 	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Home']);" href="/">home</a></li>
-	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Protected']);" href="/protected">/protected</a></li>
-	      		<?php if ($_SESSION['username'] === 'team') { ?> <li class="active"><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Team']);" href="/team">/team</a></li> <?php } ?>
+	      		<li class="active"><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Protected']);" href="/protected">/protected</a></li>
+	      		<?php if ($_SESSION['username'] === 'team') { ?> <li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Team']);" href="/team">/team</a></li> <?php } ?>
 	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Repo']);" href="https://github.com/vladzaharia/cloaked-octo-bear">/repo</a></li>
 	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Review']);" href="http://review.wearesasquatch.com/">/review</a></li>
 	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Facebook']);" href="https://www.facebook.com/groups/ubc319/">/fb</a></li>
