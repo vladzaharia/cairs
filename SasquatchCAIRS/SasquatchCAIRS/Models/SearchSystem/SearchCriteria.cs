@@ -45,7 +45,8 @@ namespace SasquatchCAIRS.Models {
         }
 
         [DataType(DataType.Text)]
-        public String patientFirstName {
+        public String patientFirstName { 
+            get;
             set;
         }
         public String requestorLName {
@@ -79,6 +80,9 @@ namespace SasquatchCAIRS.Models {
             set;
         }
         public Int16 probability {
+            get;
+            set;
+        }
         public String questionType {
             get;
             set;
