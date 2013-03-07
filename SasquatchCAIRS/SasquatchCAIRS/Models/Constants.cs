@@ -98,6 +98,35 @@ namespace SasquatchCAIRS.Models {
         public static string REQUESTORTYPE_TBL_ACTIVE_ATTR = "Active";
 
         public static string TUMOURGROUP_TBL_ID_ATTR = "TumourGroupID";
+        // For Report Generation
+        public enum Month {
+            None = 0,
+            January = 1,
+            Feburary = 2,
+            March = 3,
+            April = 4,
+            May = 5,
+            June = 6,
+            July = 7,
+            August = 8,
+            September = 9,
+            October = 10,
+            November = 11,
+            December = 12
+        }
+
+        public enum DataType {
+            AvgTimePerRequest = 0,
+            AvgTimeFromStartToComplete = 1,
+            TotalNumOfRequests = 2,
+            TotalTimeSpent = 3
+        }
+
+        public enum StratifyOption {
+            Region = 0,
+            CallerType = 1,
+            TumorGroup = 2
+        }
         public static string TUMOURGROUP_TBL_VALUE_ATTR = "Value";
         public static string TUMOURGROUP_TBL_CODE_ATTR = "Code";
         public static string TUMOURGROUP_TBL_ACTIVE_ATTR = "Active";
