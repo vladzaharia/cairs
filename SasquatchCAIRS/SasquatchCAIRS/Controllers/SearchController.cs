@@ -52,8 +52,10 @@ namespace SasquatchCAIRS.Controllers
             criteria.requestorFirstName = form["requestorFirst"];
             criteria.requestorLastName = form["requestorLast"];
             criteria.patientFirstName = form["patientFirst"];
-            criteria.patientLastName = form["patientLast"];
+            criteria.patientLastName = form["patientLast"]; //why twice?
+            
 
+            
             return View(criteria);
         }
 
