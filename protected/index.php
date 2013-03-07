@@ -75,7 +75,7 @@
 	    			</div>
 
 	    			<div class="span2 center">
-	    				<a onClick="_gaq.push(['_trackEvent', 'Login', 'Click', 'Ream']);" href="../team/login.php?state=protected" class="photo team"></a>
+	    				<a onClick="_gaq.push(['_trackEvent', 'Login', 'Click', 'Team']);" href="../team/login.php?state=protected" class="photo team"></a>
 	    			</div>
 	            </div>
 
