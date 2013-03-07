@@ -18,6 +18,11 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
+        /// <summary>
+        /// Get all active dropdown entries from a specific table.
+        /// </summary>
+        /// <param name="table">Table containing the entries.</param>
+        /// <returns>List of dropdown table entries.</returns>
         public List<DropdownEntry> getActiveEntries(Constants.DropdownTable table) {
             List<DropdownEntry> list = new List<DropdownEntry>();
 
