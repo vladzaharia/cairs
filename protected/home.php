@@ -87,8 +87,8 @@
 	    	<a class="brand" href="#"></a>
 	    	<ul class="nav">
 	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Home']);" href="/">home</a></li>
-	      		<li class="active"><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Protected']);" href="/protected">/protected</a></li>
-	      		<?php if ($_SESSION['username'] === 'team') { ?> <li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Team']);" href="/team">/team</a></li> <?php } ?>
+	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Protected']);" href="/protected">/protected</a></li>
+	      		<?php if ($_SESSION['username'] === 'team') { ?> <li class="active"><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Team']);" href="/team">/team</a></li> <?php } ?>
 	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Repo']);" href="https://github.com/vladzaharia/cloaked-octo-bear">/repo</a></li>
 	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Review']);" href="http://review.wearesasquatch.com/">/review</a></li>
 	      		<li><a onClick="_gaq.push(['_trackEvent', 'Menu', 'Click', 'Facebook']);" href="https://www.facebook.com/groups/ubc319/">/fb</a></li>
@@ -414,6 +414,7 @@
 	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Team', 'February 7']);" href="/meetings/team/feb7.pdf">February 7th, 2013</a><br />
 	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Team', 'February 11']);" href="/meetings/team/feb11.pdf">February 11th, 2013</a><br />
 	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Team', 'February 14']);" href="/meetings/team/feb14.pdf">February 14th, 2013</a><br />
+	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'Team', 'March 5']);" href="/meetings/team/mar5.pdf">March 5th, 2013</a><br />
 	            	</div>
 	            	<div class="span4">
 	            		<h4>Client Meetings</h4>
@@ -426,8 +427,8 @@
 	            		<a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'February 4']);" href="/meetings/ta/feb4.pdf">February 4th, 2013</a><br />
 	            		<strike>February 11th, 2013</strike> (Cancelled - Family Day)<br />
 	            		<strike>February 18th, 2013</strike> (Cancelled - Reading Week)<br />
-	            		February 25th, 2013 - <a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'February 25 Agenda']);" href="/meetings/ta/feb25a.pdf">Agenda</a> / <a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'February 25']);" href="/meetings/ta/feb25.pdf">Minutes</a>
-	            		February 25th, 2013 - <a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'March 4 Agenda']);" href="/meetings/ta/mar4a.pdf">Agenda</a> / Minutes
+	            		February 25th, 2013 - <a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'February 25 Agenda']);" href="/meetings/ta/feb25a.pdf">Agenda</a> / <a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'February 25']);" href="/meetings/ta/feb25.pdf">Minutes</a> <br />
+	            		February 25th, 2013 - <a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'March 4 Agenda']);" href="/meetings/ta/mar4a.pdf">Agenda</a> / <a onClick="_gaq.push(['_trackEvent', 'Minutes', 'TA', 'March 4']);" href="/meetings/ta/mar4.pdf">Minutes</a>
 	            	</div>
 	            </div>
 	        </div>
