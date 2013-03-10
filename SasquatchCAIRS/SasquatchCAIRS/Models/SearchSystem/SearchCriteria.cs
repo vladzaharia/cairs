@@ -49,26 +49,6 @@ namespace SasquatchCAIRS.Models {
             get;
             set;
         }
-        public String requestorLName {
-            get;
-            set;
-        }
-        public String requestorFName
-        {
-            get;
-            set;
-        }
-        public String patientLName
-        {
-            get;
-            set;
-        }
-        public String patientFName
-        {
-            get;
-            set;
-        }
-
         [DataType(DataType.Text)]
         public String patientLastName {
             get;
@@ -76,10 +56,6 @@ namespace SasquatchCAIRS.Models {
         }
 
         public String tumorGroup {
-            get;
-            set;
-        }
-        public Int16 probability {
             get;
             set;
         }
