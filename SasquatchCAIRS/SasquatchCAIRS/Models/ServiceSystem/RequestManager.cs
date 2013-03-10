@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SasquatchCAIRS.Models.ServiceSystem {
     public sealed class RequestManager {
@@ -9,7 +7,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         /// Read-only RequestManager singleton
         /// </summary>
         private static readonly RequestManager _instance = new RequestManager();
-        private CAIRSDataContext db = new CAIRSDataContext();
+        private CAIRSDataContext _db = new CAIRSDataContext();
 
         private RequestManager() {}
 
@@ -25,21 +23,21 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         /// </summary>
         /// <param name="req"></param>
         public void create(RequestContent req) {
-            db.Requests.InsertOnSubmit(req.request);
-            db.SubmitChanges();
+            _db.Requests.InsertOnSubmit(req.request);
+            _db.SubmitChanges();
 
             foreach (QuestionResponseContent qr in req.questionResponseList) {
                 qr.requestID = req.requestID;
 
-                db.QuestionResponses.InsertOnSubmit(qr.questionResponse);
-                db.SubmitChanges();
+                _db.QuestionResponses.InsertOnSubmit(qr.questionResponse);
+                _db.SubmitChanges();
 
                 foreach (ReferenceContent r in qr.referenceList) {
                     r.requestID = req.requestID;
                     r.questionResponseID = qr.questionResponseID;
 
-                    db.References.InsertOnSubmit(r.reference);
-                    db.SubmitChanges();
+                    _db.References.InsertOnSubmit(r.reference);
+                    _db.SubmitChanges();
                 }
             }
         }
@@ -48,25 +46,25 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         /// Retrieves all of the request information and content from the 
         /// database for a given request ID.
         /// </summary>
-        /// <param name="requestID"></param>
+        /// <param name="requestId"></param>
         /// <returns></returns>
-        public RequestContent view(long requestID) {
-            SasquatchCAIRS.Request reqResult =
-                (from reqs in db.Requests
-                 where reqs.RequestID == requestID
+        public RequestContent view(long requestId) {
+            Request reqResult =
+                (from reqs in _db.Requests
+                 where reqs.RequestID == requestId
                  select reqs)
                  .First();
 
-            List<SasquatchCAIRS.QuestionResponse> qrResults =
-                (from qrs in db.QuestionResponses
-                 where qrs.RequestID == requestID
+            List<QuestionResponse> qrResults =
+                (from qrs in _db.QuestionResponses
+                 where qrs.RequestID == requestId
                  orderby qrs.QuestionResponseID
                  select qrs)
                  .ToList();
 
-            List<SasquatchCAIRS.Reference> refResults =
-                (from refs in db.References
-                 where refs.RequestID == requestID
+            List<Reference> refResults =
+                (from refs in _db.References
+                 where refs.RequestID == requestId
                  orderby refs.QuestionResponseID
                  select refs)
                  .ToList();
@@ -75,9 +73,9 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
 
             int refCounter = 0;
             foreach (QuestionResponse qr in qrResults) {
-                QuestionResponseContent newQR =
+                QuestionResponseContent newQr =
                     new QuestionResponseContent(qr);
-                req.addQuestionResponse(newQR);
+                req.addQuestionResponse(newQr);
 
                 while (refCounter < refResults.Count && 
                     qr.QuestionResponseID == 
@@ -85,7 +83,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
                     
                     ReferenceContent newRef =
                         new ReferenceContent(refResults[refCounter++]);
-                    newQR.addReference(newRef);
+                    newQr.addReference(newRef);
                 }
             }
 
@@ -99,13 +97,13 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         /// <summary>
         /// Mark a request with the given request ID as invalid in the database.
         /// </summary>
-        /// <param name="requestID"></param>
-        public void invalidate(long requestID) {
-            Request req = (from reqs in db.Requests
-                           where reqs.RequestID == requestID
+        /// <param name="requestId"></param>
+        public void invalidate(long requestId) {
+            Request req = (from reqs in _db.Requests
+                           where reqs.RequestID == requestId
                            select reqs).First();
             req.RequestStatus = 2;
-            db.SubmitChanges();
+            _db.SubmitChanges();
         }
     }
 }

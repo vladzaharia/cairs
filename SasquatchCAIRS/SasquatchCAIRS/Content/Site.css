@@ -208,6 +208,10 @@ ul#menu {
             text-decoration: none;
         }
 
+section#search {
+    margin: -5px 0;
+    color: white;
+}
 
 /* page elements
 ----------------------------------------------------------*/
