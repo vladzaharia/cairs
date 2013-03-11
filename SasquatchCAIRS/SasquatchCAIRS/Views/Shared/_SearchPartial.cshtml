@@ -3,7 +3,7 @@
         @using (Html.BeginForm("Search", "Search", FormMethod.Post,
             new { @class="form form-search quick-search" })) {
             <div class="input-append quick-search-div">
-                @Html.TextBox("searchText", "", 
+                @Html.TextBox("keywords", "", 
                     new { @class="span2 search-query", @placeholder="Quick Search" })
                 <button class="btn quick-search-button" type="submit">
                     <i class="icon-search"></i>

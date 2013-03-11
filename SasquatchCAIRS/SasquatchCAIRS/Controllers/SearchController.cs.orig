@@ -57,7 +57,14 @@ namespace SasquatchCAIRS.Controllers
             criteria.requestorFirstName = form["requestorFirst"];
             criteria.requestorLastName = form["requestorLast"];
             criteria.patientFirstName = form["patientFirst"];
+<<<<<<< HEAD
             criteria.patientLastName = form["patientLast"]; //why twice?
+            
+
+            
+            return View(criteria);
+=======
+            criteria.patientLastName = form["patientLast"];
             Session["criteria"] = criteria;
 
             ViewBag.keywords = criteria.keywordString;
@@ -77,6 +84,7 @@ namespace SasquatchCAIRS.Controllers
     private List<Request> searchCriteriaQuery(SearchCriteria c) {
             List<Request> searchResults = new List<Request>();
             return searchResults;
+>>>>>>> ea4c7034f4a94200a4776c5c28be185568354981
         }
 
 
