@@ -276,6 +276,7 @@
     </Content>
     <Content Include="Images\logo.png" />
     <Content Include="AuditLogTemplate.xlsx" />
+    <Content Include="AuditLogTemplate.xlsx" />
     <None Include="Properties\PublishProfiles\DevHanna.pubxml" />
     <Content Include="ReportTemplate.xlsx" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
