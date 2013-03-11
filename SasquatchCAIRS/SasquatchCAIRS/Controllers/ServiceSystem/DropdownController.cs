@@ -35,10 +35,9 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
                          .ToList();
 
                     foreach (Keyword kw in keywords) {
-                        list.Add(new DropdownEntry(kw.KeywordID,
-                                                   null,
-                                                   kw.KeywordValue,
-                                                   kw.Active));
+                        list.Add(new KeywordEntry(kw.KeywordID,
+                                                  kw.KeywordValue,
+                                                  kw.Active));
                     }
 
                     break;
@@ -123,14 +122,6 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         }
 
         /// <summary>
-        /// Add a new keyword to the database.
-        /// </summary>
-        /// <param name="value">The keyword string.</param>
-        public void addKeyword(string value) {
-            addEntry(Constants.DropdownTable.Keyword, null, value);
-        }
-
-        /// <summary>
         /// Add a new entry to one of the dropdown tables in the database.
         /// </summary>
         /// <param name="table">Table to add a new entry to.</param>
@@ -139,51 +130,50 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         /// </param>
         /// <param name="value">The value associated with the entry.</param>
         public void addEntry(Constants.DropdownTable table,
-                             string code,
-                             string value) {
+                             DropdownEntry entry) {
             switch (table) {
                 case Constants.DropdownTable.Keyword:
                     Keyword kw = new Keyword();
-                    kw.KeywordValue = value;
+                    kw.KeywordValue = entry.value;
 
                     _db.Keywords.InsertOnSubmit(kw);
                     break;
                 case Constants.DropdownTable.QuestionType:
                     QuestionType qType = new QuestionType();
-                    qType.Code = code;
-                    qType.Value = value;
+                    qType.Code = entry.code;
+                    qType.Value = entry.value;
 
                     _db.QuestionTypes.InsertOnSubmit(qType);
 
                     break;
                 case Constants.DropdownTable.Region:
                     Region region = new Region();
-                    region.Code = code;
-                    region.Value = value;
+                    region.Code = entry.code;
+                    region.Value = entry.value;
 
                     _db.Regions.InsertOnSubmit(region);
 
                     break;
                 case Constants.DropdownTable.RequestorType:
                     RequestorType rType = new RequestorType();
-                    rType.Code = code;
-                    rType.Value = value;
+                    rType.Code = entry.code;
+                    rType.Value = entry.value;
 
                     _db.RequestorTypes.InsertOnSubmit(rType);
 
                     break;
                 case Constants.DropdownTable.TumourGroup:
                     TumourGroup tGroup = new TumourGroup();
-                    tGroup.Code = code;
-                    tGroup.Value = value;
+                    tGroup.Code = entry.code;
+                    tGroup.Value = entry.value;
 
                     _db.TumourGroups.InsertOnSubmit(tGroup);
 
                     break;
                 case Constants.DropdownTable.UserGroup:
                     UserGroup uGroup = new UserGroup();
-                    uGroup.Code = code;
-                    uGroup.Value = value;
+                    uGroup.Code = entry.code;
+                    uGroup.Value = entry.value;
 
                     _db.UserGroups.InsertOnSubmit(uGroup);
 

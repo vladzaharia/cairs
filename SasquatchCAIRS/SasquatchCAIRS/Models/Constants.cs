@@ -18,7 +18,7 @@ namespace SasquatchCAIRS.Models {
             Invalid = 2
         }
 
-        public enum Priority {
+        public enum Severity {
             None = -1,
             Major = 0,
             Moderate = 1,
