@@ -30,7 +30,6 @@ namespace SasquatchCAIRS.Controllers
                 curMonth = startDate.AddMonths(i);
                 pointRepsOfMonths[i] = new Point(curMonth.Month, curMonth.Year);
             }
-
             
             List<XSLContent> xslContents = new List<XSLContent>();
 
@@ -43,6 +42,7 @@ namespace SasquatchCAIRS.Controllers
             Dictionary<XslContentKey, List<Request>> groupedRequests;
             //List<List<Request>> groupedRequests;
 
+            //if any stratify options are selected, the searchRequests needs to be grouped beforeextracting any data.
             if (stratifyOptions.Any())
             {
                 //Code only for callerType and requestorType for now
@@ -58,7 +58,8 @@ namespace SasquatchCAIRS.Controllers
                         //add it to xlsContents.add()
                         XSLContent content = new XSLContent();
                         Dictionary<XslContentKey, long> cellValues = new Dictionary<XslContentKey, long>();
-                        foreach (KeyValuePair<XslContentKey, List<Request>> groupedRequest in groupedRequests) {
+                        foreach (KeyValuePair<XslContentKey, List<Request>> groupedRequest in groupedRequests)
+                        {
                             switch (dataType)
                             {
                                 case Constants.DataType.TotalTimeSpent:
@@ -88,13 +89,15 @@ namespace SasquatchCAIRS.Controllers
                         //content.title = 
                         xslContents.Add(content);
                     }
-                }   
+                }
             }
+            //if there's no stratify option selected, only 1 xslContent is needed
+            //as different data types will be displayed in the same table.
             else
             {
                 groupedRequests = new Dictionary<XslContentKey, List<Request>>();
             }
-           
+
             return xslContents;
 
         }
