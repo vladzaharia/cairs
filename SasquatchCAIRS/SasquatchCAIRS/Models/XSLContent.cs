@@ -5,7 +5,44 @@ using System.Linq;
 using System.Web;
 
 namespace SasquatchCAIRS.Models {
-    public struct XslContentKey: IEquatable<XslContentKey> {
+    public struct XslGeneralContentKey : IEquatable<XslGeneralContentKey> {
+        private readonly int _rowNum;
+        private readonly int _columNum;
+
+        public int rowNum {
+            get {
+                return _rowNum;
+            }
+        }
+        public int colNum {
+            get {
+                return _columNum;
+            }
+        }
+
+        public XslGeneralContentKey(int row, int col)
+        {
+            _rowNum = row;
+            _columNum = col;
+        }
+
+        public override int GetHashCode() {
+            int hash = 17;
+            hash = hash * 31 + _rowNum;
+            hash = hash*7 + _columNum;
+            return hash;
+        }
+
+        public override bool Equals(object obj) {
+            return obj is XslGeneralContentKey ? Equals((XslGeneralContentKey) obj) : false;
+        }
+
+        public bool Equals(XslGeneralContentKey other) {
+            return _rowNum == other.rowNum && _columNum == other.colNum;
+        }
+    }
+
+    public struct XslReportContentKey: IEquatable<XslReportContentKey> {
         private readonly System.Nullable<byte> _typeId;
         private readonly int _month;
         private readonly int _year;
@@ -22,7 +59,7 @@ namespace SasquatchCAIRS.Models {
             get { return _year; }
         }
 
-        public XslContentKey(int month, int year, System.Nullable<byte> typeId)
+        public XslReportContentKey(int month, int year, System.Nullable<byte> typeId)
         {
             _month = month;
             _year = year;
@@ -42,10 +79,10 @@ namespace SasquatchCAIRS.Models {
         }
 
         public override bool Equals(object obj) {
-            return obj is XslContentKey? Equals((XslContentKey) obj) : false;
+            return obj is XslReportContentKey ? Equals((XslReportContentKey) obj) : false;
         }
 
-        public bool Equals(XslContentKey other)
+        public bool Equals(XslReportContentKey other)
         {
             if (_typeId.HasValue)
             {
