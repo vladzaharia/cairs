@@ -28,33 +28,55 @@ namespace SasquatchCAIRS.Controllers
         // POST: /Search/Create
 
         [HttpPost]
-        public ActionResult Search(String searchText) {
+        public ActionResult Search(String keywords) {
             ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
-            ViewBag.searchText = searchText;
-            return View();
+            ViewBag.keywords = keywords;
+            SearchCriteria sc = new SearchCriteria();
+            sc.keywordString = keywords;
+            Session["criteria"] = sc;
+            List<Request> list = searchCriteriaQuery(sc);
+            ViewBag.ResultSetSize = list.Count;
+            return View("Results", list);
         }
 
         public ActionResult Advanced() {
             ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
-            return View();
+            SearchCriteria criteria = new SearchCriteria();
+            return View(criteria);
         }
 
         [HttpPost]
         public ActionResult Results(SearchCriteria criteria, FormCollection form) {
             ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
+
             criteria.requestStatus = form["status"];
             criteria.severity = form["severity"];
             criteria.consequence = form["consequence"];
-            criteria.patientFirstName = form["patientFirst"];
-            criteria.patientLastName = form["patientLast"];
             criteria.tumorGroup = form["tumorGroup"];
             criteria.questionType = form["questionType"];
             criteria.requestorFirstName = form["requestorFirst"];
             criteria.requestorLastName = form["requestorLast"];
             criteria.patientFirstName = form["patientFirst"];
             criteria.patientLastName = form["patientLast"];
+            Session["criteria"] = criteria;
 
-            return View(criteria);
+            ViewBag.keywords = criteria.keywordString;
+            List<Request> list = searchCriteriaQuery(criteria);
+            ViewBag.ResultSetSize = list.Count;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Modify() {
+            ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
+            SearchCriteria criteria = (SearchCriteria)Session["criteria"];
+            return View("Advanced", criteria);
+        }
+
+
+    private List<Request> searchCriteriaQuery(SearchCriteria c) {
+            List<Request> searchResults = new List<Request>();
+            return searchResults;
         }
 
 

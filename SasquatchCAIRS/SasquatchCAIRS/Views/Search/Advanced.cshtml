@@ -16,7 +16,7 @@
         <legend>SearchCriteria</legend>
 
         <div class="editor-label">
-            <br />
+            <br >
             @Html.Label("Keywords")
         </div>
         <div class="editor-field">
@@ -48,18 +48,16 @@
         </div>
 
         <div class="editor-field">
-            <label class="checkbox inline">
-                <input type="checkbox" name="status" id="Open" value="Open">
-                Open
-            </label>
-            <label class="checkbox inline">
-                <input type="checkbox" name="status" id="Closed" value="Closed">
-                Closed
-            </label>
-            <label class="checkbox inline">
-                <input type="checkbox" name="status" id="Inactive" value="Inactive">
-                Inactive
-            </label>
+            @foreach (var status in Enum.GetValues(typeof(SasquatchCAIRS.Models.Constants.RequestStatus))) {
+                <label class="checkbox inline">
+                @if (!String.IsNullOrEmpty(Model.requestStatus) && Model.requestStatus.Contains(@status.ToString())) {
+                    <input type="checkbox" name="status" value="@status" checked/>
+                } else {
+                    <input type="checkbox" name="status" value="@status" />
+                }
+                    @status
+                </label>
+            }
         </div>
 
         <div class="editor-label">
@@ -68,8 +66,8 @@
         </div>
 
         <div class="editor-field">
-            <input type="text" class="input-medium" name="requestorFirst" placeholder="First Name">
-            <input type="text" class="input-medium" name="requestorLast" placeholder="Last Name">
+            <input type="text" class="input-medium" name="requestorFirst" placeholder="First Name" value="@Model.requestorFirstName">
+            <input type="text" class="input-medium" name="requestorLast" placeholder="Last Name" value="@Model.requestorLastName">
         </div>
 
         <div class="editor-label">
@@ -78,8 +76,8 @@
         </div>
 
         <div class="editor-field">
-            <input type="text" class="input-medium" name="patientFirst" placeholder="First Name">
-            <input type="text" class="input-medium" name="patientLast" placeholder="Last Name">
+            <input type="text" class="input-medium" name="patientFirst" placeholder="First Name" value="@Model.patientFirstName">
+            <input type="text" class="input-medium" name="patientLast" placeholder="Last Name" value="@Model.patientLastName">
         </div>
 
         <div class="editor-label">
@@ -88,7 +86,10 @@
         </div>
 
         <div class="editor-field">
-            @*TODO REPLACE WITH CHECKBOXLIST*@
+            @*
+            TODO REPLACE WITH CHECKBOXLIST
+            selected="selected"
+            *@
             <select multiple="multiple" name="tumorGroup">
                 <option>1</option>
                 <option>2</option>
@@ -103,7 +104,10 @@
             @Html.Label("Question Type")
         </div>
         <div class="editor-field">
-            @*TODO REPLACE WITH CHECKBOXLIST*@
+            @*
+            TODO REPLACE WITH CHECKBOXLIST
+            selected="selected"
+            *@
             <select multiple="multiple" name="questionType">
                 <option>1</option>
                 <option>2</option>
@@ -115,46 +119,39 @@
 
         <div class="editor-label">
             <br />
-            @Html.Label("Severity")
+            @Html.Label(" Severity")
         </div>
         <div class="editor-field">
-
-            <label class="checkbox inline">
-                <input type="checkbox" name="severity" id="Major" value="Major">
-                Major
-            </label>
-            <label class="checkbox inline">
-                <input type="checkbox" name="severity" id="Moderate" value="Moderate">
-                Moderate
-            </label>
-            <label class="checkbox inline">
-                <input type="checkbox" name="severity" id="Minor" value="Minor">
-                Minor
-            </label>
+            @foreach (var severity in Enum.GetValues(typeof(SasquatchCAIRS.Models.Constants.Severity))) {
+                <label class="checkbox inline">
+                @if (!String.IsNullOrEmpty(Model.severity) && Model.severity.Contains(@severity.ToString())) {
+                    <input type="checkbox" name="severity" value="@severity" checked/>
+                } else {
+                    <input type="checkbox" name="severity" value="@severity" />
+                }
+                    @severity
+                </label>
+            }
         </div>
 
         <div class="editor-label">
             <br />
-            @Html.Label("Consequence")
+            @Html.Label(" Consequence")
         </div>
 
         <div class="editor-field">
-            <label class="checkbox inline">
-                <input type="checkbox" name="consequence" id="Certain" value="Certain">
-                Certain
-            </label>
-            <label class="checkbox inline">
-                <input type="checkbox" name="consequence" id="Probable" value="Probable">
-                Probable
-            </label>
-            <label class="checkbox inline">
-                <input type="checkbox" name="consequence" id="Possible" value="Possible">
-                Possible
-            </label>
-            <label class="checkbox inline">
-                <input type="checkbox" name="consequence" id="Unlikely" value="Unlikely">
-                Unlikely
-            </label>
+            
+            @foreach (var consequence in Enum.GetValues(typeof(SasquatchCAIRS.Models.Constants.Priority))) {
+                <label class="checkbox inline">
+                    @if (!String.IsNullOrEmpty(Model.consequence) && Model.consequence.Contains(@consequence.ToString())) {
+                        <input type="checkbox" name="consequence" value="@consequence" checked/>
+                    } else
+                    {
+                      <input type="checkbox" name="consequence" value="@consequence" />  
+                    }
+                    @consequence
+                </label>
+            }
         </div>
 
         <p>
