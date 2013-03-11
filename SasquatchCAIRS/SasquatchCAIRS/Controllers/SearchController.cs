@@ -108,19 +108,22 @@ namespace SasquatchCAIRS.Controllers
         }
 
         private void searchCriteriaQuery(SearchCriteria c) {
-            List<SasquatchCAIRS.Request> searchResults =
-                (from r in db.Results()
-                 where r.requestStatus == c.requestStatus
-                 where r.severity == c.severity
-                 where r.patientFirstName == c.patientFirstName
-                 where r.patientLastName == c.patientLastName
-                 where r.tumorGroup == c.tumorGroup
-                 where r.questionType == c.questionType
-                 where r.requestorFirstName == c.requestorFirstName
-                 where r.requestorLastName == c.requestorLastName
-                 select r).ToList();
- 
-            
+            if (!string.IsNullOrEmpty(c)) {
+
+                List<SasquatchCAIRS.Request> searchResults =
+                    (from r in db.Results()
+                     where c.keywordString.Contains(r.keywordString)
+                     where r.requestStatus == c.requestStatus
+                     where r.severity == c.severity
+                     where r.patientFirstName == c.patientFirstName
+                     where r.patientLastName == c.patientLastName
+                     where c.tumorGroup.Contains(r.tumorGroup)
+                     where c.questionType.Contains(r.questionType)
+                     where r.requestorFirstName == c.requestorFirstName
+                     where r.requestorLastName == c.requestorLastName
+                     select r).ToList();
+            }
+
             foreach (r in searchResults)
                 display(r);
 
