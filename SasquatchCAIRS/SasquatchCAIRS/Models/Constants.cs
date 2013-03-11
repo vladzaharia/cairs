@@ -123,9 +123,10 @@ namespace SasquatchCAIRS.Models {
         }
 
         public enum StratifyOption {
-            Region = 0,
-            CallerType = 1,
-            TumorGroup = 2
+            None = 0,
+            Region = 1,
+            CallerType = 2,
+            TumorGroup = 3
         }
         public static string TUMOURGROUP_TBL_VALUE_ATTR = "Value";
         public static string TUMOURGROUP_TBL_CODE_ATTR = "Code";
