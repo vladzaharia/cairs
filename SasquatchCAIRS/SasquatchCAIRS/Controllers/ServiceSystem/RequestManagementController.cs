@@ -59,18 +59,6 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
             req.TimeOpened = content.timeOpened;
             req.TimeClosed = content.timeClosed;
 
-            if (content.severity != Constants.Severity.None) {
-                req.Priority = (byte) content.severity;
-            } else {
-                req.Priority = null;
-            }
-
-            if (content.consequence != Constants.Consequence.None) {
-                req.Consequence = (byte) content.consequence;
-            } else {
-                req.Consequence = null;
-            }
-
             req.RegionID = content.regionID;
             req.RequestorTypeID = content.requestorTypeID;
 
@@ -100,6 +88,18 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
             qr.SpecialNotes = content.specialNotes;
             qr.QuestionTypeID = content.questionTypeID;
             qr.TumourGroupID = content.tumourGroupID;
+
+            if (content.severity != Constants.Severity.None) {
+                qr.Severity = (byte) content.severity;
+            } else {
+                qr.Severity = null;
+            }
+
+            if (content.consequence != Constants.Consequence.None) {
+                qr.Consequence = (byte) content.consequence;
+            } else {
+                qr.Consequence = null;
+            }
 
             return qr;
         }
@@ -159,7 +159,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
 
                             if (kwContent.keywordId == -1) {                                
                                 kwContent.keywordId =
-                                    getKeywordId(kwContent.keywordStr);
+                                    createKeyword(kwContent.keywordStr);
                             }
 
                             KeywordQuestion kq = new KeywordQuestion();
@@ -196,7 +196,13 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
             }
         }
 
-        private int getKeywordId(string keywordStr) {
+        /// <summary>
+        /// Create a keyword based off a given keyword string.
+        /// </summary>
+        /// <param name="keywordStr">Keyword string to create.</param>
+        /// <returns>Keyword ID of the new keyword, or existing keyword
+        /// ID if already exists.</returns>
+        private int createKeyword(string keywordStr) {
             // Keyword may not exist
             Keyword kw;
 
