@@ -25,7 +25,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         private DateTime _timeOpened = new DateTime();
         private DateTime? _timeClosed = null;
 
-        private Constants.Priority _priority = Constants.Priority.None;
+        private Constants.Severity _severity = Constants.Severity.None;
         private Constants.Consequence _consequence =
             Constants.Consequence.None;
         private byte? _regionID = null;
@@ -60,7 +60,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             _timeClosed = req.TimeClosed;
 
             if (req.Priority != null) {
-                _priority = (Constants.Priority) req.Priority;
+                _severity = (Constants.Severity) req.Priority;
             }
 
             if (req.Consequence != null) {
@@ -208,12 +208,12 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public Constants.Priority priority {
+        public Constants.Severity severity {
             get {
-                return _priority;
+                return _severity;
             }
             set {
-                _priority = value;
+                _severity = value;
             }
         }
 
@@ -276,6 +276,8 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
 
         private List<ReferenceContent> _referenceList =
             new List<ReferenceContent>();
+
+        private List<KeywordContent> _keywords = new List<KeywordContent>();
 
         public QuestionResponseContent(QuestionResponse qr) {
             _requestID = qr.RequestID;
@@ -381,6 +383,24 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
+        public List<KeywordContent> keywords {
+            get {
+                return _keywords;
+            }
+        }
+
+        public void addKeyword(KeywordContent newKeyword) {
+            _keywords.Add(newKeyword);
+        }
+
+        public void removeKeyword(int keywordId) {
+            foreach (KeywordContent kw in _keywords) {
+                if (kw.id == keywordId) {
+                    _keywords.Remove(kw);
+                }
+            }
+        }
+
         /// <summary>
         /// Compares the current instance with another QuestionResponseContent
         /// object and returns an integer that indicates whether the current
@@ -477,6 +497,37 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
             set {
                 _referenceString = value;
+            }
+        }
+    }
+
+    public class KeywordContent {
+        private int _keywordID = -1;
+        private string _keywordStr = null;
+
+        public KeywordContent(Keyword kw) {
+            _keywordID = kw.KeywordID;
+            _keywordStr = kw.KeywordValue;
+        }
+
+        public KeywordContent() {
+        }
+
+        public int keywordId {
+            get {
+                return _keywordID;
+            }
+            set {
+                _keywordID = value;
+            }
+        }
+
+        public string keywordStr {
+            get {
+                return _keywordStr;
+            }
+            set {
+                _keywordStr = value;
             }
         }
     }

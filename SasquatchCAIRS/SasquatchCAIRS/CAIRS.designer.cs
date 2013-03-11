@@ -160,6 +160,14 @@ namespace SasquatchCAIRS
 				return this.GetTable<UserGroup>();
 			}
 		}
+		
+		public System.Data.Linq.Table<KeywordQuestion> KeywordQuestions
+		{
+			get
+			{
+				return this.GetTable<KeywordQuestion>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.QuestionResponse")]
@@ -2309,6 +2317,69 @@ namespace SasquatchCAIRS
 			if ((this.PropertyChanged != null))
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.KeywordQuestion")]
+	public partial class KeywordQuestion
+	{
+		
+		private int _KeywordID;
+		
+		private long _RequestID;
+		
+		private long _QuestionResponseID;
+		
+		public KeywordQuestion()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KeywordID", DbType="Int NOT NULL")]
+		public int KeywordID
+		{
+			get
+			{
+				return this._KeywordID;
+			}
+			set
+			{
+				if ((this._KeywordID != value))
+				{
+					this._KeywordID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL")]
+		public long RequestID
+		{
+			get
+			{
+				return this._RequestID;
+			}
+			set
+			{
+				if ((this._RequestID != value))
+				{
+					this._RequestID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionResponseID", DbType="BigInt NOT NULL")]
+		public long QuestionResponseID
+		{
+			get
+			{
+				return this._QuestionResponseID;
+			}
+			set
+			{
+				if ((this._QuestionResponseID != value))
+				{
+					this._QuestionResponseID = value;
+				}
 			}
 		}
 	}

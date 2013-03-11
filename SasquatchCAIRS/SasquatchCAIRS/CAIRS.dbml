@@ -11,6 +11,7 @@
       <Column Name="QuestionTypeID" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="TumourGroupID" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Association Name="QuestionResponse_Reference" Member="References" ThisKey="QuestionResponseID,RequestID" OtherKey="QuestionResponseID,RequestID" Type="Reference" />
+      <Association Name="QuestionResponse_KeywordQuestion" Member="KeywordQuestions" ThisKey="QuestionResponseID,RequestID" OtherKey="QuestionResponseID,RequestID" Type="KeywordQuestion" />
       <Association Name="Request_QuestionResponse" Member="Request" ThisKey="RequestID" OtherKey="RequestID" Type="Request" IsForeignKey="true" />
       <Association Name="QuestionType_QuestionResponse" Member="QuestionType" ThisKey="QuestionTypeID" OtherKey="QuestionTypeID" Type="QuestionType" IsForeignKey="true" />
       <Association Name="TumourGroup_QuestionResponse" Member="TumourGroup" ThisKey="TumourGroupID" OtherKey="TumourGroupID" Type="TumourGroup" IsForeignKey="true" />
@@ -59,6 +60,7 @@
       <Column Name="KeywordID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Keyword" Member="KeywordValue" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
       <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Keyword_KeywordQuestion" Member="KeywordQuestions" ThisKey="KeywordID" OtherKey="KeywordID" Type="KeywordQuestion" />
     </Type>
   </Table>
   <Table Name="dbo.QuestionType" Member="QuestionTypes">
@@ -103,6 +105,15 @@
       <Column Name="Value" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
       <Column Name="Code" Type="System.String" DbType="Char(10) NOT NULL" CanBeNull="false" />
       <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.KeywordQuestion" Member="KeywordQuestions">
+    <Type Name="KeywordQuestion">
+      <Column Name="KeywordID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RequestID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="QuestionResponseID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Association Name="Keyword_KeywordQuestion" Member="Keyword" ThisKey="KeywordID" OtherKey="KeywordID" Type="Keyword" IsForeignKey="true" />
+      <Association Name="QuestionResponse_KeywordQuestion" Member="QuestionResponse" ThisKey="QuestionResponseID,RequestID" OtherKey="QuestionResponseID,RequestID" Type="QuestionResponse" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>
