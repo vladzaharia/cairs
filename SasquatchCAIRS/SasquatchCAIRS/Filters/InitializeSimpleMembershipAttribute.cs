@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using SasquatchCAIRS.Controllers.Security;
 using WebMatrix.WebData;
 using System.Web.Security;
-using SasquatchCAIRS.Controllers;
+using SasquatchCAIRS.Models;
 
 namespace SasquatchCAIRS.Filters {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
@@ -45,10 +45,10 @@ namespace SasquatchCAIRS.Filters {
                         autoCreateTables: true);
 
                     // Initialize Roles
-                    initializeRole("Administrator");
-                    initializeRole("ReportGenerator");
-                    initializeRole("RequestEditor");
-                    initializeRole("Viewer");
+                    initializeRole(Constants.Roles.ADMINISTRATOR);
+                    initializeRole(Constants.Roles.REPORT_GENERATOR);
+                    initializeRole(Constants.Roles.REQUEST_EDITOR);
+                    initializeRole(Constants.Roles.VIEWER);
                 } catch (Exception ex) {
                     throw new InvalidOperationException(
                         "Database could not be initialized!", ex);

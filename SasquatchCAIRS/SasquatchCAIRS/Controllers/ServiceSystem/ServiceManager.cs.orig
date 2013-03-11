@@ -1,0 +1,14 @@
+<<<<<<< HEAD:SasquatchCAIRS/SasquatchCAIRS/Models/ServiceSystem/ServiceManager.cs
+﻿namespace SasquatchCAIRS.Models.ServiceSystem {
+=======
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace SasquatchCAIRS.Controllers.ServiceSystem {
+>>>>>>> dev/michelle:SasquatchCAIRS/SasquatchCAIRS/Controllers/ServiceSystem/ServiceManager.cs
+    public class ServiceSystem {
+
+    }
+}

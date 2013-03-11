@@ -1,6 +1,42 @@
-﻿@{
+﻿@using SasquatchCAIRS.Models
+@{
     ViewBag.Title = "Home";
 }
 
 <h1>Dashboard</h1>
-A dashboard will be added here.
+@Html.ActionLink("Add New Request", "Add", "Request", new {}, new {
+    @class = "btn btn-primary dashboard add-button"
+}) 
+
+@if (ViewBag.Requests != null) {
+<table class="table table-hover">
+    <tr>
+        <th>Request ID</th>
+        <th>Caller Name</th>
+        <th>Status</th>
+        <th>Keywords</th>
+        <th>Started</th>
+        <th>Completed</th>
+    </tr>
+    @foreach (var request in ViewBag.Requests) {
+        <tr>
+            <td class="clickable" data-id="@request.RequestID">@request.RequestID</td>
+            <td class="clickable" data-id="@request.RequestID">@request.RequestorFName @request.RequestorLName</td>
+            <td class="clickable" data-id="@request.RequestID">@Constants.getStatusString((Constants.RequestStatus) request.RequestStatus)</td>
+            <td class="clickable" data-id="@request.RequestID">@* TODO: Keywords *@</td>
+            <td class="clickable" data-id="@request.RequestID">@request.TimeOpened</td>
+            <td class="clickable" data-id="@request.RequestID">@request.TimeClosed</td>
+            @* TODO: Edit Link *@
+        </tr>
+    }
+</table>
+}
+
+<script type="text/javascript">
+    $(function() {
+        $(".clickable").click(function() {
+            document.location.href = "/Request/Details/" + $(this).attr("data-id");
+        });
+    })
+</script>
+
