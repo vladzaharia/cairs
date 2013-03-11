@@ -1,4 +1,4 @@
-﻿@model SasquatchCAIRS.Models.SearchCriteria
+﻿@model IEnumerable<SasquatchCAIRS.Request>
 
 @{
     ViewBag.Title = "Results";
@@ -6,97 +6,75 @@
 
 <h2>Results</h2>
 
+For keywords: @ViewBag.keywords
+
+<div>
+</div>
+<div class="btn-group float-right">
+    <form method="post" action="~/Search/Modify">
+        <button class="btn">Modify Search</button>
+    </form>
+    <form method="post" action="~/Search/Advanced">
+        <button class="btn">New Search</button>
+    </form>
+</div>
+@if (@ViewBag.ResultSetSize < 1) {
+    <p>
+    <br />
+    <h3>No results were found</h3>
+    </p>
+} else {
+
 <fieldset>
-    <legend>SearchCriteria</legend>
+    <legend>Search Results</legend>
+    <div class="float-bottom">
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>
+            @Html.DisplayName("Req ID")
+        </th>
+        <th>
+            @Html.DisplayName("Caller Name")
+        </th>
+        <th>
+            @Html.DisplayName("Status")
+        </th>
+        @*<th>
+        @Html.DisplayName("Keywords")
+    </th>*@
+        <th>
+            @Html.DisplayName("Started")
+        </th>
+        <th>
+            @Html.DisplayName("Completed")
+        </th>
+    </tr>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.keywordString)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.keywordString)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.startTime)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.startTime)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.completionTime)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.completionTime)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.requestStatus)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.requestStatus)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.requestorFirstName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.requestorFirstName)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.requestorLastName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.requestorLastName)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.patientFirstName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.patientFirstName)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.patientLastName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.patientLastName)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.questionType)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.questionType)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.tumorGroup)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.tumorGroup)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.requestStatus)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.requestStatus)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.severity)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.severity)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.consequence)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.consequence)
-    </div>
+@*
+@foreach (var request in Model) {
+    <tr>
+        <th>
+            @Html.DisplayFor(modelItem => request.RequestID)
+        </th>
+        <th>
+            @Html.DisplayFor(modelItem => request.RequestorLName), 
+            @Html.DisplayFor(modelItem => request.RequestorFName)
+        </th>
+        <th>
+            @Html.DisplayFor(modelItem => request.RequestStatus)
+        </th>
+        <th>
+        @Html.DisplayFor(modelItem => request.Keywords)
+        </th> 
+        <th>
+            @Html.DisplayFor(modelItem => request.TimeOpened)
+        </th>
+        <th>
+            @Html.DisplayFor(modelItem => request.TimeClosed)
+        </th>
+    </tr>
+}*@
+</table>
+</div>
 </fieldset>
+}
