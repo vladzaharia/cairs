@@ -15,7 +15,7 @@ namespace SasquatchCAIRS.Controllers {
             // Select all from Requests
             IQueryable<Request> requests = db.Requests.Select(r => r);
 
-            // Remove uncompleted Completed
+            // Remove incomplete (open) requests
             if (!User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
                 requests = requests.Where(
                     r =>
