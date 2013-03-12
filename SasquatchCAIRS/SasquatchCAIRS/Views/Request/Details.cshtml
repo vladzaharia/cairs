@@ -1,5 +1,7 @@
-﻿@using SasquatchCAIRS.Models
+﻿@using SasquatchCAIRS.Controllers.Security
+@using SasquatchCAIRS.Models
 @using SasquatchCAIRS.Models.ServiceSystem
+
 @model SasquatchCAIRS.Models.ServiceSystem.RequestContent
 
 @if (Model != null) {
@@ -18,7 +20,7 @@
             <td width="35%">@* TODO: Completed By *@</td>
 
             <td class="tbl-label" width="15%">Completed Time</td>
-            <td width="35%">@* TODO: Michelle needs to add Completed *@</td>
+            <td width="35%">@Model.timeClosed/td>
         </tr>
         <tr>
             <td class="tbl-label" width="15%">Status</td>
@@ -91,27 +93,35 @@
                 <td class="tbl-label" colspan="6">Question</td>
             </tr>
             <tr>
-                <td class="tbl-label" colspan="6">@qr.question</td>
+                <td colspan="6">@qr.question</td>
             </tr>
             <tr>
                 <td class="tbl-label" colspan="6">Response</td>
             </tr>
             <tr>
-                <td class="tbl-label" colspan="6">@qr.response</td>
+                <td colspan="6">@qr.response</td>
             </tr>
             <tr>
                 <td class="tbl-label" width="15%">Severity</td>
-                <td width="18%">@qr.severity @*TODO: Put in Real Severity Here*@</td>
+                <td width="18%">@qr.severity</td>
 
                 <td class="tbl-label" width="15%">Probabilty of Consequence</td>
-                <td width="18%">@qr.consequence @*TODO: Put in Real Consequence Here*@</td>
+                <td width="18%">@qr.consequence</td>
 
                 <td class="tbl-label" width="15%">Impact Score</td>
                 <td width="19%">@Constants.getImpactScore(qr.severity, qr.consequence)</td>
             </tr>
+            <tr>
+                <td class="tbl-label" colspan="6">References</td>
+            </tr>
+            @foreach (ReferenceContent reference in qr.referenceList) {
+                <tr>
+                    <td width="15%">@reference.referenceType</td>
+                    <td colspan="5">@reference.referenceString</td>
+                </tr>
+            }
         </table>
     }
-@* TODO: This whole section *@
 
     <h3>Properties</h3>
     <table class="table information-table">
@@ -132,7 +142,7 @@
             @class = "btn btn-primary export-button"
         }) 
     
-        @if (User.IsInRole(Constants.Roles.ADMINISTRATOR)) {
+        @if (User.IsInRole(Constants.Roles.ADMINISTRATOR) && RequestLockController.instance.isLocked(Model.requestID)) {
             @Html.ActionLink("Unlock", "Unlock", "Request", new {id = Model.requestID}, new {
                 @class = "btn btn-primary unlock-button"
             })
