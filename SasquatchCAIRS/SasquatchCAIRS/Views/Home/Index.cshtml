@@ -25,7 +25,7 @@
             <td class="clickable" data-id="@request.RequestID">@request.RequestID</td>
             <td class="clickable" data-id="@request.RequestID">@request.RequestorFName @request.RequestorLName</td>
             <td class="clickable" data-id="@request.RequestID">@Constants.getStatusString((Constants.RequestStatus) request.RequestStatus)</td>
-            <td class="clickable" data-id="@request.RequestID">@* TODO: Keywords *@</td>
+            <td class="clickable" data-id="@request.RequestID">@foreach(string keyword in ViewBag.Keywords[@request.RequestID]) { <span>@keyword </span> }</td>
             <td class="clickable" data-id="@request.RequestID">@request.TimeOpened</td>
             <td class="clickable" data-id="@request.RequestID">@request.TimeClosed</td>
             @* TODO: Edit Link *@

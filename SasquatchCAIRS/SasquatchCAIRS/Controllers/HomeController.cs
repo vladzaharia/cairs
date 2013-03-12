@@ -63,19 +63,8 @@ namespace SasquatchCAIRS.Controllers {
             }
 
             ViewBag.Requests = requests;
+            ViewBag.Keywords = keywords;
 
-            return View();
-        }
-
-        [Authorize]
-        public ActionResult About() {
-            ViewBag.Message = "Your app description page.";
-            return View();
-        }
-
-        [Authorize(Roles = "Administrator")]
-        public ActionResult Contact() {
-            ViewBag.Message = "Your contact page.";
             return View();
         }
     }

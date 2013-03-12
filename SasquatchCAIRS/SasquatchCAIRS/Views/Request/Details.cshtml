@@ -20,7 +20,7 @@
             <td width="35%">@* TODO: Completed By *@</td>
 
             <td class="tbl-label" width="15%">Completed Time</td>
-            <td width="35%">@Model.timeClosed/td>
+            <td width="35%">@Model.timeClosed</td>
         </tr>
         <tr>
             <td class="tbl-label" width="15%">Status</td>
@@ -110,6 +110,10 @@
 
                 <td class="tbl-label" width="15%">Impact Score</td>
                 <td width="19%">@Constants.getImpactScore(qr.severity, qr.consequence)</td>
+            </tr>
+            <tr>
+                <td class="tbl-label" width="15%">Keywords</td>
+                <td colspan="5">@foreach(string keyword in ViewBag.Keywords) { <span>@keyword </span> }</td>
             </tr>
             <tr>
                 <td class="tbl-label" colspan="6">References</td>
