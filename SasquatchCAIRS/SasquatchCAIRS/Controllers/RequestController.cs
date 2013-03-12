@@ -9,7 +9,7 @@ using SasquatchCAIRS.Models.ServiceSystem;
 namespace SasquatchCAIRS.Controllers {
     public class RequestController : Controller {
         //
-        // GET: /Request/Get/{id}
+        // GET: /Request/Details/{id}
 
         [Authorize(Roles = "Viewer")]
         public ActionResult Details(long id) {
@@ -17,24 +17,51 @@ namespace SasquatchCAIRS.Controllers {
             RequestManagementController rmc =
                 RequestManagementController.instance;
             RequestLockController rlc = RequestLockController.instance;
+            UserProfileController upc = UserProfileController.instance;
             int timeSpent = 0;
 
             // Set up the Request Object
             RequestContent request = rmc.getRequestDetails(id);
-            ViewBag.Title = "View Request - Request #" + request.requestID;
+            ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST 
+                + " - " 
+                + Constants.UIString.TitleText.REQUEST_NO 
+                + request.requestID;
 
-            // Show error if not editor and request isn't complete
-            if (!User.IsInRole(Constants.Roles.REQUEST_EDITOR) &&
-                request.requestStatus != Constants.RequestStatus.Completed) {
-                request = null;
-                ViewBag.Title = "View Request - Error";
+            // Show error if not editor/administrator and request isn't complete
+            if (!User.IsInRole(Constants.Roles.REQUEST_EDITOR) 
+                 && !User.IsInRole(Constants.Roles.ADMINISTRATOR)
+                 && request.requestStatus != Constants.RequestStatus.Completed) {
+                ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST 
+                    + " - " 
+                    + Constants.UIString.TitleText.ERROR;
+
+                return View((object) null);
             }
 
-            // Show error if not administrator and request is locked
+            // Show error if not administrator and request is invalid (deleted)
+            if (!User.IsInRole(Constants.Roles.ADMINISTRATOR)
+                 && request.requestStatus == Constants.RequestStatus.Invalid) {
+                ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST
+                    + " - "
+                    + Constants.UIString.TitleText.ERROR;
+
+                return View((object) null);
+            }
+
+            // Show error if you can't view due to locked status
             if (rlc.isLocked(id) &&
                 !User.IsInRole(Constants.Roles.ADMINISTRATOR)) {
-                request = null;
-                ViewBag.Title = "View Request - Error";
+
+                // Check if it's not locked to you
+                if (!User.IsInRole(Constants.Roles.REQUEST_EDITOR) ||
+                    rlc.getRequestLock(id).UserID !=
+                    upc.getUserProfile(User.Identity.Name).UserId) {
+                    request = null;
+                    ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST
+                                    + " - "
+                                    + Constants.UIString.TitleText.ERROR;
+                }
+
             }
 
             // Set up Time Spent (Question-Dependent)

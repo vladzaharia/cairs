@@ -133,6 +133,14 @@ namespace SasquatchCAIRS.Models {
                 public const string MARK_COMPLETE = "Mark as Complete";
                 public const string DELETE_REQUEST = "Delete Request";
             }
+
+            // Text used in Page Titles
+            public static class TitleText {
+                public const string DASHBOARD = "Dahboard";
+                public const string VIEW_REQUEST = "View Request";
+                public const string REQUEST_NO = "Request #";
+                public const string ERROR = "Error";
+            }
         }
 
         /// <summary>

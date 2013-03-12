@@ -33,7 +33,7 @@ namespace SasquatchCAIRS.Controllers {
                 requests = db.Requests.Select(r => r).Where(
                     r =>
                     (Constants.RequestStatus) r.RequestStatus ==
-                    Constants.RequestStatus.Open);
+                    Constants.RequestStatus.Completed);
                 //.Where(r => !rlc.isLocked(r.RequestID)); TODO: Fix this
             }
 
