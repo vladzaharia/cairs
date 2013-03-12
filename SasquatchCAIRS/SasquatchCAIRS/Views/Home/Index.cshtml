@@ -4,9 +4,11 @@
 }
 
 <h1>Dashboard</h1>
-@Html.ActionLink("Add New Request", "Add", "Request", new {}, new {
-    @class = "btn btn-primary dashboard add-button"
-}) 
+@if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
+    @Html.ActionLink("Add New Request", "Add", "Request", new {}, new {
+        @class = "btn btn-primary dashboard add-button"
+    })
+}
 
 @if (ViewBag.Requests != null) {
 <table class="table table-hover">
@@ -30,6 +32,10 @@
         </tr>
     }
 </table>
+}
+
+@if (ViewBag.Requests == null) {
+    <p>Nothing to see here!</p>
 }
 
 <script type="text/javascript">

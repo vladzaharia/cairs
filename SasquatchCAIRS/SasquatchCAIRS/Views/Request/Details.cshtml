@@ -2,142 +2,145 @@
 @using SasquatchCAIRS.Models.ServiceSystem
 @model SasquatchCAIRS.Models.ServiceSystem.RequestContent
 
-@{
-    ViewBag.Title = "View Request - Request #" + Model.requestID;
-}
-
-<h2>View Request - Request #@Model.requestID</h2>
-<h3>Request Information</h3>
-<table class="table information-table">
-    <tr>
-        <td class="tbl-label" width="15%">Created By</td>
-        <td width="35%">@* TODO: Created By *@</td>
-
-        <td class="tbl-label" width="15%">Start Time</td>
-        <td width="35%">@Model.timeOpened</td>
-    </tr>
-    <tr>
-        <td class="tbl-label" width="15%">Completed By</td>
-        <td width="35%">@* TODO: Completed By *@</td>
-
-        <td class="tbl-label" width="15%">Completed Time</td>
-        <td width="35%">@* TODO: Michelle needs to add Completed *@</td>
-    </tr>
-    <tr>
-        <td class="tbl-label" width="15%">Status</td>
-        <td width="35%">@Constants.getStatusString(Model.requestStatus)</td>
-
-        <td class="tbl-label" width="15%">Total Time Spent</td>
-        <td width="35%">@* TODO: Time Spent *@</td>
-    </tr>
-</table>
-
-<h3>Caller Information</h3>
-<table class="table information-table">
-    <tr>
-        <td class="tbl-label" width="15%">First Name</td>
-        <td width="35%">@Model.requestorFirstName</td>
-
-        <td class="tbl-label" width="15%">Last Name</td>
-        <td width="35%">@Model.requestorLastName</td>
-    </tr>
-    <tr>
-        <td class="tbl-label" width="15%">Email</td>
-        <td colspan="3">@Model.requestorEmail</td>
-    </tr>
-    <tr>
-        <td class="tbl-label" width="15%">Phone Number</td>
-        <td colspan="3">@Model.requestorPhoneNum @Model.requestorPhoneExt</td>
-    </tr>
-    <tr>
-        <td class="tbl-label" width="15%">Caller Type</td>
-        <td width="35%">@Model.requestorTypeID @*TODO: Convert to String Value using DB*@</td>
-
-        <td class="tbl-label" width="15%">Region</td>
-        <td width="35%">@Model.regionID @*TODO: Convert to String Value using DB*@</td>
-    </tr>
-</table>
-
-<h3>Patient Information</h3>
-<table class="table information-table">
-    <tr>
-        <td class="tbl-label" width="15%">Patient Agency ID</td>
-        <td colspan="3">@Model.patientAgencyID</td>
-    </tr>
-    <tr>
-        <td class="tbl-label" width="15%">First Name</td>
-        <td width="35%">@Model.patientFName</td>
-
-        <td class="tbl-label" width="15%">Last Name</td>
-        <td width="35%">@Model.patientLName</td>
-    </tr>
-    <tr>
-        <td class="tbl-label" width="15%">Caller Type</td>
-        <td width="35%">@Model.requestorTypeID @*TODO: Convert to String Value using DB*@</td>
-
-        <td class="tbl-label" width="15%">Region</td>
-        <td width="35%">@Model.regionID @*TODO: Convert to String Value using DB*@</td>
-    </tr>
-    <tr>
-        <td class="tbl-label" width="15%">Gender</td>
-        <td width="35%">@Constants.getGenderString(Model.patientGender)</td>
-
-        <td class="tbl-label" width="15%">Age</td>
-        <td width="35%">@Model.patientAge</td>
-    </tr>
-</table>
-
-<h3>Question Information</h3>
-@foreach (QuestionResponseContent qr in Model.questionResponseList) {
+@if (Model != null) {
+    <h2>View Request - Request #@Model.requestID</h2>
+    <h3>Request Information</h3>
     <table class="table information-table">
         <tr>
-            <td class="tbl-label" colspan="6">Question</td>
-        </tr>
-        <tr>
-            <td class="tbl-label" colspan="6">@qr.question</td>
-        </tr>
-        <tr>
-            <td class="tbl-label" colspan="6">Response</td>
-        </tr>
-        <tr>
-            <td class="tbl-label" colspan="6">@qr.response</td>
-        </tr>
-        <tr>
-            <td class="tbl-label" width="15%">Severity</td>
-            <td width="18%">@qr.severity @*TODO: Put in Real Severity Here*@</td>
+            <td class="tbl-label" width="15%">Created By</td>
+            <td width="35%">@* TODO: Created By *@</td>
 
-            <td class="tbl-label" width="15%">Probabilty of Consequence</td>
-            <td width="18%">@qr.consequence @*TODO: Put in Real Consequence Here*@</td>
+            <td class="tbl-label" width="15%">Start Time</td>
+            <td width="35%">@Model.timeOpened</td>
+        </tr>
+        <tr>
+            <td class="tbl-label" width="15%">Completed By</td>
+            <td width="35%">@* TODO: Completed By *@</td>
 
-            <td class="tbl-label" width="15%">Impact Score</td>
-            <td width="19%">@Constants.getImpactScore(qr.severity, qr.consequence)</td>
+            <td class="tbl-label" width="15%">Completed Time</td>
+            <td width="35%">@* TODO: Michelle needs to add Completed *@</td>
+        </tr>
+        <tr>
+            <td class="tbl-label" width="15%">Status</td>
+            <td width="35%">@Constants.getStatusString(Model.requestStatus)</td>
+
+            <td class="tbl-label" width="15%">Total Time Spent</td>
+            <td width="35%">@* TODO: Time Spent *@</td>
         </tr>
     </table>
-}
+
+    <h3>Caller Information</h3>
+    <table class="table information-table">
+        <tr>
+            <td class="tbl-label" width="15%">First Name</td>
+            <td width="35%">@Model.requestorFirstName</td>
+
+            <td class="tbl-label" width="15%">Last Name</td>
+            <td width="35%">@Model.requestorLastName</td>
+        </tr>
+        <tr>
+            <td class="tbl-label" width="15%">Email</td>
+            <td colspan="3">@Model.requestorEmail</td>
+        </tr>
+        <tr>
+            <td class="tbl-label" width="15%">Phone Number</td>
+            <td colspan="3">@Model.requestorPhoneNum @Model.requestorPhoneExt</td>
+        </tr>
+        <tr>
+            <td class="tbl-label" width="15%">Caller Type</td>
+            <td width="35%">@Model.requestorTypeID @*TODO: Convert to String Value using DB*@</td>
+
+            <td class="tbl-label" width="15%">Region</td>
+            <td width="35%">@Model.regionID @*TODO: Convert to String Value using DB*@</td>
+        </tr>
+    </table>
+
+    <h3>Patient Information</h3>
+    <table class="table information-table">
+        <tr>
+            <td class="tbl-label" width="15%">Patient Agency ID</td>
+            <td colspan="3">@Model.patientAgencyID</td>
+        </tr>
+        <tr>
+            <td class="tbl-label" width="15%">First Name</td>
+            <td width="35%">@Model.patientFName</td>
+
+            <td class="tbl-label" width="15%">Last Name</td>
+            <td width="35%">@Model.patientLName</td>
+        </tr>
+        <tr>
+            <td class="tbl-label" width="15%">Caller Type</td>
+            <td width="35%">@Model.requestorTypeID @*TODO: Convert to String Value using DB*@</td>
+
+            <td class="tbl-label" width="15%">Region</td>
+            <td width="35%">@Model.regionID @*TODO: Convert to String Value using DB*@</td>
+        </tr>
+        <tr>
+            <td class="tbl-label" width="15%">Gender</td>
+            <td width="35%">@Constants.getGenderString(Model.patientGender)</td>
+
+            <td class="tbl-label" width="15%">Age</td>
+            <td width="35%">@Model.patientAge</td>
+        </tr>
+    </table>
+
+    <h3>Question Information</h3>
+    foreach (QuestionResponseContent qr in Model.questionResponseList) {
+        <table class="table information-table">
+            <tr>
+                <td class="tbl-label" colspan="6">Question</td>
+            </tr>
+            <tr>
+                <td class="tbl-label" colspan="6">@qr.question</td>
+            </tr>
+            <tr>
+                <td class="tbl-label" colspan="6">Response</td>
+            </tr>
+            <tr>
+                <td class="tbl-label" colspan="6">@qr.response</td>
+            </tr>
+            <tr>
+                <td class="tbl-label" width="15%">Severity</td>
+                <td width="18%">@qr.severity @*TODO: Put in Real Severity Here*@</td>
+
+                <td class="tbl-label" width="15%">Probabilty of Consequence</td>
+                <td width="18%">@qr.consequence @*TODO: Put in Real Consequence Here*@</td>
+
+                <td class="tbl-label" width="15%">Impact Score</td>
+                <td width="19%">@Constants.getImpactScore(qr.severity, qr.consequence)</td>
+            </tr>
+        </table>
+    }
 @* TODO: This whole section *@
 
-<h3>Properties</h3>
-<table class="table information-table">
-    <tr>
-        <td class="tbl-label" width="15%">Parent Request</td>
-        <td width="85%">@Model.parentRequestID</td>
-    </tr>
-</table>
+    <h3>Properties</h3>
+    <table class="table information-table">
+        <tr>
+            <td class="tbl-label" width="15%">Parent Request</td>
+            <td width="85%">@Model.parentRequestID</td>
+        </tr>
+    </table>
 
-<div class="buttons">
-    @if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
-        @Html.ActionLink("Edit Request", "Edit", "Request", new { id = Model.requestID }, new {
-            @class = "btn btn-warning edit-button"
-        })
-    } 
+    <div class="buttons">
+        @if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
+            @Html.ActionLink("Edit Request", "Edit", "Request", new {id = Model.requestID}, new {
+                @class = "btn btn-warning edit-button"
+            })
+        } 
 
-    @Html.ActionLink("Export to File", "Export", "Request", new { id = Model.requestID }, new {
-        @class = "btn btn-primary export-button"
-    }) 
+        @Html.ActionLink("Export to File", "Export", "Request", new {id = Model.requestID}, new {
+            @class = "btn btn-primary export-button"
+        }) 
     
-    @if (User.IsInRole(Constants.Roles.ADMINISTRATOR)) {
-        @Html.ActionLink("Unlock", "Unlock", "Request", new { id = Model.requestID }, new {
-            @class = "btn btn-primary unlock-button"
-        })
-    }
-</div>
+        @if (User.IsInRole(Constants.Roles.ADMINISTRATOR)) {
+            @Html.ActionLink("Unlock", "Unlock", "Request", new {id = Model.requestID}, new {
+                @class = "btn btn-primary unlock-button"
+            })
+        }
+    </div>
+}
+
+@if (Model == null) {
+    <h2>View Request - Error</h2>
+    <p>Cannot open request. You may not have the appropriate permissions to access this request.</p>
+}
