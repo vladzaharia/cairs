@@ -33,5 +33,15 @@
             Possible = 2,
             Unlikely = 3
         }
+
+        public enum AuditType
+        {
+            RequestCreation = 0,
+            RequestCompletion = 1,
+            RequestDeletion = 2,
+            RequestModification = 3,
+            RequestView = 4
+
+        }
     }
 }
