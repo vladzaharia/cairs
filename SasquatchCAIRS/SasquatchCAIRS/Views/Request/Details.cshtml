@@ -9,11 +9,11 @@
     <h3>Request Information</h3>
     <table class="table information-table">
         <tr>
-            <td class="tbl-label" width="15%">Created By</td>
-            <td width="35%">@* TODO: Created By *@</td>
+            <td class="tbl-label tbl-top" width="15%">Created By</td>
+            <td width="35%" class="tbl-top">@* TODO: Created By *@</td>
 
-            <td class="tbl-label" width="15%">Start Time</td>
-            <td width="35%">@Model.timeOpened</td>
+            <td class="tbl-label tbl-top" width="15%">Start Time</td>
+            <td width="35%" class="tbl-top">@Model.timeOpened</td>
         </tr>
         <tr>
             <td class="tbl-label" width="15%">Completed By</td>
@@ -34,11 +34,11 @@
     <h3>Caller Information</h3>
     <table class="table information-table">
         <tr>
-            <td class="tbl-label" width="15%">First Name</td>
-            <td width="35%">@Model.requestorFirstName</td>
+            <td class="tbl-label tbl-top" width="15%">First Name</td>
+            <td width="35%" class="tbl-top">@Model.requestorFirstName</td>
 
-            <td class="tbl-label" width="15%">Last Name</td>
-            <td width="35%">@Model.requestorLastName</td>
+            <td class="tbl-label tbl-top" width="15%">Last Name</td>
+            <td width="35%" class="tbl-top">@Model.requestorLastName</td>
         </tr>
         <tr>
             <td class="tbl-label" width="15%">Email</td>
@@ -60,8 +60,8 @@
     <h3>Patient Information</h3>
     <table class="table information-table">
         <tr>
-            <td class="tbl-label" width="15%">Patient Agency ID</td>
-            <td colspan="3">@Model.patientAgencyID</td>
+            <td class="tbl-label tbl-top" width="15%">Patient Agency ID</td>
+            <td colspan="3" class="tbl-top">@Model.patientAgencyID</td>
         </tr>
         <tr>
             <td class="tbl-label" width="15%">First Name</td>
@@ -90,7 +90,7 @@
     foreach (QuestionResponseContent qr in Model.questionResponseList) {
         <table class="table information-table">
             <tr>
-                <td class="tbl-label" colspan="6">Question</td>
+                <td class="tbl-label tbl-top" colspan="6">Question</td>
             </tr>
             <tr>
                 <td colspan="6">@qr.question</td>
@@ -130,8 +130,8 @@
     <h3>Properties</h3>
     <table class="table information-table">
         <tr>
-            <td class="tbl-label" width="15%">Parent Request</td>
-            <td width="85%">@Model.parentRequestID</td>
+            <td class="tbl-label tbl-top" width="15%">Parent Request</td>
+            <td width="85%" class="tbl-top">@Model.parentRequestID</td>
         </tr>
     </table>
 

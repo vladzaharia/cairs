@@ -616,6 +616,10 @@ td.clickable {
     font-weight: bold;
 }
 
+.table .tbl-top {
+    border-width: 0;
+}
+
 div.buttons {
     float: right;
 }
