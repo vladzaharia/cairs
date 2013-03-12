@@ -84,6 +84,57 @@ namespace SasquatchCAIRS.Models {
             public const string ADMINISTRATOR = "Administrator";
         }
 
+        public static class UIString {
+            // Labels used for fields
+            public static class FieldLabel {
+                // Request Information
+                public const string REQUEST_ID = "Request ID";
+                public const string CREATED_BY = "Created By";
+                public const string COMPLETED_BY = "Closed By";
+                public const string START_TIME = "Start Time";
+                public const string COMPLETED_TIME = "Completed Time";
+                public const string STATUS = "Status";
+                public const string TOTAL_TIME_SPENT = "Total Time Spent";
+
+                // Caller Information
+                public const string CALLER_NAME = "Caller Name";
+                public const string CALLER_FNAME = "First Name";
+                public const string CALLER_LNAME = "Last Name";
+                public const string CALLER_EMAIL = "Email";
+                public const string CALLER_PHONE = "Phone Number";
+                public const string CALLER_TYPE = "Caller Type";
+                public const string CALLER_REGION = "Region";
+
+                // Patient Information
+                public const string PATIENT_ID = "Patient ID";
+                public const string PATIENT_FNAME = "First Name";
+                public const string PATIENT_LNAME = "Last Name";
+                public const string PATIENT_GENDER = "Gender";
+                public const string PATIENT_AGE = "Age";
+
+                // Question Information
+                public const string QUESTION = "Question";
+                public const string RESPONSE = "Response";
+                public const string SEVERITY = "Severity";
+                public const string CONSEQUENCE = "Probability of Consequence";
+                public const string IMPACT_SCORE = "Impact Score";
+                public const string KEYWORDS = "Keywords";
+                public const string REFERENCES = "References";
+                public const string PARENT_REQUEST = "Parent Request ID";
+            }
+
+            // Text used in Buttons
+            public static class ButtonText {
+                public const string ADD_REQUEST = "Add New Request";
+                public const string EDIT_REQUEST = "Edit Request";
+                public const string UNLOCK_REQUEST = "Unlock Request";
+                public const string EXPORT_REQUEST = "Export Request";
+                public const string SAVE_DRAFT = "Save Draft";
+                public const string MARK_COMPLETE = "Mark as Complete";
+                public const string DELETE_REQUEST = "Delete Request";
+            }
+        }
+
         /// <summary>
         /// Gets the string value for the status
         /// </summary>

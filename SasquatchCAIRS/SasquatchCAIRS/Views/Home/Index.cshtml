@@ -5,7 +5,7 @@
 
 <h1>Dashboard</h1>
 @if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
-    @Html.ActionLink("Add New Request", "Add", "Request", new {}, new {
+    @Html.ActionLink(Constants.UIString.ButtonText.ADD_REQUEST, "Add", "Request", new {}, new {
         @class = "btn btn-primary dashboard add-button"
     })
 }
@@ -13,12 +13,12 @@
 @if (ViewBag.Requests != null) {
 <table class="table table-hover">
     <tr>
-        <th>Request ID</th>
-        <th>Caller Name</th>
-        <th>Status</th>
-        <th>Keywords</th>
-        <th>Started</th>
-        <th>Completed</th>
+        <th>@Constants.UIString.FieldLabel.REQUEST_ID</th>
+        <th>@Constants.UIString.FieldLabel.CALLER_NAME</th>
+        <th>@Constants.UIString.FieldLabel.STATUS</th>
+        <th>@Constants.UIString.FieldLabel.KEYWORDS</th>
+        <th>@Constants.UIString.FieldLabel.START_TIME</th>
+        <th>@Constants.UIString.FieldLabel.COMPLETED_TIME</th>
     </tr>
     @foreach (var request in ViewBag.Requests) {
         <tr>

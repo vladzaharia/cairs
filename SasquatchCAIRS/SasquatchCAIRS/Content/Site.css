@@ -614,6 +614,15 @@ td.clickable {
 
 .table .tbl-label {
     font-weight: bold;
+    width: 15%;
+}
+
+.table .tbl-content-4 {
+    width: 35%;
+}
+
+.table .tbl-content-6 {
+    width: 18%;
 }
 
 .table .tbl-top {

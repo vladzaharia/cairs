@@ -9,80 +9,73 @@
     <h3>Request Information</h3>
     <table class="table information-table">
         <tr>
-            <td class="tbl-label tbl-top" width="15%">Created By</td>
-            <td width="35%" class="tbl-top">@* TODO: Created By *@</td>
+            <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.CREATED_BY</td>
+            <td class="tbl-content-4 tbl-top">@* TODO: Created By *@</td>
 
-            <td class="tbl-label tbl-top" width="15%">Start Time</td>
-            <td width="35%" class="tbl-top">@Model.timeOpened</td>
+            <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.START_TIME</td>
+            <td class="tbl-content-4 tbl-top">@Model.timeOpened</td>
         </tr>
         <tr>
-            <td class="tbl-label" width="15%">Completed By</td>
-            <td width="35%">@* TODO: Completed By *@</td>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.COMPLETED_BY</td>
+            <td class="tbl-content-4">@* TODO: Completed By *@</td>
 
-            <td class="tbl-label" width="15%">Completed Time</td>
-            <td width="35%">@Model.timeClosed</td>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.COMPLETED_TIME</td>
+            <td class="tbl-content-4">@Model.timeClosed</td>
         </tr>
         <tr>
-            <td class="tbl-label" width="15%">Status</td>
-            <td width="35%">@Constants.getStatusString(Model.requestStatus)</td>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.STATUS</td>
+            <td class="tbl-content-4">@Constants.getStatusString(Model.requestStatus)</td>
 
-            <td class="tbl-label" width="15%">Total Time Spent</td>
-            <td width="35%">@ViewBag.TimeSpent mins</td>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.TOTAL_TIME_SPENT</td>
+            <td class="tbl-content-4">@ViewBag.TimeSpent mins</td>
         </tr>
     </table>
 
     <h3>Caller Information</h3>
     <table class="table information-table">
         <tr>
-            <td class="tbl-label tbl-top" width="15%">First Name</td>
-            <td width="35%" class="tbl-top">@Model.requestorFirstName</td>
+            <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.CALLER_FNAME</td>
+            <td class="tbl-content-4 tbl-top">@Model.requestorFirstName</td>
 
-            <td class="tbl-label tbl-top" width="15%">Last Name</td>
-            <td width="35%" class="tbl-top">@Model.requestorLastName</td>
+            <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.CALLER_LNAME</td>
+            <td class="tbl-content-4 tbl-top">@Model.requestorLastName</td>
         </tr>
         <tr>
-            <td class="tbl-label" width="15%">Email</td>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.CALLER_EMAIL</td>
             <td colspan="3">@Model.requestorEmail</td>
         </tr>
         <tr>
-            <td class="tbl-label" width="15%">Phone Number</td>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.CALLER_PHONE</td>
             <td colspan="3">@Model.requestorPhoneNum @Model.requestorPhoneExt</td>
         </tr>
         <tr>
-            <td class="tbl-label" width="15%">Caller Type</td>
-            <td width="35%">@Model.requestorTypeID @*TODO: Convert to String Value using DB*@</td>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.CALLER_TYPE</td>
+            <td class="tbl-content-4">@Model.requestorTypeID @*TODO: Convert to String Value using DB*@</td>
 
-            <td class="tbl-label" width="15%">Region</td>
-            <td width="35%">@Model.regionID @*TODO: Convert to String Value using DB*@</td>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.CALLER_REGION</td>
+            <td class="tbl-content-4">@Model.regionID @*TODO: Convert to String Value using DB*@</td>
         </tr>
     </table>
 
     <h3>Patient Information</h3>
     <table class="table information-table">
         <tr>
-            <td class="tbl-label tbl-top" width="15%">Patient Agency ID</td>
+            <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.PATIENT_ID</td>
             <td colspan="3" class="tbl-top">@Model.patientAgencyID</td>
         </tr>
         <tr>
-            <td class="tbl-label" width="15%">First Name</td>
-            <td width="35%">@Model.patientFName</td>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.PATIENT_FNAME</td>
+            <td class="tbl-content-4">@Model.patientFName</td>
 
-            <td class="tbl-label" width="15%">Last Name</td>
-            <td width="35%">@Model.patientLName</td>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.PATIENT_LNAME</td>
+            <td class="tbl-content-4">@Model.patientLName</td>
         </tr>
         <tr>
-            <td class="tbl-label" width="15%">Caller Type</td>
-            <td width="35%">@Model.requestorTypeID @*TODO: Convert to String Value using DB*@</td>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.PATIENT_GENDER</td>
+            <td class="tbl-content-4">@Constants.getGenderString(Model.patientGender)</td>
 
-            <td class="tbl-label" width="15%">Region</td>
-            <td width="35%">@Model.regionID @*TODO: Convert to String Value using DB*@</td>
-        </tr>
-        <tr>
-            <td class="tbl-label" width="15%">Gender</td>
-            <td width="35%">@Constants.getGenderString(Model.patientGender)</td>
-
-            <td class="tbl-label" width="15%">Age</td>
-            <td width="35%">@Model.patientAge</td>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.PATIENT_AGE</td>
+            <td class="tbl-content-4">@Model.patientAge</td>
         </tr>
     </table>
 
@@ -90,37 +83,37 @@
     foreach (QuestionResponseContent qr in Model.questionResponseList) {
         <table class="table information-table">
             <tr>
-                <td class="tbl-label tbl-top" colspan="6">Question</td>
+                <td class="tbl-label tbl-top" colspan="6">@Constants.UIString.FieldLabel.QUESTION</td>
             </tr>
             <tr>
                 <td colspan="6">@qr.question</td>
             </tr>
             <tr>
-                <td class="tbl-label" colspan="6">Response</td>
+                <td class="tbl-label" colspan="6">@Constants.UIString.FieldLabel.RESPONSE</td>
             </tr>
             <tr>
                 <td colspan="6">@qr.response</td>
             </tr>
             <tr>
-                <td class="tbl-label" width="15%">Severity</td>
-                <td width="18%">@qr.severity</td>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.SEVERITY</td>
+                <td class="tbl-content-6">@qr.severity</td>
 
-                <td class="tbl-label" width="15%">Probabilty of Consequence</td>
-                <td width="18%">@qr.consequence</td>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.CONSEQUENCE</td>
+                <td class="tbl-content-6">@qr.consequence</td>
 
-                <td class="tbl-label" width="15%">Impact Score</td>
-                <td width="19%">@Constants.getImpactScore(qr.severity, qr.consequence)</td>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.IMPACT_SCORE</td>
+                <td class="tbl-content-6">@Constants.getImpactScore(qr.severity, qr.consequence)</td>
             </tr>
             <tr>
-                <td class="tbl-label" width="15%">Keywords</td>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.KEYWORDS</td>
                 <td colspan="5">@foreach(string keyword in ViewBag.Keywords) { <span>@keyword </span> }</td>
             </tr>
             <tr>
-                <td class="tbl-label" colspan="6">References</td>
+                <td class="tbl-label" colspan="6">@Constants.UIString.FieldLabel.REFERENCES</td>
             </tr>
             @foreach (ReferenceContent reference in qr.referenceList) {
                 <tr>
-                    <td width="15%">@reference.referenceType</td>
+                    <td>@reference.referenceType</td>
                     <td colspan="5">@reference.referenceString</td>
                 </tr>
             }
@@ -130,24 +123,24 @@
     <h3>Properties</h3>
     <table class="table information-table">
         <tr>
-            <td class="tbl-label tbl-top" width="15%">Parent Request</td>
+            <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.PARENT_REQUEST</td>
             <td width="85%" class="tbl-top">@Model.parentRequestID</td>
         </tr>
     </table>
 
     <div class="buttons">
         @if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
-            @Html.ActionLink("Edit Request", "Edit", "Request", new {id = Model.requestID}, new {
+            @Html.ActionLink(Constants.UIString.ButtonText.EDIT_REQUEST, "Edit", "Request", new {id = Model.requestID}, new {
                 @class = "btn btn-warning edit-button"
             })
         } 
 
-        @Html.ActionLink("Export to File", "Export", "Request", new {id = Model.requestID}, new {
+        @Html.ActionLink(Constants.UIString.ButtonText.EXPORT_REQUEST, "Export", "Request", new {id = Model.requestID}, new {
             @class = "btn btn-primary export-button"
         }) 
     
         @if (User.IsInRole(Constants.Roles.ADMINISTRATOR) && RequestLockController.instance.isLocked(Model.requestID)) {
-            @Html.ActionLink("Unlock", "Unlock", "Request", new {id = Model.requestID}, new {
+            @Html.ActionLink(Constants.UIString.ButtonText.UNLOCK_REQUEST, "Unlock", "Request", new {id = Model.requestID}, new {
                 @class = "btn btn-primary unlock-button"
             })
         }

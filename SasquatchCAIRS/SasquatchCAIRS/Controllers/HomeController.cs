@@ -12,23 +12,28 @@ namespace SasquatchCAIRS.Controllers {
             RequestLockController rlc = RequestLockController.instance;
             Dictionary<long, List<string>> keywords = new Dictionary<long, List<string>>();
 
-            // Select all from Requests
-            IQueryable<Request> requests = db.Requests.Select(r => r);
-
-            // Remove incomplete (open) requests
-            if (!User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
-                requests = requests.Where(
-                    r =>
-                    (Constants.RequestStatus) r.RequestStatus !=
-                    Constants.RequestStatus.Open);
+            if (!User.IsInRole(Constants.Roles.VIEWER)) {
+                ViewBag.Requests = null;
+                return View();
             }
 
-            // Remove locked+invalid requests
-            if (!User.IsInRole(Constants.Roles.ADMINISTRATOR)) {
-                requests = requests
-                    .Where(r =>
-                           (Constants.RequestStatus) r.RequestStatus !=
-                           Constants.RequestStatus.Invalid);
+            // Select all from Requests
+            IQueryable<Request> requests;
+
+            // Create request list based on roles
+            if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
+                requests = db.Requests.Select(r => r).Where(
+                    r =>
+                    (Constants.RequestStatus) r.RequestStatus !=
+                    Constants.RequestStatus.Invalid);
+                //.Where(r => !rlc.isLocked(r.RequestID)); TODO: Fix this
+            } else if (User.IsInRole(Constants.Roles.ADMINISTRATOR)) {
+                requests = db.Requests.Select(r => r);
+            } else {
+                requests = db.Requests.Select(r => r).Where(
+                    r =>
+                    (Constants.RequestStatus) r.RequestStatus ==
+                    Constants.RequestStatus.Open);
                 //.Where(r => !rlc.isLocked(r.RequestID)); TODO: Fix this
             }
 
@@ -36,7 +41,7 @@ namespace SasquatchCAIRS.Controllers {
 
             // Set the requests to null if there isn't anything on it,
             // as the view doesn't seem to have Any() available.
-            if (!requests.Any() || !User.IsInRole(Constants.Roles.VIEWER)) {
+            if (!requests.Any()) {
                 requests = null;
             }
 
