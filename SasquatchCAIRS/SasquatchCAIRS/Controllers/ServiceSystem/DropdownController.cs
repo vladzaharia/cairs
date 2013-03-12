@@ -125,10 +125,8 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         /// Add a new entry to one of the dropdown tables in the database.
         /// </summary>
         /// <param name="table">Table to add a new entry to.</param>
-        /// <param name="code">
-        /// The code associated with the entry. Keyword entries have no code.
-        /// </param>
-        /// <param name="value">The value associated with the entry.</param>
+        /// <param name="entry">DropdownEntry containing the value and code,
+        /// if exists.</param>
         public void addEntry(Constants.DropdownTable table,
                              DropdownEntry entry) {
             switch (table) {
@@ -183,6 +181,12 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             _db.SubmitChanges();
         }
 
+        /// <summary>
+        /// Edit a dropdown entry in a given table.
+        /// </summary>
+        /// <param name="table">Dropdown table enum.</param>
+        /// <param name="id">Dropdown entry ID.</param>
+        /// <param name="active">True for active, false for inactive.</param>
         public void editEntryStatus(Constants.DropdownTable table,
                                     int id,
                                     bool active) {
