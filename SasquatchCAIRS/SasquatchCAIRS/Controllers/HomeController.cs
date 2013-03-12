@@ -8,9 +8,9 @@ namespace SasquatchCAIRS.Controllers {
     public class HomeController : Controller {
         [Authorize]
         public ActionResult Index() {
-            CAIRSDataContext db = new CAIRSDataContext();
+            var db = new CAIRSDataContext();
             RequestLockController rlc = RequestLockController.instance;
-            Dictionary<long, List<string>> keywords = new Dictionary<long, List<string>>();
+            var keywords = new Dictionary<long, List<string>>();
 
             if (!User.IsInRole(Constants.Roles.VIEWER)) {
                 ViewBag.Requests = null;
@@ -48,22 +48,14 @@ namespace SasquatchCAIRS.Controllers {
             // Grab keywords for the requests
             if (requests != null) {
                 foreach (Request rq in requests) {
-                    foreach (Keyword keyword in rq.QuestionResponses
-                        .Select(qr => db.KeywordQuestions.Where(kq =>
-                            kq.QuestionResponseID == qr.QuestionResponseID &&
-                            kq.RequestID == qr.RequestID))
-                        .SelectMany(kqs => kqs.Select(kq => 
-                            db.Keywords.FirstOrDefault(
-                                k => k.KeywordID == kq.KeywordID))
-                        .Where(keyword => keyword != null))) {
-                        if (keywords.ContainsKey(rq.RequestID)) {
-                            keywords[rq.RequestID].Add(
-                                keyword.KeywordValue);
-                        } else {
-                            List<string> kwlist = new List<string> { keyword.KeywordValue };
-                            keywords.Add(rq.RequestID, kwlist);
-                        }
-                    }
+                    List<string> kw =
+                        (from kws in db.Keywords
+                         join kqs in db.KeywordQuestions on kws.KeywordID equals
+                             kqs.KeywordID
+                         where kqs.RequestID == rq.RequestID
+                         select kws.KeywordValue)
+                            .ToList();
+                    keywords.Add(rq.RequestID, kw);
                 }
             }
 
