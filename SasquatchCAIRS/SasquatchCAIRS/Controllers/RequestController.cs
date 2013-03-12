@@ -24,7 +24,7 @@ namespace SasquatchCAIRS.Controllers {
             RequestContent request = rmc.getRequestDetails(id);
             ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST 
                 + " - " 
-                + Constants.UIString.TitleText.REQUEST_NO 
+                + Constants.UIString.TitleText.REQUEST_NUM 
                 + request.requestID;
 
             // Show error if not editor/administrator and request isn't complete

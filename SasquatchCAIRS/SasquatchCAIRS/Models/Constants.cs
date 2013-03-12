@@ -138,7 +138,7 @@ namespace SasquatchCAIRS.Models {
             public static class TitleText {
                 public const string DASHBOARD = "Dahboard";
                 public const string VIEW_REQUEST = "View Request";
-                public const string REQUEST_NO = "Request #";
+                public const string REQUEST_NUM = "Request #";
                 public const string ERROR = "Error";
             }
         }

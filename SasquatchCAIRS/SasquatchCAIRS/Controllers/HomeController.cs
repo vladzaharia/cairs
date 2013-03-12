@@ -37,7 +37,8 @@ namespace SasquatchCAIRS.Controllers {
                 //.Where(r => !rlc.isLocked(r.RequestID)); TODO: Fix this
             }
 
-            requests = requests.OrderByDescending(r => r.TimeOpened).Take(20);
+            requests = requests.OrderBy(r => r.RequestStatus)
+                .ThenByDescending(r => r.TimeOpened).Take(20);
 
             // Set the requests to null if there isn't anything on it,
             // as the view doesn't seem to have Any() available.
