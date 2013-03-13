@@ -6,7 +6,7 @@
 
 @if (Model != null) {
     <h2>@Constants.UIString.TitleText.VIEW_REQUEST - @Constants.UIString.TitleText.REQUEST_NUM@Model.requestID</h2>
-    <h3>Request Information</h3>
+    <h4>Request Information</h4>
     <table class="table information-table">
         <tr>
             <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.CREATED_BY</td>
@@ -31,7 +31,7 @@
         </tr>
     </table>
 
-    <h3>Caller Information</h3>
+    <h4>Caller Information</h4>
     <table class="table information-table">
         <tr>
             <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.CALLER_FNAME</td>
@@ -57,7 +57,7 @@
         </tr>
     </table>
 
-    <h3>Patient Information</h3>
+    <h4>Patient Information</h4>
     <table class="table information-table">
         <tr>
             <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.PATIENT_ID</td>
@@ -79,7 +79,7 @@
         </tr>
     </table>
 
-    <h3>Question Information</h3>
+    <h4>Question Information</h4>
     foreach (QuestionResponseContent qr in Model.questionResponseList) {
         <table class="table information-table">
             <tr>
@@ -120,7 +120,7 @@
         </table>
     }
 
-    <h3>Properties</h3>
+    <h4>Properties</h4>
     <table class="table information-table">
         <tr>
             <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.PARENT_REQUEST</td>

@@ -810,7 +810,7 @@ input[type="search"],
 input[type="tel"],
 input[type="color"],
 .uneditable-input {
-  border: 1px solid #dce4ec;
+  border: 2px solid #dce4ec;
   color: #34495e;
   font-family: "Lato", sans-serif;
   font-size: 14px;
@@ -1080,7 +1080,8 @@ textarea,
   -webkit-backface-visibility: hidden; }
   .checkbox:hover,
   .radio:hover {
-    color: #1abc9c; }
+    color: #3498db
+    ; }
   .checkbox input,
   .radio input {
     outline: none !important;
@@ -1852,7 +1853,7 @@ footer {
     color: #a1a4a7;
     font-weight: 700; }
   footer p {
-    font-size: 15px;
+    font-size: 13px;
     line-height: 20px; }
 
 .footer-title {
