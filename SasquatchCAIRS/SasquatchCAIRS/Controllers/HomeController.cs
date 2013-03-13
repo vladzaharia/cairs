@@ -14,9 +14,6 @@ namespace SasquatchCAIRS.Controllers {
         [Authorize]
         public ActionResult About() {
             ViewBag.Message = "Your app description page.";
-            ViewBag.Profile =
-                profileController.getUserProfile(User.Identity.Name);
-
             return View();
         }
 
