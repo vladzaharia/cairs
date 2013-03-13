@@ -136,12 +136,12 @@
         } 
 
         @Html.ActionLink(Constants.UIString.ButtonText.EXPORT_REQUEST, "Export", "Request", new {id = Model.requestID}, new {
-            @class = "btn btn-primary export-button"
+            @class = "btn btn-info export-button"
         }) 
     
         @if (User.IsInRole(Constants.Roles.ADMINISTRATOR) && RequestLockController.instance.isLocked(Model.requestID)) {
             @Html.ActionLink(Constants.UIString.ButtonText.UNLOCK_REQUEST, "Unlock", "Request", new {id = Model.requestID}, new {
-                @class = "btn btn-primary unlock-button"
+                @class = "btn btn-info unlock-button"
             })
         }
     </div>
