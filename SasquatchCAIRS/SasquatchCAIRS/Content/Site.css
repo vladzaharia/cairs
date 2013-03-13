@@ -554,6 +554,132 @@ td.clickable {
     border-width: 0;
 }
 
+.unbordered-table {
+    width: 100%;
+}
+
+.unbordered-table td {
+    border-width: 0;
+}
+
+.table .focal {
+    font-size: 125%;
+}
+
+.unbordered-table .tbl-border {
+    border-width: 1px;
+}
+
+.unbordered-table.no-margin {
+    margin-bottom: 0;
+}
+
+table .impact {
+    width: 18% !important;
+    height: 50px;
+    font-size: 50px;
+    font-weight: normal;
+}
+
+table .impact .score {
+    padding-left: 16px;
+    padding-top: 20px;
+}
+
+table .tbl-impact-label {
+    font-weight: bold;
+}
+
+table .impact-calc {
+    width: 45%;
+    color: white;
+    padding-left: 16px;
+    background-color: #95A5A6;
+}
+
+table .spacer {
+    width: 0%;
+    padding: 3px;
+}
+
+table .impact-calc.label {
+    font-weight: bold;
+}
+
+table .calc-impact-1 {
+    color: #e74c3c;
+    border: 2px solid #e74c3c;
+}
+
+table .calc-sev-Major,
+table .calc-cons-certain {
+    background-color: #E74C3C;
+    border: 2px solid #E74C3C;
+}
+
+table .calc-impact-2 {
+    color: #e67e22;
+    border: 2px solid #e67e22;
+}
+
+table .calc-cons-Probable {
+    background-color: #e67e22;
+    border: 2px solid #e67e22;
+}
+
+table .calc-impact-3 {
+    color: #F39C12;
+    border: 2px solid #f39c12;
+}
+
+table .calc-sev-Moderate {
+    background-color: #F39C12;
+    border: 2px solid #f39c12;
+}
+
+table .calc-impact-4 {
+    color: #f1c40f;
+    border: 2px solid #f1c40f;
+}
+
+table .calc-cons-Possible {
+    background-color: #f1c40f;
+    border: 2px solid #f1c40f;
+}
+
+table .calc-impact-5 {
+    color: #2ECC71;
+    border: 2px solid #2ecc71;
+}
+
+table .calc-cons-Unlikely,
+table .calc-sev-Minor {
+    background-color: #2ECC71;
+    border: 2px solid #2ecc71;
+}
+
+.sxs-one {
+    display: inline-block;
+    width: 49%;
+}
+
+.sxs-one.keywords {
+    position: absolute;
+}
+
+.sxs-one.impact {
+    padding-right: 10px;
+}
+
+.sxs .divider {
+    display: inline-block;
+    border-left: 1px solid #dddddd;
+    height: 181px;
+    position: relative;
+    top: 25px;
+    left: 2px;
+}
+
 div.buttons {
     float: right;
 }

@@ -106,6 +106,7 @@ namespace SasquatchCAIRS.Models {
                 public const string CALLER_REGION = "Region";
 
                 // Patient Information
+                public const string PATIENT_NAME = "Patient Name";
                 public const string PATIENT_ID = "Patient ID";
                 public const string PATIENT_FNAME = "First Name";
                 public const string PATIENT_LNAME = "Last Name";
@@ -115,12 +116,18 @@ namespace SasquatchCAIRS.Models {
                 // Question Information
                 public const string QUESTION = "Question";
                 public const string RESPONSE = "Response";
+                public const string SPECIAL_NOTES = "Special Notes/Followup";
+                public const string TUMOUR_GROUP = "Tumour Group";
+                public const string QUESTION_TYPE = "Question Type";
                 public const string SEVERITY = "Severity";
                 public const string CONSEQUENCE = "Probability of Consequence";
                 public const string IMPACT_SCORE = "Impact Score";
                 public const string KEYWORDS = "Keywords";
                 public const string REFERENCES = "References";
                 public const string PARENT_REQUEST = "Parent Request ID";
+
+                // General
+                public const string FULL_NAME = "Full Name";
             }
 
             // Text used in Buttons
@@ -162,11 +169,29 @@ namespace SasquatchCAIRS.Models {
         }
 
         /// <summary>
+        /// Gets the string value for the reference type
+        /// </summary>
+        /// <param name="type">Reference Type as a Constants.ReferenceType</param>
+        /// <returns>String representing the status</returns>
+        public static string getReferenceString(ReferenceType type) {
+            switch (type) {
+                case ReferenceType.URL:
+                    return "URL";
+                case ReferenceType.File:
+                    return "File";
+                case ReferenceType.Text:
+                    return "Text";
+                default:
+                    return "";
+            }
+        }
+
+        /// <summary>
         /// Gets the string value for the gender.
         /// </summary>
         /// <param name="gender">Gender as a Constants.Gender</param>
         /// <returns>String representing the gender</returns>
-        public static string getGenderString(Gender gender) {
+        public static string getGenderString(Gender? gender) {
             switch (gender) {
                 case Gender.Female:
                     return "Female";
@@ -185,7 +210,7 @@ namespace SasquatchCAIRS.Models {
         /// <param name="severity">Severity as Constants.Severity</param>
         /// <param name="consequence">Consequence as Constants.Consequence</param>
         /// <returns>A string representing the impact score.</returns>
-        public static string getImpactScore(Severity severity, Consequence consequence) {
+        public static string getImpactScore(Severity? severity, Consequence? consequence) {
             switch (consequence) {
                 case Consequence.Certain:
                 case Consequence.Probable:
