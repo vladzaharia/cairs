@@ -1,0 +1,168 @@
+﻿@model SasquatchCAIRS.Models.Admin.AdminController
+
+@{
+    ViewBag.Title = "Audit Report Generator";
+}
+
+<h2>Audit</h2>
+
+@using (Html.BeginForm("", "A", FormMethod.Post,
+    new {
+        @class = "form form-search advanced-search"
+    })) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>SearchCriteria</legend>
+
+        <div class="editor-label">
+            <br />
+            @Html.Label("Keywords")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.keywordString)
+            @Html.ValidationMessageFor(model => model.keywordString)
+        </div>
+
+        <div class="editor-label">
+            <br />
+            @Html.Label("Start Time")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.startTime)
+            @Html.ValidationMessageFor(model => model.startTime)
+        </div>
+
+        <div class="editor-label">
+            <br />
+            @Html.Label("Completion Time")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.completionTime)
+            @Html.ValidationMessageFor(model => model.completionTime)
+        </div>
+
+        <div class="editor-label">
+            <br />
+            @Html.Label("Status")
+        </div>
+
+        <div class="editor-field">
+            <label class="checkbox inline">
+                <input type="checkbox" name="status" id="Open" value="Open">
+                Open
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name="status" id="Closed" value="Closed">
+                Closed
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name="status" id="Inactive" value="Inactive">
+                Inactive
+            </label>
+        </div>
+
+        <div class="editor-label">
+            <br />
+            @Html.Label("Requestor Name")
+        </div>
+
+        <div class="editor-field">
+            <input type="text" class="input-medium" name="requestorFirst" placeholder="First Name">
+            <input type="text" class="input-medium" name="requestorLast" placeholder="Last Name">
+        </div>
+
+        <div class="editor-label">
+            <br />
+            @Html.Label("Patient Name")
+        </div>
+
+        <div class="editor-field">
+            <input type="text" class="input-medium" name="patientFirst" placeholder="First Name">
+            <input type="text" class="input-medium" name="patientLast" placeholder="Last Name">
+        </div>
+
+        <div class="editor-label">
+            <br />
+            @Html.Label("Tumor Group")
+        </div>
+
+        <div class="editor-field">
+            @*TODO REPLACE WITH CHECKBOXLIST*@
+            <select multiple="multiple" name="tumorGroup">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </div>
+
+        <div class="editor-label">
+            <br />
+            @Html.Label("Question Type")
+        </div>
+        <div class="editor-field">
+            @*TODO REPLACE WITH CHECKBOXLIST*@
+            <select multiple="multiple" name="questionType">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </div>
+
+        <div class="editor-label">
+            <br />
+            @Html.Label("Severity")
+        </div>
+        <div class="editor-field">
+
+            <label class="checkbox inline">
+                <input type="checkbox" name="severity" id="Major" value="Major">
+                Major
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name="severity" id="Moderate" value="Moderate">
+                Moderate
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name="severity" id="Minor" value="Minor">
+                Minor
+            </label>
+        </div>
+
+        <div class="editor-label">
+            <br />
+            @Html.Label("Consequence")
+        </div>
+
+        <div class="editor-field">
+            <label class="checkbox inline">
+                <input type="checkbox" name="consequence" id="Certain" value="Certain">
+                Certain
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name="consequence" id="Probable" value="Probable">
+                Probable
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name="consequence" id="Possible" value="Possible">
+                Possible
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name="consequence" id="Unlikely" value="Unlikely">
+                Unlikely
+            </label>
+        </div>
+
+        <p>
+            <br />
+            <input class="btn" type="submit" value="Search!" />
+        </p>
+    </fieldset>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
