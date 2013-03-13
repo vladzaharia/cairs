@@ -62,7 +62,7 @@ namespace SasquatchCAIRS.Controllers
             Session["criteria"] = criteria;
 
             ViewBag.keywords = criteria.keywordString;
-            List<Request> list = searchCriteriaQuery(criteria);
+            IQueryable<Request> list = searchCriteriaQuery(criteria);
             ViewBag.ResultSetSize = list.Count;
             return View();
         }
@@ -132,7 +132,6 @@ namespace SasquatchCAIRS.Controllers
 
             return (IQueryable<Request>)
                    (from r in db.SearchResults
-
                     where r.requestStatus == c.requestStatus
                     where r.severity == c.severity
                     where r.patientFirstName == c.patientFirstName
