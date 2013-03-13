@@ -168,6 +168,7 @@
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Models\SearchSystem\SearchCriteria.cs" />
     <Compile Include="Models\ServiceSystem\Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
