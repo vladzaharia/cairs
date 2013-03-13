@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using SasquatchCAIRS.Models;
+using SasquatchCAIRS.Models.ServiceSystem;
 
-namespace SasquatchCAIRS.Models.ServiceSystem {
+namespace SasquatchCAIRS.Controllers.ServiceSystem {
     public sealed class DropdownController {
         private static readonly DropdownController _instance =
             new DropdownController();
@@ -18,6 +19,11 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
+        /// <summary>
+        /// Get all active dropdown entries from a specific table.
+        /// </summary>
+        /// <param name="table">Table containing the entries.</param>
+        /// <returns>List of dropdown table entries.</returns>
         public List<DropdownEntry> getActiveEntries(Constants.DropdownTable table) {
             List<DropdownEntry> list = new List<DropdownEntry>();
 
@@ -25,91 +31,84 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
                 case Constants.DropdownTable.Keyword:
                     List<Keyword> keywords =
                         (from kw in _db.Keywords
-                         where kw.Active == true
+                         where kw.Active
                          select kw)
                          .ToList();
 
-                    foreach (Keyword kw in keywords) {
-                        list.Add(new DropdownEntry(kw.KeywordID,
-                                                   null,
-                                                   kw.KeywordValue,
-                                                   kw.Active));
-                    }
+                    list.AddRange(keywords.Select(
+                        kw => new KeywordEntry(kw.KeywordID,
+                                               kw.KeywordValue,
+                                               kw.Active)));
 
                     break;
                 case Constants.DropdownTable.QuestionType:
                     List<QuestionType> qTypes =
                         (from qType in _db.QuestionTypes
-                         where qType.Active == true
+                         where qType.Active
                          select qType)
                          .ToList();
 
-                    foreach (QuestionType qType in qTypes) {
-                        list.Add(new DropdownEntry(qType.QuestionTypeID,
+                    list.AddRange(qTypes.Select(
+                        qType => new DropdownEntry(qType.QuestionTypeID,
                                                    qType.Code,
                                                    qType.Value,
-                                                   qType.Active));
-                    }
+                                                   qType.Active)));
 
                     break;
                 case Constants.DropdownTable.Region:
                     List<Region> regions =
                         (from region in _db.Regions
-                         where region.Active == true
+                         where region.Active
                          select region)
                          .ToList();
 
-                    foreach (Region region in regions) {
-                        list.Add(new DropdownEntry(region.RegionID,
-                                                   region.Code,
-                                                   region.Value,
-                                                   region.Active));
-                    }
+                    list.AddRange(regions.Select(
+                        region => new DropdownEntry(region.RegionID,
+                                                    region.Code,
+                                                    region.Value,
+                                                    region.Active)));
 
                     break;
                 case Constants.DropdownTable.RequestorType:
                     List<RequestorType> rTypes =
                         (from rType in _db.RequestorTypes
-                         where rType.Active == true
+                         where rType.Active
                          select rType)
                          .ToList();
 
-                    foreach (RequestorType rType in rTypes) {
-                        list.Add(new DropdownEntry(rType.RequestorTypeID,
+                    list.AddRange(rTypes.Select(
+                        rType => new DropdownEntry(rType.RequestorTypeID,
                                                    rType.Code,
                                                    rType.Value,
-                                                   rType.Active));
-                    }
+                                                   rType.Active)));
 
                     break;
                 case Constants.DropdownTable.TumourGroup:
                     List<TumourGroup> tGroups =
                         (from tGroup in _db.TumourGroups
-                         where tGroup.Active == true
+                         where tGroup.Active
                          select tGroup)
                          .ToList();
 
-                    foreach (TumourGroup tGroup in tGroups) {
-                        list.Add(new DropdownEntry(tGroup.TumourGroupID,
-                                                   tGroup.Code,
-                                                   tGroup.Value,
-                                                   tGroup.Active));
-                    }
+                    list.AddRange(tGroups.Select(
+                        tGroup => new DropdownEntry(tGroup.TumourGroupID,
+                                                    tGroup.Code,
+                                                    tGroup.Value,
+                                                    tGroup.Active)));
 
                     break;
                 case Constants.DropdownTable.UserGroup:
                     List<UserGroup> uGroups =
                         (from uGroup in _db.UserGroups
-                         where uGroup.Active == true
+                         where uGroup.Active
                          select uGroup)
                          .ToList();
 
-                    foreach (UserGroup uGroup in uGroups) {
-                        list.Add(new DropdownEntry(uGroup.GroupID,
-                                                   uGroup.Code,
-                                                   uGroup.Value,
-                                                   uGroup.Active));
-                    }
+                    list.AddRange(uGroups.Select(
+                        uGroup => new DropdownEntry(uGroup.GroupID,
+                                                    uGroup.Code,
+                                                    uGroup.Value,
+                                                    uGroup.Active)));
 
                     break;
             }
@@ -118,67 +117,62 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         }
 
         /// <summary>
-        /// Add a new keyword to the database.
-        /// </summary>
-        /// <param name="value">The keyword string.</param>
-        public void addKeyword(string value) {
-            addEntry(Constants.DropdownTable.Keyword, null, value);
-        }
-
-        /// <summary>
         /// Add a new entry to one of the dropdown tables in the database.
         /// </summary>
         /// <param name="table">Table to add a new entry to.</param>
-        /// <param name="code">
-        /// The code associated with the entry. Keyword entries have no code.
-        /// </param>
-        /// <param name="value">The value associated with the entry.</param>
+        /// <param name="entry">DropdownEntry containing the value and code,
+        /// if exists.</param>
         public void addEntry(Constants.DropdownTable table,
-                             string code,
-                             string value) {
+                             DropdownEntry entry) {
             switch (table) {
                 case Constants.DropdownTable.Keyword:
-                    Keyword kw = new Keyword();
-                    kw.KeywordValue = value;
+                    Keyword kw = new Keyword {
+                        KeywordValue = entry.value
+                    };
 
                     _db.Keywords.InsertOnSubmit(kw);
                     break;
                 case Constants.DropdownTable.QuestionType:
-                    QuestionType qType = new QuestionType();
-                    qType.Code = code;
-                    qType.Value = value;
+                    QuestionType qType = new QuestionType {
+                        Code = entry.code,
+                        Value = entry.value
+                    };
 
                     _db.QuestionTypes.InsertOnSubmit(qType);
 
                     break;
                 case Constants.DropdownTable.Region:
-                    Region region = new Region();
-                    region.Code = code;
-                    region.Value = value;
+                    Region region = new Region {
+                        Code = entry.code,
+                        Value = entry.value
+                    };
 
                     _db.Regions.InsertOnSubmit(region);
 
                     break;
                 case Constants.DropdownTable.RequestorType:
-                    RequestorType rType = new RequestorType();
-                    rType.Code = code;
-                    rType.Value = value;
+                    RequestorType rType = new RequestorType {
+                        Code = entry.code,
+                        Value = entry.value
+                    };
 
                     _db.RequestorTypes.InsertOnSubmit(rType);
 
                     break;
                 case Constants.DropdownTable.TumourGroup:
-                    TumourGroup tGroup = new TumourGroup();
-                    tGroup.Code = code;
-                    tGroup.Value = value;
+                    TumourGroup tGroup = new TumourGroup {
+                        Code = entry.code,
+                        Value = entry.value
+                    };
 
                     _db.TumourGroups.InsertOnSubmit(tGroup);
 
                     break;
                 case Constants.DropdownTable.UserGroup:
-                    UserGroup uGroup = new UserGroup();
-                    uGroup.Code = code;
-                    uGroup.Value = value;
+                    UserGroup uGroup = new UserGroup {
+                        Code = entry.code,
+                        Value = entry.value
+                    };
 
                     _db.UserGroups.InsertOnSubmit(uGroup);
 
@@ -188,6 +182,12 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             _db.SubmitChanges();
         }
 
+        /// <summary>
+        /// Edit a dropdown entry in a given table.
+        /// </summary>
+        /// <param name="table">Dropdown table enum.</param>
+        /// <param name="id">Dropdown entry ID.</param>
+        /// <param name="active">True for active, false for inactive.</param>
         public void editEntryStatus(Constants.DropdownTable table,
                                     int id,
                                     bool active) {
@@ -251,7 +251,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
 
                 _db.SubmitChanges();
             }
-            catch (InvalidOperationException ioEx) {
+            catch (InvalidOperationException) {
                 // No such entry
                 // TODO: Do something
             }

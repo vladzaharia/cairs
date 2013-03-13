@@ -172,6 +172,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ExcelExportController.cs" />
+    <Compile Include="Controllers\RequestController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -329,6 +330,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Account\_ViewUserInfo.cshtml" />
     <Content Include="Views\Account\Auth.cshtml" />
+    <Content Include="Views\Request\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
