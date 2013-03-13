@@ -13,7 +13,7 @@ namespace SasquatchCAIRS.Models.SearchSystem {
         }
 
         [DataType(DataType.Date)]
-        public DateTime startTime {
+        public DateTime startTime { 
             get;
             set;
         }
