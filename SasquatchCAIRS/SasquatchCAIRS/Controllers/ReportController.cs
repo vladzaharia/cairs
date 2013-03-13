@@ -138,7 +138,8 @@ namespace SasquatchCAIRS.Controllers
             switch (stratifyBy)
             {
                 case Constants.StratifyOption.Region:
-
+                    //Retrieves the requests from the database which opened within the given timeFrame
+                    //then group them by the region
                     Dictionary<byte?, List<Request>> regionDictionary = (from reqs in _db.Requests
                                                                          where
                                                                              reqs.TimeOpened > start &&
@@ -150,6 +151,7 @@ namespace SasquatchCAIRS.Controllers
                                                                                                            r =>
                                                                                                            r.ToList());
 
+                    //Sub-groups the regionGroups by the year the request is opened.
                     Dictionary<byte?, Dictionary<int, List<Request>>> regionAndYear =
                         regionDictionary.ToDictionary(keyValuePair => keyValuePair.Key,
                                                       keyValuePair =>
@@ -167,6 +169,8 @@ namespace SasquatchCAIRS.Controllers
 
                     break;
                 case Constants.StratifyOption.CallerType:
+                    //Retrieves the requests from the database which opened within the given timeFrame
+                    //then group them by the callerType
                     Dictionary<byte?, List<Request>> callerDictionary = (from reqs in _db.Requests
                                                                          where
                                                                              reqs.TimeOpened > start &&
