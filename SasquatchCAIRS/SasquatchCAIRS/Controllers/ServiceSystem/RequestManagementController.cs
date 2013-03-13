@@ -26,7 +26,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// Creates a Request entity based off of the RequestContent.
         /// </summary>
         /// <param name="content">Request content holder.</param>
-        /// <returns></returns>
+        /// <returns>Request entity based off content.</returns>
         private Request createRequestEntity(RequestContent content) {
             Request req = new Request();
 
@@ -70,7 +70,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// QuestionResponseContent.
         /// </summary>
         /// <param name="content">QuestionResponse content holder.</param>
-        /// <returns></returns>
+        /// <returns>QuestionResponse entity based off of content.</returns>
         private QuestionResponse createQuestionResponseEntity(
             QuestionResponseContent content) {
 
@@ -108,7 +108,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// Create a Reference entity based off of the ReferenceContent.
         /// </summary>
         /// <param name="content">Reference content holder.</param>
-        /// <returns></returns>
+        /// <returns>Reference entity based off of content.</returns>
         private Reference createReferenceEntity(ReferenceContent content) {
             Reference r = new Reference();
 
@@ -130,7 +130,8 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// Creates a new Request in the database, with corresponding
         /// QuestionResponses and References
         /// </summary>
-        /// <param name="reqContent"></param>
+        /// <param name="reqContent">RequestContent containing
+        /// QuestionResponseContents, ReferenceContents and Keywords</param>
         public void create(RequestContent reqContent) {
             try {
                 using (TransactionScope trans = new TransactionScope()) {
@@ -227,8 +228,9 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// Retrieves all of the request information and content from the
         /// database for a given request ID.
         /// </summary>
-        /// <param name="requestID"></param>
-        /// <returns></returns>
+        /// <param name="requestID">ID of the specified request.</param>
+        /// <returns>RequestContent contaning QuestionResponseContents,
+        /// ReferenceContents and Keywords.</returns>
         public RequestContent getRequestDetails(long requestID) {
             Request reqResult =
                 (from reqs in _db.Requests
@@ -322,12 +324,8 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
 
                     // Retrieve the list of current QuestionResponseIDs for
                     // the request
-                    List<long> currQRIds =
-                        (from qrs in _db.QuestionResponses
-                         where qrs.RequestID == reqContent.requestID
-                         orderby qrs.QuestionResponseID
-                         select qrs.QuestionResponseID)
-                         .ToList();
+                    List<long> currQRIds = 
+                        getQuestionResponseIds(reqContent.requestID);
 
                     // Check all QuestionResponses being updated against
                     // those already in the database
@@ -500,8 +498,21 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                     trans.Complete();
                 }
             } catch (Exception ex) {
-                // Do something
+                // TODO: Do something
             }
+        }
+
+        /// <summary>
+        /// Retrieve the question response IDs associated with a given Request.
+        /// </summary>
+        /// <param name="reqId">Request ID.</param>
+        /// <returns>List of question response IDs.</returns>
+        public List<long> getQuestionResponseIds(long reqId) {
+            return (from qrs in _db.QuestionResponses
+                    where qrs.RequestID == reqId
+                    orderby qrs.QuestionResponseID
+                    select qrs.QuestionResponseID)
+                    .ToList();
         }
 
         /// <summary>
@@ -595,15 +606,11 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// <param name="requestID">Request ID.</param>
         public void invalidate(long requestID) {
             try {
-                using (TransactionScope trans = new TransactionScope()) {
-                    Request req = (from reqs in _db.Requests
-                                   where reqs.RequestID == requestID
-                                   select reqs).First();
-                    req.RequestStatus = (byte) Constants.RequestStatus.Invalid;
-                    _db.SubmitChanges();
-
-                    trans.Complete();
-                }
+                Request req = (from reqs in _db.Requests
+                               where reqs.RequestID == requestID
+                               select reqs).First();
+                req.RequestStatus = (byte) Constants.RequestStatus.Invalid;
+                _db.SubmitChanges();
             } catch (Exception ex) {
                 // TODO: Do something
             }
