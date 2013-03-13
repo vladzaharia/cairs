@@ -192,7 +192,7 @@
     <Compile Include="Models\ServiceSystem\Request.cs" />
     <Compile Include="Controllers\ServiceSystem\RequestManagementController.cs" />
     <Compile Include="Controllers\ServiceSystem\ServiceManager.cs" />
-    <Compile Include="Models\XSLContent.cs" />
+    <Compile Include="Models\XLSContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
