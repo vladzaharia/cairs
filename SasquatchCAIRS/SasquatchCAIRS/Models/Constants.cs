@@ -115,6 +115,7 @@ namespace SasquatchCAIRS.Models {
                 // Question Information
                 public const string QUESTION = "Question";
                 public const string RESPONSE = "Response";
+                public const string SPECIAL_NOTES = "Special Notes";
                 public const string SEVERITY = "Severity";
                 public const string CONSEQUENCE = "Probability of Consequence";
                 public const string IMPACT_SCORE = "Impact Score";
