@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 
 namespace SasquatchCAIRS.Models {
-    public struct XslGeneralContentKey : IEquatable<XslGeneralContentKey> {
+    public struct XlsGeneralContentKey : IEquatable<XlsGeneralContentKey> {
         private readonly int _rowNum;
         private readonly int _columNum;
 
@@ -20,7 +20,7 @@ namespace SasquatchCAIRS.Models {
             }
         }
 
-        public XslGeneralContentKey(int row, int col)
+        public XlsGeneralContentKey(int row, int col)
         {
             _rowNum = row;
             _columNum = col;
@@ -34,15 +34,15 @@ namespace SasquatchCAIRS.Models {
         }
 
         public override bool Equals(object obj) {
-            return obj is XslGeneralContentKey ? Equals((XslGeneralContentKey) obj) : false;
+            return obj is XlsGeneralContentKey ? Equals((XlsGeneralContentKey) obj) : false;
         }
 
-        public bool Equals(XslGeneralContentKey other) {
+        public bool Equals(XlsGeneralContentKey other) {
             return _rowNum == other.rowNum && _columNum == other.colNum;
         }
     }
 
-    public struct XslReportContentKey: IEquatable<XslReportContentKey> {
+    public struct XlsReportContentKey: IEquatable<XlsReportContentKey> {
         private readonly System.Nullable<byte> _typeId;
         private readonly int _month;
         private readonly int _year;
@@ -59,7 +59,7 @@ namespace SasquatchCAIRS.Models {
             get { return _year; }
         }
 
-        public XslReportContentKey(int month, int year, System.Nullable<byte> typeId)
+        public XlsReportContentKey(int month, int year, System.Nullable<byte> typeId)
         {
             _month = month;
             _year = year;
@@ -79,10 +79,10 @@ namespace SasquatchCAIRS.Models {
         }
 
         public override bool Equals(object obj) {
-            return obj is XslReportContentKey ? Equals((XslReportContentKey) obj) : false;
+            return obj is XlsReportContentKey ? Equals((XlsReportContentKey) obj) : false;
         }
 
-        public bool Equals(XslReportContentKey other)
+        public bool Equals(XlsReportContentKey other)
         {
             if (_typeId.HasValue)
             {
@@ -95,15 +95,15 @@ namespace SasquatchCAIRS.Models {
         }
     }
 
-    public class XSLContent
+    public class XLSContent
     {
         private string _title;
         private string[] _rowNames;
         private string[] _columnNames;
         private Point[] _columnPointReps;
-        private Dictionary<XslContentKey, long> _cellValues;
+        private Dictionary<XlsReportContentKey, long> _cellValues;
 
-        public XSLContent XslContent(string tit, string[] rows, Point[] columnPointReps, Dictionary<XslContentKey, long> cellValues)
+        public XLSContent XslContent(string tit, string[] rows, Point[] columnPointReps, Dictionary<XlsReportContentKey, long> cellValues)
         {
             _title = tit;
             _rowNames = rows;
@@ -112,7 +112,7 @@ namespace SasquatchCAIRS.Models {
             return this;
         }
 
-        public XSLContent XslContent()
+        public XLSContent XslContent()
         {
             return this;
         }
@@ -149,7 +149,7 @@ namespace SasquatchCAIRS.Models {
             get { return _columnNames; }
         }
 
-        public Dictionary<XslContentKey, long> valueTable {
+        public Dictionary<XlsReportContentKey, long> valueTable {
             get {
                 return _cellValues;
             }
