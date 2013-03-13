@@ -36,9 +36,6 @@ namespace SasquatchCAIRS
     partial void InsertKeyword(Keyword instance);
     partial void UpdateKeyword(Keyword instance);
     partial void DeleteKeyword(Keyword instance);
-    partial void InsertQuestionType(QuestionType instance);
-    partial void UpdateQuestionType(QuestionType instance);
-    partial void DeleteQuestionType(QuestionType instance);
     partial void InsertRegion(Region instance);
     partial void UpdateRegion(Region instance);
     partial void DeleteRegion(Region instance);
@@ -57,6 +54,9 @@ namespace SasquatchCAIRS
     partial void InsertRequest(Request instance);
     partial void UpdateRequest(Request instance);
     partial void DeleteRequest(Request instance);
+    partial void InsertQuestionType(QuestionType instance);
+    partial void UpdateQuestionType(QuestionType instance);
+    partial void DeleteQuestionType(QuestionType instance);
     #endregion
 		
 		public CAIRSDataContext() : 
@@ -102,14 +102,6 @@ namespace SasquatchCAIRS
 			get
 			{
 				return this.GetTable<Keyword>();
-			}
-		}
-		
-		public System.Data.Linq.Table<QuestionType> QuestionTypes
-		{
-			get
-			{
-				return this.GetTable<QuestionType>();
 			}
 		}
 		
@@ -166,6 +158,14 @@ namespace SasquatchCAIRS
 			get
 			{
 				return this.GetTable<Request>();
+			}
+		}
+		
+		public System.Data.Linq.Table<QuestionType> QuestionTypes
+		{
+			get
+			{
+				return this.GetTable<QuestionType>();
 			}
 		}
 	}
@@ -482,168 +482,6 @@ namespace SasquatchCAIRS
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.QuestionType")]
-	public partial class QuestionType : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private byte _QuestionTypeID;
-		
-		private string _Value;
-		
-		private string _Code;
-		
-		private bool _Active;
-		
-		private EntitySet<QuestionResponse> _QuestionResponses;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnQuestionTypeIDChanging(byte value);
-    partial void OnQuestionTypeIDChanged();
-    partial void OnValueChanging(string value);
-    partial void OnValueChanged();
-    partial void OnCodeChanging(string value);
-    partial void OnCodeChanged();
-    partial void OnActiveChanging(bool value);
-    partial void OnActiveChanged();
-    #endregion
-		
-		public QuestionType()
-		{
-			this._QuestionResponses = new EntitySet<QuestionResponse>(new Action<QuestionResponse>(this.attach_QuestionResponses), new Action<QuestionResponse>(this.detach_QuestionResponses));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionTypeID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public byte QuestionTypeID
-		{
-			get
-			{
-				return this._QuestionTypeID;
-			}
-			set
-			{
-				if ((this._QuestionTypeID != value))
-				{
-					this.OnQuestionTypeIDChanging(value);
-					this.SendPropertyChanging();
-					this._QuestionTypeID = value;
-					this.SendPropertyChanged("QuestionTypeID");
-					this.OnQuestionTypeIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
-		public string Value
-		{
-			get
-			{
-				return this._Value;
-			}
-			set
-			{
-				if ((this._Value != value))
-				{
-					this.OnValueChanging(value);
-					this.SendPropertyChanging();
-					this._Value = value;
-					this.SendPropertyChanged("Value");
-					this.OnValueChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
-		public string Code
-		{
-			get
-			{
-				return this._Code;
-			}
-			set
-			{
-				if ((this._Code != value))
-				{
-					this.OnCodeChanging(value);
-					this.SendPropertyChanging();
-					this._Code = value;
-					this.SendPropertyChanged("Code");
-					this.OnCodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
-		public bool Active
-		{
-			get
-			{
-				return this._Active;
-			}
-			set
-			{
-				if ((this._Active != value))
-				{
-					this.OnActiveChanging(value);
-					this.SendPropertyChanging();
-					this._Active = value;
-					this.SendPropertyChanged("Active");
-					this.OnActiveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionType_QuestionResponse", Storage="_QuestionResponses", ThisKey="QuestionTypeID", OtherKey="QuestionTypeID")]
-		public EntitySet<QuestionResponse> QuestionResponses
-		{
-			get
-			{
-				return this._QuestionResponses;
-			}
-			set
-			{
-				this._QuestionResponses.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_QuestionResponses(QuestionResponse entity)
-		{
-			this.SendPropertyChanging();
-			entity.QuestionType = this;
-		}
-		
-		private void detach_QuestionResponses(QuestionResponse entity)
-		{
-			this.SendPropertyChanging();
-			entity.QuestionType = null;
 		}
 	}
 	
@@ -1358,11 +1196,11 @@ namespace SasquatchCAIRS
 		
 		private EntitySet<Reference> _References;
 		
-		private EntityRef<QuestionType> _QuestionType;
-		
 		private EntityRef<TumourGroup> _TumourGroup;
 		
 		private EntityRef<Request> _Request;
+		
+		private EntityRef<QuestionType> _QuestionType;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1393,9 +1231,9 @@ namespace SasquatchCAIRS
 		public QuestionResponse()
 		{
 			this._References = new EntitySet<Reference>(new Action<Reference>(this.attach_References), new Action<Reference>(this.detach_References));
-			this._QuestionType = default(EntityRef<QuestionType>);
 			this._TumourGroup = default(EntityRef<TumourGroup>);
 			this._Request = default(EntityRef<Request>);
+			this._QuestionType = default(EntityRef<QuestionType>);
 			OnCreated();
 		}
 		
@@ -1624,40 +1462,6 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionType_QuestionResponse", Storage="_QuestionType", ThisKey="QuestionTypeID", OtherKey="QuestionTypeID", IsForeignKey=true)]
-		public QuestionType QuestionType
-		{
-			get
-			{
-				return this._QuestionType.Entity;
-			}
-			set
-			{
-				QuestionType previousValue = this._QuestionType.Entity;
-				if (((previousValue != value) 
-							|| (this._QuestionType.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._QuestionType.Entity = null;
-						previousValue.QuestionResponses.Remove(this);
-					}
-					this._QuestionType.Entity = value;
-					if ((value != null))
-					{
-						value.QuestionResponses.Add(this);
-						this._QuestionTypeID = value.QuestionTypeID;
-					}
-					else
-					{
-						this._QuestionTypeID = default(Nullable<byte>);
-					}
-					this.SendPropertyChanged("QuestionType");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TumourGroup_QuestionResponse", Storage="_TumourGroup", ThisKey="TumourGroupID", OtherKey="TumourGroupID", IsForeignKey=true)]
 		public TumourGroup TumourGroup
 		{
@@ -1722,6 +1526,40 @@ namespace SasquatchCAIRS
 						this._RequestID = default(long);
 					}
 					this.SendPropertyChanged("Request");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionType_QuestionResponse", Storage="_QuestionType", ThisKey="QuestionTypeID", OtherKey="QuestionTypeID", IsForeignKey=true)]
+		public QuestionType QuestionType
+		{
+			get
+			{
+				return this._QuestionType.Entity;
+			}
+			set
+			{
+				QuestionType previousValue = this._QuestionType.Entity;
+				if (((previousValue != value) 
+							|| (this._QuestionType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._QuestionType.Entity = null;
+						previousValue.QuestionResponses.Remove(this);
+					}
+					this._QuestionType.Entity = value;
+					if ((value != null))
+					{
+						value.QuestionResponses.Add(this);
+						this._QuestionTypeID = value.QuestionTypeID;
+					}
+					else
+					{
+						this._QuestionTypeID = default(Nullable<byte>);
+					}
+					this.SendPropertyChanged("QuestionType");
 				}
 			}
 		}
@@ -2381,6 +2219,168 @@ namespace SasquatchCAIRS
 		{
 			this.SendPropertyChanging();
 			entity.Request1 = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.QuestionType")]
+	public partial class QuestionType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private byte _QuestionTypeID;
+		
+		private string _Value;
+		
+		private string _Code;
+		
+		private bool _Active;
+		
+		private EntitySet<QuestionResponse> _QuestionResponses;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnQuestionTypeIDChanging(byte value);
+    partial void OnQuestionTypeIDChanged();
+    partial void OnValueChanging(string value);
+    partial void OnValueChanged();
+    partial void OnCodeChanging(string value);
+    partial void OnCodeChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    #endregion
+		
+		public QuestionType()
+		{
+			this._QuestionResponses = new EntitySet<QuestionResponse>(new Action<QuestionResponse>(this.attach_QuestionResponses), new Action<QuestionResponse>(this.detach_QuestionResponses));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionTypeID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public byte QuestionTypeID
+		{
+			get
+			{
+				return this._QuestionTypeID;
+			}
+			set
+			{
+				if ((this._QuestionTypeID != value))
+				{
+					this.OnQuestionTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._QuestionTypeID = value;
+					this.SendPropertyChanged("QuestionTypeID");
+					this.OnQuestionTypeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
+		public string Value
+		{
+			get
+			{
+				return this._Value;
+			}
+			set
+			{
+				if ((this._Value != value))
+				{
+					this.OnValueChanging(value);
+					this.SendPropertyChanging();
+					this._Value = value;
+					this.SendPropertyChanged("Value");
+					this.OnValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
+		public string Code
+		{
+			get
+			{
+				return this._Code;
+			}
+			set
+			{
+				if ((this._Code != value))
+				{
+					this.OnCodeChanging(value);
+					this.SendPropertyChanging();
+					this._Code = value;
+					this.SendPropertyChanged("Code");
+					this.OnCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionType_QuestionResponse", Storage="_QuestionResponses", ThisKey="QuestionTypeID", OtherKey="QuestionTypeID")]
+		public EntitySet<QuestionResponse> QuestionResponses
+		{
+			get
+			{
+				return this._QuestionResponses;
+			}
+			set
+			{
+				this._QuestionResponses.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_QuestionResponses(QuestionResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.QuestionType = this;
+		}
+		
+		private void detach_QuestionResponses(QuestionResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.QuestionType = null;
 		}
 	}
 }

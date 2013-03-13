@@ -1,6 +1,7 @@
 ﻿using SasquatchCAIRS.Filters;
 using System.Web.Mvc;
 using SasquatchCAIRS.Controllers.ServiceSystem;
+using SasquatchCAIRS.Models;
 
 namespace SasquatchCAIRS.Controllers {
     [InitializeSimpleMembership]
@@ -17,7 +18,8 @@ namespace SasquatchCAIRS.Controllers {
         [Authorize]
         public ActionResult About() {
             ViewBag.Message = "Your app description page.";
-            ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
+            ViewBag.Profile =
+                profileController.getUserProfile(User.Identity.Name);
             return View();
         }
 

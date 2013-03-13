@@ -18,15 +18,6 @@
       <Association Name="Keyword_KeywordQuestion" Member="KeywordQuestions" ThisKey="KeywordID" OtherKey="KeywordID" Type="KeywordQuestion" />
     </Type>
   </Table>
-  <Table Name="dbo.QuestionType" Member="QuestionTypes">
-    <Type Name="QuestionType">
-      <Column Name="QuestionTypeID" Type="System.Byte" DbType="TinyInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Value" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
-      <Column Name="Code" Type="System.String" DbType="Char(10) NOT NULL" CanBeNull="false" />
-      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="QuestionType_QuestionResponse" Member="QuestionResponses" ThisKey="QuestionTypeID" OtherKey="QuestionTypeID" Type="QuestionResponse" />
-    </Type>
-  </Table>
   <Table Name="dbo.Region" Member="Regions">
     <Type Name="Region">
       <Column Name="RegionID" Type="System.Byte" DbType="TinyInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -85,9 +76,9 @@
       <Column Name="Consequence" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Association Name="QuestionResponse_Reference" Member="References" ThisKey="QuestionResponseID,RequestID" OtherKey="QuestionResponseID,RequestID" Type="Reference" />
       <Association Name="QuestionResponse_KeywordQuestion" Member="KeywordQuestions" ThisKey="QuestionResponseID,RequestID" OtherKey="QuestionResponseID,RequestID" Type="KeywordQuestion" />
-      <Association Name="QuestionType_QuestionResponse" Member="QuestionType" ThisKey="QuestionTypeID" OtherKey="QuestionTypeID" Type="QuestionType" IsForeignKey="true" />
       <Association Name="TumourGroup_QuestionResponse" Member="TumourGroup" ThisKey="TumourGroupID" OtherKey="TumourGroupID" Type="TumourGroup" IsForeignKey="true" />
       <Association Name="Request_QuestionResponse" Member="Request" ThisKey="RequestID" OtherKey="RequestID" Type="Request" IsForeignKey="true" />
+      <Association Name="QuestionType_QuestionResponse" Member="QuestionType" ThisKey="QuestionTypeID" OtherKey="QuestionTypeID" Type="QuestionType" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Request" Member="Requests">
@@ -114,6 +105,15 @@
       <Association Name="Region_Request" Member="Region" ThisKey="RegionID" OtherKey="RegionID" Type="Region" IsForeignKey="true" />
       <Association Name="Request_Request" Member="Request1" ThisKey="ParentRequestID" OtherKey="RequestID" Type="Request" IsForeignKey="true" />
       <Association Name="RequestorType_Request" Member="RequestorType" ThisKey="RequestorTypeID" OtherKey="RequestorTypeID" Type="RequestorType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.QuestionType" Member="QuestionTypes">
+    <Type Name="QuestionType">
+      <Column Name="QuestionTypeID" Type="System.Byte" DbType="TinyInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
+      <Column Name="Code" Type="System.String" DbType="Char(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="QuestionType_QuestionResponse" Member="QuestionResponses" ThisKey="QuestionTypeID" OtherKey="QuestionTypeID" Type="QuestionResponse" />
     </Type>
   </Table>
 </Database>
