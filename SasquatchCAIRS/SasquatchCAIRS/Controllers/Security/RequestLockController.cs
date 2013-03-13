@@ -69,7 +69,7 @@ namespace SasquatchCAIRS.Controllers.Security
         /// </summary>
         /// <param name="requestId">The ID of the Request</param>
         /// <returns>The RequestLock if it exists, null otherwise</returns>
-        private RequestLock getRequestLock(long requestId) {
+        public RequestLock getRequestLock(long requestId) {
             return _db.RequestLocks.FirstOrDefault(rl => 
                 rl.RequestID == requestId);
         }
