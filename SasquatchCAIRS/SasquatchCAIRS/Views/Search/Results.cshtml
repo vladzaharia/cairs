@@ -11,23 +11,16 @@ For keywords: @ViewBag.keywords
 <div>
 </div>
 <div class="btn-group float-right">
-    <form method="post" action="~/Search/Modify">
-        <button class="btn">Modify Search</button>
-    </form>
-    <form method="post" action="~/Search/Advanced">
-        <button class="btn">New Search</button>
-    </form>
+    @LinkExtensions.ActionLink(Html, "Modify Search", "Modify", new { controller = "Search" }, new {@class="btn"})
+    @LinkExtensions.ActionLink(Html, "New Search", "Advanced", new { controller = "Search" }, new {@class="btn"})
 </div>
 @if (@ViewBag.ResultSetSize < 1) {
-    <p>
-    <br />
     <h3>No results were found</h3>
-    </p>
 } else {
 
 <fieldset>
     <legend>Search Results</legend>
-    <div class="float-bottom">
+    <div>
 <table class="table table-bordered table-hover">
     <tr>
         <th>
@@ -50,7 +43,7 @@ For keywords: @ViewBag.keywords
         </th>
     </tr>
 
-@*
+
 @foreach (var request in Model) {
     <tr>
         <th>
@@ -64,7 +57,7 @@ For keywords: @ViewBag.keywords
             @Html.DisplayFor(modelItem => request.RequestStatus)
         </th>
         <th>
-        @Html.DisplayFor(modelItem => request.Keywords)
+        @Html.DisplayFor(modelItem => request)
         </th> 
         <th>
             @Html.DisplayFor(modelItem => request.TimeOpened)
@@ -73,7 +66,7 @@ For keywords: @ViewBag.keywords
             @Html.DisplayFor(modelItem => request.TimeClosed)
         </th>
     </tr>
-}*@
+}
 </table>
 </div>
 </fieldset>

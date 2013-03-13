@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
-namespace SasquatchCAIRS.Models {
+namespace SasquatchCAIRS.Models.SearchSystem {
 
     public class SearchCriteria {
 
@@ -59,6 +56,7 @@ namespace SasquatchCAIRS.Models {
             get;
             set;
         }
+
         public String questionType {
             get;
             set;
