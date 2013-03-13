@@ -68,20 +68,20 @@ namespace SasquatchCAIRS.Controllers
         /// <summary>
         /// Create an audit report with all AuditLog entries for a specified user in a specified date range.
         /// </summary>
-        /// <param name="user">The user ID to track activitiy for</param>
+        /// <param name="userID">The user ID to track activitiy for</param>
         /// <param name="startDate"> The start of the specified date range</param>
         /// <param name="endDate">The end of the specified date range</param>
         /// <param name="exportFilePath">The filepath selected by the user to save the report in </param>
-        public void createReportForUser(int user, DateTime startDate, DateTime endDate, string exportFilePath)
+        public void createReportForUser(int userID, DateTime startDate, DateTime endDate, string exportFilePath)
         {
             // Create blank list of AuditLogs and fill with all AuditLogs for the given request ID
             List<SasquatchCAIRS.AuditLog> requestLogs =
                 (from r in _db.AuditLogs
-                 where r.UserID == user && DateTime.Compare(r.AuditDate, startDate) > 0 && DateTime.Compare(r.AuditDate, endDate) < 0
+                 where r.UserID == userID && DateTime.Compare(r.AuditDate, startDate) > 0 && DateTime.Compare(r.AuditDate, endDate) < 0
                  select r).ToList();
 
             // Create DataTable with requestLogs to send to XLSExporter
-            DataTable xlsExport = new DataTable("Audit Log for User " + user.ToString() + "Between "
+            DataTable xlsExport = new DataTable("Audit Log for User " + userID.ToString() + "Between "
                 + startDate.Date.ToLongDateString() + "and " + endDate.Date.ToLongDateString() );
 
             // Create required columns
