@@ -5,7 +5,7 @@
 @model SasquatchCAIRS.Models.ServiceSystem.RequestContent
 
 @if (Model != null) {
-    <h2>View Request - Request #@Model.requestID</h2>
+    <h2>@Constants.UIString.TitleText.VIEW_REQUEST - @Constants.UIString.TitleText.REQUEST_NUM@Model.requestID</h2>
     <h3>Request Information</h3>
     <table class="table information-table">
         <tr>
@@ -148,6 +148,6 @@
 }
 
 @if (Model == null) {
-    <h2>View Request - Error</h2>
+    <h2>@Constants.UIString.TitleText.VIEW_REQUEST - @Constants.UIString.TitleText.ERROR</h2>
     <p>Cannot open request. You may not have the appropriate permissions to access this request.</p>
 }
