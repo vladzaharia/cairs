@@ -18,209 +18,213 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
     }
 
     public class RequestContent {
-        private SasquatchCAIRS.Request _request;
+        private long _requestID = -1;
+        private long? _parentRequestID = null;
+
+        private string _requestorFName = null;
+        private string _requestorLName = null;
+        private string _requestorPhoneNum = null;
+        private string _requestorPhoneExt = null;
+        private string _requestorEmail = null;
+
+        private string _patientFName = null;
+        private string _patientLName = null;
+        private Constants.Gender _patientGender = Constants.Gender.None;
+        private string _patientAgencyID = null;
+        private byte? _patientAge = null;
+
+        private Constants.RequestStatus _requestStatus =
+            Constants.RequestStatus.Open;
+        private DateTime _timeOpened = new DateTime();
+        private DateTime? _timeClosed = null;
+
+        private byte? _regionID = null;
+        private byte? _requestorTypeID = null;
+
         private List<QuestionResponseContent> _questionResponseList
             = new List<QuestionResponseContent>();
-        private List<SasquatchCAIRS.Reference> _referenceList
-            = new List<SasquatchCAIRS.Reference>();
+        private List<Reference> _referenceList = new List<Reference>();
 
-        public RequestContent(SasquatchCAIRS.Request req) {
-            _request = req;
-        }
+        public RequestContent(Request req) {
+            _requestID = req.RequestID;
+            _parentRequestID = req.ParentRequestID;
 
-        public RequestContent() {
-            _request = new SasquatchCAIRS.Request();
-        }
+            _requestorFName = req.RequestorFName;
+            _requestorLName = req.RequestorLName;
+            _requestorPhoneNum = req.RequestorPhone;
+            _requestorPhoneExt = req.RequestorPhoneExt;
+            _requestorEmail = req.RequestorEmail;
 
-        public SasquatchCAIRS.Request request {
-            get {
-                return _request;
+            _patientFName = req.PatientFName;
+            _patientLName = req.PatientLName;
+
+            if (req.PatientGender != null) {
+                _patientGender = (Constants.Gender) req.PatientGender;
             }
+
+            _patientAgencyID = req.PatientAgencyID;
+            _patientAge = req.PatientAge;
+
+            _requestStatus = (Constants.RequestStatus) req.RequestStatus;
+            _timeOpened = req.TimeOpened;
+            _timeClosed = req.TimeClosed;
+
+            _regionID = req.RegionID;
+            _requestorTypeID = req.RequestorTypeID;
         }
+
+        public RequestContent() {}
 
         public long requestID {
             get {
-                return _request.RequestID;
+                return _requestID;
             }
             set {
-                _request.RequestID = value;
+                _requestID = value;
             }
         }
 
-        public System.Nullable<long> parentRequestID {
+        public long? parentRequestID {
             get {
-                return _request.ParentRequestID;
+                return _parentRequestID;
             }
             set {
-                _request.ParentRequestID = value;
+                _parentRequestID = value;
             }
         }
 
         public string requestorFirstName {
             get {
-                return _request.RequestorFName;
+                return _requestorFName;
             }
             set {
-                _request.RequestorFName = value;
+                _requestorFName = value;
             }
         }
 
         public string requestorLastName {
             get {
-                return _request.RequestorLName;
+                return _requestorLName;
             }
             set {
-                _request.RequestorLName = value;
+                _requestorLName = value;
             }
         }
 
         public string requestorPhoneNum {
             get {
-                return _request.RequestorPhone;
+                return _requestorPhoneNum;
             }
             set {
-                _request.RequestorPhone = value;
+                _requestorPhoneNum = value;
             }
         }
 
         public string requestorPhoneExt {
             get {
-                return _request.RequestorPhoneExt;
+                return _requestorPhoneExt;
             }
             set {
-                _request.RequestorPhoneExt = value;
+                _requestorPhoneExt = value;
             }
         }
 
         public string requestorEmail {
             get {
-                return _request.RequestorEmail;
+                return _requestorEmail;
             }
             set {
-                _request.RequestorEmail = value;
+                _requestorEmail = value;
             }
         }
 
-        public string patientFirstName {
+        public string patientFName {
             get {
-                return _request.PatientFName;
+                return _patientFName;
             }
             set {
-                _request.PatientFName = value;
+                _patientFName = value;
             }
         }
 
-        public string patientLastName {
+        public string patientLName {
             get {
-                return _request.PatientLName;
+                return _patientLName;
             }
             set {
-                _request.PatientLName = value;
+                _patientLName = value;
             }
         }
 
         public Constants.Gender patientGender {
             get {
-                if (_request.PatientGender != null) {
-                    return (Constants.Gender) _request.PatientGender;
-                } else {
-                    return Constants.Gender.None;
-                }
+                return _patientGender;
             }
             set {
-                if (value != null) {
-                    _request.PatientGender = (byte) value;
-                } else {
-                    _request.PatientGender = null;
-                }
+                _patientGender = value;
             }
         }
 
         public string patientAgencyID {
             get {
-                return _request.PatientAgencyID;
+                return _patientAgencyID;
             }
             set {
-                _request.PatientAgencyID = value;
+                _patientAgencyID = value;
             }
         }
 
-        public System.Nullable<byte> patientAge {
+        public byte? patientAge {
             get {
-                return _request.PatientAge;
+                return _patientAge;
             }
             set {
-                _request.PatientAge = value;
+                _patientAge = value;
             }
         }
 
         public Constants.RequestStatus requestStatus {
             get {
-                return (Constants.RequestStatus) _request.RequestStatus;
+                return _requestStatus;
             }
             set {
-                _request.RequestStatus = (byte) value;
+                _requestStatus = value;
             }
         }
 
         public DateTime timeOpened {
             get {
-                return _request.TimeOpened;
+                return _timeOpened;
             }
             set {
-                _request.TimeOpened = value;
+                _timeOpened = value;
             }
         }
 
-        public Constants.Priority priority {
+        public DateTime? timeClosed {
             get {
-                if (_request.Priority != null) {
-                    return (Constants.Priority) _request.Priority;
-                } else {
-                    return Constants.Priority.None;
-                }
+                return _timeClosed;
             }
             set {
-                if (value != null) {
-                    _request.Priority = (byte) value;
-                } else {
-                    _request.Priority = null;
-                }
+                _timeClosed = value;
             }
         }
 
-        public Constants.Severity severity {
+        public byte? regionID {
             get {
-                if (_request.Severity != null) {
-                    return (Constants.Severity) _request.Severity;
-                } else {
-                    return Constants.Severity.None;
-                }
+                return _regionID;
             }
             set {
-                if (value != null) {
-                    _request.Severity = (byte) value;
-                } else {
-                    _request.Severity = null;
-                }
+                _regionID = value;
             }
         }
 
-        public System.Nullable<byte> regionID {
+        public byte? requestorTypeID {
             get {
-                return _request.RegionID;
+                return _requestorTypeID;
             }
             set {
-                _request.RegionID = value;
-            }
-        }
-
-        public System.Nullable<byte> requestorTypeID {
-            get {
-                return _request.RequestorTypeID;
-            }
-            set {
-                _request.RequestorTypeID = value;
+                _requestorTypeID = value;
             }
         }
 
@@ -230,121 +234,148 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public Boolean addQuestionResponse(QuestionResponseContent newQR) {
-            if (newQR.requestID != requestID) {
-                return false;
-            }
-
-            foreach (QuestionResponseContent qr in _questionResponseList) {
-                if (qr.questionResponseID == newQR.questionResponseID) {
-                    return false;
-                }
-            }
-
+        public void addQuestionResponse(QuestionResponseContent newQR) {
             _questionResponseList.Add(newQR);
-            return true;
         }
 
-        public Boolean removeQuestionResponse(long questionResponseID) {
+        public void removeQuestionResponse(long questionResponseID) {
             foreach (QuestionResponseContent qr in _questionResponseList) {
                 if (qr.questionResponseID == questionResponseID) {
                     _questionResponseList.Remove(qr);
-                    return true;
                 }
             }
-
-            return false;
         }
     }
 
-    public class QuestionResponseContent {
-        private SasquatchCAIRS.QuestionResponse _questionResponse;
+    public class QuestionResponseContent : IComparable {
+        private long _requestID = -1;
+        private long _questionResponseID = -1;
 
-        private List<ReferenceContent> _referenceList = new List<ReferenceContent>();
+        private string _question = null;
+        private string _response = null;
+        private short? _timeSpent = null;
+        private string _specialNotes = null;
+        private byte? _questionTypeID = null;
+        private byte? _tumourGroupID = null;
 
-        public QuestionResponseContent(SasquatchCAIRS.QuestionResponse qr) {
-            _questionResponse = qr;
-        }
+        private Constants.Severity _severity = Constants.Severity.None;
+        private Constants.Consequence _consequence =
+            Constants.Consequence.None;
 
-        public QuestionResponseContent() {
-            _questionResponse = new SasquatchCAIRS.QuestionResponse();
-        }
+        private List<ReferenceContent> _referenceList =
+            new List<ReferenceContent>();
 
-        public SasquatchCAIRS.QuestionResponse questionResponse {
-            get {
-                return _questionResponse;
+        private List<KeywordContent> _keywords = new List<KeywordContent>();
+
+        public QuestionResponseContent(QuestionResponse qr) {
+            _requestID = qr.RequestID;
+            _questionResponseID = qr.QuestionResponseID;
+
+            _question = qr.Question;
+            _response = qr.Response;
+            _timeSpent = qr.TimeSpent;
+            _specialNotes = qr.SpecialNotes;
+            _questionTypeID = qr.QuestionTypeID;
+            _tumourGroupID = qr.TumourGroupID;
+
+            if (qr.Severity != null) {
+                _severity = (Constants.Severity) qr.Severity;
+            }
+
+            if (qr.Consequence != null) {
+                _consequence = (Constants.Consequence) qr.Consequence;
             }
         }
+
+        public QuestionResponseContent() {}
 
         public long requestID {
             get {
-                return _questionResponse.RequestID;
+                return _requestID;
             }
             set {
-                _questionResponse.RequestID = value;
+                _requestID = value;
             }
         }
 
         public long questionResponseID {
             get {
-                return _questionResponse.QuestionResponseID;
+                return _questionResponseID;
             }
             set {
-                _questionResponse.QuestionResponseID = value;
+                _questionResponseID = value;
             }
         }
 
         public string question {
             get {
-                return _questionResponse.Question;
+                return _question;
             }
             set {
-                _questionResponse.Question = value;
+                _question = value;
             }
         }
 
         public string response {
             get {
-                return _questionResponse.Response;
+                return _response;
             }
             set {
-                _questionResponse.Response = value;
+                _response = value;
             }
         }
 
-        public System.Nullable<short> timeSpent {
+        public short? timeSpent {
             get {
-                return _questionResponse.TimeSpent;
+                return _timeSpent;
             }
             set {
-                _questionResponse.TimeSpent = value;
+                _timeSpent = value;
             }
         }
 
         public string specialNotes {
             get {
-                return _questionResponse.SpecialNotes;
+                return _specialNotes;
             }
             set {
-                _questionResponse.SpecialNotes = value;
+                _specialNotes = value;
             }
         }
 
-        public System.Nullable<byte> questionTypeID {
+        public byte? questionTypeID {
             get {
-                return _questionResponse.QuestionTypeID;
+                return _questionTypeID;
             }
             set {
-                _questionResponse.QuestionTypeID = value;
+                _questionTypeID = value;
             }
         }
 
-        public System.Nullable<byte> tumourGroupID {
+        public byte? tumourGroupID {
             get {
-                return _questionResponse.TumourGroupID;
+                return _tumourGroupID;
             }
             set {
-                _questionResponse.TumourGroupID = value;
+                _tumourGroupID = value;
+            }
+        }
+
+        public Constants.Severity severity {
+            get {
+                return _severity;
+            }
+            set {
+                _severity = value;
+            }
+        }
+
+        public Constants.Consequence consequence {
+            get {
+                return _consequence;
+            }
+            set {
+                _consequence = value;
             }
         }
 
@@ -354,93 +385,163 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public Boolean addReference(ReferenceContent newRef) {
-            if (newRef.requestID != requestID ||
-                newRef.questionResponseID != questionResponseID) {
-                return false;
-            }
-
-            foreach (ReferenceContent r in _referenceList) {
-                if (r.questionResponseID == newRef.questionResponseID) {
-                    return false;
-                }
-            }
-
+        public void addReference(ReferenceContent newRef) {
             _referenceList.Add(newRef);
-            return true;
         }
 
-        public Boolean removeReference(long referenceID) {
+        public void removeReference(long referenceID) {
             foreach (ReferenceContent r in _referenceList) {
-                if (r.questionResponseID == questionResponseID) {
+                if (r.referenceID == referenceID) {
                     _referenceList.Remove(r);
-                    return true;
                 }
             }
+        }
 
-            return false;
+        public List<KeywordContent> keywords {
+            get {
+                return _keywords;
+            }
+        }
+
+        public void addKeyword(KeywordContent newKeyword) {
+            _keywords.Add(newKeyword);
+        }
+
+        public void removeKeyword(int keywordId) {
+            foreach (KeywordContent kw in _keywords) {
+                if (kw.keywordId == keywordId) {
+                    _keywords.Remove(kw);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Compares the current instance with another QuestionResponseContent
+        /// object and returns an integer that indicates whether the current
+        /// instance precedes, follows, or occurs in the same position in the
+        /// sort order as the other object.
+        /// </summary>
+        /// <param name="obj">An object to compare with this instance.</param>
+        /// <returns>
+        /// Less than zero if this instance precedes obj in the sort order.
+        /// Zero if this instance occurs in the same position in the sort order
+        /// as obj.
+        /// Greater than zero if this instance follows obj in the sort order.
+        /// </returns>
+        public int CompareTo(object obj) {
+            if (obj == null) {
+                return 1;
+            }
+
+            QuestionResponseContent otherQRContent = 
+                obj as QuestionResponseContent;
+            if (otherQRContent != null) {
+                if (requestID == otherQRContent.requestID) {
+                    return questionResponseID.CompareTo(
+                        otherQRContent.questionResponseID);
+                } else {
+                    return requestID.CompareTo(otherQRContent.requestID);
+                }
+            } else {
+                throw new ArgumentException(
+                    "Object is not a QuestionResponseContent");
+            }
         }
     }
 
     public class ReferenceContent {
-        private SasquatchCAIRS.Reference _reference;
+        private long _requestID;
+        private long _questionResponseID;
+        private long _referenceID;
 
-        public ReferenceContent(SasquatchCAIRS.Reference qr) {
-            _reference = qr;
+        private Constants.ReferenceType _referenceType =
+            Constants.ReferenceType.Text;
+        private string _referenceString = "";
+
+        public ReferenceContent(Reference r) {
+            _requestID = r.RequestID;
+            _questionResponseID = r.QuestionResponseID;
+            _referenceID = r.ReferenceID;
+
+            _referenceType = (Constants.ReferenceType) r.ReferenceType;
+            _referenceString = r.ReferenceString;
         }
 
-        public ReferenceContent() {
-            _reference = new SasquatchCAIRS.Reference();
-        }
-
-        public SasquatchCAIRS.Reference reference {
-            get {
-                return _reference;
-            }
-        }
+        public ReferenceContent() {}
 
         public long requestID {
             get {
-                return _reference.RequestID;
+                return _requestID;
             }
             set {
-                _reference.RequestID = value;
+                _requestID = value;
             }
         }
 
         public long questionResponseID {
             get {
-                return _reference.QuestionResponseID;
+                return _questionResponseID;
             }
             set {
-                _reference.QuestionResponseID = value;
+                _questionResponseID = value;
             }
         }
 
-        public int referenceID {
+        public long referenceID {
             get {
-                return reference.ReferenceID;
+                return _referenceID;
             }
             set {
-                reference.ReferenceID = value;
+                _referenceID = value;
             }
         }
 
         public Constants.ReferenceType referenceType {
             get {
-                return (Constants.ReferenceType) _reference.ReferenceType;
+                return _referenceType;
             }
             set {
-                _reference.ReferenceType = (byte) value;
+                _referenceType = value;
             }
         }
 
         public string referenceString {
             get {
-                return _reference.ReferenceString;
+                return _referenceString;
             }
             set {
-                _reference.ReferenceString = value;
+                _referenceString = value;
+            }
+        }
+    }
+
+    public class KeywordContent {
+        private int _keywordID = -1;
+        private string _keywordStr = null;
+
+        public KeywordContent(Keyword kw) {
+            _keywordID = kw.KeywordID;
+            _keywordStr = kw.KeywordValue;
+        }
+
+        public KeywordContent() {
+        }
+
+        public int keywordId {
+            get {
+                return _keywordID;
+            }
+            set {
+                _keywordID = value;
+            }
+        }
+
+        public string keywordStr {
+            get {
+                return _keywordStr;
+            }
+            set {
+                _keywordStr = value;
             }
         }
     }

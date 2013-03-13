@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using SasquatchCAIRS.Models.ServiceSystem;
 using SasquatchCAIRS.Models;
 
+
 namespace SasquatchCAIRS.Controllers
 {
     public class SearchController : Controller
@@ -74,10 +75,7 @@ namespace SasquatchCAIRS.Controllers
         }
 
 
-    private List<Request> searchCriteriaQuery(SearchCriteria c) {
-            List<Request> searchResults = new List<Request>();
-            return searchResults;
-        }
+
 
 
         //
@@ -127,30 +125,27 @@ namespace SasquatchCAIRS.Controllers
             base.Dispose(disposing);
         }
 
-        private void searchCriteriaQuery(SearchCriteria c) {
-            if (!string.IsNullOrEmpty(c)) {
+        private IQueryable<Request> searchCriteriaQuery(SearchCriteria c) {
+            List<Request> searchResults = new List<Request>();
 
-                List<SasquatchCAIRS.Request> searchResults =
-                    (from r in db.Results()
-                     where c.keywordString.Contains(r.keywordString)
-                     where r.requestStatus == c.requestStatus
-                     where r.severity == c.severity
-                     where r.patientFirstName == c.patientFirstName
-                     where r.patientLastName == c.patientLastName
-                     where c.tumorGroup.Contains(r.tumorGroup)
-                     where c.questionType.Contains(r.questionType)
-                     where r.requestorFirstName == c.requestorFirstName
-                     where r.requestorLastName == c.requestorLastName
-                     select r).ToList();
-            }
 
-            foreach (r in searchResults)
-                display(r);
 
+            return (IQueryable<Request>)
+                   (from r in db.SearchResults
+
+                    where r.requestStatus == c.requestStatus
+                    where r.severity == c.severity
+                    where r.patientFirstName == c.patientFirstName
+                    where r.patientLastName == c.patientLastName
+                    where c.tumorGroup.Contains(r.tumorGroup)
+                    where c.questionType.Contains(r.questionType)
+                    where r.requestorFirstName == c.requestorFirstName
+                    where r.requestorLastName == c.requestorLastName
+                    select r).toList();
         }
-
+         
 
     }
-    }
+    
 
 }
