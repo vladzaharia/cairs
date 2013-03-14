@@ -65,11 +65,10 @@ namespace SasquatchCAIRS.Controllers {
             criteria.patientLastName = form["patientLast"];
             Session["criteria"] = criteria;
 
-
             ViewBag.keywords = criteria.keywordString;
             var list = searchCriteriaQuery(criteria);
             ViewBag.ResultSetSize = list.Count;
-            return View();
+            return View(list);
         }
 
         [Authorize(Roles = "Viewer")]
