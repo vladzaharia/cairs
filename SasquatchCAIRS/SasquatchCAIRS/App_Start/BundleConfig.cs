@@ -29,6 +29,7 @@ namespace SasquatchCAIRS {
             bundles.Add(new ScriptBundle("~/bundles/flat-ui").Include("~/Scripts/flat-ui/*.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/ie7").Include("~/Content/ie7.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",

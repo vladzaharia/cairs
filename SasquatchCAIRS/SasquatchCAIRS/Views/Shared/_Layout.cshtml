@@ -12,6 +12,9 @@
         @Scripts.Render("~/bundles/bootstrap")
         @Styles.Render("~/Content/flat-ui")
         @Styles.Render("~/Content/css")
+        <!--[if lt IE 8]>
+            @Styles.Render("~/Content/ie7")
+        <![endif]-->
         @Scripts.Render("~/bundles/modernizr")
     </head>
     <body>

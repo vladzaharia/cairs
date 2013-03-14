@@ -17,7 +17,7 @@ namespace SasquatchCAIRS.Controllers {
             RequestManagementController rmc =
                 RequestManagementController.instance;
             RequestLockController rlc = RequestLockController.instance;
-            UserProfileController upc = UserProfileController.instance;
+            UserController upc = UserController.instance;
             int timeSpent = 0;
 
             // Set up the Request Object
