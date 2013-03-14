@@ -64,12 +64,12 @@
                             usg => usg.GroupID == item.id) != null) {
                             <label class="checkbox" for="userGroup-@item.id">
                                 <input type="checkbox" value="@item.id" id="userGroup-@item.id" name="userGroup" checked="checked">
-                                @item.code - @item.value
+                                @item.code - @item.value @* TODO Update to @item.text when Michelle Updates *@
                             </label>
                         } else {
                             <label class="checkbox" for="userGroup-@item.id">
                                 <input type="checkbox" value="@item.id" id="userGroup-@item.id" name="userGroup">
-                                @item.code - @item.value
+                                @item.code - @item.value @* TODO Update to @item.text when Michelle Updates *@
                             </label>
                         }
                     </label>
