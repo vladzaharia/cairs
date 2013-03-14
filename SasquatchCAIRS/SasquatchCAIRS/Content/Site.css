@@ -579,10 +579,10 @@ table .impact {
     height: 50px;
     font-size: 50px;
     font-weight: normal;
+    text-align: center;
 }
 
 table .impact .score {
-    padding-left: 16px;
     padding-top: 20px;
 }
 

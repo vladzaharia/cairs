@@ -97,7 +97,7 @@ namespace SasquatchCAIRS.Models {
                 public const string TOTAL_TIME_SPENT = "Total Time Spent";
 
                 // Caller Information
-                public const string CALLER_NAME = "Caller Name";
+                public const string CALLER_NAME = "Name";
                 public const string CALLER_FNAME = "First Name";
                 public const string CALLER_LNAME = "Last Name";
                 public const string CALLER_EMAIL = "Email";
@@ -106,7 +106,7 @@ namespace SasquatchCAIRS.Models {
                 public const string CALLER_REGION = "Region";
 
                 // Patient Information
-                public const string PATIENT_NAME = "Patient Name";
+                public const string PATIENT_NAME = "Name";
                 public const string PATIENT_ID = "Patient ID";
                 public const string PATIENT_FNAME = "First Name";
                 public const string PATIENT_LNAME = "Last Name";
