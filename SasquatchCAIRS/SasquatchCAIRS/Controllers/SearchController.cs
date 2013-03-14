@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using System.Linq;
 using System.Web.Mvc;
 using SasquatchCAIRS.Controllers.ServiceSystem;
@@ -106,25 +107,42 @@ namespace SasquatchCAIRS.Controllers
             return input.Split(delimiters.ToCharArray()).Select(int.Parse).ToList();
         } 
         private List<Request> searchCriteriaQuery(SearchCriteria c) {
-            return (IQueryable<Request>)
-                   (from r in _db.SearchResults.AsEnumerable()
-                    
-                    //where r.QuestionResponses(c.keywordString)
-                    where r.RequestStatus == c.requestStatus
-                   // where r.QuestionResponses == c.severity
+            /*return (from r in _db.SearchResults.AsEnumerable()
+                    where r.RequestStatus.ToString() == c.requestStatus     
                     where r.PatientFName == c.patientFirstName
                     where r.PatientLName == c.patientLastName
-                    //where c.tumorGroup.Contains(r.TumorGroup)
-                   // where c.questionType.Contains(r.QuestionType)
                     where r.RequestorFName == c.requestorFirstName
                     where r.RequestorLName == c.requestorLastName
                     from qr in r.QuestionResponses
-                    where qr.Severity == Enum.Parse(typeof (Constants.Severity), c.severity)
-                    where qr.TumourGroupID == c.tumorGroup
-                    where qr.Severity == c.severity
-                    where qr.QuestionTypeID == c.questionType
+                    where stringToIDs(c.severity, ",").Contains((int) qr.Severity)
+                    where stringToIDs(c.tumorGroup, ",").Contains((int) qr.TumourGroupID)
+                    where stringToIDs(c.questionType, ",").Contains((int) qr.QuestionTypeID)
 
-                    select r).ToList();
+                    select r).ToList(); */
+            List<Request> searchRequests =
+                (from r in _db.SearchResults.AsEnumerable()
+                 where r.RequestStatus.ToString() == c.requestStatus
+                 where r.PatientFName == c.patientFirstName
+                 where r.PatientLName == c.patientLastName
+                 where r.RequestorFName == c.requestorFirstName
+                 where r.RequestorLName == c.requestorLastName
+                 select r).ToList();
+
+            List<Request> searchResults = new List<Request>();
+            foreach (var r in searchRequests) {
+               searchResults = (from qr in r.QuestionResponses
+                 where stringToIDs(c.severity, ",").Contains((int) qr.Severity)
+                 where
+                     stringToIDs(c.tumorGroup, ",")
+                     .Contains((int) qr.TumourGroupID)
+                 where
+                     stringToIDs(c.questionType, ",")
+                     .Contains((int) qr.QuestionTypeID)
+                 select r).ToList();
+
+                
+            }
+            return searchResults;
         }
     }
 }
