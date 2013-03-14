@@ -1,54 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using System.Linq;
 using System.Web.Mvc;
 using SasquatchCAIRS.Controllers.ServiceSystem;
-<<<<<<< HEAD
-using SasquatchCAIRS.Models;
-=======
->>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
 using SasquatchCAIRS.Models.SearchSystem;
 using SasquatchCAIRS.Models.ServiceSystem;
+using SasquatchCAIRS.Models;
 
-namespace SasquatchCAIRS.Controllers {
-    public class SearchController : Controller {
-<<<<<<< HEAD
-        private SearchContext _db = new SearchContext();
-=======
->>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
+namespace SasquatchCAIRS.Controllers
+{
+    public class SearchController : Controller
+    {
 
         private DropdownController _dropdownController =
             DropdownController.instance;
-
-        private UserProfileController _profileController =
-            new UserProfileController();
+        private SearchContext _db = new SearchContext();
 
         //
-<<<<<<< HEAD
-        // GET: /Search/
-
-        public ActionResult Index() {
-            ViewBag.Profile =
-                _profileController.getUserProfile(User.Identity.Name);
-            return View(_db.SearchResults.ToList());
-        }
-
-        //
-=======
->>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
         // POST: /Search/Create
 
         [HttpPost]
         [Authorize(Roles = "Viewer")]
-        public ActionResult Search(String keywords) {
-<<<<<<< HEAD
-            ViewBag.Profile =
-                _profileController.getUserProfile(User.Identity.Name);
-=======
->>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
+        public ActionResult Search(String keywords)
+        {
             ViewBag.keywords = keywords;
-            var sc = new SearchCriteria();
+            SearchCriteria sc = new SearchCriteria();
             sc.keywordString = keywords;
             Session["criteria"] = sc;
             List<Request> list = searchCriteriaQuery(sc);
@@ -57,50 +35,38 @@ namespace SasquatchCAIRS.Controllers {
         }
 
         [Authorize(Roles = "Viewer")]
-        public ActionResult Advanced() {
 <<<<<<< HEAD
-            ViewBag.Profile =
-                _profileController.getUserProfile(User.Identity.Name);
-            var criteria = new SearchCriteria();
-=======
+        public ActionResult Advanced()
+        {
 
+=======
+        public ActionResult Advanced() {
+>>>>>>> c7ecd8c648c253c2d30df3caadd6cda789a4a0be
             SearchCriteria criteria = new SearchCriteria();
 
->>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
             ViewBag.TumorGroups =
                 _dropdownController.getActiveEntries(
-                    Constants.DropdownTable.TumourGroup);
+                    Constants.DropdownTable.TumourGroup).OrderBy(tg => tg.value);
             ViewBag.QuestionType =
                 _dropdownController.getActiveEntries(
-                    Constants.DropdownTable.QuestionType);
+                    Constants.DropdownTable.QuestionType).OrderBy(qt => qt.value);
+
             return View(criteria);
         }
 
-<<<<<<< HEAD
-        /// <summary>
-        ///     This takes all the data from the form and dumps it into the criteria object
-        /// </summary>
-        /// <param name="criteria"></param>
-        /// <param name="form"></param>
-        /// <returns></returns>
-=======
->>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
         [HttpPost]
-        [Authorize(Roles="Viewer")]
-        public ActionResult Results(SearchCriteria criteria, FormCollection form) {
-<<<<<<< HEAD
-            ViewBag.Profile =
-                _profileController.getUserProfile(User.Identity.Name);
-
-=======
+        [Authorize(Roles = "Viewer")]
+        public ActionResult Results(SearchCriteria criteria, FormCollection form)
+        {
             DateTime temp;
-            if (DateTime.TryParse(form["startTime"], out temp)) {
+            if (DateTime.TryParse(form["startTime"], out temp))
+            {
                 criteria.startTime = temp;
             }
-            if (DateTime.TryParse(form["completionTime"], out temp)) {
+            if (DateTime.TryParse(form["completionTime"], out temp))
+            {
                 criteria.completionTime = temp;
             }
->>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
             criteria.requestStatus = form["status"];
             criteria.severity = form["severity"];
             criteria.consequence = form["consequence"];
@@ -111,95 +77,89 @@ namespace SasquatchCAIRS.Controllers {
             criteria.patientFirstName = form["patientFirst"];
             criteria.patientLastName = form["patientLast"];
             Session["criteria"] = criteria;
+            
 
             ViewBag.keywords = criteria.keywordString;
             var list = searchCriteriaQuery(criteria);
             ViewBag.ResultSetSize = list.Count;
-            return View();
+            return View(list);
         }
 
         [Authorize(Roles = "Viewer")]
-        public ActionResult Modify() {
 <<<<<<< HEAD
-            ViewBag.Profile =
-                _profileController.getUserProfile(User.Identity.Name);
+        public ActionResult Modify()
+        {
 =======
->>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
+        public ActionResult Modify() {
+
+>>>>>>> c7ecd8c648c253c2d30df3caadd6cda789a4a0be
             ViewBag.TumorGroups =
                 _dropdownController.getActiveEntries(
-                    Constants.DropdownTable.TumourGroup);
+                    Constants.DropdownTable.TumourGroup).OrderBy(tg => tg.value);
             ViewBag.QuestionType =
                 _dropdownController.getActiveEntries(
-                    Constants.DropdownTable.QuestionType);
 <<<<<<< HEAD
-            var criteria = (SearchCriteria) Session["criteria"];
-            return View(viewName: "Advanced", model: criteria);
-        }
-
-        //
-        // GET: /Search/Details/5
-
-        public ActionResult Details(long id = 0) {
-            Request request = _db.SearchResults.Find(id);
-            if (request == null) {
-                return HttpNotFound();
-            }
-            return View(request);
-        }
-
-        //
-        // GET: /Search/Edit/5
-
-        public ActionResult Edit(long id = 0) {
-            Request request = _db.SearchResults.Find(id);
-            if (request == null) {
-                return HttpNotFound();
-            }
-            return View(request);
-        }
-
-        //
-        // POST: /Search/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(Request request) {
-            if (ModelState.IsValid) {
-                _db.Entry(request).State = EntityState.Modified;
-                _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(request);
+                    Constants.DropdownTable.QuestionType);
+            SearchCriteria criteria = (SearchCriteria)Session["criteria"];
 =======
+                    Constants.DropdownTable.QuestionType).OrderBy(qt => qt.value);
+
             SearchCriteria criteria = (SearchCriteria) Session["criteria"];
+>>>>>>> c7ecd8c648c253c2d30df3caadd6cda789a4a0be
             return View("Advanced", criteria);
->>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
         }
 
-        protected override void Dispose(bool disposing) {
+        protected override void Dispose(bool disposing)
+        {
             _db.Dispose();
             base.Dispose(disposing);
         }
 
-<<<<<<< HEAD
-=======
-        private List<string> stringToList(string input, string delimiters) {
+        private List<string> stringToList(string input, string delimiters)
+        {
             return input.Split(delimiters.ToCharArray()).ToList();
-        } 
+        }
 
->>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
+        private List<int> stringToIDs(string input, string delimiters) {
+            return input.Split(delimiters.ToCharArray()).Select(int.Parse).ToList();
+        } 
         private List<Request> searchCriteriaQuery(SearchCriteria c) {
-            return (IQueryable<Request>)
-                   (from r in _db.SearchResults.AsEnumerable()
-                    where r.QuestionResponses.contains(c.keywordString)
-                    where r.RequestStatus == c.requestStatus
-                    where r.Severity == c.severity
+            /*return (from r in _db.SearchResults.AsEnumerable()
+                    where r.RequestStatus.ToString() == c.requestStatus     
                     where r.PatientFName == c.patientFirstName
                     where r.PatientLName == c.patientLastName
-                    where c.tumorGroup.Contains(r.TumorGroup)
-                    where c.questionType.Contains(r.QuestionType)
                     where r.RequestorFName == c.requestorFirstName
                     where r.RequestorLName == c.requestorLastName
-                    select r).ToList();
+                    from qr in r.QuestionResponses
+                    where stringToIDs(c.severity, ",").Contains((int) qr.Severity)
+                    where stringToIDs(c.tumorGroup, ",").Contains((int) qr.TumourGroupID)
+                    where stringToIDs(c.questionType, ",").Contains((int) qr.QuestionTypeID)
+
+                    select r).ToList(); */
+            List<Request> searchRequests =
+                (from r in _db.SearchResults.AsEnumerable()
+                 where r.RequestStatus.ToString() == c.requestStatus
+                 where r.PatientFName == c.patientFirstName
+                 where r.PatientLName == c.patientLastName
+                 where r.RequestorFName == c.requestorFirstName
+                 where r.RequestorLName == c.requestorLastName
+                 select r).ToList();
+
+            List<Request> searchResults = new List<Request>();
+            foreach (var r in searchRequests) {
+               searchResults = (from qr in r.QuestionResponses
+                 where stringToIDs(c.severity, ",").Contains((int) qr.Severity)
+                 where
+                     stringToIDs(c.tumorGroup, ",")
+                     .Contains((int) qr.TumourGroupID)
+                 where
+                     stringToIDs(c.questionType, ",")
+                     .Contains((int) qr.QuestionTypeID)
+                 select r).ToList();
+
+                
+            }
+            return searchResults;
         }
     }
 }
