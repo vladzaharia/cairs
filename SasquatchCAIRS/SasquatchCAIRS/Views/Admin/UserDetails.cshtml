@@ -8,6 +8,8 @@
     ViewBag.Title = Constants.UIString.TitleText.ADMIN + " - " + Constants.UIString.TitleText.EDIT_USER;
 }
 
+@Html.Partial("_AdminNavPartial", new ViewDataDictionary{ { "active", "users" } })
+
 <h2>@Constants.UIString.TitleText.ADMIN - @Constants.UIString.TitleText.EDIT_USER</h2>
 
 @if (ViewBag.SuccessMessage != null) {

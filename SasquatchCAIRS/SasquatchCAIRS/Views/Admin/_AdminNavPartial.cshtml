@@ -1,0 +1,21 @@
+﻿<div class="btn-toolbar">
+    <div class="btn-group">
+        @if (((string) ViewData["active"]) == "users") {
+            @Html.ActionLink("Users", "Users", "Admin", new {}, new {@class = "btn btn-info active"})
+        } else {
+            @Html.ActionLink("Users", "Users", "Admin", new {}, new {@class = "btn btn-info"})
+        }
+            
+        @if (((string) ViewData["active"]) == "dropdowns") {
+            @Html.ActionLink("Dropdown Lists", "Dropdowns", "Admin", new {}, new {@class = "btn btn-info active"})
+        } else {
+            @Html.ActionLink("Dropdown Lists", "Dropdowns", "Admin", new {}, new {@class = "btn btn-info"})
+        }
+            
+        @if (((string) ViewData["active"]) == "audit") {
+            @Html.ActionLink("Audit Log", "Audit", "Admin", new {}, new {@class = "btn btn-info active"})
+        } else {
+            @Html.ActionLink("Audit Log", "Audit", "Admin", new {}, new {@class = "btn btn-info"})
+        }
+    </div>
+</div>

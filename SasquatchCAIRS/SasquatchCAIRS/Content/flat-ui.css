@@ -289,8 +289,7 @@ h6 {
     .btn.btn-warning:active, .btn.btn-warning.active {
       background-color: #cea70c; }
   .btn-toolbar .btn {
-    font-size: 18px;
-    padding: 10px 14px 9px; }
+    padding: 8px 13px 7px; }
     .btn-toolbar .btn:first-child {
       -webkit-border-radius: 6px 0 0 6px;
       -moz-border-radius: 6px 0 0 6px;
