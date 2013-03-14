@@ -3,23 +3,27 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web.Mvc;
+using SasquatchCAIRS.Controllers.ServiceSystem;
+using SasquatchCAIRS.Models;
 using SasquatchCAIRS.Models.SearchSystem;
 using SasquatchCAIRS.Models.ServiceSystem;
-using SasquatchCAIRS.Models;
 
 namespace SasquatchCAIRS.Controllers {
     public class SearchController : Controller {
-        UserProfileController _profileController = new UserProfileController();
+        private SearchContext _db = new SearchContext();
 
         private DropdownController _dropdownController =
             DropdownController.instance;
-        private SearchContext _db = new SearchContext();
+
+        private UserProfileController _profileController =
+            new UserProfileController();
 
         //
         // GET: /Search/
 
         public ActionResult Index() {
-            ViewBag.Profile = _profileController.getUserProfile(User.Identity.Name);
+            ViewBag.Profile =
+                _profileController.getUserProfile(User.Identity.Name);
             return View(_db.SearchResults.ToList());
         }
 
@@ -28,9 +32,10 @@ namespace SasquatchCAIRS.Controllers {
 
         [HttpPost]
         public ActionResult Search(String keywords) {
-            ViewBag.Profile = _profileController.getUserProfile(User.Identity.Name);
+            ViewBag.Profile =
+                _profileController.getUserProfile(User.Identity.Name);
             ViewBag.keywords = keywords;
-            SearchCriteria sc = new SearchCriteria();
+            var sc = new SearchCriteria();
             sc.keywordString = keywords;
             Session["criteria"] = sc;
             List<Request> list = searchCriteriaQuery(sc);
@@ -39,25 +44,28 @@ namespace SasquatchCAIRS.Controllers {
         }
 
         public ActionResult Advanced() {
-            ViewBag.Profile = _profileController.getUserProfile(User.Identity.Name);
-            SearchCriteria criteria = new SearchCriteria();
+            ViewBag.Profile =
+                _profileController.getUserProfile(User.Identity.Name);
+            var criteria = new SearchCriteria();
             ViewBag.TumorGroups =
-    _dropdownController.getActiveEntries(
-        Constants.DropdownTable.TumourGroup);
+                _dropdownController.getActiveEntries(
+                    Constants.DropdownTable.TumourGroup);
             ViewBag.QuestionType =
                 _dropdownController.getActiveEntries(
                     Constants.DropdownTable.QuestionType);
             return View(criteria);
         }
+
         /// <summary>
-        /// This takes all the data from the form and dumps it into the criteria object
+        ///     This takes all the data from the form and dumps it into the criteria object
         /// </summary>
         /// <param name="criteria"></param>
         /// <param name="form"></param>
         /// <returns></returns>
         [HttpPost]
         public ActionResult Results(SearchCriteria criteria, FormCollection form) {
-            ViewBag.Profile = _profileController.getUserProfile(User.Identity.Name);
+            ViewBag.Profile =
+                _profileController.getUserProfile(User.Identity.Name);
 
             criteria.requestStatus = form["status"];
             criteria.severity = form["severity"];
@@ -70,7 +78,6 @@ namespace SasquatchCAIRS.Controllers {
             criteria.patientLastName = form["patientLast"]; //why twice?
             Session["criteria"] = criteria;
 
-
             ViewBag.keywords = criteria.keywordString;
             var list = searchCriteriaQuery(criteria);
             ViewBag.ResultSetSize = list.Count;
@@ -78,14 +85,15 @@ namespace SasquatchCAIRS.Controllers {
         }
 
         public ActionResult Modify() {
-            ViewBag.Profile = _profileController.getUserProfile(User.Identity.Name);
+            ViewBag.Profile =
+                _profileController.getUserProfile(User.Identity.Name);
             ViewBag.TumorGroups =
                 _dropdownController.getActiveEntries(
                     Constants.DropdownTable.TumourGroup);
             ViewBag.QuestionType =
                 _dropdownController.getActiveEntries(
                     Constants.DropdownTable.QuestionType);
-            SearchCriteria criteria = (SearchCriteria) Session["criteria"];
+            var criteria = (SearchCriteria) Session["criteria"];
             return View(viewName: "Advanced", model: criteria);
         }
 
@@ -129,41 +137,19 @@ namespace SasquatchCAIRS.Controllers {
             base.Dispose(disposing);
         }
 
-
-
-            return (IQueryable<Request>)
-                   (from r in db.SearchResults
-                    where r.requestStatus == c.requestStatus
-                    where r.severity == c.severity
-                    where r.patientFirstName == c.patientFirstName
-                    where r.patientLastName == c.patientLastName
-                    where c.tumorGroup.Contains(r.tumorGroup)
-                    where c.questionType.Contains(r.questionType)
-                    where r.requestorFirstName == c.requestorFirstName
-                    where r.requestorLastName == c.requestorLastName
-                    select r).toList();
-        }
-         
-
         private List<Request> searchCriteriaQuery(SearchCriteria c) {
-            return new List<Request>();
+            return (IQueryable<Request>)
+                   (from r in _db.SearchResults.AsEnumerable()
+                    where r.QuestionResponses.contains(c.keywordString)
+                    where r.RequestStatus == c.requestStatus
+                    where r.Severity == c.severity
+                    where r.PatientFName == c.patientFirstName
+                    where r.PatientLName == c.patientLastName
+                    where c.tumorGroup.Contains(r.TumorGroup)
+                    where c.questionType.Contains(r.QuestionType)
+                    where r.RequestorFName == c.requestorFirstName
+                    where r.RequestorLName == c.requestorLastName
+                    select r).ToList();
+        }
     }
-        //        if (!string.IsNullOrEmpty(c.keywordString)) {
-    
-        //            List<SasquatchCAIRS.Request> searchResults =
-        //                (db.SearchResults()
-        //                    from r in db.SearchResults()
-        //                   .Where(r => c.keywordString.Contains(r.keywordString))
-        //                   .Where(r => r.requestStatus == c.requestStatus)
-        //                   .Where(r => r.severity == c.severity)
-        //                   .Where(r => r.patientFirstName == c.patientFirstName)
-        //                   .Where(r => r.patientLastName == c.patientLastName)
-        //                   .Where(r => c.tumorGroup.Contains(r.tumorGroup))
-        //                   .Where(r => c.questionType.Contains(r.questionType))
-        //                   .Where(r => r.requestorFName == c.requestorFirstName)
-        //                   .Where(r => r.requestorLName == c.requestorLastName)).ToList();
-        //        }
-        //        foreach (r in searchResults)
-        //            display(r);
-        //    }
 }
