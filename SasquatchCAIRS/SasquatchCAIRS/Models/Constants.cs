@@ -157,6 +157,9 @@ namespace SasquatchCAIRS.Models {
                 public const string ADMIN = "Admin Settings";
                 public const string USERS = "Users";
                 public const string EDIT_USER = "Edit User";
+                public const string DROPDOWN_LISTS = "Dropdown Lists";
+                public const string EDIT_DROPDOWN = "Edit Dropdown Value";
+                public static string AUDIT_LOG = "Audit Log";
             }
         }
 
