@@ -32,15 +32,15 @@ namespace SasquatchCAIRS.Controllers {
 
         [Authorize(Roles = "Viewer")]
         public ActionResult Advanced() {
-
             SearchCriteria criteria = new SearchCriteria();
 
             ViewBag.TumorGroups =
                 _dropdownController.getActiveEntries(
-                    Constants.DropdownTable.TumourGroup);
+                    Constants.DropdownTable.TumourGroup).OrderBy(tg => tg.value);
             ViewBag.QuestionType =
                 _dropdownController.getActiveEntries(
-                    Constants.DropdownTable.QuestionType);
+                    Constants.DropdownTable.QuestionType).OrderBy(qt => qt.value);
+
             return View(criteria);
         }
 
@@ -64,6 +64,7 @@ namespace SasquatchCAIRS.Controllers {
             criteria.patientFirstName = form["patientFirst"];
             criteria.patientLastName = form["patientLast"];
             Session["criteria"] = criteria;
+            
 
             ViewBag.keywords = criteria.keywordString;
             var list = searchCriteriaQuery(criteria);
@@ -73,12 +74,14 @@ namespace SasquatchCAIRS.Controllers {
 
         [Authorize(Roles = "Viewer")]
         public ActionResult Modify() {
+
             ViewBag.TumorGroups =
                 _dropdownController.getActiveEntries(
-                    Constants.DropdownTable.TumourGroup);
+                    Constants.DropdownTable.TumourGroup).OrderBy(tg => tg.value);
             ViewBag.QuestionType =
                 _dropdownController.getActiveEntries(
-                    Constants.DropdownTable.QuestionType);
+                    Constants.DropdownTable.QuestionType).OrderBy(qt => qt.value);
+
             SearchCriteria criteria = (SearchCriteria) Session["criteria"];
             return View("Advanced", criteria);
         }
