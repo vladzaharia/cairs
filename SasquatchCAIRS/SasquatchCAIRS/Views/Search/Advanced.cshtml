@@ -106,14 +106,15 @@
         <div class="scroll">
             @foreach (DropdownEntry item in @ViewBag.TumorGroups) {
                 <label class="checkboxlist">
-                @if (!String.IsNullOrEmpty(Model.tumorGroup) && 
-                    Model.tumorGroup.Contains(@item.value)) {
-                <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" checked/>
-                } else {
-                <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id"/>
-                }
-                @item.value
+                    @if (!String.IsNullOrEmpty(Model.tumorGroup) &&
+                         Model.tumorGroup.Contains(@item.id + "")) {
+                        <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" checked/>
+                    } else {
+                        <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id"/>
+                    }
+                    @item.value
                 </label>
+                <br/>
             }
         </div>
 
@@ -126,13 +127,14 @@
             @foreach (DropdownEntry item in @ViewBag.QuestionType) {
                 <label class="checkboxlist">
                     @if (!String.IsNullOrEmpty(Model.questionType) && 
-                        Model.questionType.Contains(@item.value)) {
-                    <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id" checked/>
+                         Model.questionType.Contains(@item.id+"")) {
+                        <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id" checked/>
                     } else {
-                    <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id"/>
+                        <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id"/>
                     }
                     @item.value
                 </label>
+                <br/>
             }
         </div>
 
@@ -145,11 +147,11 @@
                 typeof(SasquatchCAIRS.Models.Constants.Severity))) {
                 <label class="checkbox inline">
                     @if (!String.IsNullOrEmpty(Model.severity) && 
-                        Model.severity.Contains(@severity.ToString())) {
+                         Model.severity.Contains(@severity.ToString())) {
                         <input type="checkbox" name="severity" value="@severity" checked/>
-                } else {
+                    } else {
                         <input type="checkbox" name="severity" value="@severity" />
-                }
+                    }
                     @severity
                 </label>
             }
@@ -165,8 +167,9 @@
             @foreach (var consequence in Enum.GetValues(
                 typeof(SasquatchCAIRS.Models.Constants.Consequence))) {
                 <label class="checkbox inline">
+                    
                     @if (!String.IsNullOrEmpty(Model.consequence) && 
-                        Model.consequence.Contains(@consequence.ToString())) {
+                         Model.consequence.Contains(@consequence.ToString())) {
                         <input type="checkbox" name="consequence" value="@consequence" checked/>
                     } else
                     {
