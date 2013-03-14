@@ -1,37 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using SasquatchCAIRS.Models.ServiceSystem;
+using SasquatchCAIRS.Controllers.ServiceSystem;
+<<<<<<< HEAD
 using SasquatchCAIRS.Models;
+=======
+>>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
+using SasquatchCAIRS.Models.SearchSystem;
+using SasquatchCAIRS.Models.ServiceSystem;
 
-namespace SasquatchCAIRS.Controllers
-{
-    public class SearchController : Controller
-    {
-        UserProfileController profileController = new UserProfileController();
-        private SearchContext db = new SearchContext();
+namespace SasquatchCAIRS.Controllers {
+    public class SearchController : Controller {
+<<<<<<< HEAD
+        private SearchContext _db = new SearchContext();
+=======
+>>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
+
+        private DropdownController _dropdownController =
+            DropdownController.instance;
+
+        private UserProfileController _profileController =
+            new UserProfileController();
 
         //
+<<<<<<< HEAD
         // GET: /Search/
 
-        public ActionResult Index()
-        {
-            ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
-            return View(db.SearchResults.ToList());
+        public ActionResult Index() {
+            ViewBag.Profile =
+                _profileController.getUserProfile(User.Identity.Name);
+            return View(_db.SearchResults.ToList());
         }
 
         //
+=======
+>>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
         // POST: /Search/Create
 
         [HttpPost]
+        [Authorize(Roles = "Viewer")]
         public ActionResult Search(String keywords) {
-            ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
+<<<<<<< HEAD
+            ViewBag.Profile =
+                _profileController.getUserProfile(User.Identity.Name);
+=======
+>>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
             ViewBag.keywords = keywords;
-            SearchCriteria sc = new SearchCriteria();
+            var sc = new SearchCriteria();
             sc.keywordString = keywords;
             Session["criteria"] = sc;
             List<Request> list = searchCriteriaQuery(sc);
@@ -39,16 +56,51 @@ namespace SasquatchCAIRS.Controllers
             return View("Results", list);
         }
 
+        [Authorize(Roles = "Viewer")]
         public ActionResult Advanced() {
-            ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
+<<<<<<< HEAD
+            ViewBag.Profile =
+                _profileController.getUserProfile(User.Identity.Name);
+            var criteria = new SearchCriteria();
+=======
+
             SearchCriteria criteria = new SearchCriteria();
+
+>>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
+            ViewBag.TumorGroups =
+                _dropdownController.getActiveEntries(
+                    Constants.DropdownTable.TumourGroup);
+            ViewBag.QuestionType =
+                _dropdownController.getActiveEntries(
+                    Constants.DropdownTable.QuestionType);
             return View(criteria);
         }
 
+<<<<<<< HEAD
+        /// <summary>
+        ///     This takes all the data from the form and dumps it into the criteria object
+        /// </summary>
+        /// <param name="criteria"></param>
+        /// <param name="form"></param>
+        /// <returns></returns>
+=======
+>>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
         [HttpPost]
+        [Authorize(Roles="Viewer")]
         public ActionResult Results(SearchCriteria criteria, FormCollection form) {
-            ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
+<<<<<<< HEAD
+            ViewBag.Profile =
+                _profileController.getUserProfile(User.Identity.Name);
 
+=======
+            DateTime temp;
+            if (DateTime.TryParse(form["startTime"], out temp)) {
+                criteria.startTime = temp;
+            }
+            if (DateTime.TryParse(form["completionTime"], out temp)) {
+                criteria.completionTime = temp;
+            }
+>>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
             criteria.requestStatus = form["status"];
             criteria.severity = form["severity"];
             criteria.consequence = form["consequence"];
@@ -57,45 +109,39 @@ namespace SasquatchCAIRS.Controllers
             criteria.requestorFirstName = form["requestorFirst"];
             criteria.requestorLastName = form["requestorLast"];
             criteria.patientFirstName = form["patientFirst"];
-<<<<<<< HEAD
-            criteria.patientLastName = form["patientLast"]; //why twice?
-            
-
-            
-            return View(criteria);
-=======
             criteria.patientLastName = form["patientLast"];
             Session["criteria"] = criteria;
 
             ViewBag.keywords = criteria.keywordString;
-            List<Request> list = searchCriteriaQuery(criteria);
+            var list = searchCriteriaQuery(criteria);
             ViewBag.ResultSetSize = list.Count;
             return View();
         }
 
-        [HttpPost]
+        [Authorize(Roles = "Viewer")]
         public ActionResult Modify() {
-            ViewBag.Profile = profileController.getUserProfile(User.Identity.Name);
-            SearchCriteria criteria = (SearchCriteria)Session["criteria"];
-            return View("Advanced", criteria);
+<<<<<<< HEAD
+            ViewBag.Profile =
+                _profileController.getUserProfile(User.Identity.Name);
+=======
+>>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
+            ViewBag.TumorGroups =
+                _dropdownController.getActiveEntries(
+                    Constants.DropdownTable.TumourGroup);
+            ViewBag.QuestionType =
+                _dropdownController.getActiveEntries(
+                    Constants.DropdownTable.QuestionType);
+<<<<<<< HEAD
+            var criteria = (SearchCriteria) Session["criteria"];
+            return View(viewName: "Advanced", model: criteria);
         }
-
-
-    private List<Request> searchCriteriaQuery(SearchCriteria c) {
-            List<Request> searchResults = new List<Request>();
-            return searchResults;
->>>>>>> ea4c7034f4a94200a4776c5c28be185568354981
-        }
-
 
         //
         // GET: /Search/Details/5
 
-        public ActionResult Details(long id = 0)
-        {
-            Request request = db.SearchResults.Find(id);
-            if (request == null)
-            {
+        public ActionResult Details(long id = 0) {
+            Request request = _db.SearchResults.Find(id);
+            if (request == null) {
                 return HttpNotFound();
             }
             return View(request);
@@ -104,11 +150,9 @@ namespace SasquatchCAIRS.Controllers
         //
         // GET: /Search/Edit/5
 
-        public ActionResult Edit(long id = 0)
-        {
-            Request request = db.SearchResults.Find(id);
-            if (request == null)
-            {
+        public ActionResult Edit(long id = 0) {
+            Request request = _db.SearchResults.Find(id);
+            if (request == null) {
                 return HttpNotFound();
             }
             return View(request);
@@ -118,47 +162,44 @@ namespace SasquatchCAIRS.Controllers
         // POST: /Search/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(Request request)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(request).State = EntityState.Modified;
-                db.SaveChanges();
+        public ActionResult Edit(Request request) {
+            if (ModelState.IsValid) {
+                _db.Entry(request).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(request);
+=======
+            SearchCriteria criteria = (SearchCriteria) Session["criteria"];
+            return View("Advanced", criteria);
+>>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
+        protected override void Dispose(bool disposing) {
+            _db.Dispose();
             base.Dispose(disposing);
         }
 
-        private void searchCriteriaQuery(SearchCriteria c) {
-            if (!string.IsNullOrEmpty(c)) {
+<<<<<<< HEAD
+=======
+        private List<string> stringToList(string input, string delimiters) {
+            return input.Split(delimiters.ToCharArray()).ToList();
+        } 
 
-                List<SasquatchCAIRS.Request> searchResults =
-                    (from r in db.Results()
-                     where c.keywordString.Contains(r.keywordString)
-                     where r.requestStatus == c.requestStatus
-                     where r.severity == c.severity
-                     where r.patientFirstName == c.patientFirstName
-                     where r.patientLastName == c.patientLastName
-                     where c.tumorGroup.Contains(r.tumorGroup)
-                     where c.questionType.Contains(r.questionType)
-                     where r.requestorFirstName == c.requestorFirstName
-                     where r.requestorLastName == c.requestorLastName
-                     select r).ToList();
-            }
-
-            foreach (r in searchResults)
-                display(r);
-
+>>>>>>> 1a6705599907cce68846b6a431943e23c0d202a3
+        private List<Request> searchCriteriaQuery(SearchCriteria c) {
+            return (IQueryable<Request>)
+                   (from r in _db.SearchResults.AsEnumerable()
+                    where r.QuestionResponses.contains(c.keywordString)
+                    where r.RequestStatus == c.requestStatus
+                    where r.Severity == c.severity
+                    where r.PatientFName == c.patientFirstName
+                    where r.PatientLName == c.patientLastName
+                    where c.tumorGroup.Contains(r.TumorGroup)
+                    where c.questionType.Contains(r.QuestionType)
+                    where r.RequestorFName == c.requestorFirstName
+                    where r.RequestorLName == c.requestorLastName
+                    select r).ToList();
         }
-
-
     }
-    }
-
 }
