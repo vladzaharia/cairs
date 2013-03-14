@@ -129,6 +129,12 @@ namespace SasquatchCAIRS.Models {
 
                 // General
                 public const string FULL_NAME = "Full Name";
+
+                // User
+                public const string USERNAME = "Username";
+                public const string ROLES = "Roles";
+                public const string GROUPS = "Groups";
+                public const string USER_EMAIL = "Email Address";
             }
 
             // Text used in Buttons
@@ -148,6 +154,9 @@ namespace SasquatchCAIRS.Models {
                 public const string VIEW_REQUEST = "View Request";
                 public const string REQUEST_NUM = "Request #";
                 public const string ERROR = "Error";
+                public const string ADMIN = "Admin Settings";
+                public const string USERS = "Users";
+                public const string EDIT_USER = "Edit User";
             }
         }
 

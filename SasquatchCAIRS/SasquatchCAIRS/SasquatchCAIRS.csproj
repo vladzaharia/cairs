@@ -164,10 +164,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
     <Compile Include="Controllers\Security\AccountController.cs" />
     <Compile Include="Controllers\Security\RequestLockController.cs" />
-    <Compile Include="Controllers\Security\UserProfileController.cs" />
+    <Compile Include="Controllers\Security\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -197,6 +198,7 @@
     <Content Include="Content\fonts\Flat-UI-Icons-16.svg" />
     <Content Include="Content\fonts\Flat-UI-Icons-24.dev.svg" />
     <Content Include="Content\fonts\Flat-UI-Icons-24.svg" />
+    <Content Include="Content\ie7.css" />
     <Content Include="Content\images\checkbox-2x.png" />
     <Content Include="Content\images\checkbox.png" />
     <Content Include="Content\images\demo\browser-2x.png" />
@@ -407,6 +409,8 @@
     <Content Include="Views\Account\_ViewUserInfo.cshtml" />
     <Content Include="Views\Account\Auth.cshtml" />
     <Content Include="Views\Request\Details.cshtml" />
+    <Content Include="Views\Admin\Users.cshtml" />
+    <Content Include="Views\Admin\UserDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

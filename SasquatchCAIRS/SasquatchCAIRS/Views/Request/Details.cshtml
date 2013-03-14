@@ -71,8 +71,9 @@
         </tr>
     </table>
 
-    <h4>Question Information</h4>
     foreach (QuestionResponseContent qr in Model.questionResponseList) {
+        <h4>Question Information</h4>
+    
         <table class="table unbordered-table no-margin">
             <tr>
                 <td class="focal">@qr.question</td>
@@ -147,27 +148,29 @@
         </div>
         
         
-        <table class="table">
-            <tr>
-                <td class="focal tbl-top">
-                    @Constants.UIString.FieldLabel.REFERENCES
-                </td>
-            </tr>
-            @foreach (ReferenceContent reference in qr.referenceList) {
+        <div>
+            <table class="table">
                 <tr>
-                    <td class="tbl-label">@Constants.getReferenceString(reference.referenceType)</td>
-                    @if (reference.referenceType == Constants.ReferenceType.URL) {
-                        <td><a href="@reference.referenceString">@reference.referenceString</a></td>
-                    }
-                    @if (reference.referenceType == Constants.ReferenceType.File) {
-                        <td><a href="file://@reference.referenceString">@reference.referenceString</a></td>
-                    }
-                    @if (reference.referenceType == Constants.ReferenceType.Text) {
-                        <td>@reference.referenceString</td>
-                    }
+                    <td class="focal tbl-top">
+                        @Constants.UIString.FieldLabel.REFERENCES
+                    </td>
                 </tr>
-            }
-        </table>
+                @foreach (ReferenceContent reference in qr.referenceList) {
+                    <tr>
+                        <td class="tbl-label">@Constants.getReferenceString(reference.referenceType)</td>
+                        @if (reference.referenceType == Constants.ReferenceType.URL) {
+                            <td><a href="@reference.referenceString">@reference.referenceString</a></td>
+                        }
+                        @if (reference.referenceType == Constants.ReferenceType.File) {
+                            <td><a href="file://@reference.referenceString">@reference.referenceString</a></td>
+                        }
+                        @if (reference.referenceType == Constants.ReferenceType.Text) {
+                            <td>@reference.referenceString</td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
     }
 
     <h4>Properties</h4>
@@ -189,7 +192,7 @@
             @class = "btn btn-info export-button"
         }) 
     
-        @if (User.IsInRole(Constants.Roles.ADMINISTRATOR) && RequestLockController.instance.isLocked(Model.requestID)) {
+        @if (User.IsInRole(Constants.Roles.ADMINISTRATOR) && (new RequestLockController()).isLocked(Model.requestID)) {
             @Html.ActionLink(Constants.UIString.ButtonText.UNLOCK_REQUEST, "Unlock", "Request", new {id = Model.requestID}, new {
                 @class = "btn btn-info unlock-button"
             })

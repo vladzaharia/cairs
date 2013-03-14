@@ -542,6 +542,12 @@ td.clickable {
     width: 15%;
 }
 
+.table .tbl-info {
+    vertical-align: middle;
+    text-align: center;
+    font-style: italic;
+}
+
 .table .tbl-content-4 {
     width: 35%;
 }
@@ -682,6 +688,12 @@ table .calc-sev-Minor {
 
 div.buttons {
     float: right;
+}
+
+div.message {
+    text-align: center;
+    padding: 8px;
+    color: #ffffff;
 }
 
 
