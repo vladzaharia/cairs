@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web.Mvc;
+using SasquatchCAIRS.Controllers.ServiceSystem;
 using SasquatchCAIRS.Models.SearchSystem;
 using SasquatchCAIRS.Models.ServiceSystem;
 using SasquatchCAIRS.Models;
 
 namespace SasquatchCAIRS.Controllers {
     public class SearchController : Controller {
-        UserProfileController _profileController = new UserProfileController();
 
         private DropdownController _dropdownController =
             DropdownController.instance;
@@ -19,8 +19,8 @@ namespace SasquatchCAIRS.Controllers {
         // POST: /Search/Create
 
         [HttpPost]
+        [Authorize(Roles = "Viewer")]
         public ActionResult Search(String keywords) {
-            ViewBag.Profile = _profileController.getUserProfile(User.Identity.Name);
             ViewBag.keywords = keywords;
             SearchCriteria sc = new SearchCriteria();
             sc.keywordString = keywords;
@@ -30,8 +30,8 @@ namespace SasquatchCAIRS.Controllers {
             return View("Results", list);
         }
 
+        [Authorize(Roles = "Viewer")]
         public ActionResult Advanced() {
-            ViewBag.Profile = _profileController.getUserProfile(User.Identity.Name);
 
             SearchCriteria criteria = new SearchCriteria();
 
@@ -45,8 +45,8 @@ namespace SasquatchCAIRS.Controllers {
         }
 
         [HttpPost]
+        [Authorize(Roles="Viewer")]
         public ActionResult Results(SearchCriteria criteria, FormCollection form) {
-            ViewBag.Profile = _profileController.getUserProfile(User.Identity.Name);
             DateTime temp;
             if (DateTime.TryParse(form["startTime"], out temp)) {
                 criteria.startTime = temp;
@@ -72,8 +72,8 @@ namespace SasquatchCAIRS.Controllers {
             return View();
         }
 
+        [Authorize(Roles = "Viewer")]
         public ActionResult Modify() {
-            ViewBag.Profile = _profileController.getUserProfile(User.Identity.Name);
             ViewBag.TumorGroups =
                 _dropdownController.getActiveEntries(
                     Constants.DropdownTable.TumourGroup);
@@ -89,6 +89,9 @@ namespace SasquatchCAIRS.Controllers {
             base.Dispose(disposing);
         }
 
+        private List<string> stringToList(string input, string delimiters) {
+            return input.Split(delimiters.ToCharArray()).ToList();
+        } 
 
         private List<Request> searchCriteriaQuery(SearchCriteria c) {
             return new List<Request>();

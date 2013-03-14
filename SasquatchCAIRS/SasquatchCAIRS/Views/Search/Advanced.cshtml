@@ -103,11 +103,11 @@
             @Html.Label("Tumor Group")
         </div>
 
-        <div>
-            @*
+        @*<div>
+            
             TODO REPLACE WITH CHECKBOXLIST
             selected="selected"
-            *@
+            
             <select multiple="multiple" name="tumorGroup">
                 @foreach (DropdownEntry item in @ViewBag.TumorGroups) {
                     if (!String.IsNullOrEmpty(Model.tumorGroup) && 
@@ -118,27 +118,53 @@
                     }
                 }
             </select>
+        </div>*@
+        <div class="scroll">
+            @foreach (DropdownEntry item in @ViewBag.TumorGroups) {
+                <label class="checkboxlist">
+                @if (!String.IsNullOrEmpty(Model.tumorGroup) && 
+                    Model.tumorGroup.Contains(@item.value)) {
+                <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.value" checked/>
+                } else {
+                <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.value"/>
+                }
+                @item.value
+                </label>
+            }
         </div>
 
         <div>
             <br />
             @Html.Label("Question Type")
         </div>
-        <div>
-            @*
+        @*<div>
+            
             TODO REPLACE WITH CHECKBOXLIST
             selected="selected"
-            *@
+            
             <select multiple="multiple" name="questionType">
                 @foreach (DropdownEntry item in @ViewBag.QuestionType) {
                     if (!String.IsNullOrEmpty(Model.questionType) && 
                         Model.questionType.Contains(@item.value)) {
-                    <option selected="selected">@item.value</option>
+                        <option selected="selected">@item.value</option>
                     } else {
-                    <option>@item.value</option>
+                        <option>@item.value</option>
                     }
                 }
             </select>
+        </div>*@
+        <div class="scroll">
+            @foreach (DropdownEntry item in @ViewBag.QuestionType) {
+                <label class="checkboxlist">
+                    @if (!String.IsNullOrEmpty(Model.questionType) && 
+                        Model.questionType.Contains(@item.value)) {
+                    <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.value" checked/>
+                    } else {
+                    <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.value"/>
+                    }
+                    @item.value
+                </label>
+            }
         </div>
 
         <div>
