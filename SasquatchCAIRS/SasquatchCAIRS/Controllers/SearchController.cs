@@ -10,7 +10,6 @@ using SasquatchCAIRS.Models.ServiceSystem;
 
 namespace SasquatchCAIRS.Controllers {
     public class SearchController : Controller {
-        private SearchContext _db = new SearchContext();
 
         private DropdownController _dropdownController =
             DropdownController.instance;
@@ -19,20 +18,12 @@ namespace SasquatchCAIRS.Controllers {
             new UserProfileController();
 
         //
-        // GET: /Search/
-
-        public ActionResult Index() {
-            ViewBag.Profile =
                 _profileController.getUserProfile(User.Identity.Name);
-            return View(_db.SearchResults.ToList());
-        }
-
-        //
         // POST: /Search/Create
 
         [HttpPost]
+        [Authorize(Roles = "Viewer")]
         public ActionResult Search(String keywords) {
-            ViewBag.Profile =
                 _profileController.getUserProfile(User.Identity.Name);
             ViewBag.keywords = keywords;
             var sc = new SearchCriteria();
@@ -43,10 +34,11 @@ namespace SasquatchCAIRS.Controllers {
             return View("Results", list);
         }
 
+        [Authorize(Roles = "Viewer")]
         public ActionResult Advanced() {
-            ViewBag.Profile =
+
                 _profileController.getUserProfile(User.Identity.Name);
-            var criteria = new SearchCriteria();
+
             ViewBag.TumorGroups =
                 _dropdownController.getActiveEntries(
                     Constants.DropdownTable.TumourGroup);
@@ -56,17 +48,16 @@ namespace SasquatchCAIRS.Controllers {
             return View(criteria);
         }
 
-        /// <summary>
-        ///     This takes all the data from the form and dumps it into the criteria object
-        /// </summary>
-        /// <param name="criteria"></param>
-        /// <param name="form"></param>
-        /// <returns></returns>
         [HttpPost]
+        [Authorize(Roles="Viewer")]
         public ActionResult Results(SearchCriteria criteria, FormCollection form) {
-            ViewBag.Profile =
-                _profileController.getUserProfile(User.Identity.Name);
-
+            DateTime temp;
+            if (DateTime.TryParse(form["startTime"], out temp)) {
+                criteria.startTime = temp;
+            }
+            if (DateTime.TryParse(form["completionTime"], out temp)) {
+                criteria.completionTime = temp;
+            }
             criteria.requestStatus = form["status"];
             criteria.severity = form["severity"];
             criteria.consequence = form["consequence"];
@@ -75,7 +66,7 @@ namespace SasquatchCAIRS.Controllers {
             criteria.requestorFirstName = form["requestorFirst"];
             criteria.requestorLastName = form["requestorLast"];
             criteria.patientFirstName = form["patientFirst"];
-            criteria.patientLastName = form["patientLast"]; //why twice?
+            criteria.patientLastName = form["patientLast"];
             Session["criteria"] = criteria;
 
             ViewBag.keywords = criteria.keywordString;
@@ -84,8 +75,8 @@ namespace SasquatchCAIRS.Controllers {
             return View();
         }
 
+        [Authorize(Roles = "Viewer")]
         public ActionResult Modify() {
-            ViewBag.Profile =
                 _profileController.getUserProfile(User.Identity.Name);
             ViewBag.TumorGroups =
                 _dropdownController.getActiveEntries(
@@ -94,42 +85,7 @@ namespace SasquatchCAIRS.Controllers {
                 _dropdownController.getActiveEntries(
                     Constants.DropdownTable.QuestionType);
             var criteria = (SearchCriteria) Session["criteria"];
-            return View(viewName: "Advanced", model: criteria);
-        }
-
-        //
-        // GET: /Search/Details/5
-
-        public ActionResult Details(long id = 0) {
-            Request request = _db.SearchResults.Find(id);
-            if (request == null) {
-                return HttpNotFound();
-            }
-            return View(request);
-        }
-
-        //
-        // GET: /Search/Edit/5
-
-        public ActionResult Edit(long id = 0) {
-            Request request = _db.SearchResults.Find(id);
-            if (request == null) {
-                return HttpNotFound();
-            }
-            return View(request);
-        }
-
-        //
-        // POST: /Search/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(Request request) {
-            if (ModelState.IsValid) {
-                _db.Entry(request).State = EntityState.Modified;
-                _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(request);
+            return View("Advanced", criteria);
         }
 
         protected override void Dispose(bool disposing) {
@@ -137,6 +93,9 @@ namespace SasquatchCAIRS.Controllers {
             base.Dispose(disposing);
         }
 
+        private List<string> stringToList(string input, string delimiters) {
+            return input.Split(delimiters.ToCharArray()).ToList();
+        } 
         private List<Request> searchCriteriaQuery(SearchCriteria c) {
             return (IQueryable<Request>)
                    (from r in _db.SearchResults.AsEnumerable()

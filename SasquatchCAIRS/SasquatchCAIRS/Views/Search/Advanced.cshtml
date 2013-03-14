@@ -17,7 +17,7 @@
         <legend>SearchCriteria</legend>
 
         <div>
-            <br >
+            <br>
             @Html.Label("Keywords")
         </div>
         <div>
@@ -29,9 +29,15 @@
             <br />
             @Html.Label("Start Time")
         </div>
+
         <div>
-            @Html.EditorFor(model => model.startTime)
-            @Html.ValidationMessageFor(model => model.startTime)
+            @if (!Model.startTime.ToString(SasquatchCAIRS.Models.Constants.DATE_FORMAT)
+            .Equals(SasquatchCAIRS.Models.Constants.EMPTY_DATE)) {
+                <input class="input-medium" name="startTime" type="date" 
+                value="@Model.startTime.ToString(SasquatchCAIRS.Models.Constants.DATE_FORMAT)" />    
+            } else {
+                <input class="input-medium" name="startTime" type="date" />
+            }
         </div>
 
         <div>
@@ -39,8 +45,13 @@
             @Html.Label("Completion Time")
         </div>
         <div>
-            @Html.EditorFor(model => model.completionTime)
-            @Html.ValidationMessageFor(model => model.completionTime)
+            @if (!Model.completionTime.ToString(SasquatchCAIRS.Models.Constants.DATE_FORMAT)
+                .Equals(SasquatchCAIRS.Models.Constants.EMPTY_DATE)) {
+                <input class="input-medium" name="completionTime" type="date" 
+                value="@Model.completionTime.ToString(SasquatchCAIRS.Models.Constants.DATE_FORMAT)" />    
+            } else {
+                <input class="input-medium" name="completionTime" type="date" />
+            }
         </div>
 
         <div>
@@ -49,12 +60,14 @@
         </div>
 
         <div>
-            @foreach (var status in Enum.GetValues(typeof(SasquatchCAIRS.Models.Constants.RequestStatus))) {
+            @foreach (var status in Enum.GetValues(
+                typeof(SasquatchCAIRS.Models.Constants.RequestStatus))) {
                 <label class="checkbox inline">
-                @if (!String.IsNullOrEmpty(Model.requestStatus) && Model.requestStatus.Contains(@status.ToString())) {
-                    <input type="checkbox" name="status" value="@status" checked/>
+                    @if (!String.IsNullOrEmpty(Model.requestStatus) && 
+                        Model.requestStatus.Contains(@status.ToString())) {
+                        <input type="checkbox" name="status" value="@status" checked/>
                 } else {
-                    <input type="checkbox" name="status" value="@status" />
+                        <input type="checkbox" name="status" value="@status" />
                 }
                     @status
                 </label>
@@ -67,8 +80,10 @@
         </div>
 
         <div>
-            <input type="text" class="input-medium" name="requestorFirst" placeholder="First Name" value="@Model.requestorFirstName">
-            <input type="text" class="input-medium" name="requestorLast" placeholder="Last Name" value="@Model.requestorLastName">
+            <input type="text" class="input-medium" name="requestorFirst" 
+                placeholder="First Name" value="@Model.requestorFirstName">
+            <input type="text" class="input-medium" name="requestorLast" 
+                placeholder="Last Name" value="@Model.requestorLastName">
         </div>
 
         <div>
@@ -77,8 +92,10 @@
         </div>
 
         <div>
-            <input type="text" class="input-medium" name="patientFirst" placeholder="First Name" value="@Model.patientFirstName">
-            <input type="text" class="input-medium" name="patientLast" placeholder="Last Name" value="@Model.patientLastName">
+            <input type="text" class="input-medium" name="patientFirst"
+                placeholder="First Name" value="@Model.patientFirstName">
+            <input type="text" class="input-medium" name="patientLast" 
+                placeholder="Last Name" value="@Model.patientLastName">
         </div>
 
         <div>
@@ -86,46 +103,68 @@
             @Html.Label("Tumor Group")
         </div>
 
-        <div>
-            @*
+        @*<div>
+            
             TODO REPLACE WITH CHECKBOXLIST
             selected="selected"
-            *@
+            
             <select multiple="multiple" name="tumorGroup">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+                @foreach (DropdownEntry item in @ViewBag.TumorGroups) {
+                    if (!String.IsNullOrEmpty(Model.tumorGroup) && 
+                        Model.tumorGroup.Contains(@item.value)) {
+                    <option selected="selected">@item.value</option>
+                    } else {
+                    <option>@item.value</option>
+                    }
+                }
             </select>
+        </div>*@
+        <div class="scroll">
+            @foreach (DropdownEntry item in @ViewBag.TumorGroups) {
+                <label class="checkboxlist">
+                @if (!String.IsNullOrEmpty(Model.tumorGroup) && 
+                    Model.tumorGroup.Contains(@item.value)) {
+                <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.value" checked/>
+                } else {
+                <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.value"/>
+                }
+                @item.value
+                </label>
+            }
         </div>
 
         <div>
             <br />
             @Html.Label("Question Type")
         </div>
-        <div>
-            @*
+        @*<div>
+            
             TODO REPLACE WITH CHECKBOXLIST
             selected="selected"
-            *@
+            
             <select multiple="multiple" name="questionType">
                 @foreach (DropdownEntry item in @ViewBag.QuestionType) {
-                    if (!String.IsNullOrEmpty(Model.severity) && Model.questionType.Contains(@item.ToString())) {
+                    if (!String.IsNullOrEmpty(Model.questionType) && 
+                        Model.questionType.Contains(@item.value)) {
                         <option selected="selected">@item.value</option>
                     } else {
                         <option>@item.value</option>
                     }
                 }
             </select>
-            @*
-            <select multiple="multiple" name="questionType">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </select>*@
+        </div>*@
+        <div class="scroll">
+            @foreach (DropdownEntry item in @ViewBag.QuestionType) {
+                <label class="checkboxlist">
+                    @if (!String.IsNullOrEmpty(Model.questionType) && 
+                        Model.questionType.Contains(@item.value)) {
+                    <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.value" checked/>
+                    } else {
+                    <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.value"/>
+                    }
+                    @item.value
+                </label>
+            }
         </div>
 
         <div>
@@ -133,12 +172,14 @@
             @Html.Label(" Severity")
         </div>
         <div>
-            @foreach (var severity in Enum.GetValues(typeof(SasquatchCAIRS.Models.Constants.Severity))) {
+            @foreach (var severity in Enum.GetValues(
+                typeof(SasquatchCAIRS.Models.Constants.Severity))) {
                 <label class="checkbox inline">
-                @if (!String.IsNullOrEmpty(Model.severity) && Model.severity.Contains(@severity.ToString())) {
-                    <input type="checkbox" name="severity" value="@severity" checked/>
+                    @if (!String.IsNullOrEmpty(Model.severity) && 
+                        Model.severity.Contains(@severity.ToString())) {
+                        <input type="checkbox" name="severity" value="@severity" checked/>
                 } else {
-                    <input type="checkbox" name="severity" value="@severity" />
+                        <input type="checkbox" name="severity" value="@severity" />
                 }
                     @severity
                 </label>
@@ -151,14 +192,16 @@
         </div>
 
         <div>
-            
-            @foreach (var consequence in Enum.GetValues(typeof(SasquatchCAIRS.Models.Constants.Consequence))) {
+
+            @foreach (var consequence in Enum.GetValues(
+                typeof(SasquatchCAIRS.Models.Constants.Consequence))) {
                 <label class="checkbox inline">
-                    @if (!String.IsNullOrEmpty(Model.consequence) && Model.consequence.Contains(@consequence.ToString())) {
+                    @if (!String.IsNullOrEmpty(Model.consequence) && 
+                        Model.consequence.Contains(@consequence.ToString())) {
                         <input type="checkbox" name="consequence" value="@consequence" checked/>
                     } else
                     {
-                      <input type="checkbox" name="consequence" value="@consequence" />  
+                        <input type="checkbox" name="consequence" value="@consequence" />  
                     }
                     @consequence
                 </label>
