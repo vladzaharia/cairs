@@ -90,6 +90,10 @@ namespace SasquatchCAIRS.Controllers {
 
         private List<string> stringToList(string input, string delimiters) {
             return input.Split(delimiters.ToCharArray()).ToList();
+        }
+
+        private List<int> stringToIDs(string input, string delimiters) {
+            return input.Split(delimiters.ToCharArray()).Select(int.Parse).ToList();
         } 
 
         private List<Request> searchCriteriaQuery(SearchCriteria c) {
