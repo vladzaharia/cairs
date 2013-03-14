@@ -115,7 +115,7 @@ namespace SasquatchCAIRS.Controllers
                     where r.RequestorFName == c.requestorFirstName
                     where r.RequestorLName == c.requestorLastName
                     from qr in r.QuestionResponses
-                    where qr.Severity == c.severity
+                    where qr.Severity == Enum.Parse(typeof (Constants.Severity), c.severity)
                     where qr.TumourGroupID == c.tumorGroup
                     where qr.Severity == c.severity
                     where qr.QuestionTypeID == c.questionType
