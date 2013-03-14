@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace SasquatchCAIRS.Models {
+﻿namespace SasquatchCAIRS.Models {
     public static class Constants {
         public enum Gender {
             None = -1,
@@ -48,33 +43,36 @@ namespace SasquatchCAIRS.Models {
             UserGroup
         }
 
-        public static string KEYWORD_TBL_ID_ATTR = "KeywordID";
-        public static string KEYWORD_TBL_KEYWORD_ATTR = "Keyword";
-        public static string KEYWORD_TBL_ACTIVE_ATTR = "Active";
+        public const string KEYWORD_TBL_ID_ATTR = "KeywordID";
+        public const string KEYWORD_TBL_KEYWORD_ATTR = "Keyword";
+        public const string KEYWORD_TBL_ACTIVE_ATTR = "Active";
 
-        public static string QUESTIONTYPE_TBL_ID_ATTR = "QuestionTypeID";
-        public static string QUESTIONTYPE_TBL_VALUE_ATTR = "Value";
-        public static string QUESTIONTYPE_TBL_CODE_ATTR = "Code";
-        public static string QUESTIONTYPE_TBL_ACTIVE_ATTR = "Active";
+        public const string QUESTIONTYPE_TBL_ID_ATTR = "QuestionTypeID";
+        public const string QUESTIONTYPE_TBL_VALUE_ATTR = "Value";
+        public const string QUESTIONTYPE_TBL_CODE_ATTR = "Code";
+        public const string QUESTIONTYPE_TBL_ACTIVE_ATTR = "Active";
 
-        public static string REGION_TBL_ID_ATTR = "RegionID";
-        public static string REGION_TBL_VALUE_ATTR = "Value";
-        public static string REGION_TBL_CODE_ATTR = "Code";
-        public static string REGION_TBL_ACTIVE_ATTR = "Active";
+        public const string REGION_TBL_ID_ATTR = "RegionID";
+        public const string REGION_TBL_VALUE_ATTR = "Value";
+        public const string REGION_TBL_CODE_ATTR = "Code";
+        public const string REGION_TBL_ACTIVE_ATTR = "Active";
 
-        public static string REQUESTORTYPE_TBL_ID_ATTR = "RequestorTypeID";
-        public static string REQUESTORTYPE_TBL_VALUE_ATTR = "Value";
-        public static string REQUESTORTYPE_TBL_CODE_ATTR = "Code";
-        public static string REQUESTORTYPE_TBL_ACTIVE_ATTR = "Active";
+        public const string REQUESTORTYPE_TBL_ID_ATTR = "RequestorTypeID";
+        public const string REQUESTORTYPE_TBL_VALUE_ATTR = "Value";
+        public const string REQUESTORTYPE_TBL_CODE_ATTR = "Code";
+        public const string REQUESTORTYPE_TBL_ACTIVE_ATTR = "Active";
 
-        public static string TUMOURGROUP_TBL_ID_ATTR = "TumourGroupID";
-        public static string TUMOURGROUP_TBL_VALUE_ATTR = "Value";
-        public static string TUMOURGROUP_TBL_CODE_ATTR = "Code";
-        public static string TUMOURGROUP_TBL_ACTIVE_ATTR = "Active";
+        public const string TUMOURGROUP_TBL_ID_ATTR = "TumourGroupID";
+        public const string TUMOURGROUP_TBL_VALUE_ATTR = "Value";
+        public const string TUMOURGROUP_TBL_CODE_ATTR = "Code";
+        public const string TUMOURGROUP_TBL_ACTIVE_ATTR = "Active";
 
-        public static string USERGROUP_TBL_ID_ATTR = "GroupID";
-        public static string USERGROUP_TBL_VALUE_ATTR = "Value";
-        public static string USERGROUP_TBL_CODE_ATTR = "Code";
-        public static string USERGROUP_TBL_ACTIVE_ATTR = "Active";
+        public const string USERGROUP_TBL_ID_ATTR = "GroupID";
+        public const string USERGROUP_TBL_VALUE_ATTR = "Value";
+        public const string USERGROUP_TBL_CODE_ATTR = "Code";
+        public const string USERGROUP_TBL_ACTIVE_ATTR = "Active";
+
+        public const string EMPTY_DATE = "0001-01-01";
+        public const string DATE_FORMAT = "yyyy-MM-dd";
     }
 }
