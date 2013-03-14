@@ -125,6 +125,7 @@ namespace SasquatchCAIRS.Models {
                 public const string KEYWORDS = "Keywords";
                 public const string REFERENCES = "References";
                 public const string PARENT_REQUEST = "Parent Request ID";
+                public const string TIME_SPENT = "Time Spent";
 
                 // General
                 public const string FULL_NAME = "Full Name";

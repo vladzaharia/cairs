@@ -75,27 +75,30 @@
     foreach (QuestionResponseContent qr in Model.questionResponseList) {
         <table class="table unbordered-table no-margin">
             <tr>
-                <td class="tbl-label">@Constants.UIString.FieldLabel.QUESTION_TYPE</td>
-                <td class="tbl-content-4">@qr.questionTypeID @*TODO: Convert using DB *@</td>
-
-                <td class="tbl-label">@Constants.UIString.FieldLabel.TUMOUR_GROUP</td>
-                <td class="tbl-content-4">@qr.tumourGroupID @*TODO: Convert to String Value using DB*@</td>
-            </tr>
-
-            <tr>
-                <td class="focal" colspan="4">@qr.question</td>
+                <td class="focal">@qr.question</td>
             </tr>
             <tr>
-                <td colspan="4">@qr.response</td>
+                <td>@qr.response</td>
             </tr>
         </table>
     
         <table class="table unbordered-table no-margin">
             <tr>
-                <td class="focal">@Constants.UIString.FieldLabel.SPECIAL_NOTES</td>
+                <td class="focal" colspan="6">@Constants.UIString.FieldLabel.SPECIAL_NOTES</td>
             </tr>
             <tr>
-                <td>@qr.specialNotes</td>
+                <td colspan="6">@qr.specialNotes</td>
+            </tr>
+            
+            <tr>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.QUESTION_TYPE</td>
+                <td class="tbl-content-6">@qr.questionTypeID @*TODO: Convert using DB *@</td>
+
+                <td class="tbl-label">@Constants.UIString.FieldLabel.TUMOUR_GROUP</td>
+                <td class="tbl-content-6">@qr.tumourGroupID @*TODO: Convert to String Value using DB*@</td>
+
+                <td class="tbl-label">@Constants.UIString.FieldLabel.TIME_SPENT</td>
+                <td class="tbl-content-6">@qr.timeSpent mins</td>
             </tr>
         </table>
     
