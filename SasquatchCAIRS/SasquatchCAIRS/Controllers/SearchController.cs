@@ -16,7 +16,7 @@ namespace SasquatchCAIRS.Controllers
 
         private DropdownController _dropdownController =
             DropdownController.instance;
-        private SearchContext _db = new SearchContext();
+        private CAIRSDataContext _db = new CAIRSDataContext();
 
         //
         // POST: /Search/Create
@@ -81,7 +81,7 @@ namespace SasquatchCAIRS.Controllers
         }
 
         [Authorize(Roles = "Viewer")]
-        public ActionResult Modify()
+        public ActionResult Modify(){
 
             ViewBag.TumorGroups =
                 _dropdownController.getActiveEntries(
@@ -122,22 +122,22 @@ namespace SasquatchCAIRS.Controllers
 
                     select r).ToList(); */
             List<Request> searchRequests =
-                (from r in _db.SearchResults.AsEnumerable()
-                 where r.RequestStatus.ToString() == c.requestStatus
-                 where r.PatientFName == c.patientFirstName
-                 where r.PatientLName == c.patientLastName
-                 where r.RequestorFName == c.requestorFirstName
-                 where r.RequestorLName == c.requestorLastName
+                (from r in _db.Requests
+                 where (!String.IsNullOrEmpty(c.requestStatus)) && r.RequestStatus.ToString().Contains(c.requestStatus)
+                 || (!String.IsNullOrEmpty(c.patientFirstName)) && r.PatientFName == c.patientFirstName
+                 || (!String.IsNullOrEmpty(c.patientLastName)) && r.PatientLName == c.patientLastName
+                 || (!String.IsNullOrEmpty(c.requestorFirstName)) && r.RequestorFName == c.requestorFirstName
+                 || (!String.IsNullOrEmpty(c.requestorLastName)) && r.RequestorLName == c.requestorLastName
                  select r).ToList();
 
             List<Request> searchResults = new List<Request>();
             foreach (var r in searchRequests) {
                searchResults = (from qr in r.QuestionResponses
                  where stringToIDs(c.severity, ",").Contains((int) qr.Severity)
-                 where
+                 ||
                      stringToIDs(c.tumorGroup, ",")
                      .Contains((int) qr.TumourGroupID)
-                 where
+                 ||
                      stringToIDs(c.questionType, ",")
                      .Contains((int) qr.QuestionTypeID)
                  select r).ToList();
