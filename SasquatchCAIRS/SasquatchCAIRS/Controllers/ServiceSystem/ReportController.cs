@@ -9,7 +9,18 @@ namespace SasquatchCAIRS.Controllers
 {
     public class ReportController : Controller
     {
-        private readonly CAIRSDataContext _db = new CAIRSDataContext();
+        private static readonly ReportController _instance =
+            new ReportController();
+        private CAIRSDataContext _db = new CAIRSDataContext();
+
+        private ReportController() {
+        }
+
+        public static ReportController instance {
+            get {
+                return _instance;
+            }
+        }
 
         /// <summary>
         /// creates list of dataTables to be exported
