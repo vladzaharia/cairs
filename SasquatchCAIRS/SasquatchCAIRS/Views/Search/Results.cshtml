@@ -38,6 +38,9 @@ For keywords: @ViewBag.keywords
                         @Html.DisplayName("Caller Name")
                     </th>
                     <th>
+                        @Html.DisplayName("Patient Name")
+                    </th>
+                    <th>
                         @Html.DisplayName("Status")
                     </th>
                     <th>
@@ -47,7 +50,7 @@ For keywords: @ViewBag.keywords
                         @Html.DisplayName("Started")
                     </th>
                     <th>
-                        @Html.DisplayName("Completed")
+                        @Html.DisplayName("Closed")
                     </th>
                 </tr>
 
@@ -61,14 +64,19 @@ For keywords: @ViewBag.keywords
                             @Html.DisplayFor(modelItem => request.RequestorLName), 
                             @Html.DisplayFor(modelItem => request.RequestorFName)
                         </th>
-                        <th>
-                            @Html.DisplayFor(modelItem => request.RequestStatus)
+                                                <th>
+                            @Html.DisplayFor(modelItem => request.PatientLName), 
+                            @Html.DisplayFor(modelItem => request.PatientFName)
                         </th>
                         <th>
-                            @Html.DisplayFor(modelItem => request)
+                            @Enum.GetName(typeof(SasquatchCAIRS.Models.Constants.RequestStatus), @request.RequestStatus)
                         </th>
                         <th>
-                            @Html.DisplayFor(modelItem => request.TimeOpened)
+                            @*TODO: Keyword Business*@
+                            keywords go here
+                        </th>
+                        <th>
+                            @request.TimeOpened.ToShortDateString()
                         </th>
                         <th>
                             @Html.DisplayFor(modelItem => request.TimeClosed)
