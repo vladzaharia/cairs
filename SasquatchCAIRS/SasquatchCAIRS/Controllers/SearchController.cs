@@ -181,6 +181,7 @@ namespace SasquatchCAIRS.Controllers {
                             .Contains(qr.QuestionType.QuestionTypeID));
             }
 
+            // Filter on keywords
             //if (!String.IsNullOrEmpty(c.keywordString)) {
             //    IQueryable<Keyword> kw = _db.Keywords;
             //    kw = kw.Where(key => stringToList(c.keywordString).Contains());
