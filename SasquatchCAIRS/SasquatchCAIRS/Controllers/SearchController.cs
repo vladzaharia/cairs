@@ -123,28 +123,28 @@ namespace SasquatchCAIRS.Controllers
                     select r).ToList(); */
             List<Request> searchRequests =
                 (from r in _db.Requests
-                 where (!String.IsNullOrEmpty(c.requestStatus)) && r.RequestStatus.ToString().Contains(c.requestStatus)
-                 || (!String.IsNullOrEmpty(c.patientFirstName)) && r.PatientFName == c.patientFirstName
-                 || (!String.IsNullOrEmpty(c.patientLastName)) && r.PatientLName == c.patientLastName
-                 || (!String.IsNullOrEmpty(c.requestorFirstName)) && r.RequestorFName == c.requestorFirstName
-                 || (!String.IsNullOrEmpty(c.requestorLastName)) && r.RequestorLName == c.requestorLastName
+                 where ((!String.IsNullOrEmpty(c.requestStatus)) && r.RequestStatus.ToString().Contains(c.requestStatus))
+                 || ((!String.IsNullOrEmpty(c.patientFirstName)) && r.PatientFName == c.patientFirstName)
+                 || ((!String.IsNullOrEmpty(c.patientLastName)) && r.PatientLName == c.patientLastName)
+                 || ((!String.IsNullOrEmpty(c.requestorFirstName)) && r.RequestorFName == c.requestorFirstName)
+                 || ((!String.IsNullOrEmpty(c.requestorLastName)) && r.RequestorLName == c.requestorLastName)
                  select r).ToList();
 
             List<Request> searchResults = new List<Request>();
             foreach (var r in searchRequests) {
                searchResults = (from qr in r.QuestionResponses
-                 where stringToIDs(c.severity, ",").Contains((int) qr.Severity)
-                 ||
-                     stringToIDs(c.tumorGroup, ",")
-                     .Contains((int) qr.TumourGroupID)
-                 ||
-                     stringToIDs(c.questionType, ",")
-                     .Contains((int) qr.QuestionTypeID)
+                 where (qr.Severity != null && (stringToIDs(c.severity, ",").Contains((int) qr.Severity))
+                                               ||
+                           (qr.TumourGroupID != null &&   stringToIDs(c.tumorGroup, ",")
+                                                   .Contains((int) qr.TumourGroupID))
+                                               ||
+                            (qr.QuestionTypeID != null &&    stringToIDs(c.questionType, ",")
+                                                   .Contains((int) qr.QuestionTypeID)))
                  select r).ToList();
 
                 
             }
-            return searchResults;
+            return searchRequests;
         }
     }
 }
