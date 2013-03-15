@@ -181,6 +181,11 @@ namespace SasquatchCAIRS.Controllers {
                             .Contains(qr.QuestionType.QuestionTypeID));
             }
 
+            //if (!String.IsNullOrEmpty(c.keywordString)) {
+            //    IQueryable<Keyword> kw = _db.Keywords;
+            //    kw = kw.Where(key => stringToList(c.keywordString).Contains());
+            //}
+
             // Join based on QR responses
             return (from m in matches
                            join qr in qrs on m.RequestID equals qr.RequestID
