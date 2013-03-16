@@ -1,0 +1,90 @@
+﻿
+@using SasquatchCAIRS
+@using SasquatchCAIRS.Controllers.Security
+@using SasquatchCAIRS.Models
+@using SasquatchCAIRS.Models.ServiceSystem
+@model Dictionary<SasquatchCAIRS.Models.Constants.DropdownTable, List<SasquatchCAIRS.Models.ServiceSystem.DropdownEntry>>
+
+@{
+    ViewBag.Title = Constants.UIString.TitleText.ADMIN + " - " + Constants.UIString.TitleText.DROPDOWN_LISTS;
+    ViewBag.Page = "admin";
+}
+
+@Html.Partial("_AdminNavPartial", new ViewDataDictionary {{"active", "dropdowns"}})
+
+<h2>@Constants.UIString.TitleText.ADMIN - @Constants.UIString.TitleText.DROPDOWN_LISTS</h2>
+
+@if (Model != null) {
+    <div class="row">
+        <div class="span2">
+            <div class="btn-group btn-group-vertical dropdown-select">
+                @foreach (var dropdown in Model.Keys.Select((d, i) => new { i, d })) {
+                    <a class="btn btn-info dropdown-button" href="#" data-dropdown="@dropdown.i">@Constants.getDropdownString(dropdown.d)</a>
+                }
+            </div>
+        </div>
+        <div class="span10">
+            @foreach (var entries in Model.Select((kvp, i) => new { i, kvp })) {
+                <table class="table table-hover dropdown-table" id="table-@entries.i">
+                    <tr>
+                        @if (entries.kvp.Key == Constants.DropdownTable.Keyword) {
+                            <th>@Constants.UIString.FieldLabel.DROPDOWN_KEYWORD</th>
+                            <th class="status">@Constants.UIString.FieldLabel.DROPDOWN_STATUS</th>
+                        } else {
+                            <th class="code">@Constants.UIString.FieldLabel.DROPDOWN_CODE</th>
+                            <th class="value">@Constants.UIString.FieldLabel.DROPDOWN_VALUE</th>
+                            <th class="status">@Constants.UIString.FieldLabel.DROPDOWN_STATUS</th>
+                        }
+                    </tr>
+                    @foreach (DropdownEntry entry in entries.kvp.Value) {
+                        <tr>
+                            @if (entries.kvp.Key == Constants.DropdownTable.Keyword) {
+                                <td class="clickable" data-id="@entry.id" data-dropdown="@Constants.getDropdownString(entries.kvp.Key)">@entry.value</td>
+                                <td class="clickable status" data-id="@entry.id" data-dropdown="@Constants.getDropdownString(entries.kvp.Key)">
+                                    @if (entry.active) { <span>@Constants.UIString.GeneralText.ACTIVE</span> } else { <span>@Constants.UIString.GeneralText.DISABLED</span> }
+                                </td>
+                            } else {
+                                <td class="clickable code" data-id="@entry.id" data-dropdown="@Constants.getDropdownString(entries.kvp.Key)">@entry.code</td>
+                                <td class="clickable value" data-id="@entry.id" data-dropdown="@Constants.getDropdownString(entries.kvp.Key)">@entry.value</td>
+                                <td class="clickable status" data-id="@entry.id" data-dropdown="@Constants.getDropdownString(entries.kvp.Key)">
+                                    @if (entry.active) { <span>@Constants.UIString.GeneralText.ACTIVE</span> } else { <span>@Constants.UIString.GeneralText.DISABLED</span> }
+                                </td>
+                            }
+                        </tr>
+                    }
+                </table>
+            }
+        </div>
+    </div>
+} else {
+    <div class="message palette-danger-dark">Could not load Dropdown Tables!</div>
+}
+
+<script type="text/javascript">
+    $(function() {
+        $(".clickable").click(function() {
+            document.location.href = "/Admin/DropdownDetails/" + $(this).attr("data-dropdown") + "/" + $(this).attr("data-id");
+        });
+    });
+    
+    $(function () {
+        $(".dropdown-button").click(function () {
+            // Vars
+            var $this = $(this),
+                $table = $("#table-" + $this.attr("data-dropdown"));
+
+            // Set current as active and deactivate the rest
+            $this.addClass("active", 300);
+            $this.siblings().removeClass("active", 300);
+
+            // Show the correct table;
+            $table.show();
+            $table.siblings().hide();
+        });
+    });
+
+    $(function () {
+        $(".dropdown-table").hide();
+        $(".dropdown-button").first().click();
+    });
+</script>

@@ -11,6 +11,16 @@ namespace SasquatchCAIRS {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "DropdownEdit",
+                url: "Admin/DropdownDetails/{table}/{id}",
+                defaults: new {
+                    controller = "Admin",
+                    action = "DropdownDetails",
+                    table = UrlParameter.Optional,
+                    id = UrlParameter.Optional
+                });
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new {

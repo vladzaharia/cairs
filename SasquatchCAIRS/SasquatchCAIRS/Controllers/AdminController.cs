@@ -11,9 +11,10 @@ namespace SasquatchCAIRS.Controllers {
     [Authorize(Roles = "Administrator")]
     public class AdminController : Controller {
         private CAIRSDataContext _db = new CAIRSDataContext();
+        private DropdownController _dc = new DropdownController();
 
         //
-        // GEET: /Admin/Index
+        // GET: /Admin/Index
 
         public ActionResult Index() {
             return RedirectToAction("Users");
@@ -32,10 +33,9 @@ namespace SasquatchCAIRS.Controllers {
         public ActionResult UserDetails(int id, bool success = false) {
             UserProfile userProfile =
                 _db.UserProfiles.FirstOrDefault(up => up.UserId == id);
-            var dc = new DropdownController();
 
             ViewBag.Groups =
-                dc.getActiveEntries(
+                _dc.getActiveEntries(
                     Constants.DropdownTable.UserGroup);
             ViewBag.Roles = Roles.GetAllRoles();
 
@@ -116,6 +116,21 @@ namespace SasquatchCAIRS.Controllers {
             }
 
             return RedirectToAction("UserDetails", new {success = true});
+        }
+
+        //
+        // GET: /Admin/Dropdowns
+
+        public ActionResult Dropdowns() {
+            var model =
+                new Dictionary<Constants.DropdownTable, List<DropdownEntry>>();
+
+            foreach (Constants.DropdownTable dropdown 
+                in Constants.DROPDOWN_TABLES) {
+                model.Add(dropdown, _dc.getAllEntries(dropdown));
+            }
+
+            return View(model);
         }
     }
 }

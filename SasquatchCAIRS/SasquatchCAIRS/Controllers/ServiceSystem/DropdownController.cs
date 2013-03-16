@@ -19,6 +19,103 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         }
 
         /// <summary>
+        /// Get all (active or inactive) dropdown entries from a specific table.
+        /// </summary>
+        /// <param name="table">Table containing the entries.</param>
+        /// <returns>List of dropdown table entries.</returns>
+        public List<DropdownEntry> getAllEntries(Constants.DropdownTable table) {
+            List<DropdownEntry> list = new List<DropdownEntry>();
+
+            switch (table) {
+                case Constants.DropdownTable.Keyword:
+                    List<Keyword> keywords =
+                        (from kw in _db.Keywords
+                         select kw)
+                         .ToList();
+
+                    foreach (Keyword kw in keywords) {
+                        list.Add(new KeywordEntry(kw.KeywordID,
+                                                  kw.KeywordValue,
+                                                  kw.Active));
+                    }
+
+                    break;
+                case Constants.DropdownTable.QuestionType:
+                    List<QuestionType> qTypes =
+                        (from qType in _db.QuestionTypes
+                         select qType)
+                         .ToList();
+
+                    foreach (QuestionType qType in qTypes) {
+                        list.Add(new DropdownEntry(qType.QuestionTypeID,
+                                                   qType.Code,
+                                                   qType.Value,
+                                                   qType.Active));
+                    }
+
+                    break;
+                case Constants.DropdownTable.Region:
+                    List<Region> regions =
+                        (from region in _db.Regions
+                         select region)
+                         .ToList();
+
+                    foreach (Region region in regions) {
+                        list.Add(new DropdownEntry(region.RegionID,
+                                                   region.Code,
+                                                   region.Value,
+                                                   region.Active));
+                    }
+
+                    break;
+                case Constants.DropdownTable.RequestorType:
+                    List<RequestorType> rTypes =
+                        (from rType in _db.RequestorTypes
+                         select rType)
+                         .ToList();
+
+                    foreach (RequestorType rType in rTypes) {
+                        list.Add(new DropdownEntry(rType.RequestorTypeID,
+                                                   rType.Code,
+                                                   rType.Value,
+                                                   rType.Active));
+                    }
+
+                    break;
+                case Constants.DropdownTable.TumourGroup:
+                    List<TumourGroup> tGroups =
+                        (from tGroup in _db.TumourGroups
+                         select tGroup)
+                         .ToList();
+
+                    foreach (TumourGroup tGroup in tGroups) {
+                        list.Add(new DropdownEntry(tGroup.TumourGroupID,
+                                                   tGroup.Code,
+                                                   tGroup.Value,
+                                                   tGroup.Active));
+                    }
+
+                    break;
+                case Constants.DropdownTable.UserGroup:
+                    List<UserGroup> uGroups =
+                        (from uGroup in _db.UserGroups
+                         select uGroup)
+                         .ToList();
+
+                    foreach (UserGroup uGroup in uGroups) {
+                        list.Add(new DropdownEntry(uGroup.GroupID,
+                                                   uGroup.Code,
+                                                   uGroup.Value,
+                                                   uGroup.Active));
+                    }
+
+                    break;
+            }
+
+            return list.OrderBy(dd => dd.code).ToList();
+        }
+
+        /// <summary>
         /// Get all active dropdown entries from a specific table.
         /// </summary>
         /// <param name="table">Table containing the entries.</param>
@@ -118,7 +215,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
                     break;
             }
 
-            return list;
+            return list.OrderBy(dd => dd.code).ToList();
         }
 
         /// <summary>
