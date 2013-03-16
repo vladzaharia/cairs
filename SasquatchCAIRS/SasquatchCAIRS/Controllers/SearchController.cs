@@ -90,7 +90,12 @@ namespace SasquatchCAIRS.Controllers {
             _db.Dispose();
             base.Dispose(disposing);
         }
-
+        /// <summary>
+        /// Converts an input String into a list of Int, used for Question Type ID and Tumour Group ID
+        /// </summary>
+        /// <param name="input">Input String</param>
+        /// <param name="delimiters">Delimiter inside string</param>
+        /// <returns>Corresponding List of Integers</returns>
         private List<int> stringToList(string input, string delimiters) {
             List<int> results = new List<int>();
             string[] arr = input.Split(delimiters.ToCharArray());
@@ -100,6 +105,29 @@ namespace SasquatchCAIRS.Controllers {
             return results;
         }
 
+        /// <summary>
+        /// Converts a given string into a list of Strings, to separate a  keyword string into individual keywords
+        /// </summary>
+        /// <param name="input">Input string</param>
+        /// <param name="delimiters">Delimiter inside the string</param>
+        /// <returns>Corresponding List of Strings</returns>
+        private List<String> stringToSList(string input, string delimiters)
+        {
+            List<String> results = new List<String>();
+            string[] arr = input.Split(delimiters.ToCharArray());
+            foreach (var s in arr)
+            {
+                results.Add(s);
+            }
+            return results;
+        }
+
+        /// <summary>
+        /// Converts a String into List of Intgers based on its Enum value specified in Constants.cs
+        /// </summary>
+        /// <param name="input">Input String</param>
+        /// <param name="type">Specific Type (Severity or Consequence)</param>
+        /// <returns>Corresponding List of Integers for that Type and Input</returns>
         private List<int> enumToIDs(string input, Type type) {
             String[] stringArr = input.Split(",".ToCharArray());
             List<int> intList = new List<int>();
@@ -109,7 +137,11 @@ namespace SasquatchCAIRS.Controllers {
             return intList;
         }
 
-
+        /// <summary>
+        /// Get Requests in Database based on SearchCriteria
+        /// </summary>
+        /// <param name="c">Search criteria that users inputs</param>
+        /// <returns>List of Requests that match the input </returns>
         private List<Request> searchCriteriaQuery(SearchCriteria c) {
 
             IQueryable<Request> matches = _db.Requests;
@@ -148,7 +180,7 @@ namespace SasquatchCAIRS.Controllers {
                         r =>
                         enumToIDs(c.requestStatus,
                                   typeof (Constants.RequestStatus))
-                            .Contains((int) r.RequestStatus));
+                            .Contains(r.RequestStatus));
             }
 
             // Filter on Question/Response tuples
@@ -181,15 +213,40 @@ namespace SasquatchCAIRS.Controllers {
                             .Contains(qr.QuestionType.QuestionTypeID));
             }
 
-            //if (!String.IsNullOrEmpty(c.keywordString)) {
-            //    IQueryable<Keyword> kw = _db.Keywords;
-            //    kw = kw.Where(key => stringToList(c.keywordString).Contains());
-            //}
+            IQueryable<Keyword> kw = _db.Keywords;
+            IQueryable<KeywordQuestion> kq = _db.KeywordQuestions;
+            if (!String.IsNullOrEmpty(c.keywordString)) {
 
-            // Join based on QR responses
-            return (from m in matches
-                           join qr in qrs on m.RequestID equals qr.RequestID
-                           select m).ToList();
+               /* kw =
+                    kw.Where(
+                        key =>
+                        stringToList(c.keywordString, ",")
+                            .Contains((int) key.RequestID)).ToList();*/
+                //filter on keywords
+                kw = (from k in _db.Keywords
+                      where
+                          stringToSList(c.keywordString, ",")
+                          .Contains(k.KeywordValue)
+                      select k).ToList().AsQueryable();
+
+                //match keywordID with keywordQuestion
+                kq = (from kqs in _db.KeywordQuestions
+                      from k in kw
+                      where kqs.KeywordID == k.KeywordID
+                      select kqs).ToList().AsQueryable();
+
+
+            }
+            //Requests that match Search Criteria for all fields except Keywords
+            List<Request> tempResults =
+                // Join based on QR responses
+                (from m in matches
+                 join qr in qrs on m.RequestID equals qr.RequestID
+                 select m).ToList();
+            //Join based on keywords
+            return (from t in tempResults
+                    join kqs in kq on t.RequestID equals kqs.RequestID 
+                    select t).ToList();
         }
     }
 }
