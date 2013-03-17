@@ -1,0 +1,89 @@
+﻿@model IEnumerable<SasquatchCAIRS.Request>
+
+@{
+    ViewBag.Title = "Results";
+}
+
+<h2>Results</h2>
+
+For keywords: @ViewBag.keywords
+
+<div>
+</div>
+<div class="btn-group float-right">
+    @LinkExtensions.ActionLink(Html, "Modify Search", "Modify", new {
+    controller = "Search"
+}, new {
+    @class = "btn"
+})
+    @LinkExtensions.ActionLink(Html, "New Search", "Advanced", new {
+    controller = "Search"
+}, new {
+    @class = "btn"
+})
+</div>
+@if (@ViewBag.ResultSetSize < 1) {
+    <h3>No results were found</h3>
+} else {
+
+    <fieldset>
+        <legend>Search Results</legend>
+        <div>
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>
+                        @Html.DisplayName("Req ID")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Caller Name")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Patient Name")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Status")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Keywords")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Started")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Closed")
+                    </th>
+                </tr>
+
+
+                @foreach (var request in Model) {
+                    <tr>
+                        <th>
+                            @Html.DisplayFor(modelItem => request.RequestID)
+                        </th>
+                        <th>
+                            @Html.DisplayFor(modelItem => request.RequestorLName), 
+                            @Html.DisplayFor(modelItem => request.RequestorFName)
+                        </th>
+                                                <th>
+                            @Html.DisplayFor(modelItem => request.PatientLName), 
+                            @Html.DisplayFor(modelItem => request.PatientFName)
+                        </th>
+                        <th>
+                            @Enum.GetName(typeof(SasquatchCAIRS.Models.Constants.RequestStatus), @request.RequestStatus)
+                        </th>
+                        <th>
+                            @*TODO: Keyword Business*@
+                            keywords go here
+                        </th>
+                        <th>
+                            @request.TimeOpened.ToShortDateString()
+                        </th>
+                        <th>
+                            @Html.DisplayFor(modelItem => request.TimeClosed)
+                        </th>
+                    </tr>
+}
+            </table>
+        </div>
+    </fieldset>
+}

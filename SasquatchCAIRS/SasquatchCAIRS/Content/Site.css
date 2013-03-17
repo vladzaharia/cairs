@@ -26,10 +26,6 @@ a {
         color: #333;
     }
 
-    a:hover {
-        background-color: #c7d1d6;
-    }
-
 header, footer, hgroup,
 nav, section {
     display: block;
@@ -155,6 +151,9 @@ footer {
     margin: 0 0 10px;
     text-align: right;
     color: #FFFFFF;
+    position: relative;
+    top: -5px;
+    margin: 0px;
 }
 
     #login a {
@@ -182,6 +181,96 @@ footer {
     }
 
 
+/* search
+----------------------------------------------------------*/
+.quick-search {
+    display: inline-block;
+    height: 35px;
+}
+
+.quick-search-div {
+    position: relative;
+    left: 16px;
+    top: -9px;
+}
+
+.quick-search-button {
+    position: relative;
+    top: 5px;
+}
+
+.adv-search-div {
+    display: inline-block;
+    text-align: left;
+    line-height: 15px;
+    position: relative;
+    top: 3px;
+    left: 6px;
+}
+
+div.scroll
+{
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #CCCCCC;
+    width:300px;
+    height:150px;
+    overflow-y:scroll;
+    padding: 4px;
+}
+
+label.checkboxlist {
+    font-size: 14px;    
+}
+
+input.internalcheckbox {
+    position: relative;
+    top: -3px;
+}
+
+
+.adv-search-top {
+}
+
+.adv-search-bottom {
+}
+
+#search {
+    display: block;
+    font-size: .85em;
+    margin: 0 0 10px;
+    text-align: right;
+    color: #FFFFFF;
+    height: 35px;
+}
+
+    #search a {
+        color: #FFFFFF;
+        margin-left: 10px;
+        margin-right: 3px;
+        padding: 2px 3px;
+        text-decoration: none;
+    }
+
+    #search a.username {
+        background: none;
+        margin: 0;
+        padding: 0;
+        text-decoration: underline;
+    }
+
+    #search ul {
+        margin: 0;
+    }
+
+    #search li {
+        display: inline;
+        list-style: none;
+    }
+
+
 /* menu
 ----------------------------------------------------------*/
 ul#menu {
@@ -189,6 +278,8 @@ ul#menu {
     font-weight: 400;
     margin: -10px 0 12px 2px;
     padding: 0;
+    position: relative;
+    top: 7px;
 }
 
     ul#menu li {
