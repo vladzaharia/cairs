@@ -80,7 +80,7 @@
 
                 //if session is not less than 0
                 if (sessionTimeout < 0)  {
-                    window.location.href = '/';
+                    window.location.href = '/?expired=true';
                     $('.session-timeout').text("Your session has timed out. Please visit the dashboard to start again.")
                 } else if (sessionTimeout < 5) {
                     $(".session-timeout").show();
