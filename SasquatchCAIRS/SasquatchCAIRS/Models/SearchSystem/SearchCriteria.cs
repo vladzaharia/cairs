@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Entity;
 
 namespace SasquatchCAIRS.Models.SearchSystem {
 
@@ -68,17 +67,6 @@ namespace SasquatchCAIRS.Models.SearchSystem {
         }
 
         public String consequence {
-            get;
-            set;
-        }
-    }
-
-    public class SearchCriteriaContext : DbContext {
-        public SearchCriteriaContext()
-            : base("sasquatchConnectionString") {
-        }
-
-        public DbSet<SearchCriteria> SearchCriterias {
             get;
             set;
         }
