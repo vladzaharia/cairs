@@ -10,13 +10,46 @@ namespace SasquatchCAIRS {
         public static void RegisterRoutes(RouteCollection routes) {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // Custom Dropdown Routes
             routes.MapRoute(
-                name: "DropdownEdit",
-                url: "Admin/DropdownDetails/{table}/{id}",
+                name: "DropdownList",
+                url: "Admin/Dropdown/List",
                 defaults: new {
                     controller = "Admin",
-                    action = "DropdownDetails",
+                    action = "Dropdowns"
+                });
+            routes.MapRoute(
+                name: "DropdownEdit",
+                url: "Admin/Dropdown/Edit/{table}/{id}",
+                defaults: new {
+                    controller = "Admin",
+                    action = "DropdownEdit",
                     table = UrlParameter.Optional,
+                    id = UrlParameter.Optional
+                });
+            routes.MapRoute(
+                name: "DropdownCreate",
+                url: "Admin/Dropdown/Create/{table}",
+                defaults: new {
+                    controller = "Admin",
+                    action = "DropdownCreate",
+                    table = UrlParameter.Optional
+                });
+
+            // Custom User Routes
+            routes.MapRoute(
+                name: "UserList",
+                url: "Admin/User/List",
+                defaults: new {
+                    controller = "Admin",
+                    action = "Users"
+                });
+            routes.MapRoute(
+                name: "UserEdit",
+                url: "Admin/User/Edit/{id}",
+                defaults: new {
+                    controller = "Admin",
+                    action = "UserEdit",
                     id = UrlParameter.Optional
                 });
 

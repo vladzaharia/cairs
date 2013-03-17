@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace SasquatchCAIRS.Models {
     public static class Constants {
@@ -155,7 +156,7 @@ namespace SasquatchCAIRS.Models {
 
             // Text used in Buttons
             public static class ButtonText {
-                public const string ADD_REQUEST = "Add New Request";
+                public const string CREATE_REQUEST = "Create Request";
                 public const string EDIT_REQUEST = "Edit Request";
                 public const string UNLOCK_REQUEST = "Unlock Request";
                 public const string EXPORT_REQUEST = "Export Request";
@@ -163,6 +164,9 @@ namespace SasquatchCAIRS.Models {
                 public const string MARK_COMPLETE = "Mark as Complete";
                 public const string DELETE_REQUEST = "Delete Request";
                 public const string EDIT_USER = "Edit User";
+                public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
+                public const string CREATE_DROPDOWN = "Create Dropdown Entry";
+                public const string CREATE = "Create";
             }
 
             // Text used in Page Titles
@@ -175,10 +179,13 @@ namespace SasquatchCAIRS.Models {
                 public const string USERS = "Users";
                 public const string EDIT_USER = "Edit User";
                 public const string DROPDOWN_LISTS = "Dropdown Lists";
-                public const string EDIT_DROPDOWN = "Edit Dropdown Value";
+                public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
+                public const string CREATE_DROPDOWN = "Create Dropdown Entry";
                 public const string AUDIT_LOG = "Audit Log";
-                public const string ADD_NEW_REQUEST = "Add New Request";
+                public const string CREATE_REQUEST = "Create Request";
                 public const string REPORTS = "Reports";
+                public const string CREATE = "Create";
+                public const string EDIT = "Edit";
             }
 
             public static class GeneralText {

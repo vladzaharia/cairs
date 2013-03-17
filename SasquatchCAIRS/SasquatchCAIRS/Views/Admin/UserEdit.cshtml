@@ -13,14 +13,8 @@
 
 <h2>@Constants.UIString.TitleText.ADMIN - @Constants.UIString.TitleText.EDIT_USER</h2>
 
-@if (ViewBag.SuccessMessage != null) {
-    <div class="message palette-success-dark">
-        @ViewBag.SuccessMessage
-    </div>
-}
-
 @if (Model != null) {
-    using (Html.BeginForm("UserDetails", "Admin",
+    using (Html.BeginForm("UserEdit", "Admin",
                           FormMethod.Post, new {@class = "form"})) {
         <table class="table unbordered-table">
             <tr>
@@ -56,6 +50,7 @@
                         </label>
                     }    
                 </td>
+                <td>@Html.ValidationMessage("Roles")</td>
             </tr>
             <tr>
                 <td class="tbl-label">@Constants.UIString.FieldLabel.GROUPS</td>
@@ -77,10 +72,11 @@
                         </label>
                     }               
                 </td>
+                <td>@Html.ValidationMessage("Groups")</td>
             </tr>
             <tr>
                 <td><input type="hidden" name="userName" value="@Html.DisplayFor(m => m.UserName)"/></td>
-                <td><input class="btn btn-info" type="submit" value="@Constants.UIString.ButtonText.EDIT_USER" /></td>
+                <td><input class="btn btn-custom" type="submit" value="@Constants.UIString.ButtonText.EDIT_USER" /></td>
             </tr>
         </table>
     }
