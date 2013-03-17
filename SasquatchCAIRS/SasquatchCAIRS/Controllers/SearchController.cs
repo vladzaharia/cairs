@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using SasquatchCAIRS.Controllers.ServiceSystem;
@@ -227,26 +228,34 @@ namespace SasquatchCAIRS.Controllers {
                       where
                           stringToSList(c.keywordString, ",")
                           .Contains(k.KeywordValue)
-                      select k).ToList().AsQueryable();
+                      select k);
 
                 //match keywordID with keywordQuestion
                 kq = (from kqs in _db.KeywordQuestions
                       from k in kw
-                      where kqs.KeywordID == k.KeywordID
-                      select kqs).ToList().AsQueryable();
+                      where k.KeywordID == kqs.RequestID
+                      select kqs);
 
 
             }
             //Requests that match Search Criteria for all fields except Keywords
-            List<Request> tempResults =
+            IQueryable<Request> tempResults =
                 // Join based on QR responses
                 (from m in matches
-                 join qr in qrs on m.RequestID equals qr.RequestID
-                 select m).ToList();
+                 // join qr in qrs on m.RequestID equals qr.RequestID
+                 from qr in qrs
+                 where qr.RequestID == m.RequestID
+
+                 select m);
+            
             //Join based on keywords
-            return (from t in tempResults
-                    join kqs in kq on t.RequestID equals kqs.RequestID 
+            return (from t in tempResults.AsEnumerable()
+                    from kqs in kq.AsEnumerable()
+                    where kqs.RequestID == t.RequestID
                     select t).ToList();
+
+           
         }
+         
     }
 }
