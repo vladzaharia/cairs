@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using SasquatchCAIRS.Controllers.ServiceSystem;
@@ -14,9 +13,11 @@ namespace SasquatchCAIRS.Controllers {
             DropdownController.instance;
         private CAIRSDataContext _db = new CAIRSDataContext();
 
-        //
-        // POST: /Search/Create
-
+        /// <summary>
+        /// Given a list of keywords returns all requests with one or more of those keywords
+        /// </summary>
+        /// <param name="keywords">String of comma delimited keywords</param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Viewer")]
         public ActionResult Search(String keywords) {
@@ -25,12 +26,16 @@ namespace SasquatchCAIRS.Controllers {
             sc.keywordString = keywords;
             Session["criteria"] = sc;
             List<Request> list = searchCriteriaQuery(sc);
+            fillUpKeywordDict(list);
             ViewBag.ResultSetSize = list.Count;
             return View("Results", list);
         }
 
 
-
+        /// <summary>
+        /// Displays the Advanced Search view and passes in an empty SearchCriteira 
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Viewer")]
         public ActionResult Advanced() {
             SearchCriteria criteria = new SearchCriteria();
@@ -45,6 +50,13 @@ namespace SasquatchCAIRS.Controllers {
             return View(criteria);
         }
 
+        /// <summary>
+        /// Given a SearchCriteria object and the Adv. Search Form it preforms 
+        /// a search based upon that criteria and displays the results
+        /// </summary>
+        /// <param name="criteria">The SearchCriteria object that hold the filtering data</param>
+        /// <param name="form">The Form on the Advanced Search page and all it's data</param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Viewer")]
         public ActionResult Results(SearchCriteria criteria, FormCollection form) {
@@ -68,11 +80,16 @@ namespace SasquatchCAIRS.Controllers {
 
 
             ViewBag.keywords = criteria.keywordString;
-            var list = searchCriteriaQuery(criteria);
+            List<Request> list = searchCriteriaQuery(criteria);
+            fillUpKeywordDict(list);
             ViewBag.ResultSetSize = list.Count;
             return View(list);
         }
 
+        /// <summary>
+        /// Populates the Advanced Search page with the SearchCriteria stored in the current Session
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Viewer")]
         public ActionResult Modify() {
 
@@ -91,6 +108,7 @@ namespace SasquatchCAIRS.Controllers {
             _db.Dispose();
             base.Dispose(disposing);
         }
+
         /// <summary>
         /// Converts an input String into a list of Int, used for Question Type ID and Tumour Group ID
         /// </summary>
@@ -112,15 +130,8 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="input">Input string</param>
         /// <param name="delimiters">Delimiter inside the string</param>
         /// <returns>Corresponding List of Strings</returns>
-        private List<String> stringToSList(string input, string delimiters)
-        {
-            List<String> results = new List<String>();
-            string[] arr = input.Split(delimiters.ToCharArray());
-            foreach (var s in arr)
-            {
-                results.Add(s);
-            }
-            return results;
+        private List<String> stringToSList(string input, string delimiters) {
+            return input.Split(delimiters.ToCharArray()).ToList();
         }
 
         /// <summary>
@@ -139,58 +150,76 @@ namespace SasquatchCAIRS.Controllers {
         }
 
         /// <summary>
+        /// Given a list of requests fills up the dictionary of each request's keywords
+        /// </summary>
+        /// <param name="requests">List of requests to be displayed</param>
+        private void fillUpKeywordDict(IEnumerable<Request> requests) {
+            var keywords = new Dictionary<long, List<string>>();
+            foreach (Request request in requests) {
+                IQueryable<KeywordQuestion> keywordQuestions =
+                    from keywordQuestion in _db.KeywordQuestions
+                    where keywordQuestion.RequestID == request.RequestID
+                    select keywordQuestion;
+                keywords.Add(request.RequestID, (from keyword in _db.Keywords
+                                                 join keywordQuestion in keywordQuestions
+                                                 on keyword.KeywordID equals keywordQuestion.KeywordID
+                                                 select keyword.KeywordValue).ToList());
+            }
+            ViewBag.keywordDict = keywords;
+        }
+
+        /// <summary>
         /// Get Requests in Database based on SearchCriteria
         /// </summary>
         /// <param name="c">Search criteria that users inputs</param>
         /// <returns>List of Requests that match the input </returns>
         private List<Request> searchCriteriaQuery(SearchCriteria c) {
-
-            IQueryable<Request> matches = _db.Requests;
+            IQueryable<Request> requests = _db.Requests;
 
             // Filter on patient first name
             if (!String.IsNullOrEmpty(c.patientFirstName)) {
-                matches =
-                    matches.Where(r => r.PatientFName == c.patientFirstName);
+                requests =
+                    requests.Where(r => r.PatientFName == c.patientFirstName);
             }
 
             // Filter on patient last name
             if (!String.IsNullOrEmpty(c.patientLastName)) {
-                matches =
-                    matches.Where(
+                requests =
+                    requests.Where(
                         r => r.PatientLName == c.patientLastName);
             }
 
             // Filter on requestor first name
             if (!String.IsNullOrEmpty(c.requestorFirstName)) {
-                matches =
-                    matches.Where(
+                requests =
+                    requests.Where(
                         r => r.RequestorFName == c.requestorFirstName);
             }
 
             // Filter on requestor last name
             if (!String.IsNullOrEmpty(c.requestorLastName)) {
-                matches =
-                    matches.Where(
+                requests =
+                    requests.Where(
                         r => r.RequestorLName == c.requestorLastName);
             }
 
             // Filter on request status
             if (!String.IsNullOrEmpty(c.requestStatus)) {
-                matches =
-                    matches.Where(
+                requests =
+                    requests.Where(
                         r =>
                         enumToIDs(c.requestStatus,
-                                  typeof (Constants.RequestStatus))
+                                  typeof(Constants.RequestStatus))
                             .Contains(r.RequestStatus));
             }
 
             // Filter on Question/Response tuples
-            IQueryable<QuestionResponse> qrs = _db.QuestionResponses;
+            IQueryable<QuestionResponse> questionResponses = _db.QuestionResponses;
 
             // Filter on QR's Severity
             if (!String.IsNullOrEmpty(c.severity)) {
-                qrs =
-                    qrs.Where(
+                questionResponses =
+                    questionResponses.Where(
                         qr =>
                         enumToIDs(c.severity, typeof(Constants.Severity))
                             .Contains((int) qr.Severity));
@@ -198,8 +227,8 @@ namespace SasquatchCAIRS.Controllers {
 
             // Filter on QR's Tumor Group
             if (!String.IsNullOrEmpty(c.tumorGroup)) {
-                qrs =
-                    qrs.Where(
+                questionResponses =
+                    questionResponses.Where(
                         qr =>
                         stringToList(c.tumorGroup, ",")
                             .Contains(qr.TumourGroup.TumourGroupID));
@@ -207,55 +236,43 @@ namespace SasquatchCAIRS.Controllers {
 
             // Filter on QR's Question Type
             if (!String.IsNullOrEmpty(c.questionType)) {
-                qrs =
-                    qrs.Where(
+                questionResponses =
+                    questionResponses.Where(
                         qr =>
                         stringToList(c.questionType, ",")
                             .Contains(qr.QuestionType.QuestionTypeID));
             }
 
-            IQueryable<Keyword> kw = _db.Keywords;
-            IQueryable<KeywordQuestion> kq = _db.KeywordQuestions;
+            // Filter QRs based on keywords
             if (!String.IsNullOrEmpty(c.keywordString)) {
 
-               /* kw =
-                    kw.Where(
-                        key =>
-                        stringToList(c.keywordString, ",")
-                            .Contains((int) key.RequestID)).ToList();*/
-                //filter on keywords
-                kw = (from k in _db.Keywords
-                      where
-                          stringToSList(c.keywordString, ",")
-                          .Contains(k.KeywordValue)
-                      select k);
 
-                //match keywordID with keywordQuestion
-                kq = (from kqs in _db.KeywordQuestions
-                      from k in kw
-                      where k.KeywordID == kqs.RequestID
+                // First we grab the keywords
+                IQueryable<Keyword> keywords = (from k in _db.Keywords
+                                                where
+                                                    stringToSList(c.keywordString, ",")
+                                                    .Contains(k.KeywordValue)
+                                                select k);
+
+                // Then we select the Keyword Question pairs with the same keywords
+                IQueryable<KeywordQuestion> keywordQuestions =
+                     (from kqs in _db.KeywordQuestions
+                      from k in keywords
+                      where k.KeywordID == kqs.KeywordID
                       select kqs);
 
-
+                // Then we intersect Keywords with QuestionResponses through the use of a join
+                questionResponses = from key in keywordQuestions
+                                    join qr in questionResponses
+                                    on key.QuestionResponseID equals qr.QuestionResponseID
+                                    select qr;
             }
-            //Requests that match Search Criteria for all fields except Keywords
-            IQueryable<Request> tempResults =
-                // Join based on QR responses
-                (from m in matches
-                 // join qr in qrs on m.RequestID equals qr.RequestID
-                 from qr in qrs
-                 where qr.RequestID == m.RequestID
-
-                 select m);
-            
-            //Join based on keywords
-            return (from t in tempResults.AsEnumerable()
-                    from kqs in kq.AsEnumerable()
-                    where kqs.RequestID == t.RequestID
-                    select t).ToList();
-
-           
+            //Finally we intersect our requests with the question responses and get our results
+            return (from m in requests
+                    join qr in questionResponses
+                    on m.RequestID equals qr.RequestID
+                    select m).ToList();
         }
-         
+
     }
 }

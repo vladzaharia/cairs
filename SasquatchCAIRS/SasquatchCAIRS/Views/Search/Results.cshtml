@@ -6,27 +6,28 @@
 
 <h2>Results</h2>
 
-For keywords: @ViewBag.keywords
-
-<div>
-</div>
 <div class="btn-group float-right">
     @LinkExtensions.ActionLink(Html, "Modify Search", "Modify", new {
     controller = "Search"
 }, new {
-    @class = "btn"
+    @class = "btn btn-info"
 })
     @LinkExtensions.ActionLink(Html, "New Search", "Advanced", new {
     controller = "Search"
 }, new {
-    @class = "btn"
+    @class = "btn btn-info"
 })
+</div>
+
+For keywords: @ViewBag.keywords
+
+<div>
 </div>
 @if (@ViewBag.ResultSetSize < 1) {
     <h3>No results were found</h3>
 } else {
 
-    <fieldset>
+    <fieldset class="results">
         <legend>Search Results</legend>
         <div>
             <table class="table table-bordered table-hover">
@@ -60,23 +61,23 @@ For keywords: @ViewBag.keywords
                         <th>
                             @Html.DisplayFor(modelItem => request.RequestID)
                         </th>
-                        <th>
-                            @Html.DisplayFor(modelItem => request.RequestorLName), 
-                            @Html.DisplayFor(modelItem => request.RequestorFName)
+                        <th> 
+                            @Html.DisplayFor(modelItem => request.RequestorFName) 
+                            @Html.DisplayFor(modelItem => request.RequestorLName)
                         </th>
-                                                <th>
-                            @Html.DisplayFor(modelItem => request.PatientLName), 
-                            @Html.DisplayFor(modelItem => request.PatientFName)
+                        <th>
+                            @Html.DisplayFor(modelItem => request.PatientFName) 
+                            @Html.DisplayFor(modelItem => request.PatientLName)
                         </th>
                         <th>
                             @Enum.GetName(typeof(SasquatchCAIRS.Models.Constants.RequestStatus), @request.RequestStatus)
                         </th>
                         <th>
-                            @*TODO: Keyword Stuffs*@
-                            keywords go here
+                            @foreach(string keyword in ViewBag.keywordDict[@request.RequestID])
+                            { <span>@keyword </span> }
                         </th>
                         <th>
-                            @request.TimeOpened.ToShortDateString()
+                            @Html.DisplayFor(modelItem => request.TimeOpened)
                         </th>
                         <th>
                             @Html.DisplayFor(modelItem => request.TimeClosed)
