@@ -171,44 +171,44 @@ namespace SasquatchCAIRS.Controllers {
         /// <summary>
         /// Get Requests in Database based on SearchCriteria
         /// </summary>
-        /// <param name="c">Search criteria that users inputs</param>
+        /// <param name="criteria">Search criteria that users inputs</param>
         /// <returns>List of Requests that match the input </returns>
-        private List<Request> searchCriteriaQuery(SearchCriteria c) {
+        private List<Request> searchCriteriaQuery(SearchCriteria criteria) {
             IQueryable<Request> requests = _db.Requests;
 
             // Filter on patient first name
-            if (!String.IsNullOrEmpty(c.patientFirstName)) {
+            if (!String.IsNullOrEmpty(criteria.patientFirstName)) {
                 requests =
-                    requests.Where(r => r.PatientFName == c.patientFirstName);
+                    requests.Where(r => r.PatientFName == criteria.patientFirstName);
             }
 
             // Filter on patient last name
-            if (!String.IsNullOrEmpty(c.patientLastName)) {
+            if (!String.IsNullOrEmpty(criteria.patientLastName)) {
                 requests =
                     requests.Where(
-                        r => r.PatientLName == c.patientLastName);
+                        r => r.PatientLName == criteria.patientLastName);
             }
 
             // Filter on requestor first name
-            if (!String.IsNullOrEmpty(c.requestorFirstName)) {
+            if (!String.IsNullOrEmpty(criteria.requestorFirstName)) {
                 requests =
                     requests.Where(
-                        r => r.RequestorFName == c.requestorFirstName);
+                        r => r.RequestorFName == criteria.requestorFirstName);
             }
 
             // Filter on requestor last name
-            if (!String.IsNullOrEmpty(c.requestorLastName)) {
+            if (!String.IsNullOrEmpty(criteria.requestorLastName)) {
                 requests =
                     requests.Where(
-                        r => r.RequestorLName == c.requestorLastName);
+                        r => r.RequestorLName == criteria.requestorLastName);
             }
 
             // Filter on request status
-            if (!String.IsNullOrEmpty(c.requestStatus)) {
+            if (!String.IsNullOrEmpty(criteria.requestStatus)) {
                 requests =
                     requests.Where(
                         r =>
-                        enumToIDs(c.requestStatus,
+                        enumToIDs(criteria.requestStatus,
                                   typeof(Constants.RequestStatus))
                             .Contains(r.RequestStatus));
             }
@@ -217,40 +217,40 @@ namespace SasquatchCAIRS.Controllers {
             IQueryable<QuestionResponse> questionResponses = _db.QuestionResponses;
 
             // Filter on QR's Severity
-            if (!String.IsNullOrEmpty(c.severity)) {
+            if (!String.IsNullOrEmpty(criteria.severity)) {
                 questionResponses =
                     questionResponses.Where(
                         qr =>
-                        enumToIDs(c.severity, typeof(Constants.Severity))
+                        enumToIDs(criteria.severity, typeof(Constants.Severity))
                             .Contains((int) qr.Severity));
             }
 
             // Filter on QR's Tumor Group
-            if (!String.IsNullOrEmpty(c.tumorGroup)) {
+            if (!String.IsNullOrEmpty(criteria.tumorGroup)) {
                 questionResponses =
                     questionResponses.Where(
                         qr =>
-                        stringToList(c.tumorGroup, ",")
+                        stringToList(criteria.tumorGroup, ",")
                             .Contains(qr.TumourGroup.TumourGroupID));
             }
 
             // Filter on QR's Question Type
-            if (!String.IsNullOrEmpty(c.questionType)) {
+            if (!String.IsNullOrEmpty(criteria.questionType)) {
                 questionResponses =
                     questionResponses.Where(
                         qr =>
-                        stringToList(c.questionType, ",")
+                        stringToList(criteria.questionType, ",")
                             .Contains(qr.QuestionType.QuestionTypeID));
             }
 
             // Filter QRs based on keywords
-            if (!String.IsNullOrEmpty(c.keywordString)) {
+            if (!String.IsNullOrEmpty(criteria.keywordString)) {
 
 
                 // First we grab the keywords
                 IQueryable<Keyword> keywords = (from k in _db.Keywords
                                                 where
-                                                    stringToSList(c.keywordString, ",")
+                                                    stringToSList(criteria.keywordString, ",")
                                                     .Contains(k.KeywordValue)
                                                 select k);
 
@@ -268,10 +268,10 @@ namespace SasquatchCAIRS.Controllers {
                                     select qr;
             }
             //Finally we intersect our requests with the question responses and get our results
-            return (from m in requests
+            return (from r in requests
                     join qr in questionResponses
-                    on m.RequestID equals qr.RequestID
-                    select m).ToList();
+                    on r.RequestID equals qr.RequestID
+                    select r).ToList();
         }
 
     }
