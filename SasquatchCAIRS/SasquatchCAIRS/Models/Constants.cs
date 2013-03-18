@@ -132,6 +132,9 @@ namespace SasquatchCAIRS.Models {
                 public const string SAVE_DRAFT = "Save Draft";
                 public const string MARK_COMPLETE = "Mark as Complete";
                 public const string DELETE_REQUEST = "Delete Request";
+                public const string USERS = "Users";
+                public const string LOOKUP = "Lookup Fields";
+                public const string AUDIT = "Audit Report";
             }
 
             // Text used in Page Titles
@@ -140,6 +143,7 @@ namespace SasquatchCAIRS.Models {
                 public const string VIEW_REQUEST = "View Request";
                 public const string REQUEST_NUM = "Request #";
                 public const string ERROR = "Error";
+                public const string ADMIN = "Admin Settings";
             }
         }
 
