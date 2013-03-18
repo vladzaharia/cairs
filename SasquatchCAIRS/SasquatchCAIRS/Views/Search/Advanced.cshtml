@@ -1,4 +1,5 @@
-﻿@using SasquatchCAIRS.Models.ServiceSystem
+﻿@using SasquatchCAIRS.Models
+@using SasquatchCAIRS.Models.ServiceSystem
 @model SasquatchCAIRS.Models.SearchSystem.SearchCriteria
 
 @{
@@ -31,10 +32,10 @@
         </div>
 
         <div>
-            @if (!Model.startTime.ToString(SasquatchCAIRS.Models.Constants.DATE_FORMAT)
-            .Equals(SasquatchCAIRS.Models.Constants.EMPTY_DATE)) {
+            @if (!Model.startTime.ToString(Constants.DATE_FORMAT)
+            .Equals(Constants.EMPTY_DATE)) {
                 <input class="input-medium" name="startTime" type="date" 
-                value="@Model.startTime.ToString(SasquatchCAIRS.Models.Constants.DATE_FORMAT)" />    
+                value="@Model.startTime.ToString(Constants.DATE_FORMAT)" />    
             } else {
                 <input class="input-medium" name="startTime" type="date" />
             }
@@ -45,10 +46,10 @@
             @Html.Label("Completion Time")
         </div>
         <div>
-            @if (!Model.completionTime.ToString(SasquatchCAIRS.Models.Constants.DATE_FORMAT)
-                .Equals(SasquatchCAIRS.Models.Constants.EMPTY_DATE)) {
+            @if (!Model.completionTime.ToString(Constants.DATE_FORMAT)
+                .Equals(Constants.EMPTY_DATE)) {
                 <input class="input-medium" name="completionTime" type="date" 
-                value="@Model.completionTime.ToString(SasquatchCAIRS.Models.Constants.DATE_FORMAT)" />    
+                value="@Model.completionTime.ToString(Constants.DATE_FORMAT)" />    
             } else {
                 <input class="input-medium" name="completionTime" type="date" />
             }
@@ -61,7 +62,7 @@
 
         <div>
             @foreach (var status in Enum.GetValues(
-                typeof(SasquatchCAIRS.Models.Constants.RequestStatus))) {
+                typeof(Constants.RequestStatus))) {
                 <label class="checkbox inline">
                     @if (!String.IsNullOrEmpty(Model.requestStatus) && 
                         Model.requestStatus.Contains(@status.ToString())) {
@@ -144,7 +145,7 @@
         </div>
         <div>
             @foreach (var severity in Enum.GetValues(
-                typeof(SasquatchCAIRS.Models.Constants.Severity))) {
+                typeof(Constants.Severity))) {
                 <label class="checkbox inline">
                     @if (!String.IsNullOrEmpty(Model.severity) && 
                          Model.severity.Contains(@severity.ToString())) {
@@ -164,7 +165,7 @@
 
         <div>
             @foreach (var consequence in Enum.GetValues(
-                typeof(SasquatchCAIRS.Models.Constants.Consequence))) {
+                typeof(Constants.Consequence))) {
                 <label class="checkbox inline">
                     
                     @if (!String.IsNullOrEmpty(Model.consequence) && 
