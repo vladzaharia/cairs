@@ -19,7 +19,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="keywords">String of comma delimited keywords</param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize(Roles = "Viewer")]
+        [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Search(String keywords) {
             ViewBag.keywords = keywords;
             SearchCriteria sc = new SearchCriteria();
@@ -36,7 +36,7 @@ namespace SasquatchCAIRS.Controllers {
         /// Displays the Advanced Search view and passes in an empty SearchCriteira 
         /// </summary>
         /// <returns></returns>
-        [Authorize(Roles = "Viewer")]
+        [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Advanced() {
             SearchCriteria criteria = new SearchCriteria();
 
@@ -58,7 +58,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="form">The Form on the Advanced Search page and all it's data</param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize(Roles = "Viewer")]
+        [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Results(SearchCriteria criteria, FormCollection form) {
             DateTime temp;
             if (DateTime.TryParse(form["startTime"], out temp)) {
@@ -90,7 +90,7 @@ namespace SasquatchCAIRS.Controllers {
         /// Populates the Advanced Search page with the SearchCriteria stored in the current Session
         /// </summary>
         /// <returns></returns>
-        [Authorize(Roles = "Viewer")]
+        [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Modify() {
 
             ViewBag.TumorGroups =
@@ -201,6 +201,17 @@ namespace SasquatchCAIRS.Controllers {
                 requests =
                     requests.Where(
                         r => r.RequestorLName == criteria.requestorLastName);
+            }
+
+            // Filter on start time
+            if (criteria.startTime != DateTime.Parse(Constants.EMPTY_DATE)) {
+                requests = requests.Where(r => r.TimeOpened.CompareTo(criteria.startTime) >= 0);
+            }
+
+            // Filter on end time
+            if (criteria.completionTime != DateTime.Parse(Constants.EMPTY_DATE)) {
+                requests =
+                    requests.Where(r => r.TimeClosed != null && (criteria.completionTime.CompareTo(r.TimeClosed) <= 0));
             }
 
             // Filter on request status

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<SasquatchCAIRS.Request>
+﻿@using SasquatchCAIRS.Models
+@model IEnumerable<SasquatchCAIRS.Request>
 
 @{
     ViewBag.Title = "Results";
@@ -33,25 +34,25 @@ For keywords: @ViewBag.keywords
             <table class="table table-bordered table-hover">
                 <tr>
                     <th>
-                        @Html.DisplayName("Req ID")
+                        @Html.DisplayName(Constants.UIString.FieldLabel.REQUEST_ID)
                     </th>
                     <th>
-                        @Html.DisplayName("Caller Name")
+                        @Html.DisplayName(Constants.UIString.FieldLabel.CALLER_NAME)
                     </th>
                     <th>
-                        @Html.DisplayName("Patient Name")
+                        @Html.DisplayName(Constants.UIString.FieldLabel.PATIENT_NAME)
                     </th>
                     <th>
-                        @Html.DisplayName("Status")
+                        @Html.DisplayName(Constants.UIString.FieldLabel.STATUS)
                     </th>
                     <th>
-                        @Html.DisplayName("Keywords")
+                        @Html.DisplayName(Constants.UIString.FieldLabel.KEYWORDS)
                     </th>
                     <th>
-                        @Html.DisplayName("Started")
+                        @Html.DisplayName(Constants.UIString.FieldLabel.START_TIME)
                     </th>
                     <th>
-                        @Html.DisplayName("Closed")
+                        @Html.DisplayName(Constants.UIString.FieldLabel.COMPLETED_TIME)
                     </th>
                 </tr>
 
@@ -70,7 +71,7 @@ For keywords: @ViewBag.keywords
                             @Html.DisplayFor(modelItem => request.PatientLName)
                         </th>
                         <th>
-                            @Enum.GetName(typeof(SasquatchCAIRS.Models.Constants.RequestStatus), @request.RequestStatus)
+                            @Enum.GetName(typeof(Constants.RequestStatus), @request.RequestStatus)
                         </th>
                         <th>
                             @foreach(string keyword in ViewBag.keywordDict[@request.RequestID])
