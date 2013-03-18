@@ -25,7 +25,7 @@ For keywords: @ViewBag.keywords
 <div>
 </div>
 @if (@ViewBag.ResultSetSize < 1) {
-    <h3>No results were found</h3>
+    <div class="message palette-danger-dark">No results were found</div>
 } else {
 
     <fieldset class="results">
@@ -59,33 +59,41 @@ For keywords: @ViewBag.keywords
 
                 @foreach (var request in Model) {
                     <tr>
-                        <th>
+                        <td class="clickable" data-id="@request.RequestID">
                             @Html.DisplayFor(modelItem => request.RequestID)
-                        </th>
-                        <th> 
+                        </td>
+                        <td class="clickable" data-id="@request.RequestID"> 
                             @Html.DisplayFor(modelItem => request.RequestorFName) 
                             @Html.DisplayFor(modelItem => request.RequestorLName)
-                        </th>
-                        <th>
+                        </td>
+                        <td  class="clickable" data-id="@request.RequestID">
                             @Html.DisplayFor(modelItem => request.PatientFName) 
                             @Html.DisplayFor(modelItem => request.PatientLName)
-                        </th>
-                        <th>
+                        </td>
+                        <td class="clickable" data-id="@request.RequestID">
                             @Enum.GetName(typeof(Constants.RequestStatus), @request.RequestStatus)
-                        </th>
-                        <th>
+                        </td>
+                        <td class="clickable" data-id="@request.RequestID">
                             @foreach(string keyword in ViewBag.keywordDict[@request.RequestID])
                             { <span>@keyword </span> }
-                        </th>
-                        <th>
+                        </td>
+                        <td class="clickable" data-id="@request.RequestID">
                             @Html.DisplayFor(modelItem => request.TimeOpened)
-                        </th>
-                        <th>
+                        </td>
+                        <td class="clickable" data-id="@request.RequestID">
                             @Html.DisplayFor(modelItem => request.TimeClosed)
-                        </th>
+                        </td>
                     </tr>
 }
             </table>
         </div>
     </fieldset>
 }
+
+<script type="text/javascript">
+    $(function() {
+        $(".clickable").click(function() {
+            document.location.href = "/Request/Details/" + $(this).attr("data-id");
+        });
+    })
+</script>
