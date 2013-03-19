@@ -1,11 +1,13 @@
-﻿@model SasquatchCAIRS.Models.ServiceSystem.QuestionResponseContent
+﻿@using SasquatchCAIRS.Models
+
+@model SasquatchCAIRS.Models.ServiceSystem.QuestionResponseContent
 
 @{
     Layout = null;
 }
 
-<div class="qr-content" id="qr-@(ViewBag.LocalId)">
-    <table class="qr-textarea">
+<div id="qr-@(ViewBag.LocalId)">
+    <table>
         <tr>
             <td>
                 @Html.LabelFor(model => model.question)
@@ -62,18 +64,21 @@
     </table>
 
     <table id="qr-references-@(ViewBag.LocalId)">
-        <tr>
-            <td>@Html.LabelFor(model => model.referenceList)</td>
-            <td>
-                <button id="qr-references-add-@(ViewBag.LocalId)" class="btn btn-primary">
-                    Add New Reference
-                </button>
-            </td>
-        </tr>
+        <thead>
+            <tr>
+                <th>@Html.LabelFor(model => model.referenceList)</th>
+                <th>
+                    <button id="qr-references-add-@(ViewBag.LocalId)" class="btn btn-primary">
+                        @Constants.UIString.ButtonText.ADD_REFERENCE
+                    </button>
+                </th>
+            </tr>
+        </thead>
+        <tbody></tbody>
     </table>
     <div id="qr-keywords-@(ViewBag.LocalId)"></div>
-    <button id="qr-delete-@(ViewBag.LocalId)" class="btn btn-primary delete-qr">
-        Delete Question
+    <button id="qr-delete-@(ViewBag.LocalId)" class="btn btn-primary">
+        @Constants.UIString.ButtonText.DELETE_QUESTION
     </button>
 </div>
 
@@ -82,11 +87,12 @@
         $("#qr-references-add-@(ViewBag.LocalId)").click(function (e) {
             e.preventDefault();
 
-            var splitId = $("#qr-references-@(ViewBag.LocalId) tr:last").attr("id").split("-");
+            var splitId = $("#qr-references-@(ViewBag.LocalId) tbody tr:last").attr("id").split("-");
             var nextRefId = parseInt(splitId[splitId.length - 1]) + 1;
 
             $.get("@Url.Action("NewReference", "Request")/@(ViewBag.LocalId)?refId=" + nextRefId, function (r) {
                 $("#qr-references-@(ViewBag.LocalId) tbody").append(r);
+                $("#qr-references-@(ViewBag.LocalId) tbody .del-ref").attr("disabled", false);
             });
         });
     });

@@ -107,6 +107,9 @@ namespace SasquatchCAIRS.Models {
                 public const string SAVE_DRAFT = "Save Draft";
                 public const string MARK_COMPLETE = "Mark as Complete";
                 public const string DELETE_REQUEST = "Delete Request";
+                public const string ADD_QUESTION = "Add New Question";
+                public const string DELETE_QUESTION = "Delete Question";
+                public const string ADD_REFERENCE = "Add New Reference";
             }
 
             // Text used in Page Titles

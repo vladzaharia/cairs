@@ -1,4 +1,6 @@
-﻿@model SasquatchCAIRS.Models.ServiceSystem.ReferenceContent
+﻿@using SasquatchCAIRS.Models
+
+@model SasquatchCAIRS.Models.ServiceSystem.ReferenceContent
 
 @{
     Layout = null;
@@ -15,7 +17,7 @@
         <input type="file" id="@(ViewBag.HtmlIdPrefix)referenceFilepath"/>
     </td>
     <td>
-        <button class="btn btn-danger btn-small" id="@(ViewBag.HtmlIdPrefix)remove">
+        <button class="btn btn-danger btn-small del-ref" id="@(ViewBag.HtmlIdPrefix)remove">
             <i class="icon-remove"></i>
         </button>
     </td>
@@ -40,13 +42,15 @@
             }
         });
 
-        $("#@(ViewBag.HtmlIdPrefix)remove").deactivate();
-
         $("#@(ViewBag.HtmlIdPrefix)remove").click(function(e) {
             e.preventDefault();
+
+            $("#qr-references-@(ViewBag.LocalId)-@(ViewBag.LocalRefId)").remove();
             
-            // Remove current row
-            // Update x's
+            var refRows = $("#qr-references-@(ViewBag.LocalId) tbody tr");
+            if (refRows.length == 1) {
+                $(refRows[0]).find(".del-ref").attr("disabled", true);
+            }
         });
     })
 </script>
