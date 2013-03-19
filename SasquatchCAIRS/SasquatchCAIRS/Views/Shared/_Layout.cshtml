@@ -5,6 +5,9 @@
         <title>@ViewBag.Title - /sasquatch/CAIRS</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
+        
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
         @Styles.Render("~/Content/bootstrap")
         @Scripts.Render("~/bundles/bootstrap")
         @Styles.Render("~/Content/css")
@@ -17,13 +20,22 @@
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p class="site-title">@Html.ActionLink(" ", "Index", "Home", new { @class="logo" })</p>
+                    <p class="site-title">@Html.ActionLink(" ", "Index", "Home", new {}, new { @class="logo" })</p>
                     <nav>
                         <ul id="menu">
                             <li>@Html.ActionLink("Dashboard", "Index", "Home")</li>
+
+                            @if (User.IsInRole("RequestEditor")) {
                             <li>@Html.ActionLink("Add New Request", "Create", "Request")</li>
+                            }
+
+                            @if (User.IsInRole("ReportGenerator")) {
                             <li>@Html.ActionLink("Reports", "Contact", "Home")</li>
+                            }
+
+                            @if (User.IsInRole("Administrator")) {
                             <li>@Html.ActionLink("Admin", "Index", "Home")</li>
+                            }
                         </ul>
                     </nav>
                 </div>
@@ -31,6 +43,12 @@
                     <section id="login">
                         @Html.Partial("_LoginPartial")
                     </section>
+
+                    @if (User.IsInRole("Viewer")) {
+                    <section id="search">
+                        Search Box Goes Here
+                    </section>
+                    }
                 </div>
             </div>
         </header>
