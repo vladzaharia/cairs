@@ -26,9 +26,17 @@ a {
         color: #333;
     }
 
+    a.btn {
+        color: white;
+        text-decoration: none;
+    }
+
+    a.btn:hover, a.btn:active {
+        color: white;
 header, footer, hgroup,
 nav, section {
     display: block;
+    position: relative;
 }
 
 mark {
@@ -304,6 +312,10 @@ ul#menu {
             text-decoration: none;
         }
 
+section#search {
+    margin: -5px 0;
+    color: white;
+}
 
 /* page elements
 ----------------------------------------------------------*/
@@ -684,6 +696,39 @@ td {
 
 tr.pager td {
     padding: 0 0.25em 0 0;
+}
+
+/* page-specific classes
+    ----------------------------------------------------------*/
+.dashboard.add-button {
+    position: absolute;
+    right: 0;
+    top: 25px;
+}
+
+td.clickable {
+    cursor: pointer;
+}
+
+.table .tbl-label {
+    font-weight: bold;
+    width: 15%;
+}
+
+.table .tbl-content-4 {
+    width: 35%;
+}
+
+.table .tbl-content-6 {
+    width: 18%;
+}
+
+.table .tbl-top {
+    border-width: 0;
+}
+
+div.buttons {
+    float: right;
 }
 
 
