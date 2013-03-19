@@ -42,9 +42,6 @@ namespace SasquatchCAIRS
     partial void InsertRequestorType(RequestorType instance);
     partial void UpdateRequestorType(RequestorType instance);
     partial void DeleteRequestorType(RequestorType instance);
-    partial void InsertTumourGroup(TumourGroup instance);
-    partial void UpdateTumourGroup(TumourGroup instance);
-    partial void DeleteTumourGroup(TumourGroup instance);
     partial void InsertUserGroup(UserGroup instance);
     partial void UpdateUserGroup(UserGroup instance);
     partial void DeleteUserGroup(UserGroup instance);
@@ -57,6 +54,9 @@ namespace SasquatchCAIRS
     partial void InsertQuestionType(QuestionType instance);
     partial void UpdateQuestionType(QuestionType instance);
     partial void DeleteQuestionType(QuestionType instance);
+    partial void InsertTumourGroup(TumourGroup instance);
+    partial void UpdateTumourGroup(TumourGroup instance);
+    partial void DeleteTumourGroup(TumourGroup instance);
     #endregion
 		
 		public CAIRSDataContext() : 
@@ -121,14 +121,6 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		public System.Data.Linq.Table<TumourGroup> TumourGroups
-		{
-			get
-			{
-				return this.GetTable<TumourGroup>();
-			}
-		}
-		
 		public System.Data.Linq.Table<UserGroup> UserGroups
 		{
 			get
@@ -166,6 +158,14 @@ namespace SasquatchCAIRS
 			get
 			{
 				return this.GetTable<QuestionType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TumourGroup> TumourGroups
+		{
+			get
+			{
+				return this.GetTable<TumourGroup>();
 			}
 		}
 	}
@@ -809,168 +809,6 @@ namespace SasquatchCAIRS
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TumourGroup")]
-	public partial class TumourGroup : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private byte _TumourGroupID;
-		
-		private string _Value;
-		
-		private string _Code;
-		
-		private bool _Active;
-		
-		private EntitySet<QuestionResponse> _QuestionResponses;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnTumourGroupIDChanging(byte value);
-    partial void OnTumourGroupIDChanged();
-    partial void OnValueChanging(string value);
-    partial void OnValueChanged();
-    partial void OnCodeChanging(string value);
-    partial void OnCodeChanged();
-    partial void OnActiveChanging(bool value);
-    partial void OnActiveChanged();
-    #endregion
-		
-		public TumourGroup()
-		{
-			this._QuestionResponses = new EntitySet<QuestionResponse>(new Action<QuestionResponse>(this.attach_QuestionResponses), new Action<QuestionResponse>(this.detach_QuestionResponses));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TumourGroupID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public byte TumourGroupID
-		{
-			get
-			{
-				return this._TumourGroupID;
-			}
-			set
-			{
-				if ((this._TumourGroupID != value))
-				{
-					this.OnTumourGroupIDChanging(value);
-					this.SendPropertyChanging();
-					this._TumourGroupID = value;
-					this.SendPropertyChanged("TumourGroupID");
-					this.OnTumourGroupIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
-		public string Value
-		{
-			get
-			{
-				return this._Value;
-			}
-			set
-			{
-				if ((this._Value != value))
-				{
-					this.OnValueChanging(value);
-					this.SendPropertyChanging();
-					this._Value = value;
-					this.SendPropertyChanged("Value");
-					this.OnValueChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
-		public string Code
-		{
-			get
-			{
-				return this._Code;
-			}
-			set
-			{
-				if ((this._Code != value))
-				{
-					this.OnCodeChanging(value);
-					this.SendPropertyChanging();
-					this._Code = value;
-					this.SendPropertyChanged("Code");
-					this.OnCodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
-		public bool Active
-		{
-			get
-			{
-				return this._Active;
-			}
-			set
-			{
-				if ((this._Active != value))
-				{
-					this.OnActiveChanging(value);
-					this.SendPropertyChanging();
-					this._Active = value;
-					this.SendPropertyChanged("Active");
-					this.OnActiveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TumourGroup_QuestionResponse", Storage="_QuestionResponses", ThisKey="TumourGroupID", OtherKey="TumourGroupID")]
-		public EntitySet<QuestionResponse> QuestionResponses
-		{
-			get
-			{
-				return this._QuestionResponses;
-			}
-			set
-			{
-				this._QuestionResponses.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_QuestionResponses(QuestionResponse entity)
-		{
-			this.SendPropertyChanging();
-			entity.TumourGroup = this;
-		}
-		
-		private void detach_QuestionResponses(QuestionResponse entity)
-		{
-			this.SendPropertyChanging();
-			entity.TumourGroup = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserGroup")]
 	public partial class UserGroup : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1196,11 +1034,11 @@ namespace SasquatchCAIRS
 		
 		private EntitySet<Reference> _References;
 		
-		private EntityRef<TumourGroup> _TumourGroup;
-		
 		private EntityRef<Request> _Request;
 		
 		private EntityRef<QuestionType> _QuestionType;
+		
+		private EntityRef<TumourGroup> _TumourGroup;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1231,9 +1069,9 @@ namespace SasquatchCAIRS
 		public QuestionResponse()
 		{
 			this._References = new EntitySet<Reference>(new Action<Reference>(this.attach_References), new Action<Reference>(this.detach_References));
-			this._TumourGroup = default(EntityRef<TumourGroup>);
 			this._Request = default(EntityRef<Request>);
 			this._QuestionType = default(EntityRef<QuestionType>);
+			this._TumourGroup = default(EntityRef<TumourGroup>);
 			OnCreated();
 		}
 		
@@ -1462,40 +1300,6 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TumourGroup_QuestionResponse", Storage="_TumourGroup", ThisKey="TumourGroupID", OtherKey="TumourGroupID", IsForeignKey=true)]
-		public TumourGroup TumourGroup
-		{
-			get
-			{
-				return this._TumourGroup.Entity;
-			}
-			set
-			{
-				TumourGroup previousValue = this._TumourGroup.Entity;
-				if (((previousValue != value) 
-							|| (this._TumourGroup.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TumourGroup.Entity = null;
-						previousValue.QuestionResponses.Remove(this);
-					}
-					this._TumourGroup.Entity = value;
-					if ((value != null))
-					{
-						value.QuestionResponses.Add(this);
-						this._TumourGroupID = value.TumourGroupID;
-					}
-					else
-					{
-						this._TumourGroupID = default(Nullable<byte>);
-					}
-					this.SendPropertyChanged("TumourGroup");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_QuestionResponse", Storage="_Request", ThisKey="RequestID", OtherKey="RequestID", IsForeignKey=true)]
 		public Request Request
 		{
@@ -1560,6 +1364,40 @@ namespace SasquatchCAIRS
 						this._QuestionTypeID = default(Nullable<byte>);
 					}
 					this.SendPropertyChanged("QuestionType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TumourGroup_QuestionResponse", Storage="_TumourGroup", ThisKey="TumourGroupID", OtherKey="TumourGroupID", IsForeignKey=true)]
+		public TumourGroup TumourGroup
+		{
+			get
+			{
+				return this._TumourGroup.Entity;
+			}
+			set
+			{
+				TumourGroup previousValue = this._TumourGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._TumourGroup.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TumourGroup.Entity = null;
+						previousValue.QuestionResponses.Remove(this);
+					}
+					this._TumourGroup.Entity = value;
+					if ((value != null))
+					{
+						value.QuestionResponses.Add(this);
+						this._TumourGroupID = value.TumourGroupID;
+					}
+					else
+					{
+						this._TumourGroupID = default(Nullable<byte>);
+					}
+					this.SendPropertyChanged("TumourGroup");
 				}
 			}
 		}
@@ -2381,6 +2219,168 @@ namespace SasquatchCAIRS
 		{
 			this.SendPropertyChanging();
 			entity.QuestionType = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TumourGroup")]
+	public partial class TumourGroup : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private byte _TumourGroupID;
+		
+		private string _Value;
+		
+		private string _Code;
+		
+		private bool _Active;
+		
+		private EntitySet<QuestionResponse> _QuestionResponses;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTumourGroupIDChanging(byte value);
+    partial void OnTumourGroupIDChanged();
+    partial void OnValueChanging(string value);
+    partial void OnValueChanged();
+    partial void OnCodeChanging(string value);
+    partial void OnCodeChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    #endregion
+		
+		public TumourGroup()
+		{
+			this._QuestionResponses = new EntitySet<QuestionResponse>(new Action<QuestionResponse>(this.attach_QuestionResponses), new Action<QuestionResponse>(this.detach_QuestionResponses));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TumourGroupID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public byte TumourGroupID
+		{
+			get
+			{
+				return this._TumourGroupID;
+			}
+			set
+			{
+				if ((this._TumourGroupID != value))
+				{
+					this.OnTumourGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._TumourGroupID = value;
+					this.SendPropertyChanged("TumourGroupID");
+					this.OnTumourGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
+		public string Value
+		{
+			get
+			{
+				return this._Value;
+			}
+			set
+			{
+				if ((this._Value != value))
+				{
+					this.OnValueChanging(value);
+					this.SendPropertyChanging();
+					this._Value = value;
+					this.SendPropertyChanged("Value");
+					this.OnValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
+		public string Code
+		{
+			get
+			{
+				return this._Code;
+			}
+			set
+			{
+				if ((this._Code != value))
+				{
+					this.OnCodeChanging(value);
+					this.SendPropertyChanging();
+					this._Code = value;
+					this.SendPropertyChanged("Code");
+					this.OnCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TumourGroup_QuestionResponse", Storage="_QuestionResponses", ThisKey="TumourGroupID", OtherKey="TumourGroupID")]
+		public EntitySet<QuestionResponse> QuestionResponses
+		{
+			get
+			{
+				return this._QuestionResponses;
+			}
+			set
+			{
+				this._QuestionResponses.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_QuestionResponses(QuestionResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.TumourGroup = this;
+		}
+		
+		private void detach_QuestionResponses(QuestionResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.TumourGroup = null;
 		}
 	}
 }

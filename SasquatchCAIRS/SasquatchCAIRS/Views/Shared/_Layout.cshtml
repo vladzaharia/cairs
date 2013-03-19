@@ -9,6 +9,9 @@
         @Scripts.Render("~/bundles/bootstrap")
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")
+
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
     </head>
     <body>
         <header>
@@ -18,7 +21,7 @@
                     <nav>
                         <ul id="menu">
                             <li>@Html.ActionLink("Dashboard", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Add New Request", "About", "Home")</li>
+                            <li>@Html.ActionLink("Add New Request", "Create", "Request")</li>
                             <li>@Html.ActionLink("Reports", "Contact", "Home")</li>
                             <li>@Html.ActionLink("Admin", "Index", "Home")</li>
                         </ul>
@@ -44,8 +47,5 @@
                 </div>
             </div>
         </footer>
-
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
     </body>
 </html>

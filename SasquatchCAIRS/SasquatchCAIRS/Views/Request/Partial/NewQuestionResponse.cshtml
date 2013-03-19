@@ -1,0 +1,93 @@
+﻿@model SasquatchCAIRS.Models.ServiceSystem.QuestionResponseContent
+
+@{
+    Layout = null;
+}
+
+<div class="qr-content" id="qr-@(ViewBag.LocalId)">
+    <table class="qr-textarea">
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.question)
+            </td>
+            <td>
+                @Html.TextAreaFor(model => model.question)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.response)
+            </td>
+            <td>
+                @Html.TextAreaFor(model => model.response)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.specialNotes)
+            </td>
+            <td>
+                @Html.TextAreaFor(model => model.specialNotes)
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.questionTypeID)
+            </td>
+            <td>
+                @Html.DropDownListFor(model => model.questionTypeID,
+                                      (SelectList) ViewBag.QuestionTypes, "")
+            </td>
+            <td>
+                @Html.LabelFor(model => model.tumourGroupID)
+            </td>
+            <td>
+                @Html.DropDownListFor(model => model.tumourGroupID,
+                                      (SelectList) ViewBag.TumourGroups, "")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.timeSpent)
+            </td>
+            <td>
+                <div class="input-append">
+                    @Html.TextBoxFor(model => model.timeSpent)
+                    <span class="add-on textbox-add-on">min</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table id="qr-references-@(ViewBag.LocalId)">
+        <tr>
+            <td>@Html.LabelFor(model => model.referenceList)</td>
+            <td>
+                <button id="qr-references-add-@(ViewBag.LocalId)" class="btn btn-primary">
+                    Add New Reference
+                </button>
+            </td>
+        </tr>
+    </table>
+    <div id="qr-keywords-@(ViewBag.LocalId)"></div>
+    <button id="qr-delete-@(ViewBag.LocalId)" class="btn btn-primary delete-qr">
+        Delete Question
+    </button>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        $("#qr-references-add-@(ViewBag.LocalId)").click(function (e) {
+            e.preventDefault();
+
+            var splitId = $("#qr-references-@(ViewBag.LocalId) tr:last").attr("id").split("-");
+            var nextRefId = parseInt(splitId[splitId.length - 1]) + 1;
+
+            $.get("@Url.Action("NewReference", "Request")/@(ViewBag.LocalId)?refId=" + nextRefId, function (r) {
+                $("#qr-references-@(ViewBag.LocalId) tbody").append(r);
+            });
+        });
+    });
+</script>

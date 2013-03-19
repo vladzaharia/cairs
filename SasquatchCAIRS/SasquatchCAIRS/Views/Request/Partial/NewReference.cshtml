@@ -1,0 +1,52 @@
+﻿@model SasquatchCAIRS.Models.ServiceSystem.ReferenceContent
+
+@{
+    Layout = null;
+}
+
+<tr id="qr-references-@(ViewBag.LocalId)-@(ViewBag.LocalRefId)">
+    <td>
+        @Html.DropDownListFor(model => model.referenceType,
+            (SelectList) @ViewBag.ReferenceTypes)
+        
+    </td>
+    <td>
+        @Html.TextBoxFor(model => model.referenceString)
+        <input type="file" id="@(ViewBag.HtmlIdPrefix)referenceFilepath"/>
+    </td>
+    <td>
+        <button class="btn btn-danger btn-small" id="@(ViewBag.HtmlIdPrefix)remove">
+            <i class="icon-remove"></i>
+        </button>
+    </td>
+</tr>
+
+<script type="text/javascript">
+    $(function () {
+        $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").hide();
+
+        $("#@(ViewBag.HtmlIdPrefix)referenceString").change(function() {
+            $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").val =
+                $(this).val();
+        });
+        
+        $("#@(ViewBag.HtmlIdPrefix)referenceType").change(function() {
+            if ($(this).val() == "File") {
+                $("#@(ViewBag.HtmlIdPrefix)referenceString").hide();
+                $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").show();
+            } else {
+                $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").hide();
+                $("#@(ViewBag.HtmlIdPrefix)referenceString").show();
+            }
+        });
+
+        $("#@(ViewBag.HtmlIdPrefix)remove").deactivate();
+
+        $("#@(ViewBag.HtmlIdPrefix)remove").click(function(e) {
+            e.preventDefault();
+            
+            // Remove current row
+            // Update x's
+        });
+    })
+</script>

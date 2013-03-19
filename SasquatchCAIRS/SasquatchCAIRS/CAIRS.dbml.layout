@@ -26,12 +26,6 @@
         <elementListCompartment Id="77ce56fe-717a-4087-a06d-36e6c9f00f38" absoluteBounds="1.8900000000000001, 9.085, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="307a2a6f-ce56-48ca-8c87-3343518e6855" absoluteBounds="4.125, 10.875, 2, 1.5785953776041666">
-      <DataClassMoniker Name="/CAIRSDataContext/TumourGroup" />
-      <nestedChildShapes>
-        <elementListCompartment Id="53fa5c0d-2b24-4685-8f8f-e04546472e5f" absoluteBounds="4.14, 11.335, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="c838db8b-7e04-4cdb-884d-4d934cb86512" absoluteBounds="7, 11.5, 2, 1.5785953776041666">
       <DataClassMoniker Name="/CAIRSDataContext/UserGroup" />
       <nestedChildShapes>
@@ -44,7 +38,7 @@
         <elementListCompartment Id="28addc45-c004-4246-af35-a903c004dc63" absoluteBounds="9.515, 10.335, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(7.875 : 6.44314697265625); (9.9687475 : 6.44314697265625); (9.9687475 : 9.875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(7.875 : 6.44314697265625); (9.9687475 : 6.44314697265625); (9.9687475 : 9.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/CAIRSDataContext/Keyword/Keyword_KeywordQuestion" />
       <nodes>
         <classShapeMoniker Id="9f3dd145-0a0a-4900-bb71-e5f929c6fcd7" />
@@ -69,13 +63,6 @@
       <nodes>
         <classShapeMoniker Id="7880812e-7afe-4113-89a5-4eeaeead26c7" />
         <classShapeMoniker Id="c6deb084-30f3-4f3c-af9e-b78a640bf4d2" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(4.375 : 10.875); (4.375 : 3.37142868815104); (6 : 3.37142868815104)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/CAIRSDataContext/TumourGroup/TumourGroup_QuestionResponse" />
-      <nodes>
-        <classShapeMoniker Id="307a2a6f-ce56-48ca-8c87-3343518e6855" />
-        <classShapeMoniker Id="7880812e-7afe-4113-89a5-4eeaeead26c7" />
       </nodes>
     </associationConnector>
     <classShape Id="299b6d31-bdb9-4dc0-bda4-f8352b9ef82f" absoluteBounds="2.125, 4.75, 2, 4.0785139973958326">
@@ -118,10 +105,23 @@
         <elementListCompartment Id="e1257bf1-3b2c-4869-9cbf-c61b4e3c9e5a" absoluteBounds="4.64, 8.96, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(5.21875 : 8.5); (5.21875 : 3.95816882975261); (6 : 3.95816882975261)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.21875 : 8.5); (5.21875 : 3.11620198567708); (6 : 3.11620198567708)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/CAIRSDataContext/QuestionType/QuestionType_QuestionResponse" />
       <nodes>
         <classShapeMoniker Id="68408b24-5189-43f7-abe9-a94ec4d425a9" />
+        <classShapeMoniker Id="7880812e-7afe-4113-89a5-4eeaeead26c7" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="5fe32fc8-a7d8-4a33-be26-b569f58fa0ce" absoluteBounds="4.75, 11.125, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/CAIRSDataContext/TumourGroup" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2305c070-627c-4ce9-8c2b-7a6091d6cb14" absoluteBounds="4.765, 11.585, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.6249995 : 11.125); (5.6249995 : 10.3285953776042); (4.375 : 10.3285953776042); (4.375 : 3.11620198567708); (6 : 3.11620198567708)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CAIRSDataContext/TumourGroup/TumourGroup_QuestionResponse" />
+      <nodes>
+        <classShapeMoniker Id="5fe32fc8-a7d8-4a33-be26-b569f58fa0ce" />
         <classShapeMoniker Id="7880812e-7afe-4113-89a5-4eeaeead26c7" />
       </nodes>
     </associationConnector>

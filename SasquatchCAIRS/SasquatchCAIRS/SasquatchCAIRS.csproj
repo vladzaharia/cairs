@@ -320,6 +320,9 @@
     <Content Include="Views\Account\_ViewUserInfo.cshtml" />
     <Content Include="Views\Account\Auth.cshtml" />
     <Content Include="Views\Request\Create.cshtml" />
+    <Content Include="Views\Request\EditorTemplate\QuestionResponse.cshtml" />
+    <Content Include="Views\Request\Partial\NewQuestionResponse.cshtml" />
+    <Content Include="Views\Request\Partial\NewReference.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

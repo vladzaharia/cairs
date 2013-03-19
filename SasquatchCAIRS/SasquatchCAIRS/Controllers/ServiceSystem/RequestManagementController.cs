@@ -44,13 +44,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
 
             req.PatientFName = content.patientFName;
             req.PatientLName = content.patientLName;
-
-            if (content.patientGender != Constants.Gender.None) {
-                req.PatientGender = (byte) content.patientGender;
-            } else {
-                req.PatientGender = null;
-            }
-
+            req.PatientGender = (byte?) content.patientGender;
             req.PatientAgencyID = content.patientAgencyID;
             req.PatientAge = content.patientAge;
 
@@ -191,8 +185,9 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
 
                     trans.Complete();
                 }
-            } catch (Exception) {
+            } catch (Exception ex) {
                 // TODO: Do something
+                throw ex;
             }
         }
 

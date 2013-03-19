@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace SasquatchCAIRS.Models.ServiceSystem {
+﻿namespace SasquatchCAIRS.Models.ServiceSystem {
     public class DropdownEntry {
         protected int _id = -1;
         protected string _code = null;
@@ -49,6 +44,12 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         public bool active {
             get {
                 return _active;
+            }
+        }
+
+        public string text {
+            get {
+                return _code + " - " + _value;
             }
         }
     }

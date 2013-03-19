@@ -1,0 +1,93 @@
+﻿@using SasquatchCAIRS.Models.ServiceSystem
+@model SasquatchCAIRS.Models.ServiceSystem.RequestContent
+
+@{
+    ViewBag.Title = "Add New Request";
+}
+
+<h2>Add New Request</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary()
+
+    @Html.HiddenFor(model => model.timeOpened)
+    
+    <h3>Caller Information</h3>
+    <table>
+        <tr>
+            <td>@Html.LabelFor(model => model.requestorFirstName)</td>
+            <td>@Html.TextBoxFor(model => model.requestorFirstName)</td>
+            <td>@Html.LabelFor(model => model.requestorLastName)</td>
+            <td>@Html.TextBoxFor(model => model.requestorLastName)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.requestorEmail)</td>
+            <td>@Html.TextBoxFor(model => model.requestorEmail)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.requestorPhoneNum)</td>
+            <td>@Html.TextBoxFor(model => model.requestorPhoneNum)</td>
+            <td>@Html.LabelFor(model => model.requestorPhoneExt)</td>
+            <td>@Html.TextBoxFor(model => model.requestorPhoneExt)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.requestorTypeID)</td>
+            <td>@Html.DropDownListFor(model => model.requestorTypeID,
+                    (SelectList) ViewBag.RequestorTypes, "")</td>
+            <td>@Html.LabelFor(model => model.regionID)</td>
+            <td>@Html.DropDownListFor(model => model.regionID,
+                    (SelectList) ViewBag.Regions, "")</td>
+        </tr>
+    </table>
+    
+    <h3>Patient Information</h3>
+    <table>
+        <tr>
+            <td>@Html.LabelFor(model => model.patientFName)</td>
+            <td>@Html.TextBoxFor(model => model.patientFName)</td>
+            <td>@Html.LabelFor(model => model.patientLName)</td>
+            <td>@Html.TextBoxFor(model => model.patientLName)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.patientGender)</td>
+            <td>@Html.DropDownListFor(model => model.patientGender,
+                    (SelectList) ViewBag.GenderOptions, "")</td>
+            <td>@Html.LabelFor(model => model.patientAge)</td>
+            <td>@Html.TextBoxFor(model => model.patientAge)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(model => model.patientAgencyID)</td>
+            <td>@Html.TextBoxFor(model => model.patientAgencyID)</td>
+        </tr>
+    </table>
+
+    <h3>Questions</h3>
+    <div id="qrContainer"></div>
+    
+    <br/><br/>
+    <p>
+        <input type="submit" value="Save Draft" class="btn btn-primary"/>
+        <input type="submit" value="Mark as Complete" class="btn btn-success"/>
+    </p>
+}
+
+
+<script type="text/javascript">
+    $(function() {
+        try {
+            $.get("@Url.Action("NewQuestionResponse", "Request")/0", function(qr) {
+                $("#qrContainer").append(qr);
+                $(".delete-qr").attr("disabled", true);
+
+                $.get("@Url.Action("NewReference", "Request")/0?refId=0", function(r) {
+                    $("#qr-references-0").append(r);
+                });
+                $.get("@Url.Action("NewReference", "Request")/0?refId=1", function (r) {
+                    $("#qr-references-0").append(r);
+                });
+            });
+        } catch(e) {
+            alert(e);
+        }
+    });
+</script>

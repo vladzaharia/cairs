@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace SasquatchCAIRS.Models {
     public static class Constants {
         public enum Gender {
-            None = -1,
             Female = 0,
-            Male = 2,
-            Other = 3
+            Male = 1,
+            Other = 2
         }
+
+        public readonly static Gender[] genderOptions = {
+            Gender.Female, Gender.Male, Gender.Other
+        };
 
         public enum RequestStatus {
             Open = 0,
@@ -39,6 +39,10 @@ namespace SasquatchCAIRS.Models {
             Text = 2
         }
 
+        public static readonly ReferenceType[] referenceTypeOptions = {
+            ReferenceType.URL, ReferenceType.File, ReferenceType.Text
+        };
+
         public enum DropdownTable {
             Keyword,
             QuestionType,
@@ -47,34 +51,5 @@ namespace SasquatchCAIRS.Models {
             TumourGroup,
             UserGroup
         }
-
-        public static string KEYWORD_TBL_ID_ATTR = "KeywordID";
-        public static string KEYWORD_TBL_KEYWORD_ATTR = "Keyword";
-        public static string KEYWORD_TBL_ACTIVE_ATTR = "Active";
-
-        public static string QUESTIONTYPE_TBL_ID_ATTR = "QuestionTypeID";
-        public static string QUESTIONTYPE_TBL_VALUE_ATTR = "Value";
-        public static string QUESTIONTYPE_TBL_CODE_ATTR = "Code";
-        public static string QUESTIONTYPE_TBL_ACTIVE_ATTR = "Active";
-
-        public static string REGION_TBL_ID_ATTR = "RegionID";
-        public static string REGION_TBL_VALUE_ATTR = "Value";
-        public static string REGION_TBL_CODE_ATTR = "Code";
-        public static string REGION_TBL_ACTIVE_ATTR = "Active";
-
-        public static string REQUESTORTYPE_TBL_ID_ATTR = "RequestorTypeID";
-        public static string REQUESTORTYPE_TBL_VALUE_ATTR = "Value";
-        public static string REQUESTORTYPE_TBL_CODE_ATTR = "Code";
-        public static string REQUESTORTYPE_TBL_ACTIVE_ATTR = "Active";
-
-        public static string TUMOURGROUP_TBL_ID_ATTR = "TumourGroupID";
-        public static string TUMOURGROUP_TBL_VALUE_ATTR = "Value";
-        public static string TUMOURGROUP_TBL_CODE_ATTR = "Code";
-        public static string TUMOURGROUP_TBL_ACTIVE_ATTR = "Active";
-
-        public static string USERGROUP_TBL_ID_ATTR = "GroupID";
-        public static string USERGROUP_TBL_VALUE_ATTR = "Value";
-        public static string USERGROUP_TBL_CODE_ATTR = "Code";
-        public static string USERGROUP_TBL_ACTIVE_ATTR = "Active";
     }
 }
