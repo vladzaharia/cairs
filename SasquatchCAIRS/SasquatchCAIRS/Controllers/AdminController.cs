@@ -189,10 +189,10 @@ namespace SasquatchCAIRS.Controllers {
                 ModelState.AddModelError("active",
                                          "Status must be true or false!");
             }
-            if (_dc.getEntries(table).Any(dt => dt.code == code)) {
+            if (_dc.getEntries(table).Any(dt => dt.code == code && dt.id != id)) {
                 ModelState.AddModelError("code", "That code is already in use!");
             }
-            if (_dc.getEntries(table).Any(dt => dt.value == value)) {
+            if (_dc.getEntries(table).Any(dt => dt.value == value && dt.id != id)) {
                 ModelState.AddModelError("value",
                                          "That " + (table ==
                                                     Constants.DropdownTable
