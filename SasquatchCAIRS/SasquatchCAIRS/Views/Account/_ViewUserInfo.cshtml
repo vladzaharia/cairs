@@ -1,4 +1,4 @@
-﻿<h3>User Information</h3>
+﻿<h4>User Information</h4>
 <p>
     Name: @ViewBag.Profile.UserFullName <br />
     Email: @ViewBag.Profile.UserEmail <br />
@@ -6,7 +6,7 @@
 </p>
 
 <!-- This is only here until we get an admin page up -->
-<h3>Role Information</h3>
+<h4>Role Information</h4>
 <p>
     Viewer: @System.Web.Security.Roles.IsUserInRole("Viewer") -
     @Html.ActionLink("Add", "RoleManager", "Account",

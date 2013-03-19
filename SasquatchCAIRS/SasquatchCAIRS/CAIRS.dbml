@@ -60,6 +60,7 @@
       <Column Name="Value" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
       <Column Name="Code" Type="System.String" DbType="Char(10) NOT NULL" CanBeNull="false" />
       <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="UserGroup_UserGroup1" Member="UserGroups" ThisKey="GroupID" OtherKey="GroupID" Type="UserGroups" />
     </Type>
   </Table>
   <Table Name="dbo.KeywordQuestion" Member="KeywordQuestions">
@@ -146,6 +147,15 @@
       <Column Name="UserStatus" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="UserProfile_AuditLog" Member="AuditLogs" ThisKey="UserId" OtherKey="UserID" Type="AuditLog" />
       <Association Name="UserProfile_RequestLock" Member="RequestLocks" ThisKey="UserId" OtherKey="UserID" Type="RequestLock" />
+      <Association Name="UserProfile_UserGroups" Member="UserGroups" ThisKey="UserId" OtherKey="UserID" Type="UserGroups" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserGroups" Member="UserGroups1">
+    <Type Name="UserGroups">
+      <Column Name="GroupID" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="UserGroup_UserGroup1" Member="UserGroup" ThisKey="GroupID" OtherKey="GroupID" Type="UserGroup" IsForeignKey="true" />
+      <Association Name="UserProfile_UserGroups" Member="UserProfile" ThisKey="UserID" OtherKey="UserId" Type="UserProfile" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

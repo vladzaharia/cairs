@@ -1,5 +1,5 @@
 ﻿html {
-    background-color: #e2e2e2;
+    background-color: #eceff1;
     margin: 0;
     padding: 0;
 }
@@ -8,13 +8,12 @@ body {
     background-color: #023187;
     color: #333;
     font-size: .85em;
-    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
 }
 
 a {
-    color: #333;
+    /*color: #333;*/
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
@@ -63,36 +62,10 @@ mark {
 
 h1, h2, h3,
 h4, h5, h6 {
-    color: #000;
+    color: #34495e;
     margin-bottom: 0;
     padding-bottom: 0;
 }
-
-h1 {
-    font-size: 2em;
-}
-
-h2 {
-    font-size: 1.75em;
-}
-
-h3 {
-    font-size: 1.2em;
-}
-
-h4 {
-    font-size: 1.1em;
-}
-
-h5, h6 {
-    font-size: 1em;
-}
-
-    h5 a:link, h5 a:visited, h5 a:active {
-        padding: 0;
-        text-decoration: none;
-    }
-
 
 /* main layout
 ----------------------------------------------------------*/
@@ -109,7 +82,7 @@ h5, h6 {
 }
 
 #body {
-    background-color: #efeeef;
+    background-color: #fafafa;
     clear: both;
     padding-bottom: 35px;
 }
@@ -125,10 +98,10 @@ header .content-wrapper {
 
 footer {
     clear: both;
-    background-color: #e2e2e2;
-    font-size: .9em;
-    padding-top: 10px;
-    height: 100px;
+    font-size: 13px;
+    padding-top: 12px;
+    height: 30px;
+    color: #34495e;
 }
 
 
@@ -527,59 +500,11 @@ fieldset {
         }
 
 label {
-    display: block;
-    font-size: 1.2em;
-    font-weight: 600;
+    padding-top: 2px;
 }
 
-label.checkbox {
-    display: inline;
-}
-
-input, textarea {
-    border: 1px solid #e2e2e2;
-    background: #fff;
-    color: #333;
-    font-size: 1.2em;
-    margin: 5px 0 6px 0;
-    padding: 5px;
-    width: 300px;
-}
-
-textarea {
-    font-family: inherit;
-    width: 500px;
-}
-
-    input:focus, textarea:focus {
-        border: 1px solid #7ac0da;
-    }
-
-    input[type="checkbox"] {
-        background: transparent;
-        border: inherit;
-        width: auto;
-    }
-
-    input[type="submit"],
-    input[type="button"],
-    button {
-        background-color: #d3dce0;
-        border: 1px solid #787878;
-        cursor: pointer;
-        font-size: 1.2em;
-        font-weight: 600;
-        padding: 7px;
-        margin-right: 8px;
-        width: auto;
-    }
-
-    td input[type="submit"],
-    td input[type="button"],
-    td button {
-        font-size: 1em;
-        padding: 4px;
-        margin-right: 4px;
+    label.checkbox {
+        display: inline;
     }
 
 /* info and errors */
@@ -715,6 +640,12 @@ td.clickable {
     width: 15%;
 }
 
+.table .tbl-info {
+    vertical-align: middle;
+    text-align: center;
+    font-style: italic;
+}
+
 .table .tbl-content-4 {
     width: 35%;
 }
@@ -727,8 +658,140 @@ td.clickable {
     border-width: 0;
 }
 
+.unbordered-table {
+    width: 100%;
+}
+
+.unbordered-table td {
+    border-width: 0;
+}
+
+.table .focal {
+    font-size: 125%;
+}
+
+.unbordered-table .tbl-border {
+    border-width: 1px;
+}
+
+.unbordered-table.no-margin {
+    margin-bottom: 0;
+}
+
+table .impact {
+    width: 18% !important;
+    height: 50px;
+    font-size: 50px;
+    font-weight: normal;
+    text-align: center;
+}
+
+table .impact .score {
+    padding-top: 20px;
+}
+
+table .tbl-impact-label {
+    font-weight: bold;
+}
+
+table .impact-calc {
+    width: 45%;
+    color: white;
+    padding-left: 16px;
+    background-color: #95A5A6;
+}
+
+table .spacer {
+    width: 0%;
+    padding: 3px;
+}
+
+table .impact-calc.label {
+    font-weight: bold;
+}
+
+table .calc-impact-1 {
+    color: #e74c3c;
+    border: 2px solid #e74c3c;
+}
+
+table .calc-sev-Major,
+table .calc-cons-certain {
+    background-color: #E74C3C;
+    border: 2px solid #E74C3C;
+}
+
+table .calc-impact-2 {
+    color: #e67e22;
+    border: 2px solid #e67e22;
+}
+
+table .calc-cons-Probable {
+    background-color: #e67e22;
+    border: 2px solid #e67e22;
+}
+
+table .calc-impact-3 {
+    color: #F39C12;
+    border: 2px solid #f39c12;
+}
+
+table .calc-sev-Moderate {
+    background-color: #F39C12;
+    border: 2px solid #f39c12;
+}
+
+table .calc-impact-4 {
+    color: #f1c40f;
+    border: 2px solid #f1c40f;
+}
+
+table .calc-cons-Possible {
+    background-color: #f1c40f;
+    border: 2px solid #f1c40f;
+}
+
+table .calc-impact-5 {
+    color: #2ECC71;
+    border: 2px solid #2ecc71;
+}
+
+table .calc-cons-Unlikely,
+table .calc-sev-Minor {
+    background-color: #2ECC71;
+    border: 2px solid #2ecc71;
+}
+
+.sxs-one {
+    display: inline-block;
+    width: 49%;
+}
+
+.sxs-one.keywords {
+    position: absolute;
+}
+
+.sxs-one.impact {
+    padding-right: 10px;
+}
+
+.sxs .divider {
+    display: inline-block;
+    border-left: 1px solid #dddddd;
+    height: 181px;
+    position: relative;
+    top: 25px;
+    left: 2px;
+}
+
 div.buttons {
     float: right;
+}
+
+div.message {
+    text-align: center;
+    padding: 8px;
+    color: #ffffff;
 }
 
 

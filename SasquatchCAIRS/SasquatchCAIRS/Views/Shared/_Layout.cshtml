@@ -10,7 +10,11 @@
         @RenderSection("scripts", required: false)
         @Styles.Render("~/Content/bootstrap")
         @Scripts.Render("~/bundles/bootstrap")
+        @Styles.Render("~/Content/flat-ui")
         @Styles.Render("~/Content/css")
+        <!--[if lt IE 8]>
+            @Styles.Render("~/Content/ie7")
+        <![endif]-->
         @Scripts.Render("~/bundles/modernizr")
     </head>
     <body>
@@ -31,7 +35,7 @@
                             }
 
                             @if (User.IsInRole("Administrator")) {
-                            <li>@Html.ActionLink("Admin", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
                             }
                         </ul>
                     </nav>
@@ -62,5 +66,7 @@
                 </div>
             </div>
         </footer>
+        
+        @Scripts.Render("~/bundles/flat-ui")
     </body>
 </html>
