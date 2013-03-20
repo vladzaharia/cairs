@@ -1,4 +1,5 @@
-﻿@using SasquatchCAIRS.Models
+﻿@using SasquatchCAIRS.Helper
+@using SasquatchCAIRS.Models
 
 @model SasquatchCAIRS.Models.ServiceSystem.ReferenceContent
 
@@ -6,34 +7,38 @@
     Layout = null;
 }
 
-<tr id="qr-references-@(ViewBag.LocalId)-@(ViewBag.LocalRefId)">
-    <td>
-        @Html.DropDownListFor(model => model.referenceType,
-            (SelectList) @ViewBag.ReferenceTypes)
+<tr id="qr-references-@(ViewBag.Guid)-@(ViewBag.RefGuid)">
+    @using (Html.BeginCollectionItemFromIndex(
+        "questionResponseList[" + ((String) ViewBag.Guid) + "].referenceList",
+        (String) ViewBag.RefGuid)) {
+        <td>
+            @Html.DropDownListFor(model => model.referenceType,
+                                  (SelectList) @ViewBag.ReferenceTypes)
         
-    </td>
-    <td>
-        @Html.TextBoxFor(model => model.referenceString)
-        <input type="file" id="@(ViewBag.HtmlIdPrefix)referenceFilepath"/>
-    </td>
-    <td>
-        <button class="btn btn-danger btn-small del-ref" id="@(ViewBag.HtmlIdPrefix)remove">
-            <i class="icon-remove"></i>
-        </button>
-    </td>
+        </td>
+        <td>
+            @Html.TextBoxFor(model => model.referenceString)
+            <input type="file" id="@(ViewBag.HtmlIdPrefix)referenceFilepath"/>
+        </td>
+        <td>
+            <a href="#warning_modal" data-toggle="modal" 
+               class="btn btn-danger btn-small del-ref" id="@(ViewBag.HtmlIdPrefix)remove">
+                <i class="icon-remove"></i>
+            </a>
+        </td>
+    }
 </tr>
 
 <script type="text/javascript">
     $(function () {
         $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").hide();
 
-        $("#@(ViewBag.HtmlIdPrefix)referenceString").change(function() {
-            $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").val =
-                $(this).val();
+        $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").change(function () {
+            $("#@(ViewBag.HtmlIdPrefix)referenceString").val($(this).val());
         });
         
         $("#@(ViewBag.HtmlIdPrefix)referenceType").change(function() {
-            if ($(this).val() == "File") {
+            if ($(this).val() == "@Constants.ReferenceType.File.ToString()") {
                 $("#@(ViewBag.HtmlIdPrefix)referenceString").hide();
                 $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").show();
             } else {
@@ -45,12 +50,10 @@
         $("#@(ViewBag.HtmlIdPrefix)remove").click(function(e) {
             e.preventDefault();
 
-            $("#qr-references-@(ViewBag.LocalId)-@(ViewBag.LocalRefId)").remove();
-            
-            var refRows = $("#qr-references-@(ViewBag.LocalId) tbody tr");
-            if (refRows.length == 1) {
-                $(refRows[0]).find(".del-ref").attr("disabled", true);
-            }
+            $("#warning_modal_text").text("@Constants.UIString.Messages.DELETE_REFERENCE_WARNING");
+            $("#warning_modal_yes_btn").unbind().click(function() {
+                return deleteReference("@(ViewBag.Guid)", "@(ViewBag.RefGuid)");
+            });
         });
     })
 </script>

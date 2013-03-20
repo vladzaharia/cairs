@@ -119,6 +119,11 @@ namespace SasquatchCAIRS.Models {
                 public const string REQUEST_NUM = "Request #";
                 public const string ERROR = "Error";
             }
+
+            public static class Messages {
+                public const string DELETE_REFERENCE_WARNING =
+                    "Are you sure you would like to delete this reference?";
+            }
         }
 
         /// <summary>

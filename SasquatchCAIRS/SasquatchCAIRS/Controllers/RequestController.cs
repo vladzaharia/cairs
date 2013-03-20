@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using SasquatchCAIRS.Controllers.Security;
 using SasquatchCAIRS.Controllers.ServiceSystem;
+using SasquatchCAIRS.Helper;
 using SasquatchCAIRS.Models;
 using SasquatchCAIRS.Models.ServiceSystem;
 
@@ -14,6 +15,7 @@ namespace SasquatchCAIRS.Controllers
         //
         // GET: /Request/Create/
 
+        [Authorize(Roles = "RequestEditor")]
         public ActionResult Create() {
             DropdownController dc = DropdownController.instance;
             var reqContent = new RequestContent() {
@@ -33,12 +35,21 @@ namespace SasquatchCAIRS.Controllers
             return View(reqContent);
         }
 
+        //
+        // POST: /Request/Create/
+
         [HttpPost]
+        [Authorize(Roles = "RequestEditor")]
         public ActionResult Create(RequestContent reqContent) {
             // TODO: Redirect to request page?
             if (!ModelState.IsValid) {
                 return Create();
             } else {
+                // Remove empty references
+                foreach (var qrCon in reqContent.questionResponseList) {
+                    qrCon.referenceList.RemoveAll(r => r.referenceString == null);
+                }
+
                 RequestManagementController rmc =
                     RequestManagementController.instance;
                 rmc.create(reqContent);
@@ -47,16 +58,14 @@ namespace SasquatchCAIRS.Controllers
             }
         }
 
-        public ActionResult NewQuestionResponse(int id) {
+        [Authorize(Roles = "RequestEditor")]
+        public ActionResult NewQuestionResponse() {
             DropdownController dc = DropdownController.instance;
             var qrContent = new QuestionResponseContent();
 
             // Used to set local question response ID
-            ViewBag.LocalId = id;
-
-            // Used to set name of input fields for model binding
-            ViewData.TemplateInfo.HtmlFieldPrefix =
-                "questionResponseList[" + id + "]";
+            ViewBag.Guid = HtmlPrefixScopeExtensions.CreateItemIndex(
+                "questionResponseList");
 
             ViewBag.QuestionTypes = new SelectList(
                 dc.getActiveEntries(Constants.DropdownTable.QuestionType),
@@ -68,24 +77,28 @@ namespace SasquatchCAIRS.Controllers
             return View("Partial/NewQuestionResponse", qrContent);
         }
 
-        public ActionResult NewReference(int id, int refId) {
+        [Authorize(Roles = "RequestEditor")]
+        public ActionResult NewReference(string id) {
             var refContent = new ReferenceContent();
 
             // Used to set local reference ID
-            ViewBag.LocalId = id;
-            ViewBag.LocalRefId = refId;
+            ViewBag.Guid = id;
+            ViewBag.RefGuid = HtmlPrefixScopeExtensions.CreateItemIndex(
+                "questionResponseList[" + id + "].referenceList");
             ViewBag.HtmlIdPrefix = "questionResponseList_" + id +
-                                   "__referenceList_" + refId + "__";
-
-            // Used to set name of input fields for model binding
-            ViewData.TemplateInfo.HtmlFieldPrefix =
-                "questionResponseList[" + id +"].referenceList[" +
-                refId + "]";
+                                   "__referenceList_" + ViewBag.RefGuid + "__";
 
             ViewBag.ReferenceTypes = new SelectList(
                 Constants.referenceTypeOptions);
 
             return View("Partial/NewReference", refContent);
+        }
+
+        [Authorize]
+        public ActionResult GetMatchingKeywords(string id) {
+            DropdownController dc = DropdownController.instance;
+            return Json(dc.getMatchingKeywords(id),
+                JsonRequestBehavior.AllowGet);
         }
         
         //
@@ -93,7 +106,6 @@ namespace SasquatchCAIRS.Controllers
 
         [Authorize(Roles = "Viewer")]
         public ActionResult Details(long id) {
-            var db = new CAIRSDataContext();
             RequestManagementController rmc =
                 RequestManagementController.instance;
             RequestLockController rlc = RequestLockController.instance;

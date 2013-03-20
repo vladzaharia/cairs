@@ -141,12 +141,9 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         private Constants.Consequence _consequence =
             Constants.Consequence.None;
 
-        private List<ReferenceContent> _referenceList =
-            new List<ReferenceContent>();
-
-        private List<KeywordContent> _keywords = new List<KeywordContent>();
-
         public QuestionResponseContent(QuestionResponse qr) {
+            referenceList = new List<ReferenceContent>();
+            keywords = new List<KeywordContent>();
             requestID = qr.RequestID;
             questionResponseID = qr.QuestionResponseID;
 
@@ -167,6 +164,8 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         }
 
         public QuestionResponseContent() {
+            referenceList = new List<ReferenceContent>();
+            keywords = new List<KeywordContent>();
             tumourGroupID = null;
             questionTypeID = null;
             timeSpent = null;
@@ -221,38 +220,31 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         }
 
         [Display(Name = "References")]
-        public List<ReferenceContent> referenceList {
-            get {
-                return _referenceList;
-            }
-        }
+        public List<ReferenceContent> referenceList { get; private set; }
 
         public void addReference(ReferenceContent newRef) {
-            _referenceList.Add(newRef);
+            referenceList.Add(newRef);
         }
 
         public void removeReference(long referenceID) {
-            foreach (ReferenceContent r in _referenceList) {
+            foreach (ReferenceContent r in referenceList) {
                 if (r.referenceID == referenceID) {
-                    _referenceList.Remove(r);
+                    referenceList.Remove(r);
                 }
             }
         }
 
-        public List<KeywordContent> keywords {
-            get {
-                return _keywords;
-            }
-        }
+        [Display(Name = "Keywords")]
+        public List<KeywordContent> keywords { get; private set; }
 
         public void addKeyword(KeywordContent newKeyword) {
-            _keywords.Add(newKeyword);
+            keywords.Add(newKeyword);
         }
 
         public void removeKeyword(int keywordId) {
-            foreach (KeywordContent kw in _keywords) {
+            foreach (KeywordContent kw in keywords) {
                 if (kw.keywordId == keywordId) {
-                    _keywords.Remove(kw);
+                    keywords.Remove(kw);
                 }
             }
         }

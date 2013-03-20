@@ -1,4 +1,5 @@
-﻿@using SasquatchCAIRS.Models
+﻿@using SasquatchCAIRS.Helper
+@using SasquatchCAIRS.Models
 
 @model SasquatchCAIRS.Models.ServiceSystem.QuestionResponseContent
 
@@ -6,94 +7,134 @@
     Layout = null;
 }
 
-<div id="qr-@(ViewBag.LocalId)">
-    <table>
-        <tr>
-            <td>
-                @Html.LabelFor(model => model.question)
-            </td>
-            <td>
-                @Html.TextAreaFor(model => model.question)
-            </td>
-        </tr>
-        <tr>
-            <td>
-                @Html.LabelFor(model => model.response)
-            </td>
-            <td>
-                @Html.TextAreaFor(model => model.response)
-            </td>
-        </tr>
-        <tr>
-            <td>
-                @Html.LabelFor(model => model.specialNotes)
-            </td>
-            <td>
-                @Html.TextAreaFor(model => model.specialNotes)
-            </td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <td>
-                @Html.LabelFor(model => model.questionTypeID)
-            </td>
-            <td>
-                @Html.DropDownListFor(model => model.questionTypeID,
-                                      (SelectList) ViewBag.QuestionTypes, "")
-            </td>
-            <td>
-                @Html.LabelFor(model => model.tumourGroupID)
-            </td>
-            <td>
-                @Html.DropDownListFor(model => model.tumourGroupID,
-                                      (SelectList) ViewBag.TumourGroups, "")
-            </td>
-        </tr>
-        <tr>
-            <td>
-                @Html.LabelFor(model => model.timeSpent)
-            </td>
-            <td>
-                <div class="input-append">
-                    @Html.TextBoxFor(model => model.timeSpent)
-                    <span class="add-on textbox-add-on">min</span>
-                </div>
-            </td>
-        </tr>
-    </table>
-
-    <table id="qr-references-@(ViewBag.LocalId)">
-        <thead>
+<div id="qr-@(ViewBag.Guid)">
+    @using (Html.BeginCollectionItemFromIndex("questionResponseList", (String) ViewBag.Guid)) {
+        <table>
             <tr>
-                <th>@Html.LabelFor(model => model.referenceList)</th>
-                <th>
-                    <button id="qr-references-add-@(ViewBag.LocalId)" class="btn btn-primary">
-                        @Constants.UIString.ButtonText.ADD_REFERENCE
-                    </button>
-                </th>
+                <td>
+                    @Html.LabelFor(model => model.question)
+                </td>
+                <td>
+                    @Html.TextAreaFor(model => model.question)
+                </td>
             </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-    <div id="qr-keywords-@(ViewBag.LocalId)"></div>
-    <button id="qr-delete-@(ViewBag.LocalId)" class="btn btn-primary">
-        @Constants.UIString.ButtonText.DELETE_QUESTION
-    </button>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.response)
+                </td>
+                <td>
+                    @Html.TextAreaFor(model => model.response)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.specialNotes)
+                </td>
+                <td>
+                    @Html.TextAreaFor(model => model.specialNotes)
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.questionTypeID)
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.questionTypeID,
+                                          (SelectList) ViewBag.QuestionTypes, "")
+                </td>
+                <td>
+                    @Html.LabelFor(model => model.tumourGroupID)
+                </td>
+                <td>
+                    @Html.DropDownListFor(model => model.tumourGroupID,
+                                          (SelectList) ViewBag.TumourGroups, "")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.timeSpent)
+                </td>
+                <td>
+                    <div class="input-append">
+                        @Html.TextBoxFor(model => model.timeSpent)
+                        <span class="add-on textbox-add-on">min</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <table id="qr-references-@(ViewBag.Guid)">
+            <thead>
+                <tr>
+                    <th>@Html.LabelFor(model => model.referenceList)</th>
+                    <th>
+                        <button id="qr-references-add-@(ViewBag.Guid)" class="btn btn-primary">
+                            @Constants.UIString.ButtonText.ADD_REFERENCE
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        
+        <table>
+            <tr>
+                <td>@Html.LabelFor(model => model.keywords)</td>
+                <td>
+                    <input id="qr-keywords-@(ViewBag.Guid)" type="text"
+                           data-provide="typeahead" autocomplete="off"/>
+                </td>
+            </tr>
+        </table>
+        
+        <br/>
+        <button id="qr-add-@(ViewBag.Guid)" class="btn btn-primary">
+            @Constants.UIString.ButtonText.ADD_QUESTION
+        </button>
+        <button id="qr-delete-@(ViewBag.Guid)" class="btn btn-primary">
+            @Constants.UIString.ButtonText.DELETE_QUESTION
+        </button>
+    }
 </div>
 
 <script type="text/javascript">
     $(function() {
-        $("#qr-references-add-@(ViewBag.LocalId)").click(function (e) {
+        $("#qr-references-add-@(ViewBag.Guid)").click(function(e) {
             e.preventDefault();
 
-            var splitId = $("#qr-references-@(ViewBag.LocalId) tbody tr:last").attr("id").split("-");
-            var nextRefId = parseInt(splitId[splitId.length - 1]) + 1;
-
-            $.get("@Url.Action("NewReference", "Request")/@(ViewBag.LocalId)?refId=" + nextRefId, function (r) {
-                $("#qr-references-@(ViewBag.LocalId) tbody").append(r);
-                $("#qr-references-@(ViewBag.LocalId) tbody .del-ref").attr("disabled", false);
+            $.get("@Url.Action("NewReference", "Request")/@(ViewBag.Guid)", function(r) {
+                $("#qr-references-@(ViewBag.Guid) tbody").append(r);
+                $("#qr-references-@(ViewBag.Guid) tbody .del-ref").attr("disabled", false);
+                $("#qr-references-@(ViewBag.Guid) tbody .del-ref").attr("href", "#warning_modal");
             });
+        });
+
+        $("#qr-keywords-@(ViewBag.Guid)").typeahead({
+            source: function (query, process) {
+                var last = query.split(/\s*[,;]\s*/).pop();
+
+                $.post("@Url.Action("GetMatchingKeywords", "Request")/" + last, function (data) {
+                    process(data);
+                });
+            },
+            updater: function (item) {
+                var terms = this.query.split(/\s*[,;]\s*/);
+                terms.pop();
+                terms.push(item);
+                terms.push("");
+                return terms.join(", ");
+            },
+            matcher: function (item) {
+                return (this.query).split(/\s*[,;]\s*/).pop().length > 0;
+            },
+            highlighter: function (item) {
+                var query = this.query.split(/\s*[,;]\s*/).pop().replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
+                return item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+                    return '<strong>' + match + '</strong>';
+                });
+            }
         });
     });
 </script>

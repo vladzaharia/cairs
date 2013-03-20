@@ -65,24 +65,64 @@
     <h3>Questions</h3>
     <div id="qrContainer"></div>
     
-    <br/><br/>
+    <br />
+    <br />
     <p>
         <input type="submit" value="@Constants.UIString.ButtonText.SAVE_DRAFT" class="btn btn-primary"/>
         <input type="submit" value="@Constants.UIString.ButtonText.MARK_COMPLETE" class="btn btn-success"/>
     </p>
 }
 
+<div id="warning_modal" class="modal hide fade">
+    <div class="modal-header">
+        <h3>Warning</h3>
+    </div>
+    <div class="modal-body">
+        <p id="warning_modal_text"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-primary" id="warning_modal_yes_btn">Yes</a>
+        <a href="#" class="btn btn-danger" onclick="return hideModal();">No</a>
+    </div>
+</div>
+
 
 <script type="text/javascript">
-    $(function() {
-        $.get("@Url.Action("NewQuestionResponse", "Request")/0", function(qr) {
+    $(function () {
+        $.get("@Url.Action("NewQuestionResponse", "Request")", function (qr) {
             $("#qrContainer").append(qr);
-            $(".delete-qr").attr("disabled", true);
+            $("#qrContainer > div:last button:last").attr("disabled", true);
 
-            $.get("@Url.Action("NewReference", "Request")/0?refId=0", function(r) {
-                $("#qr-references-0 tbody").append(r);
+            var qrGuid = $("#qrContainer > div:last input[type=hidden]:first").val();
+
+            $.get("@Url.Action("NewReference", "Request")/" + qrGuid, function (r) {
+                $("#qr-references-" + qrGuid + " tbody").append(r);
                 $(".del-ref").attr("disabled", true);
+                $(".del-ref").attr("href", "#");
             });
         });
+
+        $(document).keypress(function(event) {
+            if (event.which == '13') {
+                event.preventDefault();
+            }
+        });
     });
+
+    function deleteReference(localId, localRefId) {
+        $("#qr-references-" + localId + "-" + localRefId).remove();
+
+        var refRows = $("#qr-references-" + localId + " tbody tr");
+        if (refRows.length == 1) {
+            $(refRows[0]).find(".del-ref").attr("disabled", true);
+            $(refRows[0]).find(".del-ref").attr("href", "#");
+        }
+
+        return hideModal();
+    }
+
+    function hideModal() {
+        $("#warning_modal").modal("hide");
+        return false;
+    }
 </script>

@@ -256,5 +256,20 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                 // TODO: Do something
             }
         }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="term"></param>
+        /// <returns></returns>
+        public List<String> getMatchingKeywords(String term) {
+            List<String> list = (from kws in _db.Keywords
+                                 where kws.KeywordValue.ToLower()
+                                          .Contains(term.ToLower()) &&
+                                       kws.Active
+                                 select kws.KeywordValue).ToList();
+
+            return list;
+        } 
     }
 }
