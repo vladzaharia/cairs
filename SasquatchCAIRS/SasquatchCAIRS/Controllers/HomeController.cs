@@ -10,7 +10,7 @@ namespace SasquatchCAIRS.Controllers {
         [Authorize]
         public ActionResult Index() {
             var db = new CAIRSDataContext();
-            RequestLockController rlc = RequestLockController.instance;
+            RequestLockController rlc = new RequestLockController();
             var keywords = new Dictionary<long, List<string>>();
 
             if (!User.IsInRole(Constants.Roles.VIEWER)) {

@@ -1,26 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.DirectoryServices;
 using System.Linq;
 using System.Web.Hosting;
 
 namespace SasquatchCAIRS.Controllers.Security {
-    public class UserProfileController {
+    public class UserController {
         private const string USER_DISPLAY_NAME = "displayName";
         private const string USER_EMAIL = "mail";
 
-        /// <summary>
-        /// Read-only UserProfileController singleton
-        /// </summary>
-        private static readonly UserProfileController _instance = new UserProfileController();
-
-        private UserProfileController() {}
-
-        public static UserProfileController instance {
-            get {
-                return _instance;
-            }
-        }
+        private CAIRSDataContext _db = new CAIRSDataContext();
 
         /// <summary>
         /// Get the User Profile for the entered username.
@@ -28,8 +18,7 @@ namespace SasquatchCAIRS.Controllers.Security {
         /// <param name="username">Username to look for.</param>
         /// <returns>The UserProfile for the user.</returns>
         public UserProfile getUserProfile(string username) {
-            using (CAIRSDataContext db = new CAIRSDataContext()) {
-                UserProfile user = db.UserProfiles.FirstOrDefault(u => 
+            UserProfile user = _db.UserProfiles.FirstOrDefault(u => 
                     u.UserName.ToLower() == username.ToLower());
                 // Check if user already exists
                 if (user == null) {
@@ -37,18 +26,23 @@ namespace SasquatchCAIRS.Controllers.Security {
                     var adUser = getADInformation(username.ToLower());
 
                     // Insert name into the profile table
-                    db.UserProfiles.InsertOnSubmit(new UserProfile {
+                    _db.UserProfiles.InsertOnSubmit(new UserProfile {
                         UserName = username,
                         UserFullName = adUser[0],
                         UserEmail = adUser[1],
                         UserStatus = true
                     });
-                    db.SubmitChanges();
+                    _db.SubmitChanges();
                 }
 
-                return db.UserProfiles.FirstOrDefault(u => 
+                return _db.UserProfiles.FirstOrDefault(u => 
                     u.UserName.ToLower() == username.ToLower());
-            }
+        }
+
+        public IEnumerable<UserGroup> getUserGroups(string username) {
+            var profile = getUserProfile(username);
+
+            return profile.UserGroups.Select(grps => grps.UserGroup).ToList();
         }
 
         /// <summary>

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 using SasquatchCAIRS.Controllers.Security;
-using SasquatchCAIRS.Controllers.ServiceSystem;
-using SasquatchCAIRS.Helper;
+﻿using SasquatchCAIRS.Controllers.ServiceSystem;
+﻿using SasquatchCAIRS.Helper;
 using SasquatchCAIRS.Models;
 using SasquatchCAIRS.Models.ServiceSystem;
 
@@ -17,7 +15,7 @@ namespace SasquatchCAIRS.Controllers
 
         [Authorize(Roles = "RequestEditor")]
         public ActionResult Create() {
-            DropdownController dc = DropdownController.instance;
+            DropdownController dc = new DropdownController();
             var reqContent = new RequestContent() {
                 timeOpened = DateTime.Now
             };
@@ -52,8 +50,7 @@ namespace SasquatchCAIRS.Controllers
                     r => r.referenceString == null);
             }
 
-            RequestManagementController rmc =
-                RequestManagementController.instance;
+            RequestManagementController rmc = new RequestManagementController();
             rmc.create(reqContent);
 
             return Redirect("/Home/Index");
@@ -61,7 +58,7 @@ namespace SasquatchCAIRS.Controllers
 
         [Authorize(Roles = "RequestEditor")]
         public ActionResult NewQuestionResponse() {
-            DropdownController dc = DropdownController.instance;
+            DropdownController dc = new DropdownController();
             var qrContent = new QuestionResponseContent();
 
             // Used to set dynamic model binding index
@@ -97,7 +94,7 @@ namespace SasquatchCAIRS.Controllers
 
         [Authorize]
         public ActionResult GetMatchingKeywords(string id) {
-            DropdownController dc = DropdownController.instance;
+            DropdownController dc = new DropdownController();
             return Json(dc.getMatchingKeywords(id),
                 JsonRequestBehavior.AllowGet);
         }
@@ -107,10 +104,10 @@ namespace SasquatchCAIRS.Controllers
 
         [Authorize(Roles = "Viewer")]
         public ActionResult Details(long id) {
-            RequestManagementController rmc =
-                RequestManagementController.instance;
-            RequestLockController rlc = RequestLockController.instance;
-            UserProfileController upc = UserProfileController.instance;
+            RequestManagementController rmc = 
+                new RequestManagementController();
+            RequestLockController rlc = new RequestLockController();
+            UserController upc = new UserController();
             int timeSpent = 0;
 
             // Set up the Request Object

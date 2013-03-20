@@ -6,18 +6,7 @@ using SasquatchCAIRS.Models.ServiceSystem;
 
 namespace SasquatchCAIRS.Controllers.ServiceSystem {
     public sealed class DropdownController {
-        private static readonly DropdownController _instance =
-            new DropdownController();
         private CAIRSDataContext _db = new CAIRSDataContext();
-
-        private DropdownController() {
-        }
-
-        public static DropdownController instance {
-            get {
-                return _instance;
-            }
-        }
 
         /// <summary>
         /// Get all active dropdown entries from a specific table.

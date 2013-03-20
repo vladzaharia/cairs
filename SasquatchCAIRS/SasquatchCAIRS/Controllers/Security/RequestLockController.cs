@@ -7,19 +7,7 @@ namespace SasquatchCAIRS.Controllers.Security
 {
     public class RequestLockController : Controller
     {
-        /// <summary>
-        /// Read-only RequestLockController singleton
-        /// </summary>
-        private static readonly RequestLockController _instance = new RequestLockController();
         private CAIRSDataContext _db = new CAIRSDataContext();
-
-        private RequestLockController() {}
-
-        public static RequestLockController instance {
-            get {
-                return _instance;
-            }
-        }
 
         /// <summary>
         /// Add lock to existing request.

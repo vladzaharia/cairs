@@ -42,33 +42,39 @@ namespace SasquatchCAIRS
     partial void InsertRequestorType(RequestorType instance);
     partial void UpdateRequestorType(RequestorType instance);
     partial void DeleteRequestorType(RequestorType instance);
-    partial void InsertUserGroup(UserGroup instance);
-    partial void UpdateUserGroup(UserGroup instance);
-    partial void DeleteUserGroup(UserGroup instance);
     partial void InsertQuestionResponse(QuestionResponse instance);
     partial void UpdateQuestionResponse(QuestionResponse instance);
     partial void DeleteQuestionResponse(QuestionResponse instance);
     partial void InsertRequest(Request instance);
     partial void UpdateRequest(Request instance);
     partial void DeleteRequest(Request instance);
-    partial void InsertQuestionType(QuestionType instance);
-    partial void UpdateQuestionType(QuestionType instance);
-    partial void DeleteQuestionType(QuestionType instance);
     partial void InsertAuditLog(AuditLog instance);
     partial void UpdateAuditLog(AuditLog instance);
     partial void DeleteAuditLog(AuditLog instance);
     partial void InsertRequestLock(RequestLock instance);
     partial void UpdateRequestLock(RequestLock instance);
     partial void DeleteRequestLock(RequestLock instance);
-    partial void InsertUserProfile(UserProfile instance);
-    partial void UpdateUserProfile(UserProfile instance);
-    partial void DeleteUserProfile(UserProfile instance);
+    partial void InsertQuestionType(QuestionType instance);
+    partial void UpdateQuestionType(QuestionType instance);
+    partial void DeleteQuestionType(QuestionType instance);
     partial void InsertTumourGroup(TumourGroup instance);
     partial void UpdateTumourGroup(TumourGroup instance);
     partial void DeleteTumourGroup(TumourGroup instance);
     partial void InsertKeywordQuestion(KeywordQuestion instance);
     partial void UpdateKeywordQuestion(KeywordQuestion instance);
     partial void DeleteKeywordQuestion(KeywordQuestion instance);
+    partial void InsertUserInfo(UserInfo instance);
+    partial void UpdateUserInfo(UserInfo instance);
+    partial void DeleteUserInfo(UserInfo instance);
+    partial void InsertUserGroup(UserGroup instance);
+    partial void UpdateUserGroup(UserGroup instance);
+    partial void DeleteUserGroup(UserGroup instance);
+    partial void InsertUserGroups(UserGroups instance);
+    partial void UpdateUserGroups(UserGroups instance);
+    partial void DeleteUserGroups(UserGroups instance);
+    partial void InsertUserProfile(UserProfile instance);
+    partial void UpdateUserProfile(UserProfile instance);
+    partial void DeleteUserProfile(UserProfile instance);
     #endregion
 		
 		public CAIRSDataContext() : 
@@ -133,14 +139,6 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		public System.Data.Linq.Table<UserGroup> UserGroups
-		{
-			get
-			{
-				return this.GetTable<UserGroup>();
-			}
-		}
-		
 		public System.Data.Linq.Table<QuestionResponse> QuestionResponses
 		{
 			get
@@ -154,14 +152,6 @@ namespace SasquatchCAIRS
 			get
 			{
 				return this.GetTable<Request>();
-			}
-		}
-		
-		public System.Data.Linq.Table<QuestionType> QuestionTypes
-		{
-			get
-			{
-				return this.GetTable<QuestionType>();
 			}
 		}
 		
@@ -181,11 +171,11 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		public System.Data.Linq.Table<UserProfile> UserProfiles
+		public System.Data.Linq.Table<QuestionType> QuestionTypes
 		{
 			get
 			{
-				return this.GetTable<UserProfile>();
+				return this.GetTable<QuestionType>();
 			}
 		}
 		
@@ -202,6 +192,38 @@ namespace SasquatchCAIRS
 			get
 			{
 				return this.GetTable<KeywordQuestion>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UserInfo> UserInfos
+		{
+			get
+			{
+				return this.GetTable<UserInfo>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UserGroup> UserGroups
+		{
+			get
+			{
+				return this.GetTable<UserGroup>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UserGroups> UserGroups1
+		{
+			get
+			{
+				return this.GetTable<UserGroups>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UserProfile> UserProfiles
+		{
+			get
+			{
+				return this.GetTable<UserProfile>();
 			}
 		}
 	}
@@ -870,140 +892,6 @@ namespace SasquatchCAIRS
 		{
 			this.SendPropertyChanging();
 			entity.RequestorType = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserGroup")]
-	public partial class UserGroup : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private byte _GroupID;
-		
-		private string _Value;
-		
-		private string _Code;
-		
-		private bool _Active;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnGroupIDChanging(byte value);
-    partial void OnGroupIDChanged();
-    partial void OnValueChanging(string value);
-    partial void OnValueChanged();
-    partial void OnCodeChanging(string value);
-    partial void OnCodeChanged();
-    partial void OnActiveChanging(bool value);
-    partial void OnActiveChanged();
-    #endregion
-		
-		public UserGroup()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public byte GroupID
-		{
-			get
-			{
-				return this._GroupID;
-			}
-			set
-			{
-				if ((this._GroupID != value))
-				{
-					this.OnGroupIDChanging(value);
-					this.SendPropertyChanging();
-					this._GroupID = value;
-					this.SendPropertyChanged("GroupID");
-					this.OnGroupIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
-		public string Value
-		{
-			get
-			{
-				return this._Value;
-			}
-			set
-			{
-				if ((this._Value != value))
-				{
-					this.OnValueChanging(value);
-					this.SendPropertyChanging();
-					this._Value = value;
-					this.SendPropertyChanged("Value");
-					this.OnValueChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
-		public string Code
-		{
-			get
-			{
-				return this._Code;
-			}
-			set
-			{
-				if ((this._Code != value))
-				{
-					this.OnCodeChanging(value);
-					this.SendPropertyChanging();
-					this._Code = value;
-					this.SendPropertyChanged("Code");
-					this.OnCodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
-		public bool Active
-		{
-			get
-			{
-				return this._Active;
-			}
-			set
-			{
-				if ((this._Active != value))
-				{
-					this.OnActiveChanging(value);
-					this.SendPropertyChanging();
-					this._Active = value;
-					this.SendPropertyChanged("Active");
-					this.OnActiveChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 	
@@ -2145,6 +2033,414 @@ namespace SasquatchCAIRS
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.AuditLog")]
+	public partial class AuditLog : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private long _RequestID;
+		
+		private int _UserID;
+		
+		private byte _AuditType;
+		
+		private System.DateTime _AuditDate;
+		
+		private EntityRef<Request> _Request;
+		
+		private EntityRef<UserInfo> _UserInfo;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRequestIDChanging(long value);
+    partial void OnRequestIDChanged();
+    partial void OnUserIDChanging(int value);
+    partial void OnUserIDChanged();
+    partial void OnAuditTypeChanging(byte value);
+    partial void OnAuditTypeChanged();
+    partial void OnAuditDateChanging(System.DateTime value);
+    partial void OnAuditDateChanged();
+    #endregion
+		
+		public AuditLog()
+		{
+			this._Request = default(EntityRef<Request>);
+			this._UserInfo = default(EntityRef<UserInfo>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long RequestID
+		{
+			get
+			{
+				return this._RequestID;
+			}
+			set
+			{
+				if ((this._RequestID != value))
+				{
+					if (this._Request.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRequestIDChanging(value);
+					this.SendPropertyChanging();
+					this._RequestID = value;
+					this.SendPropertyChanged("RequestID");
+					this.OnRequestIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UserID
+		{
+			get
+			{
+				return this._UserID;
+			}
+			set
+			{
+				if ((this._UserID != value))
+				{
+					if (this._UserInfo.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserID = value;
+					this.SendPropertyChanged("UserID");
+					this.OnUserIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AuditType", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
+		public byte AuditType
+		{
+			get
+			{
+				return this._AuditType;
+			}
+			set
+			{
+				if ((this._AuditType != value))
+				{
+					this.OnAuditTypeChanging(value);
+					this.SendPropertyChanging();
+					this._AuditType = value;
+					this.SendPropertyChanged("AuditType");
+					this.OnAuditTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AuditDate", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
+		public System.DateTime AuditDate
+		{
+			get
+			{
+				return this._AuditDate;
+			}
+			set
+			{
+				if ((this._AuditDate != value))
+				{
+					this.OnAuditDateChanging(value);
+					this.SendPropertyChanging();
+					this._AuditDate = value;
+					this.SendPropertyChanged("AuditDate");
+					this.OnAuditDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_AuditLog", Storage="_Request", ThisKey="RequestID", OtherKey="RequestID", IsForeignKey=true)]
+		public Request Request
+		{
+			get
+			{
+				return this._Request.Entity;
+			}
+			set
+			{
+				Request previousValue = this._Request.Entity;
+				if (((previousValue != value) 
+							|| (this._Request.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Request.Entity = null;
+						previousValue.AuditLogs.Remove(this);
+					}
+					this._Request.Entity = value;
+					if ((value != null))
+					{
+						value.AuditLogs.Add(this);
+						this._RequestID = value.RequestID;
+					}
+					else
+					{
+						this._RequestID = default(long);
+					}
+					this.SendPropertyChanged("Request");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserInfo_AuditLog", Storage="_UserInfo", ThisKey="UserID", OtherKey="UserID", IsForeignKey=true)]
+		public UserInfo UserInfo
+		{
+			get
+			{
+				return this._UserInfo.Entity;
+			}
+			set
+			{
+				UserInfo previousValue = this._UserInfo.Entity;
+				if (((previousValue != value) 
+							|| (this._UserInfo.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserInfo.Entity = null;
+						previousValue.AuditLogs.Remove(this);
+					}
+					this._UserInfo.Entity = value;
+					if ((value != null))
+					{
+						value.AuditLogs.Add(this);
+						this._UserID = value.UserID;
+					}
+					else
+					{
+						this._UserID = default(int);
+					}
+					this.SendPropertyChanged("UserInfo");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RequestLock")]
+	public partial class RequestLock : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private long _RequestID;
+		
+		private int _UserID;
+		
+		private System.DateTime _StartTime;
+		
+		private EntityRef<Request> _Request;
+		
+		private EntityRef<UserInfo> _UserInfo;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRequestIDChanging(long value);
+    partial void OnRequestIDChanged();
+    partial void OnUserIDChanging(int value);
+    partial void OnUserIDChanged();
+    partial void OnStartTimeChanging(System.DateTime value);
+    partial void OnStartTimeChanged();
+    #endregion
+		
+		public RequestLock()
+		{
+			this._Request = default(EntityRef<Request>);
+			this._UserInfo = default(EntityRef<UserInfo>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long RequestID
+		{
+			get
+			{
+				return this._RequestID;
+			}
+			set
+			{
+				if ((this._RequestID != value))
+				{
+					if (this._Request.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRequestIDChanging(value);
+					this.SendPropertyChanging();
+					this._RequestID = value;
+					this.SendPropertyChanged("RequestID");
+					this.OnRequestIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UserID
+		{
+			get
+			{
+				return this._UserID;
+			}
+			set
+			{
+				if ((this._UserID != value))
+				{
+					if (this._UserInfo.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserID = value;
+					this.SendPropertyChanged("UserID");
+					this.OnUserIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartTime", DbType="DateTime NOT NULL")]
+		public System.DateTime StartTime
+		{
+			get
+			{
+				return this._StartTime;
+			}
+			set
+			{
+				if ((this._StartTime != value))
+				{
+					this.OnStartTimeChanging(value);
+					this.SendPropertyChanging();
+					this._StartTime = value;
+					this.SendPropertyChanged("StartTime");
+					this.OnStartTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_RequestLock", Storage="_Request", ThisKey="RequestID", OtherKey="RequestID", IsForeignKey=true)]
+		public Request Request
+		{
+			get
+			{
+				return this._Request.Entity;
+			}
+			set
+			{
+				Request previousValue = this._Request.Entity;
+				if (((previousValue != value) 
+							|| (this._Request.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Request.Entity = null;
+						previousValue.RequestLocks.Remove(this);
+					}
+					this._Request.Entity = value;
+					if ((value != null))
+					{
+						value.RequestLocks.Add(this);
+						this._RequestID = value.RequestID;
+					}
+					else
+					{
+						this._RequestID = default(long);
+					}
+					this.SendPropertyChanged("Request");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserInfo_RequestLock", Storage="_UserInfo", ThisKey="UserID", OtherKey="UserID", IsForeignKey=true)]
+		public UserInfo UserInfo
+		{
+			get
+			{
+				return this._UserInfo.Entity;
+			}
+			set
+			{
+				UserInfo previousValue = this._UserInfo.Entity;
+				if (((previousValue != value) 
+							|| (this._UserInfo.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserInfo.Entity = null;
+						previousValue.RequestLocks.Remove(this);
+					}
+					this._UserInfo.Entity = value;
+					if ((value != null))
+					{
+						value.RequestLocks.Add(this);
+						this._UserID = value.UserID;
+					}
+					else
+					{
+						this._UserID = default(int);
+					}
+					this.SendPropertyChanged("UserInfo");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.QuestionType")]
 	public partial class QuestionType : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2304,628 +2600,6 @@ namespace SasquatchCAIRS
 		{
 			this.SendPropertyChanging();
 			entity.QuestionType = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.AuditLog")]
-	public partial class AuditLog : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private long _RequestID;
-		
-		private int _UserID;
-		
-		private byte _AuditType;
-		
-		private System.DateTime _AuditDate;
-		
-		private EntityRef<Request> _Request;
-		
-		private EntityRef<UserProfile> _UserProfile;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnRequestIDChanging(long value);
-    partial void OnRequestIDChanged();
-    partial void OnUserIDChanging(int value);
-    partial void OnUserIDChanged();
-    partial void OnAuditTypeChanging(byte value);
-    partial void OnAuditTypeChanged();
-    partial void OnAuditDateChanging(System.DateTime value);
-    partial void OnAuditDateChanged();
-    #endregion
-		
-		public AuditLog()
-		{
-			this._Request = default(EntityRef<Request>);
-			this._UserProfile = default(EntityRef<UserProfile>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
-		public long RequestID
-		{
-			get
-			{
-				return this._RequestID;
-			}
-			set
-			{
-				if ((this._RequestID != value))
-				{
-					if (this._Request.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRequestIDChanging(value);
-					this.SendPropertyChanging();
-					this._RequestID = value;
-					this.SendPropertyChanged("RequestID");
-					this.OnRequestIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int UserID
-		{
-			get
-			{
-				return this._UserID;
-			}
-			set
-			{
-				if ((this._UserID != value))
-				{
-					if (this._UserProfile.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnUserIDChanging(value);
-					this.SendPropertyChanging();
-					this._UserID = value;
-					this.SendPropertyChanged("UserID");
-					this.OnUserIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AuditType", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
-		public byte AuditType
-		{
-			get
-			{
-				return this._AuditType;
-			}
-			set
-			{
-				if ((this._AuditType != value))
-				{
-					this.OnAuditTypeChanging(value);
-					this.SendPropertyChanging();
-					this._AuditType = value;
-					this.SendPropertyChanged("AuditType");
-					this.OnAuditTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AuditDate", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
-		public System.DateTime AuditDate
-		{
-			get
-			{
-				return this._AuditDate;
-			}
-			set
-			{
-				if ((this._AuditDate != value))
-				{
-					this.OnAuditDateChanging(value);
-					this.SendPropertyChanging();
-					this._AuditDate = value;
-					this.SendPropertyChanged("AuditDate");
-					this.OnAuditDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_AuditLog", Storage="_Request", ThisKey="RequestID", OtherKey="RequestID", IsForeignKey=true)]
-		public Request Request
-		{
-			get
-			{
-				return this._Request.Entity;
-			}
-			set
-			{
-				Request previousValue = this._Request.Entity;
-				if (((previousValue != value) 
-							|| (this._Request.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Request.Entity = null;
-						previousValue.AuditLogs.Remove(this);
-					}
-					this._Request.Entity = value;
-					if ((value != null))
-					{
-						value.AuditLogs.Add(this);
-						this._RequestID = value.RequestID;
-					}
-					else
-					{
-						this._RequestID = default(long);
-					}
-					this.SendPropertyChanged("Request");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_AuditLog", Storage="_UserProfile", ThisKey="UserID", OtherKey="UserId", IsForeignKey=true)]
-		public UserProfile UserProfile
-		{
-			get
-			{
-				return this._UserProfile.Entity;
-			}
-			set
-			{
-				UserProfile previousValue = this._UserProfile.Entity;
-				if (((previousValue != value) 
-							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._UserProfile.Entity = null;
-						previousValue.AuditLogs.Remove(this);
-					}
-					this._UserProfile.Entity = value;
-					if ((value != null))
-					{
-						value.AuditLogs.Add(this);
-						this._UserID = value.UserId;
-					}
-					else
-					{
-						this._UserID = default(int);
-					}
-					this.SendPropertyChanged("UserProfile");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RequestLock")]
-	public partial class RequestLock : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private long _RequestID;
-		
-		private int _UserID;
-		
-		private System.DateTime _StartTime;
-		
-		private EntityRef<Request> _Request;
-		
-		private EntityRef<UserProfile> _UserProfile;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnRequestIDChanging(long value);
-    partial void OnRequestIDChanged();
-    partial void OnUserIDChanging(int value);
-    partial void OnUserIDChanged();
-    partial void OnStartTimeChanging(System.DateTime value);
-    partial void OnStartTimeChanged();
-    #endregion
-		
-		public RequestLock()
-		{
-			this._Request = default(EntityRef<Request>);
-			this._UserProfile = default(EntityRef<UserProfile>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
-		public long RequestID
-		{
-			get
-			{
-				return this._RequestID;
-			}
-			set
-			{
-				if ((this._RequestID != value))
-				{
-					if (this._Request.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRequestIDChanging(value);
-					this.SendPropertyChanging();
-					this._RequestID = value;
-					this.SendPropertyChanged("RequestID");
-					this.OnRequestIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int UserID
-		{
-			get
-			{
-				return this._UserID;
-			}
-			set
-			{
-				if ((this._UserID != value))
-				{
-					if (this._UserProfile.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnUserIDChanging(value);
-					this.SendPropertyChanging();
-					this._UserID = value;
-					this.SendPropertyChanged("UserID");
-					this.OnUserIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartTime", DbType="DateTime NOT NULL")]
-		public System.DateTime StartTime
-		{
-			get
-			{
-				return this._StartTime;
-			}
-			set
-			{
-				if ((this._StartTime != value))
-				{
-					this.OnStartTimeChanging(value);
-					this.SendPropertyChanging();
-					this._StartTime = value;
-					this.SendPropertyChanged("StartTime");
-					this.OnStartTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_RequestLock", Storage="_Request", ThisKey="RequestID", OtherKey="RequestID", IsForeignKey=true)]
-		public Request Request
-		{
-			get
-			{
-				return this._Request.Entity;
-			}
-			set
-			{
-				Request previousValue = this._Request.Entity;
-				if (((previousValue != value) 
-							|| (this._Request.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Request.Entity = null;
-						previousValue.RequestLocks.Remove(this);
-					}
-					this._Request.Entity = value;
-					if ((value != null))
-					{
-						value.RequestLocks.Add(this);
-						this._RequestID = value.RequestID;
-					}
-					else
-					{
-						this._RequestID = default(long);
-					}
-					this.SendPropertyChanged("Request");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_RequestLock", Storage="_UserProfile", ThisKey="UserID", OtherKey="UserId", IsForeignKey=true)]
-		public UserProfile UserProfile
-		{
-			get
-			{
-				return this._UserProfile.Entity;
-			}
-			set
-			{
-				UserProfile previousValue = this._UserProfile.Entity;
-				if (((previousValue != value) 
-							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._UserProfile.Entity = null;
-						previousValue.RequestLocks.Remove(this);
-					}
-					this._UserProfile.Entity = value;
-					if ((value != null))
-					{
-						value.RequestLocks.Add(this);
-						this._UserID = value.UserId;
-					}
-					else
-					{
-						this._UserID = default(int);
-					}
-					this.SendPropertyChanged("UserProfile");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserProfile")]
-	public partial class UserProfile : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _UserId;
-		
-		private string _UserName;
-		
-		private string _UserFullName;
-		
-		private string _UserEmail;
-		
-		private bool _UserStatus;
-		
-		private EntitySet<AuditLog> _AuditLogs;
-		
-		private EntitySet<RequestLock> _RequestLocks;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnUserIdChanging(int value);
-    partial void OnUserIdChanged();
-    partial void OnUserNameChanging(string value);
-    partial void OnUserNameChanged();
-    partial void OnUserFullNameChanging(string value);
-    partial void OnUserFullNameChanged();
-    partial void OnUserEmailChanging(string value);
-    partial void OnUserEmailChanged();
-    partial void OnUserStatusChanging(bool value);
-    partial void OnUserStatusChanged();
-    #endregion
-		
-		public UserProfile()
-		{
-			this._AuditLogs = new EntitySet<AuditLog>(new Action<AuditLog>(this.attach_AuditLogs), new Action<AuditLog>(this.detach_AuditLogs));
-			this._RequestLocks = new EntitySet<RequestLock>(new Action<RequestLock>(this.attach_RequestLocks), new Action<RequestLock>(this.detach_RequestLocks));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int UserId
-		{
-			get
-			{
-				return this._UserId;
-			}
-			set
-			{
-				if ((this._UserId != value))
-				{
-					this.OnUserIdChanging(value);
-					this.SendPropertyChanging();
-					this._UserId = value;
-					this.SendPropertyChanged("UserId");
-					this.OnUserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(56) NOT NULL", CanBeNull=false)]
-		public string UserName
-		{
-			get
-			{
-				return this._UserName;
-			}
-			set
-			{
-				if ((this._UserName != value))
-				{
-					this.OnUserNameChanging(value);
-					this.SendPropertyChanging();
-					this._UserName = value;
-					this.SendPropertyChanged("UserName");
-					this.OnUserNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserFullName", DbType="NVarChar(MAX)")]
-		public string UserFullName
-		{
-			get
-			{
-				return this._UserFullName;
-			}
-			set
-			{
-				if ((this._UserFullName != value))
-				{
-					this.OnUserFullNameChanging(value);
-					this.SendPropertyChanging();
-					this._UserFullName = value;
-					this.SendPropertyChanged("UserFullName");
-					this.OnUserFullNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserEmail", DbType="NVarChar(MAX)")]
-		public string UserEmail
-		{
-			get
-			{
-				return this._UserEmail;
-			}
-			set
-			{
-				if ((this._UserEmail != value))
-				{
-					this.OnUserEmailChanging(value);
-					this.SendPropertyChanging();
-					this._UserEmail = value;
-					this.SendPropertyChanged("UserEmail");
-					this.OnUserEmailChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserStatus", DbType="Bit NOT NULL")]
-		public bool UserStatus
-		{
-			get
-			{
-				return this._UserStatus;
-			}
-			set
-			{
-				if ((this._UserStatus != value))
-				{
-					this.OnUserStatusChanging(value);
-					this.SendPropertyChanging();
-					this._UserStatus = value;
-					this.SendPropertyChanged("UserStatus");
-					this.OnUserStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_AuditLog", Storage="_AuditLogs", ThisKey="UserId", OtherKey="UserID")]
-		public EntitySet<AuditLog> AuditLogs
-		{
-			get
-			{
-				return this._AuditLogs;
-			}
-			set
-			{
-				this._AuditLogs.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_RequestLock", Storage="_RequestLocks", ThisKey="UserId", OtherKey="UserID")]
-		public EntitySet<RequestLock> RequestLocks
-		{
-			get
-			{
-				return this._RequestLocks;
-			}
-			set
-			{
-				this._RequestLocks.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_AuditLogs(AuditLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserProfile = this;
-		}
-		
-		private void detach_AuditLogs(AuditLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserProfile = null;
-		}
-		
-		private void attach_RequestLocks(RequestLock entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserProfile = this;
-		}
-		
-		private void detach_RequestLocks(RequestLock entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserProfile = null;
 		}
 	}
 	
@@ -3286,6 +2960,712 @@ namespace SasquatchCAIRS
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserInfo")]
+	public partial class UserInfo : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UserID;
+		
+		private string _UserName;
+		
+		private string _UserEmail;
+		
+		private bool _UserStatus;
+		
+		private EntitySet<AuditLog> _AuditLogs;
+		
+		private EntitySet<RequestLock> _RequestLocks;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUserIDChanging(int value);
+    partial void OnUserIDChanged();
+    partial void OnUserNameChanging(string value);
+    partial void OnUserNameChanged();
+    partial void OnUserEmailChanging(string value);
+    partial void OnUserEmailChanged();
+    partial void OnUserStatusChanging(bool value);
+    partial void OnUserStatusChanged();
+    #endregion
+		
+		public UserInfo()
+		{
+			this._AuditLogs = new EntitySet<AuditLog>(new Action<AuditLog>(this.attach_AuditLogs), new Action<AuditLog>(this.detach_AuditLogs));
+			this._RequestLocks = new EntitySet<RequestLock>(new Action<RequestLock>(this.attach_RequestLocks), new Action<RequestLock>(this.detach_RequestLocks));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UserID
+		{
+			get
+			{
+				return this._UserID;
+			}
+			set
+			{
+				if ((this._UserID != value))
+				{
+					this.OnUserIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserID = value;
+					this.SendPropertyChanged("UserID");
+					this.OnUserIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="Char(20) NOT NULL", CanBeNull=false)]
+		public string UserName
+		{
+			get
+			{
+				return this._UserName;
+			}
+			set
+			{
+				if ((this._UserName != value))
+				{
+					this.OnUserNameChanging(value);
+					this.SendPropertyChanging();
+					this._UserName = value;
+					this.SendPropertyChanged("UserName");
+					this.OnUserNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserEmail", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string UserEmail
+		{
+			get
+			{
+				return this._UserEmail;
+			}
+			set
+			{
+				if ((this._UserEmail != value))
+				{
+					this.OnUserEmailChanging(value);
+					this.SendPropertyChanging();
+					this._UserEmail = value;
+					this.SendPropertyChanged("UserEmail");
+					this.OnUserEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserStatus", DbType="Bit NOT NULL")]
+		public bool UserStatus
+		{
+			get
+			{
+				return this._UserStatus;
+			}
+			set
+			{
+				if ((this._UserStatus != value))
+				{
+					this.OnUserStatusChanging(value);
+					this.SendPropertyChanging();
+					this._UserStatus = value;
+					this.SendPropertyChanged("UserStatus");
+					this.OnUserStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserInfo_AuditLog", Storage="_AuditLogs", ThisKey="UserID", OtherKey="UserID")]
+		public EntitySet<AuditLog> AuditLogs
+		{
+			get
+			{
+				return this._AuditLogs;
+			}
+			set
+			{
+				this._AuditLogs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserInfo_RequestLock", Storage="_RequestLocks", ThisKey="UserID", OtherKey="UserID")]
+		public EntitySet<RequestLock> RequestLocks
+		{
+			get
+			{
+				return this._RequestLocks;
+			}
+			set
+			{
+				this._RequestLocks.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_AuditLogs(AuditLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserInfo = this;
+		}
+		
+		private void detach_AuditLogs(AuditLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserInfo = null;
+		}
+		
+		private void attach_RequestLocks(RequestLock entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserInfo = this;
+		}
+		
+		private void detach_RequestLocks(RequestLock entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserInfo = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserGroup")]
+	public partial class UserGroup : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private byte _GroupID;
+		
+		private string _Value;
+		
+		private string _Code;
+		
+		private bool _Active;
+		
+		private EntitySet<UserGroups> _UserGroups;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnGroupIDChanging(byte value);
+    partial void OnGroupIDChanged();
+    partial void OnValueChanging(string value);
+    partial void OnValueChanged();
+    partial void OnCodeChanging(string value);
+    partial void OnCodeChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    #endregion
+		
+		public UserGroup()
+		{
+			this._UserGroups = new EntitySet<UserGroups>(new Action<UserGroups>(this.attach_UserGroups), new Action<UserGroups>(this.detach_UserGroups));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public byte GroupID
+		{
+			get
+			{
+				return this._GroupID;
+			}
+			set
+			{
+				if ((this._GroupID != value))
+				{
+					this.OnGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._GroupID = value;
+					this.SendPropertyChanged("GroupID");
+					this.OnGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
+		public string Value
+		{
+			get
+			{
+				return this._Value;
+			}
+			set
+			{
+				if ((this._Value != value))
+				{
+					this.OnValueChanging(value);
+					this.SendPropertyChanging();
+					this._Value = value;
+					this.SendPropertyChanged("Value");
+					this.OnValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
+		public string Code
+		{
+			get
+			{
+				return this._Code;
+			}
+			set
+			{
+				if ((this._Code != value))
+				{
+					this.OnCodeChanging(value);
+					this.SendPropertyChanging();
+					this._Code = value;
+					this.SendPropertyChanged("Code");
+					this.OnCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserGroup_UserGroups", Storage="_UserGroups", ThisKey="GroupID", OtherKey="GroupID")]
+		public EntitySet<UserGroups> UserGroups
+		{
+			get
+			{
+				return this._UserGroups;
+			}
+			set
+			{
+				this._UserGroups.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_UserGroups(UserGroups entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserGroup = this;
+		}
+		
+		private void detach_UserGroups(UserGroups entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserGroup = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserGroups")]
+	public partial class UserGroups : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private byte _GroupID;
+		
+		private int _UserID;
+		
+		private EntityRef<UserGroup> _UserGroup;
+		
+		private EntityRef<UserProfile> _UserProfile;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnGroupIDChanging(byte value);
+    partial void OnGroupIDChanged();
+    partial void OnUserIDChanging(int value);
+    partial void OnUserIDChanged();
+    #endregion
+		
+		public UserGroups()
+		{
+			this._UserGroup = default(EntityRef<UserGroup>);
+			this._UserProfile = default(EntityRef<UserProfile>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
+		public byte GroupID
+		{
+			get
+			{
+				return this._GroupID;
+			}
+			set
+			{
+				if ((this._GroupID != value))
+				{
+					if (this._UserGroup.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._GroupID = value;
+					this.SendPropertyChanged("GroupID");
+					this.OnGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UserID
+		{
+			get
+			{
+				return this._UserID;
+			}
+			set
+			{
+				if ((this._UserID != value))
+				{
+					if (this._UserProfile.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserID = value;
+					this.SendPropertyChanged("UserID");
+					this.OnUserIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserGroup_UserGroups", Storage="_UserGroup", ThisKey="GroupID", OtherKey="GroupID", IsForeignKey=true)]
+		public UserGroup UserGroup
+		{
+			get
+			{
+				return this._UserGroup.Entity;
+			}
+			set
+			{
+				UserGroup previousValue = this._UserGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._UserGroup.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserGroup.Entity = null;
+						previousValue.UserGroups.Remove(this);
+					}
+					this._UserGroup.Entity = value;
+					if ((value != null))
+					{
+						value.UserGroups.Add(this);
+						this._GroupID = value.GroupID;
+					}
+					else
+					{
+						this._GroupID = default(byte);
+					}
+					this.SendPropertyChanged("UserGroup");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserGroups", Storage="_UserProfile", ThisKey="UserID", OtherKey="UserId", IsForeignKey=true)]
+		public UserProfile UserProfile
+		{
+			get
+			{
+				return this._UserProfile.Entity;
+			}
+			set
+			{
+				UserProfile previousValue = this._UserProfile.Entity;
+				if (((previousValue != value) 
+							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserProfile.Entity = null;
+						previousValue.UserGroups.Remove(this);
+					}
+					this._UserProfile.Entity = value;
+					if ((value != null))
+					{
+						value.UserGroups.Add(this);
+						this._UserID = value.UserId;
+					}
+					else
+					{
+						this._UserID = default(int);
+					}
+					this.SendPropertyChanged("UserProfile");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserProfile")]
+	public partial class UserProfile : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UserId;
+		
+		private string _UserName;
+		
+		private string _UserFullName;
+		
+		private string _UserEmail;
+		
+		private bool _UserStatus;
+		
+		private EntitySet<UserGroups> _UserGroups;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUserIdChanging(int value);
+    partial void OnUserIdChanged();
+    partial void OnUserNameChanging(string value);
+    partial void OnUserNameChanged();
+    partial void OnUserFullNameChanging(string value);
+    partial void OnUserFullNameChanged();
+    partial void OnUserEmailChanging(string value);
+    partial void OnUserEmailChanged();
+    partial void OnUserStatusChanging(bool value);
+    partial void OnUserStatusChanged();
+    #endregion
+		
+		public UserProfile()
+		{
+			this._UserGroups = new EntitySet<UserGroups>(new Action<UserGroups>(this.attach_UserGroups), new Action<UserGroups>(this.detach_UserGroups));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int UserId
+		{
+			get
+			{
+				return this._UserId;
+			}
+			set
+			{
+				if ((this._UserId != value))
+				{
+					this.OnUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._UserId = value;
+					this.SendPropertyChanged("UserId");
+					this.OnUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(56) NOT NULL", CanBeNull=false)]
+		public string UserName
+		{
+			get
+			{
+				return this._UserName;
+			}
+			set
+			{
+				if ((this._UserName != value))
+				{
+					this.OnUserNameChanging(value);
+					this.SendPropertyChanging();
+					this._UserName = value;
+					this.SendPropertyChanged("UserName");
+					this.OnUserNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserFullName", DbType="NVarChar(MAX)")]
+		public string UserFullName
+		{
+			get
+			{
+				return this._UserFullName;
+			}
+			set
+			{
+				if ((this._UserFullName != value))
+				{
+					this.OnUserFullNameChanging(value);
+					this.SendPropertyChanging();
+					this._UserFullName = value;
+					this.SendPropertyChanged("UserFullName");
+					this.OnUserFullNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserEmail", DbType="NVarChar(MAX)")]
+		public string UserEmail
+		{
+			get
+			{
+				return this._UserEmail;
+			}
+			set
+			{
+				if ((this._UserEmail != value))
+				{
+					this.OnUserEmailChanging(value);
+					this.SendPropertyChanging();
+					this._UserEmail = value;
+					this.SendPropertyChanged("UserEmail");
+					this.OnUserEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserStatus", DbType="Bit NOT NULL")]
+		public bool UserStatus
+		{
+			get
+			{
+				return this._UserStatus;
+			}
+			set
+			{
+				if ((this._UserStatus != value))
+				{
+					this.OnUserStatusChanging(value);
+					this.SendPropertyChanging();
+					this._UserStatus = value;
+					this.SendPropertyChanged("UserStatus");
+					this.OnUserStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserGroups", Storage="_UserGroups", ThisKey="UserId", OtherKey="UserID")]
+		public EntitySet<UserGroups> UserGroups
+		{
+			get
+			{
+				return this._UserGroups;
+			}
+			set
+			{
+				this._UserGroups.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_UserGroups(UserGroups entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = this;
+		}
+		
+		private void detach_UserGroups(UserGroups entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = null;
 		}
 	}
 }
