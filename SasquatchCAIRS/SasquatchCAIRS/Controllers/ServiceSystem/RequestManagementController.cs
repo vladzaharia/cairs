@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Transactions;
 using SasquatchCAIRS.Models;
@@ -125,7 +124,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// <param name="reqContent">RequestContent containing
         /// QuestionResponseContents, ReferenceContents and Keywords</param>
         public void create(RequestContent reqContent) {
-            try {
+            //try {
                 using (TransactionScope trans = new TransactionScope()) {
                     // Insert new Request entity
                     Request req = createRequestEntity(reqContent);
@@ -147,16 +146,12 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
 
                         // For each Keyword associated with the
                         // QuestionResponse
-                        foreach (KeywordContent kwContent
-                            in qrContent.keywords) {
+                        foreach (String kw in qrContent.keywords) {
 
-                            if (kwContent.keywordId == -1) {                                
-                                kwContent.keywordId =
-                                    createKeyword(kwContent.keywordStr);
-                            }
+                            int kwId = getKeywordId(kw);
 
                             KeywordQuestion kq = new KeywordQuestion {
-                                KeywordID = kwContent.keywordId,
+                                KeywordID = kwId,
                                 RequestID = req.RequestID,
                                 QuestionResponseID = qr.QuestionResponseID
                             };
@@ -185,10 +180,10 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
 
                     trans.Complete();
                 }
-            } catch (Exception ex) {
-                // TODO: Do something
-                throw ex;
-            }
+            //} catch (Exception ex) {
+            //    // TODO: Do something
+            //    throw ex;
+            //}
         }
 
         /// <summary>
@@ -197,24 +192,28 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// <param name="keywordStr">Keyword string to create.</param>
         /// <returns>Keyword ID of the new keyword, or existing keyword
         /// ID if already exists.</returns>
-        private int createKeyword(string keywordStr) {
+        private int getKeywordId(string keywordStr) {
             // Keyword may not exist
-            Keyword kw;
+            Keyword kw = new Keyword {KeywordValue = keywordStr};
 
             try {
-                kw = new Keyword {KeywordValue = keywordStr};
-
                 _db.Keywords.InsertOnSubmit(kw);
                 _db.SubmitChanges();
-            } catch (SqlException) {
-                // Keyword already exists from someone else
+            } catch (Exception) {
+                // Keyword already exists
+                // Still marked as pending so must delete from DataContext
+                _db.Keywords.DeleteOnSubmit(kw);
+                _db.SubmitChanges();
+
                 kw = (from kws in _db.Keywords
                       where kws.KeywordValue == keywordStr
                       select kws)
                       .First();
             }
 
-            return kw.KeywordID;
+            int id = kw.KeywordID;
+
+            return id;
         }
 
         /// <summary>
@@ -269,7 +268,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
 
                 // For each Keyword for the current QuestionResponse
                 foreach (Keyword kw in kwResults) {
-                    qrContent.addKeyword(new KeywordContent(kw));
+                    qrContent.addKeyword(kw.KeywordValue);
                 }
 
                 // For each Reference for the current QuestionResponse
@@ -339,24 +338,14 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                                 qrContent.questionResponseID);
 
                             // Check all Keywords for the QuestionResponse
-                            foreach (KeywordContent kwContent in
+                            foreach (String kw in
                                      qrContent.keywords) {
-                                if (kwContent.keywordId == -1) {
-                                    // Insert new Keyword into database
-                                    Keyword kw = new Keyword {
-                                        KeywordValue = kwContent.keywordStr
-                                    };
+                                int kwId = getKeywordId(kw);
 
-                                    _db.Keywords.InsertOnSubmit(kw);
-                                    _db.SubmitChanges();
-
-                                    kwContent.keywordId = kw.KeywordID;
-                                }
-
-                                if (!currKwIds.Remove(kwContent.keywordId)) {
+                                if (!currKwIds.Remove(kwId)) {
                                     // Set Keyword for QuestionResponse
                                     KeywordQuestion kq = new KeywordQuestion {
-                                        KeywordID = kwContent.keywordId,
+                                        KeywordID = kwId,
                                         RequestID = reqContent.requestID,
                                         QuestionResponseID =
                                             qrContent.questionResponseID
@@ -420,23 +409,12 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                             _db.SubmitChanges();
 
                             // Add new Keywords to QuestionResponse
-                            foreach (KeywordContent kwContent in
-                                     qrContent.keywords) {
-                                if (kwContent.keywordId == -1) {
-                                    // Insert new Keyword into database
-                                    Keyword kw = new Keyword {
-                                        KeywordValue = kwContent.keywordStr
-                                    };
-
-                                    _db.Keywords.InsertOnSubmit(kw);
-                                    _db.SubmitChanges();
-
-                                    kwContent.keywordId = kw.KeywordID;
-                                }
+                            foreach (String kw in qrContent.keywords) {
+                                int kwId = getKeywordId(kw);
 
                                 // Set Keyword for QuestionResponse
                                 KeywordQuestion kq = new KeywordQuestion {
-                                    KeywordID = kwContent.keywordId,
+                                    KeywordID = kwId,
                                     RequestID = reqContent.requestID,
                                     QuestionResponseID =
                                         qrContent.questionResponseID

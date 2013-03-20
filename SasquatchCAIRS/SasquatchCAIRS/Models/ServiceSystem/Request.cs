@@ -65,7 +65,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
 
         [Display(Name = "First Name"), StringLength(64)]
         public string requestorFirstName { get; set; }
-
+        
         [Display(Name = "Last Name"), StringLength(64)]
         public string requestorLastName { get; set; }
 
@@ -143,7 +143,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
 
         public QuestionResponseContent(QuestionResponse qr) {
             referenceList = new List<ReferenceContent>();
-            keywords = new List<KeywordContent>();
+            keywords = new List<String>();
             requestID = qr.RequestID;
             questionResponseID = qr.QuestionResponseID;
 
@@ -165,7 +165,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
 
         public QuestionResponseContent() {
             referenceList = new List<ReferenceContent>();
-            keywords = new List<KeywordContent>();
+            keywords = new List<String>();
             tumourGroupID = null;
             questionTypeID = null;
             timeSpent = null;
@@ -235,18 +235,14 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         }
 
         [Display(Name = "Keywords")]
-        public List<KeywordContent> keywords { get; private set; }
+        public List<String> keywords { get; private set; }
 
-        public void addKeyword(KeywordContent newKeyword) {
+        public void addKeyword(String newKeyword) {
             keywords.Add(newKeyword);
         }
 
-        public void removeKeyword(int keywordId) {
-            foreach (KeywordContent kw in keywords) {
-                if (kw.keywordId == keywordId) {
-                    keywords.Remove(kw);
-                }
-            }
+        public void removeKeyword(string keyword) {
+             keywords.Remove(keyword);
         }
 
         /// <summary>

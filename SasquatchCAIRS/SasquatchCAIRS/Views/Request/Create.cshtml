@@ -64,6 +64,12 @@
 
     <h3>Questions</h3>
     <div id="qrContainer"></div>
+    <br />
+    <br />
+    <a href="#" class="btn btn-success btn-small" id="qr-add">
+        <i class="icon-plus"></i>
+        &nbsp;@Constants.UIString.ButtonText.ADD_QUESTION
+    </a>
     
     <br />
     <br />
@@ -89,33 +95,61 @@
 
 <script type="text/javascript">
     $(function () {
-        $.get("@Url.Action("NewQuestionResponse", "Request")", function (qr) {
-            $("#qrContainer").append(qr);
-            $("#qrContainer > div:last button:last").attr("disabled", true);
+        $("#qr-add").click(function (e) {
+            e.preventDefault();
 
-            var qrGuid = $("#qrContainer > div:last input[type=hidden]:first").val();
-
-            $.get("@Url.Action("NewReference", "Request")/" + qrGuid, function (r) {
-                $("#qr-references-" + qrGuid + " tbody").append(r);
-                $(".del-ref").attr("disabled", true);
-                $(".del-ref").attr("href", "#");
-            });
+            // $("#qrContainer").append("<hr>");
+            addQuestion();
         });
 
-        $(document).keypress(function(event) {
+        addQuestion();
+
+        // Suppress enter key submit of form
+        $(document).keypress(function (event) {
             if (event.which == '13') {
                 event.preventDefault();
             }
         });
     });
 
-    function deleteReference(localId, localRefId) {
-        $("#qr-references-" + localId + "-" + localRefId).remove();
+    function addQuestion() {
+        $.get("@Url.Action("NewQuestionResponse", "Request")", function (qr) {
+            $("#qrContainer").append(qr);
 
-        var refRows = $("#qr-references-" + localId + " tbody tr");
-        if (refRows.length == 1) {
-            $(refRows[0]).find(".del-ref").attr("disabled", true);
-            $(refRows[0]).find(".del-ref").attr("href", "#");
+            var delBtns = $("#qrContainer .del-question");
+            if (delBtns.length <= 1) {
+                delBtns.attr("disabled", true).attr("href", "#");
+            } else {
+                delBtns.attr("disabled", false).attr("href", "#warning_modal");
+            }
+
+            var qrGuid = $("#qrContainer > div:last input[type=hidden]:first").val();
+
+            $.get("@Url.Action("NewReference", "Request")/" + qrGuid, function (r) {
+                $("#qr-references-" + qrGuid).append(r);
+                $(".del-ref").attr("disabled", true);
+                $(".del-ref").attr("href", "#");
+            });
+        });
+    }
+    
+    function deleteQuestion(id) {
+        $("#qr-" + id).remove();
+
+        var qrs = $("#qrContainer > div");
+        if (qrs.length <= 1) {
+            $(qrs[0]).find(".del-question").attr("disabled", true).attr("href", "#");
+        }
+
+        return hideModal();
+    }
+
+    function deleteReference(id, refId) {
+        $("#qr-references-" + id + "-" + refId).remove();
+
+        var refRows = $("#qr-references-" + id + " tr");
+        if (refRows.length <= 1) {
+            $(refRows[0]).find(".del-ref").attr("disabled", true).attr("href", "#");
         }
 
         return hideModal();

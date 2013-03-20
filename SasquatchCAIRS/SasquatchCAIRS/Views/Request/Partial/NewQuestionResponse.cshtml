@@ -64,20 +64,15 @@
                 </td>
             </tr>
         </table>
-
+        
+        @Html.LabelFor(model => model.referenceList)
         <table id="qr-references-@(ViewBag.Guid)">
-            <thead>
-                <tr>
-                    <th>@Html.LabelFor(model => model.referenceList)</th>
-                    <th>
-                        <button id="qr-references-add-@(ViewBag.Guid)" class="btn btn-primary">
-                            @Constants.UIString.ButtonText.ADD_REFERENCE
-                        </button>
-                    </th>
-                </tr>
-            </thead>
-            <tbody></tbody>
         </table>
+
+        <a href="#" class="btn btn-success btn-small" id="qr-references-add-@(ViewBag.Guid)">
+            <i class="icon-plus"></i>
+            &nbsp;@Constants.UIString.ButtonText.ADD_REFERENCE
+        </a>
         
         <table>
             <tr>
@@ -85,56 +80,79 @@
                 <td>
                     <input id="qr-keywords-@(ViewBag.Guid)" type="text"
                            data-provide="typeahead" autocomplete="off"/>
+                    <div id="qr-keyword-list-@(ViewBag.Guid)"></div>
                 </td>
             </tr>
         </table>
         
-        <br/>
-        <button id="qr-add-@(ViewBag.Guid)" class="btn btn-primary">
-            @Constants.UIString.ButtonText.ADD_QUESTION
-        </button>
-        <button id="qr-delete-@(ViewBag.Guid)" class="btn btn-primary">
-            @Constants.UIString.ButtonText.DELETE_QUESTION
-        </button>
+        <a href="#" data-toggle="modal" class="btn btn-danger btn-small del-question" id="qr-delete-@(ViewBag.Guid)">
+            <i class="icon-remove"></i>
+            &nbsp;@Constants.UIString.ButtonText.DELETE_QUESTION
+        </a>
     }
-</div>
 
-<script type="text/javascript">
-    $(function() {
-        $("#qr-references-add-@(ViewBag.Guid)").click(function(e) {
-            e.preventDefault();
+    <script type="text/javascript">
+        $(function () {
+            $("#qr-references-add-@(ViewBag.Guid)").click(function (e) {
+                e.preventDefault();
 
-            $.get("@Url.Action("NewReference", "Request")/@(ViewBag.Guid)", function(r) {
-                $("#qr-references-@(ViewBag.Guid) tbody").append(r);
-                $("#qr-references-@(ViewBag.Guid) tbody .del-ref").attr("disabled", false);
-                $("#qr-references-@(ViewBag.Guid) tbody .del-ref").attr("href", "#warning_modal");
+                $.get("@Url.Action("NewReference", "Request")/@(ViewBag.Guid)", function (r) {
+                    $("#qr-references-@(ViewBag.Guid)").append(r);
+                    $("#qr-references-@(ViewBag.Guid) .del-ref").attr("disabled", false);
+                    $("#qr-references-@(ViewBag.Guid) .del-ref").attr("href", "#warning_modal");
+                });
+            });
+            
+            $("#qr-delete-@(ViewBag.Guid)").click(function (e) {
+                e.preventDefault();
+
+                $("#warning_modal_text").text("@Constants.UIString.Messages.DELETE_QUESTION_WARNING");
+                $("#warning_modal_yes_btn").unbind().click(function () {
+                    return deleteQuestion("@(ViewBag.Guid)");
+                });
+            });
+
+            $("#qr-keywords-@(ViewBag.Guid)").typeahead({
+                source: function (query, process) {
+                    var last = query.split(/\s*[,;]\s*/).pop();
+
+                    $.post("@Url.Action("GetMatchingKeywords", "Request")/" + last, function (data) {
+                        process(data);
+                    });
+                },
+                updater: function (item) {
+                    var terms = this.query.split(/\s*[,;]\s*/);
+                    terms.pop();
+                    terms.push(item);
+                    terms.push("");
+
+                    return terms.join(", ");
+                },
+                matcher: function (item) {
+                    return (this.query).split(/\s*[,;]\s*/).pop().length > 0;
+                },
+                highlighter: function (item) {
+                    var query = this.query.split(/\s*[,;]\s*/).pop().replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
+                    return item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+                        return '<strong>' + match + '</strong>';
+                    });
+                }
+            }).change(function () {
+                $("#qr-keyword-list-@(ViewBag.Guid)").empty();
+
+                var terms = $(this).val().split(/\s*[,;]\s*/);
+                if (terms[terms.length - 1] == "") {
+                    terms.pop();
+                }
+
+                for (var i = 0; i < terms.length; i++) {
+                    $("#qr-keyword-list-@(ViewBag.Guid)").append(
+                        '<input type="hidden" id="questionResponseList_@(ViewBag.Guid)__keywords_' + i + '"' +
+                            'name="questionResponseList[@(ViewBag.Guid)].keywords[' + i + ']"' +
+                            'value="' + terms[i] + '">');
+                }
             });
         });
+    </script>
+</div>
 
-        $("#qr-keywords-@(ViewBag.Guid)").typeahead({
-            source: function (query, process) {
-                var last = query.split(/\s*[,;]\s*/).pop();
-
-                $.post("@Url.Action("GetMatchingKeywords", "Request")/" + last, function (data) {
-                    process(data);
-                });
-            },
-            updater: function (item) {
-                var terms = this.query.split(/\s*[,;]\s*/);
-                terms.pop();
-                terms.push(item);
-                terms.push("");
-                return terms.join(", ");
-            },
-            matcher: function (item) {
-                return (this.query).split(/\s*[,;]\s*/).pop().length > 0;
-            },
-            highlighter: function (item) {
-                var query = this.query.split(/\s*[,;]\s*/).pop().replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
-                return item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
-                    return '<strong>' + match + '</strong>';
-                });
-            }
-        });
-    });
-</script>

@@ -44,18 +44,19 @@ namespace SasquatchCAIRS.Controllers
             // TODO: Redirect to request page?
             if (!ModelState.IsValid) {
                 return Create();
-            } else {
-                // Remove empty references
-                foreach (var qrCon in reqContent.questionResponseList) {
-                    qrCon.referenceList.RemoveAll(r => r.referenceString == null);
-                }
-
-                RequestManagementController rmc =
-                    RequestManagementController.instance;
-                rmc.create(reqContent);
-
-                return Redirect("/Home/Index");
             }
+
+            // Remove empty references
+            foreach (var qrCon in reqContent.questionResponseList) {
+                qrCon.referenceList.RemoveAll(
+                    r => r.referenceString == null);
+            }
+
+            RequestManagementController rmc =
+                RequestManagementController.instance;
+            rmc.create(reqContent);
+
+            return Redirect("/Home/Index");
         }
 
         [Authorize(Roles = "RequestEditor")]
@@ -63,7 +64,7 @@ namespace SasquatchCAIRS.Controllers
             DropdownController dc = DropdownController.instance;
             var qrContent = new QuestionResponseContent();
 
-            // Used to set local question response ID
+            // Used to set dynamic model binding index
             ViewBag.Guid = HtmlPrefixScopeExtensions.CreateItemIndex(
                 "questionResponseList");
 
@@ -81,7 +82,7 @@ namespace SasquatchCAIRS.Controllers
         public ActionResult NewReference(string id) {
             var refContent = new ReferenceContent();
 
-            // Used to set local reference ID
+            // Used to set dynamic model binding index
             ViewBag.Guid = id;
             ViewBag.RefGuid = HtmlPrefixScopeExtensions.CreateItemIndex(
                 "questionResponseList[" + id + "].referenceList");

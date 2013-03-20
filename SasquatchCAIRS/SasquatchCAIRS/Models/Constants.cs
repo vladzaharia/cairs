@@ -107,9 +107,9 @@ namespace SasquatchCAIRS.Models {
                 public const string SAVE_DRAFT = "Save Draft";
                 public const string MARK_COMPLETE = "Mark as Complete";
                 public const string DELETE_REQUEST = "Delete Request";
-                public const string ADD_QUESTION = "Add New Question";
+                public const string ADD_QUESTION = "Add Question";
                 public const string DELETE_QUESTION = "Delete Question";
-                public const string ADD_REFERENCE = "Add New Reference";
+                public const string ADD_REFERENCE = "Add Reference";
             }
 
             // Text used in Page Titles
@@ -123,6 +123,8 @@ namespace SasquatchCAIRS.Models {
             public static class Messages {
                 public const string DELETE_REFERENCE_WARNING =
                     "Are you sure you would like to delete this reference?";
+                public const string DELETE_QUESTION_WARNING =
+                    "Are you sure you would like to delete this question?";
             }
         }
 

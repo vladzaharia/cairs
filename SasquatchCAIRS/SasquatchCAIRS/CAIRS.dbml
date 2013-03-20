@@ -44,15 +44,6 @@
       <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
-  <Table Name="dbo.KeywordQuestion" Member="KeywordQuestions">
-    <Type Name="KeywordQuestion">
-      <Column Name="KeywordID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RequestID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Column Name="QuestionResponseID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Association Name="Keyword_KeywordQuestion" Member="Keyword" ThisKey="KeywordID" OtherKey="KeywordID" Type="Keyword" IsForeignKey="true" />
-      <Association Name="QuestionResponse_KeywordQuestion" Member="QuestionResponse" ThisKey="QuestionResponseID,RequestID" OtherKey="QuestionResponseID,RequestID" Type="QuestionResponse" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.QuestionResponse" Member="QuestionResponses">
     <Type Name="QuestionResponse">
       <Column Name="QuestionResponseID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -109,15 +100,6 @@
       <Association Name="QuestionType_QuestionResponse" Member="QuestionResponses" ThisKey="QuestionTypeID" OtherKey="QuestionTypeID" Type="QuestionResponse" />
     </Type>
   </Table>
-  <Table Name="dbo.TumourGroup" Member="TumourGroups">
-    <Type Name="TumourGroup">
-      <Column Name="TumourGroupID" Type="System.Byte" DbType="TinyInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Value" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
-      <Column Name="Code" Type="System.String" DbType="Char(10) NOT NULL" CanBeNull="false" />
-      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="TumourGroup_QuestionResponse" Member="QuestionResponses" ThisKey="TumourGroupID" OtherKey="TumourGroupID" Type="QuestionResponse" />
-    </Type>
-  </Table>
   <Table Name="dbo.AuditLog" Member="AuditLogs">
     <Type Name="AuditLog">
       <Column Name="RequestID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -146,6 +128,24 @@
       <Column Name="UserStatus" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="UserProfile_AuditLog" Member="AuditLogs" ThisKey="UserId" OtherKey="UserID" Type="AuditLog" />
       <Association Name="UserProfile_RequestLock" Member="RequestLocks" ThisKey="UserId" OtherKey="UserID" Type="RequestLock" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TumourGroup" Member="TumourGroups">
+    <Type Name="TumourGroup">
+      <Column Name="TumourGroupID" Type="System.Byte" DbType="TinyInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
+      <Column Name="Code" Type="System.String" DbType="Char(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="TumourGroup_QuestionResponse" Member="QuestionResponses" ThisKey="TumourGroupID" OtherKey="TumourGroupID" Type="QuestionResponse" />
+    </Type>
+  </Table>
+  <Table Name="dbo.KeywordQuestion" Member="KeywordQuestions">
+    <Type Name="KeywordQuestion">
+      <Column Name="KeywordID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RequestID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="QuestionResponseID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Keyword_KeywordQuestion" Member="Keyword" ThisKey="KeywordID" OtherKey="KeywordID" Type="Keyword" IsForeignKey="true" />
+      <Association Name="QuestionResponse_KeywordQuestion" Member="QuestionResponse" ThisKey="QuestionResponseID,RequestID" OtherKey="QuestionResponseID,RequestID" Type="QuestionResponse" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>
