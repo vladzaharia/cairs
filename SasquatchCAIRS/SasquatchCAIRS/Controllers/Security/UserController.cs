@@ -50,6 +50,11 @@ namespace SasquatchCAIRS.Controllers.Security {
                                                    username.ToLower());
         }
 
+        /// <summary>
+        /// Gets the groups for the username specified.
+        /// </summary>
+        /// <param name="username">Username to get groups for.</param>
+        /// <returns>An IEnumerable for the UserGroups</returns>
         public IEnumerable<UserGroup> getUserGroups(string username) {
             UserProfile profile = getUserProfile(username);
 

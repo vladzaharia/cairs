@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
 using SasquatchCAIRS.Controllers.Security;
+using SasquatchCAIRS.Controllers.ServiceSystem;
 using SasquatchCAIRS.Models;
 using SasquatchCAIRS.Models.ServiceSystem;
 
@@ -19,6 +20,8 @@ namespace SasquatchCAIRS.Controllers {
         public ActionResult Index() {
             return RedirectToAction("Users");
         }
+
+        #region Users
 
         //
         // GET: /Admin/User/List
@@ -52,6 +55,8 @@ namespace SasquatchCAIRS.Controllers {
 
             return View(userProfile);
         }
+
+        
 
         //
         // POST: /Admin/User/Edit
@@ -121,6 +126,10 @@ namespace SasquatchCAIRS.Controllers {
 
             return RedirectToAction("Users", new {success = true});
         }
+
+        #endregion
+
+        #region Dropdowns
 
         //
         // GET: /Admin/Dropdown/List
@@ -318,5 +327,7 @@ namespace SasquatchCAIRS.Controllers {
             return
                 View(new DropdownEntry(0, code, value, Convert.ToBoolean(active)));
         }
+
+        #endregion
     }
 }

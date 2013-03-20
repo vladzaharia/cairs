@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using SasquatchCAIRS.Models;
+using SasquatchCAIRS.Models.ServiceSystem;
 
-namespace SasquatchCAIRS.Models.ServiceSystem {
+namespace SasquatchCAIRS.Controllers.ServiceSystem {
     public sealed class DropdownController {
         private static readonly DropdownController _instance =
             new DropdownController();
