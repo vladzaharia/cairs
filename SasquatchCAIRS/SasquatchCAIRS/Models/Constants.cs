@@ -107,7 +107,7 @@ namespace SasquatchCAIRS.Models {
                 public const string CALLER_PHONE = "Phone Number";
                 public const string CALLER_TYPE = "Caller Type";
                 public const string CALLER_REGION = "Region";
-                public const string PATIENT_NAME = "Patient Name";
+                
 
                 // Patient Information
                 public const string PATIENT_NAME = "Name";

@@ -103,7 +103,10 @@ namespace SasquatchCAIRS.Controllers {
             SearchCriteria criteria = (SearchCriteria) Session["criteria"];
             return View("Advanced", criteria);
         }
-
+        /// <summary>
+        /// Clean up managed and unmanaged resources
+        /// </summary>
+        /// <param name="disposing">Scenario to operate under</param>
         protected override void Dispose(bool disposing) {
             _db.Dispose();
             base.Dispose(disposing);
@@ -115,13 +118,9 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="input">Input String</param>
         /// <param name="delimiters">Delimiter inside string</param>
         /// <returns>Corresponding List of Integers</returns>
-        private List<int> stringToList(string input, string delimiters) {
-            List<int> results = new List<int>();
+        private List<int> typeIDStringtoList(string input, string delimiters) {
             string[] arr = input.Split(delimiters.ToCharArray());
-            foreach (var s in arr) {
-                results.Add(int.Parse(s));
-            }
-            return results;
+            return arr.Select(s => int.Parse(s)).ToList();
         }
 
         /// <summary>
@@ -130,7 +129,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="input">Input string</param>
         /// <param name="delimiters">Delimiter inside the string</param>
         /// <returns>Corresponding List of Strings</returns>
-        private List<String> stringToSList(string input, string delimiters) {
+        private List<String> keywordsToList(string input, string delimiters) {
             return input.Split(delimiters.ToCharArray()).ToList();
         }
 
@@ -142,11 +141,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <returns>Corresponding List of Integers for that Type and Input</returns>
         private List<int> enumToIDs(string input, Type type) {
             String[] stringArr = input.Split(",".ToCharArray());
-            List<int> intList = new List<int>();
-            foreach (var v in stringArr) {
-                intList.Add((int) Enum.Parse(type, v));
-            }
-            return intList;
+            return stringArr.Select(v => (int) Enum.Parse(type, v)).ToList();
         }
 
         /// <summary>
@@ -241,7 +236,7 @@ namespace SasquatchCAIRS.Controllers {
                 questionResponses =
                     questionResponses.Where(
                         qr =>
-                        stringToList(criteria.tumorGroup, ",")
+                        typeIDStringtoList(criteria.tumorGroup, ",")
                             .Contains(qr.TumourGroup.TumourGroupID));
             }
 
@@ -250,7 +245,7 @@ namespace SasquatchCAIRS.Controllers {
                 questionResponses =
                     questionResponses.Where(
                         qr =>
-                        stringToList(criteria.questionType, ",")
+                        typeIDStringtoList(criteria.questionType, ",")
                             .Contains(qr.QuestionType.QuestionTypeID));
             }
 
@@ -261,7 +256,7 @@ namespace SasquatchCAIRS.Controllers {
                 // First we grab the keywords
                 IQueryable<Keyword> keywords = (from k in _db.Keywords
                                                 where
-                                                    stringToSList(criteria.keywordString, ",")
+                                                    keywordsToList(criteria.keywordString, ",")
                                                     .Contains(k.KeywordValue)
                                                 select k);
 
