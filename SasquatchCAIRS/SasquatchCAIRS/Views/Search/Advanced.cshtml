@@ -3,7 +3,7 @@
 @model SasquatchCAIRS.Models.SearchSystem.SearchCriteria
 
 @{
-    ViewBag.Title = "Advanced Search";
+    ViewBag.Title = Constants.UIString.TitleText.ADVANCED_SEARCH;
 }
 
 <h2>Advanced Search</h2>
@@ -15,11 +15,9 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>SearchCriteria</legend>
-
         <div>
             <br>
-            @Html.Label("Keywords")
+            @Html.Label(Constants.UIString.FieldLabel.KEYWORDS)
         </div>
         <div>
             @Html.EditorFor(model => model.keywordString)
@@ -28,14 +26,14 @@
 
         <div>
             <br />
-            @Html.Label("Start Time")
+            @Html.Label(Constants.UIString.FieldLabel.START_TIME)
         </div>
 
         <div>
-            @if (!Model.startTime.ToString(Constants.DATE_FORMAT)
-            .Equals(Constants.EMPTY_DATE)) {
+           @if (!Model.startTime.ToString(Constants.DATE_FORMAT)
+                       .Equals(Constants.EMPTY_DATE)) {
                 <input class="input-medium" name="startTime" type="date" 
-                value="@Model.startTime.ToString(Constants.DATE_FORMAT)" />    
+                       value="@Model.startTime.ToString(Constants.DATE_FORMAT)" />    
             } else {
                 <input class="input-medium" name="startTime" type="date" />
             }
@@ -43,7 +41,7 @@
 
         <div>
             <br />
-            @Html.Label("Completion Time")
+            @Html.Label(Constants.UIString.FieldLabel.COMPLETED_TIME)
         </div>
         <div>
             @if (!Model.completionTime.ToString(Constants.DATE_FORMAT)
@@ -57,7 +55,7 @@
 
         <div>
             <br />
-            @Html.Label("Status")
+            @Html.Label(Constants.UIString.FieldLabel.STATUS)
         </div>
 
         <div>
@@ -77,7 +75,7 @@
 
         <div>
             <br />
-            @Html.Label("Requestor Name")
+            @Html.Label(Constants.UIString.FieldLabel.CALLER_NAME)
         </div>
 
         <div>
@@ -89,7 +87,7 @@
 
         <div>
             <br />
-            @Html.Label("Patient Name")
+            @Html.Label(Constants.UIString.FieldLabel.PATIENT_NAME)
         </div>
 
         <div>
@@ -101,7 +99,7 @@
 
         <div>
             <br />
-            @Html.Label("Tumor Group")
+            @Html.Label(Constants.UIString.FieldLabel.TUMOR_GROUP)
         </div>
 
         <div class="scroll">
@@ -121,7 +119,7 @@
 
         <div>
             <br />
-            @Html.Label("Question Type")
+            @Html.Label(Constants.UIString.FieldLabel.QUESTION_TYPE)
         </div>
 
         <div class="scroll">
@@ -141,7 +139,7 @@
 
         <div>
             <br />
-            @Html.Label(" Severity")
+            @Html.Label(Constants.UIString.FieldLabel.SEVERITY)
         </div>
         <div>
             @foreach (var severity in Enum.GetValues(
@@ -160,7 +158,7 @@
 
         <div>
             <br />
-            @Html.Label(" Consequence")
+            @Html.Label(Constants.UIString.FieldLabel.CONSEQUENCE)
         </div>
 
         <div>
@@ -182,7 +180,10 @@
 
         <p>
             <br />
-            <input class="btn" type="submit" value="Search!" />
+            <input class="btn" type="submit" value="@Constants.UIString.ButtonText.SEARCH" />
         </p>
     </fieldset>
 }
+<script>
+    $('#datepicker').datepicker();
+</script>

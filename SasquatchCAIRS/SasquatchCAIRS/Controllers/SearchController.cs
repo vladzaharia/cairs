@@ -14,7 +14,7 @@ namespace SasquatchCAIRS.Controllers {
         private CAIRSDataContext _db = new CAIRSDataContext();
 
         /// <summary>
-        /// Given a list of keywords returns all requests with one or more of those keywords
+        /// Given a comma delimited string of keywords returns all requests with one or more of those keywords
         /// </summary>
         /// <param name="keywords">String of comma delimited keywords</param>
         /// <returns></returns>
@@ -104,24 +104,15 @@ namespace SasquatchCAIRS.Controllers {
             return View("Advanced", criteria);
         }
 
-        protected override void Dispose(bool disposing) {
-            _db.Dispose();
-            base.Dispose(disposing);
-        }
-
         /// <summary>
         /// Converts an input String into a list of Int, used for Question Type ID and Tumour Group ID
         /// </summary>
         /// <param name="input">Input String</param>
         /// <param name="delimiters">Delimiter inside string</param>
         /// <returns>Corresponding List of Integers</returns>
-        private List<int> stringToList(string input, string delimiters) {
-            List<int> results = new List<int>();
+        private List<int> stringToIntList(string input, string delimiters) {
             string[] arr = input.Split(delimiters.ToCharArray());
-            foreach (var s in arr) {
-                results.Add(int.Parse(s));
-            }
-            return results;
+            return arr.Select(int.Parse).ToList();
         }
 
         /// <summary>
@@ -130,7 +121,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="input">Input string</param>
         /// <param name="delimiters">Delimiter inside the string</param>
         /// <returns>Corresponding List of Strings</returns>
-        private List<String> stringToSList(string input, string delimiters) {
+        private List<String> stringToStringList(string input, string delimiters) {
             return input.Split(delimiters.ToCharArray()).ToList();
         }
 
@@ -138,15 +129,11 @@ namespace SasquatchCAIRS.Controllers {
         /// Converts a String into List of Intgers based on its Enum value specified in Constants.cs
         /// </summary>
         /// <param name="input">Input String</param>
-        /// <param name="type">Specific Type (Severity or Consequence)</param>
+        /// <param name="type">Enumeration Type</param>
         /// <returns>Corresponding List of Integers for that Type and Input</returns>
         private List<int> enumToIDs(string input, Type type) {
             String[] stringArr = input.Split(",".ToCharArray());
-            List<int> intList = new List<int>();
-            foreach (var v in stringArr) {
-                intList.Add((int) Enum.Parse(type, v));
-            }
-            return intList;
+            return stringArr.Select(v => (int) Enum.Parse(type, v)).ToList();
         }
 
         /// <summary>
@@ -241,7 +228,7 @@ namespace SasquatchCAIRS.Controllers {
                 questionResponses =
                     questionResponses.Where(
                         qr =>
-                        stringToList(criteria.tumorGroup, ",")
+                        stringToIntList(criteria.tumorGroup, ",")
                             .Contains(qr.TumourGroup.TumourGroupID));
             }
 
@@ -250,7 +237,7 @@ namespace SasquatchCAIRS.Controllers {
                 questionResponses =
                     questionResponses.Where(
                         qr =>
-                        stringToList(criteria.questionType, ",")
+                        stringToIntList(criteria.questionType, ",")
                             .Contains(qr.QuestionType.QuestionTypeID));
             }
 
@@ -261,7 +248,7 @@ namespace SasquatchCAIRS.Controllers {
                 // First we grab the keywords
                 IQueryable<Keyword> keywords = (from k in _db.Keywords
                                                 where
-                                                    stringToSList(criteria.keywordString, ",")
+                                                    stringToStringList(criteria.keywordString, ",")
                                                     .Contains(k.KeywordValue)
                                                 select k);
 

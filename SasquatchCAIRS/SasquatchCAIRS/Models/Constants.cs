@@ -125,6 +125,11 @@ namespace SasquatchCAIRS.Models {
                 public const string KEYWORDS = "Keywords";
                 public const string REFERENCES = "References";
                 public const string PARENT_REQUEST = "Parent Request ID";
+                
+                // Search Field Labels
+                public const string TUMOR_GROUP = "Tumor Group";
+                public const string QUESTION_TYPE = "Question Type";
+                public const string NO_RESULTS = "No results were found.";
             }
 
             // Text used in Buttons
@@ -136,6 +141,9 @@ namespace SasquatchCAIRS.Models {
                 public const string SAVE_DRAFT = "Save Draft";
                 public const string MARK_COMPLETE = "Mark as Complete";
                 public const string DELETE_REQUEST = "Delete Request";
+                public const string MODIFY_SEARCH = "Modify Search";
+                public const string NEW_SEARCH = "New Search";
+                public const string SEARCH = "Search!";
             }
 
             // Text used in Page Titles
@@ -144,6 +152,8 @@ namespace SasquatchCAIRS.Models {
                 public const string VIEW_REQUEST = "View Request";
                 public const string REQUEST_NUM = "Request #";
                 public const string ERROR = "Error";
+                public const string ADVANCED_SEARCH = "Advanced Search";
+                public const string RESULTS = "Results";
             }
         }
 
