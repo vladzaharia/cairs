@@ -1,0 +1,84 @@
+﻿@using SasquatchCAIRS
+@using SasquatchCAIRS.Models
+@using SasquatchCAIRS.Models.ServiceSystem
+@using System.Linq;
+@model UserProfile
+
+@{
+    ViewBag.Title = Constants.UIString.TitleText.ADMIN + " - " + Constants.UIString.TitleText.EDIT_USER;
+}
+
+@Html.Partial("_AdminNavPartial", new ViewDataDictionary{ { "active", "users" } })
+
+<h2>@Constants.UIString.TitleText.ADMIN - @Constants.UIString.TitleText.EDIT_USER</h2>
+
+@if (ViewBag.SuccessMessage != null) {
+    <div class="message palette-success-dark">
+        @ViewBag.SuccessMessage
+    </div>
+}
+
+@using (Html.BeginForm("UserDetails", "Admin",
+    FormMethod.Post, new { @class = "form" })) {
+    <table class="table unbordered-table">
+        <tr>
+            <td class="tbl-label palette-silver">@Constants.UIString.FieldLabel.USERNAME</td>
+            <td class="tbl-content-4 palette-silver">@Html.DisplayFor(m => m.UserName)</td>
+            <td class="tbl-info palette-silver" rowspan="3">These values are retrieved from Active Directory and are updated on every login. They may not be changed here.</td>
+        </tr>
+        <tr>
+            <td class="tbl-label palette-silver">@Constants.UIString.FieldLabel.FULL_NAME</td>
+            <td class="palette-silver">@Html.DisplayFor(m => m.UserFullName)</td>
+        </tr>
+        <tr>
+            <td class="tbl-label palette-silver">@Constants.UIString.FieldLabel.USER_EMAIL</td>
+            <td class="palette-silver">@Html.DisplayFor(m => m.UserEmail)</td>
+        </tr>
+        <tr>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.ROLES</td>
+            <td colspan="2">
+                @foreach (string item in @ViewBag.Roles) {
+                    <label class="checkboxlist">
+                        @if ((ViewBag.UserRoles != null) &&
+                             ViewBag.UserRoles.Contains(item)) {
+                            <label class="checkbox" for="userRole-@item">
+                                <input type="checkbox" value="@item" id="userRole-@item" name="userRole" checked="checked">
+                                @item
+                            </label>
+                        } else {
+                            <label class="checkbox" for="userRole-@item">
+                                <input type="checkbox" value="@item" id="userRole-@item" name="userRole">
+                                @item
+                            </label>
+                        }
+                    </label>
+                }    
+            </td>
+        </tr>
+        <tr>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.GROUPS</td>
+            <td colspan="2">
+                @foreach (DropdownEntry item in @ViewBag.Groups) {
+                    <label class="checkboxlist">
+                       @if (((IQueryable<UserGroups>) ViewBag.UserGroups).FirstOrDefault(
+                            usg => usg.GroupID == item.id) != null) {
+                            <label class="checkbox" for="userGroup-@item.id">
+                                <input type="checkbox" value="@item.id" id="userGroup-@item.id" name="userGroup" checked="checked">
+                                @item.code - @item.value @* TODO Update to @item.text when Michelle Updates *@
+                            </label>
+                        } else {
+                            <label class="checkbox" for="userGroup-@item.id">
+                                <input type="checkbox" value="@item.id" id="userGroup-@item.id" name="userGroup">
+                                @item.code - @item.value @* TODO Update to @item.text when Michelle Updates *@
+                            </label>
+                        }
+                    </label>
+                }               
+            </td>
+        </tr>
+        <tr>
+            <td><input type="hidden" name="userName" value="@Html.DisplayFor(m => m.UserName)"/></td>
+            <td><input class="btn btn-info" type="submit" value="Edit User" /></td>
+        </tr>
+    </table>
+}
