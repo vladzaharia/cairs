@@ -8,18 +8,7 @@ using SasquatchCAIRS.Models.ServiceSystem;
 
 namespace SasquatchCAIRS.Controllers.ServiceSystem {
     public sealed class RequestManagementController {
-        private static readonly RequestManagementController _instance =
-            new RequestManagementController();
         private CAIRSDataContext _db = new CAIRSDataContext();
-
-        private RequestManagementController() {
-        }
-
-        public static RequestManagementController instance {
-            get {
-                return _instance;
-            }
-        }
 
         /// <summary>
         /// Creates a Request entity based off of the RequestContent.

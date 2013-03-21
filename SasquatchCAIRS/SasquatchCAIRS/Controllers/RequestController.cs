@@ -14,10 +14,9 @@ namespace SasquatchCAIRS.Controllers {
         [Authorize(Roles = "Viewer")]
         public ActionResult Details(long id) {
             var db = new CAIRSDataContext();
-            RequestManagementController rmc =
-                RequestManagementController.instance;
-            RequestLockController rlc = RequestLockController.instance;
-            UserProfileController upc = UserProfileController.instance;
+            RequestManagementController rmc = new RequestManagementController();
+            RequestLockController rlc = new RequestLockController();
+            UserController upc = new UserController();
             int timeSpent = 0;
 
             // Set up the Request Object

@@ -66,6 +66,9 @@ namespace SasquatchCAIRS
     partial void InsertUserProfile(UserProfile instance);
     partial void UpdateUserProfile(UserProfile instance);
     partial void DeleteUserProfile(UserProfile instance);
+    partial void InsertUserGroups(UserGroups instance);
+    partial void UpdateUserGroups(UserGroups instance);
+    partial void DeleteUserGroups(UserGroups instance);
     #endregion
 		
 		public CAIRSDataContext() : 
@@ -199,6 +202,14 @@ namespace SasquatchCAIRS
 			get
 			{
 				return this.GetTable<UserProfile>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UserGroups> UserGroups1
+		{
+			get
+			{
+				return this.GetTable<UserGroups>();
 			}
 		}
 	}
@@ -1180,6 +1191,8 @@ namespace SasquatchCAIRS
 		
 		private bool _Active;
 		
+		private EntitySet<UserGroups> _UserGroups;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1196,6 +1209,7 @@ namespace SasquatchCAIRS
 		
 		public UserGroup()
 		{
+			this._UserGroups = new EntitySet<UserGroups>(new Action<UserGroups>(this.attach_UserGroups), new Action<UserGroups>(this.detach_UserGroups));
 			OnCreated();
 		}
 		
@@ -1279,6 +1293,19 @@ namespace SasquatchCAIRS
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserGroup_UserGroup1", Storage="_UserGroups", ThisKey="GroupID", OtherKey="GroupID")]
+		public EntitySet<UserGroups> UserGroups
+		{
+			get
+			{
+				return this._UserGroups;
+			}
+			set
+			{
+				this._UserGroups.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1297,6 +1324,18 @@ namespace SasquatchCAIRS
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_UserGroups(UserGroups entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserGroup = this;
+		}
+		
+		private void detach_UserGroups(UserGroups entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserGroup = null;
 		}
 	}
 	
@@ -2901,6 +2940,8 @@ namespace SasquatchCAIRS
 		
 		private EntitySet<RequestLock> _RequestLocks;
 		
+		private EntitySet<UserGroups> _UserGroups;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -2921,6 +2962,7 @@ namespace SasquatchCAIRS
 		{
 			this._AuditLogs = new EntitySet<AuditLog>(new Action<AuditLog>(this.attach_AuditLogs), new Action<AuditLog>(this.detach_AuditLogs));
 			this._RequestLocks = new EntitySet<RequestLock>(new Action<RequestLock>(this.attach_RequestLocks), new Action<RequestLock>(this.detach_RequestLocks));
+			this._UserGroups = new EntitySet<UserGroups>(new Action<UserGroups>(this.attach_UserGroups), new Action<UserGroups>(this.detach_UserGroups));
 			OnCreated();
 		}
 		
@@ -3050,6 +3092,19 @@ namespace SasquatchCAIRS
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserGroups", Storage="_UserGroups", ThisKey="UserId", OtherKey="UserID")]
+		public EntitySet<UserGroups> UserGroups
+		{
+			get
+			{
+				return this._UserGroups;
+			}
+			set
+			{
+				this._UserGroups.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -3092,6 +3147,186 @@ namespace SasquatchCAIRS
 		{
 			this.SendPropertyChanging();
 			entity.UserProfile = null;
+		}
+		
+		private void attach_UserGroups(UserGroups entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = this;
+		}
+		
+		private void detach_UserGroups(UserGroups entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserGroups")]
+	public partial class UserGroups : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private byte _GroupID;
+		
+		private int _UserID;
+		
+		private EntityRef<UserGroup> _UserGroup;
+		
+		private EntityRef<UserProfile> _UserProfile;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnGroupIDChanging(byte value);
+    partial void OnGroupIDChanged();
+    partial void OnUserIDChanging(int value);
+    partial void OnUserIDChanged();
+    #endregion
+		
+		public UserGroups()
+		{
+			this._UserGroup = default(EntityRef<UserGroup>);
+			this._UserProfile = default(EntityRef<UserProfile>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
+		public byte GroupID
+		{
+			get
+			{
+				return this._GroupID;
+			}
+			set
+			{
+				if ((this._GroupID != value))
+				{
+					if (this._UserGroup.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._GroupID = value;
+					this.SendPropertyChanged("GroupID");
+					this.OnGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UserID
+		{
+			get
+			{
+				return this._UserID;
+			}
+			set
+			{
+				if ((this._UserID != value))
+				{
+					if (this._UserProfile.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserID = value;
+					this.SendPropertyChanged("UserID");
+					this.OnUserIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserGroup_UserGroup1", Storage="_UserGroup", ThisKey="GroupID", OtherKey="GroupID", IsForeignKey=true)]
+		public UserGroup UserGroup
+		{
+			get
+			{
+				return this._UserGroup.Entity;
+			}
+			set
+			{
+				UserGroup previousValue = this._UserGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._UserGroup.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserGroup.Entity = null;
+						previousValue.UserGroups.Remove(this);
+					}
+					this._UserGroup.Entity = value;
+					if ((value != null))
+					{
+						value.UserGroups.Add(this);
+						this._GroupID = value.GroupID;
+					}
+					else
+					{
+						this._GroupID = default(byte);
+					}
+					this.SendPropertyChanged("UserGroup");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserGroups", Storage="_UserProfile", ThisKey="UserID", OtherKey="UserId", IsForeignKey=true)]
+		public UserProfile UserProfile
+		{
+			get
+			{
+				return this._UserProfile.Entity;
+			}
+			set
+			{
+				UserProfile previousValue = this._UserProfile.Entity;
+				if (((previousValue != value) 
+							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserProfile.Entity = null;
+						previousValue.UserGroups.Remove(this);
+					}
+					this._UserProfile.Entity = value;
+					if ((value != null))
+					{
+						value.UserGroups.Add(this);
+						this._UserID = value.UserId;
+					}
+					else
+					{
+						this._UserID = default(int);
+					}
+					this.SendPropertyChanged("UserProfile");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }
