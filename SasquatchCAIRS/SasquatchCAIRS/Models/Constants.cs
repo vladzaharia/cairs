@@ -49,6 +49,12 @@ namespace SasquatchCAIRS.Models {
             UserGroup
         }
 
+        public enum URLStatus {
+            None = 0,
+            Expired = 1,
+            Unlocked = 2
+        }
+
         public static readonly DropdownTable[] DROPDOWN_TABLES = new DropdownTable[6] {
             DropdownTable.Keyword,
             DropdownTable.QuestionType, 

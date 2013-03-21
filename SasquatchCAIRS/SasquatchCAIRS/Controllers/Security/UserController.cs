@@ -56,6 +56,10 @@ namespace SasquatchCAIRS.Controllers.Security {
         /// <param name="username">Username to get groups for.</param>
         /// <returns>An IEnumerable for the UserGroups</returns>
         public IEnumerable<UserGroup> getUserGroups(string username) {
+            if (String.IsNullOrEmpty(username)) {
+                return new List<UserGroup>();
+            } 
+
             UserProfile profile = getUserProfile(username);
 
             return profile.UserGroups.Select(grps => grps.UserGroup).ToList();

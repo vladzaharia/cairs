@@ -7,7 +7,7 @@ using SasquatchCAIRS.Models;
 namespace SasquatchCAIRS.Controllers {
     public class HomeController : Controller {
         [Authorize]
-        public ActionResult Index(bool expired = false) {
+        public ActionResult Index(Constants.URLStatus status = Constants.URLStatus.None) {
             var db = new CAIRSDataContext();
             RequestLockController rlc = new RequestLockController();
             var keywords = new Dictionary<long, List<string>>();
@@ -62,8 +62,14 @@ namespace SasquatchCAIRS.Controllers {
 
             ViewBag.Requests = requests;
             ViewBag.Keywords = keywords;
-            if (expired) {
-                ViewBag.Status = "Your session has expired due to inactivity. All unsaved changes have been lost.";
+            if (status == Constants.URLStatus.Expired) {
+                ViewBag.Status = 
+                    "Your session has expired due to inactivity. All unsaved changes have been lost.";
+                ViewBag.StatusColor = "danger";
+            } else if (status == Constants.URLStatus.Unlocked) {
+                ViewBag.Status =
+                    "The request has now been unlocked and is available for editing by all users.";
+                ViewBag.StatusColor = "success";
             }
 
             return View();
