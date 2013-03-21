@@ -72,7 +72,8 @@ namespace SasquatchCAIRS.Controllers {
                 }
             }
 
-            ViewBag.TimeSpent = timeSpent; 
+            ViewBag.TimeSpent = timeSpent;
+            ViewBag.DataContext = _db;
 
             return View(request);
         }

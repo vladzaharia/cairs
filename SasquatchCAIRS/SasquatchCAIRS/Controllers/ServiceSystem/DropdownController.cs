@@ -237,47 +237,47 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// <param name="value">The new value of the entry</param>
         /// <param name="active">The new status of the entry</param>
         public void createEntry(Constants.DropdownTable table, string code,
-                                string value, string active) {
+                                string value, bool active) {
             switch (table) {
                 case Constants.DropdownTable.Keyword:
                     _db.Keywords.InsertOnSubmit(new Keyword {
                         KeywordValue = value,
-                        Active = Convert.ToBoolean(active)
+                        Active = active
                     });
                     break;
                 case Constants.DropdownTable.QuestionType:
                     _db.QuestionTypes.InsertOnSubmit(new QuestionType {
                         Code = code,
                         Value = value,
-                        Active = Convert.ToBoolean(active)
+                        Active = active
                     });
                     break;
                 case Constants.DropdownTable.Region:
                     _db.Regions.InsertOnSubmit(new Region {
                         Code = code,
                         Value = value,
-                        Active = Convert.ToBoolean(active)
+                        Active = active
                     });
                     break;
                 case Constants.DropdownTable.RequestorType:
                     _db.RequestorTypes.InsertOnSubmit(new RequestorType {
                         Code = code,
                         Value = value,
-                        Active = Convert.ToBoolean(active)
+                        Active = active
                     });
                     break;
                 case Constants.DropdownTable.TumourGroup:
                     _db.TumourGroups.InsertOnSubmit(new TumourGroup {
                         Code = code,
                         Value = value,
-                        Active = Convert.ToBoolean(active)
+                        Active = active
                     });
                     break;
                 case Constants.DropdownTable.UserGroup:
                     _db.UserGroups.InsertOnSubmit(new UserGroup {
                         Code = code,
                         Value = value,
-                        Active = Convert.ToBoolean(active)
+                        Active = active
                     });
                     break;
             }
@@ -294,26 +294,26 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// <param name="value">The new value of the entry</param>
         /// <param name="active">The new status of the entry</param>
         public void editEntry(Constants.DropdownTable table, int id, string code, 
-            string value, string active) {
+            string value, bool active) {
             switch (table) {
                 case Constants.DropdownTable.Keyword:
                     Keyword keyword =
                         _db.Keywords.First(kw => kw.KeywordID == id);
                     keyword.KeywordValue = value;
-                    keyword.Active = Convert.ToBoolean(active);
+                    keyword.Active = active;
                     break;
                 case Constants.DropdownTable.QuestionType:
                     QuestionType qt =
                         _db.QuestionTypes.First(q => q.QuestionTypeID == id);
                     qt.Code = code;
                     qt.Value = value;
-                    qt.Active = Convert.ToBoolean(active);
+                    qt.Active = active;
                     break;
                 case Constants.DropdownTable.Region:
                     Region r = _db.Regions.First(reg => reg.RegionID == id);
                     r.Code = code;
                     r.Value = value;
-                    r.Active = Convert.ToBoolean(active);
+                    r.Active = active;
                     break;
                 case Constants.DropdownTable.RequestorType:
                     RequestorType rt =
@@ -321,20 +321,20 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                             req => req.RequestorTypeID == id);
                     rt.Code = code;
                     rt.Value = value;
-                    rt.Active = Convert.ToBoolean(active);
+                    rt.Active = active;
                     break;
                 case Constants.DropdownTable.TumourGroup:
                     TumourGroup tg =
                         _db.TumourGroups.First(tum => tum.TumourGroupID == id);
                     tg.Code = code;
                     tg.Value = value;
-                    tg.Active = Convert.ToBoolean(active);
+                    tg.Active = active;
                     break;
                 case Constants.DropdownTable.UserGroup:
                     UserGroup ug = _db.UserGroups.First(usg => usg.GroupID == id);
                     ug.Code = code;
                     ug.Value = value;
-                    ug.Active = Convert.ToBoolean(active);
+                    ug.Active = active;
                     break;
             }
 

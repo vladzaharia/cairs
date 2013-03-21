@@ -181,7 +181,7 @@ namespace SasquatchCAIRS.Controllers {
         [HttpPost]
         public ActionResult DropdownEdit(Constants.DropdownTable table, int id,
                                          string code, string value,
-                                         string active) {
+                                         bool active) {
             // Blank Value Sanity Checks
             if (table != Constants.DropdownTable.Keyword && code == "") {
                 ModelState.AddModelError("value", "Value cannot be empty!");
@@ -189,16 +189,11 @@ namespace SasquatchCAIRS.Controllers {
             if (value == "") {
                 ModelState.AddModelError("code", "Value cannot be empty!");
             }
-            if (active == "") {
-                ModelState.AddModelError("active", "Status cannot be empty!");
-            }
 
             // Real Sanity Checks
-            if (active != "true" && active != "false") {
-                ModelState.AddModelError("active",
-                                         "Status must be true or false!");
-            }
-            if (_dc.getEntries(table).Any(dt => dt.code == code && dt.id != id)) {
+            if (table != Constants.DropdownTable.Keyword &&
+                _dc.getEntries(table).Any(dt => dt.code == code && 
+                    dt.id != id)) {
                 ModelState.AddModelError("code", "That code is already in use!");
             }
             if (_dc.getEntries(table).Any(dt => dt.value == value && dt.id != id)) {
@@ -235,8 +230,7 @@ namespace SasquatchCAIRS.Controllers {
                                                 Convert.ToBoolean(active));
             ViewBag.Table = table;
             return
-                View(new DropdownEntry(id, code, value,
-                                       Convert.ToBoolean(active)));
+                View(new DropdownEntry(id, code, value, active));
         }
 
         //
@@ -269,7 +263,7 @@ namespace SasquatchCAIRS.Controllers {
         [HttpPost]
         public ActionResult DropdownCreate(Constants.DropdownTable table,
                                            string code, string value,
-                                           string active) {
+                                           bool active) {
             // Blank Value Sanity Checks
             if (table != Constants.DropdownTable.Keyword && code == "") {
                 ModelState.AddModelError("value", "Value cannot be empty!");
@@ -277,15 +271,8 @@ namespace SasquatchCAIRS.Controllers {
             if (value == "") {
                 ModelState.AddModelError("code", "Value cannot be empty!");
             }
-            if (active == "") {
-                ModelState.AddModelError("active", "Status cannot be empty!");
-            }
 
             // Real Sanity Checks
-            if (active != "true" && active != "false") {
-                ModelState.AddModelError("active",
-                                         "Status must be true or false!");
-            }
             if (_dc.getEntries(table).Any(dt => dt.code == code)) {
                 ModelState.AddModelError("code", "That code is already in use!");
             }
@@ -321,11 +308,10 @@ namespace SasquatchCAIRS.Controllers {
                 }
             };
 
-            ViewBag.SelectList = new SelectList(slis, "Value", "Text",
-                                                Convert.ToBoolean(active));
+            ViewBag.SelectList = new SelectList(slis, "Value", "Text", active);
             ViewBag.Table = table;
             return
-                View(new DropdownEntry(0, code, value, Convert.ToBoolean(active)));
+                View(new DropdownEntry(0, code, value, active));
         }
 
         #endregion
