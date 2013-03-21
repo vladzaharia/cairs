@@ -273,7 +273,8 @@ namespace SasquatchCAIRS.Controllers {
             }
 
             // Real Sanity Checks
-            if (_dc.getEntries(table).Any(dt => dt.code == code)) {
+            if (table != Constants.DropdownTable.Keyword && 
+                _dc.getEntries(table).Any(dt => dt.code == code)) {
                 ModelState.AddModelError("code", "That code is already in use!");
             }
             if (_dc.getEntries(table).Any(dt => dt.value == value)) {
