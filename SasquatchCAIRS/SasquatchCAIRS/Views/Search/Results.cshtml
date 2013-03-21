@@ -2,18 +2,18 @@
 @model IEnumerable<SasquatchCAIRS.Request>
 
 @{
-    ViewBag.Title = "Results";
+    ViewBag.Title = Constants.UIString.TitleText.RESULTS;
 }
 
-<h2>Results</h2>
+<h2>Constants.UIString.TitleText.RESULTS</h2>
 
 <div class="btn-group float-right">
-    @LinkExtensions.ActionLink(Html, "Modify Search", "Modify", new {
+    @LinkExtensions.ActionLink(Html, Constants.UIString.ButtonText.MODIFY_SEARCH, "Modify", new {
     controller = "Search"
 }, new {
     @class = "btn btn-info"
 })
-    @LinkExtensions.ActionLink(Html, "New Search", "Advanced", new {
+    @LinkExtensions.ActionLink(Html, Constants.UIString.ButtonText.NEW_SEARCH, "Advanced", new {
     controller = "Search"
 }, new {
     @class = "btn btn-info"
@@ -25,11 +25,10 @@ For keywords: @ViewBag.keywords
 <div>
 </div>
 @if (@ViewBag.ResultSetSize < 1) {
-    <div class="message palette-danger-dark">No results were found</div>
+    <div class="message palette-danger-dark">@Constants.UIString.FieldLabel.NO_RESULTS</div>
 } else {
 
     <fieldset class="results">
-        <legend>Search Results</legend>
         <div>
             <table class="table table-bordered table-hover">
                 <tr>
