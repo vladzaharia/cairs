@@ -37,8 +37,7 @@ namespace SasquatchCAIRS.Controllers {
         /// </summary>
         /// <param name="request">The request to track activitiy for</param>
         /// <param name="exportFilePath">The filepath selected by the user to save the report in </param>
-        public void createReportForRequest(Request request,
-                                           string exportFilePath) {
+        public void createReportForRequest(Request request) {
             // Create blank list of AuditLogs and fill with all AuditLogs for the given request ID
             List<AuditLog> requestLogs =
                 (from r in _db.AuditLogs
@@ -73,7 +72,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="endDate">The end of the specified date range</param>
         /// <param name="exportFilePath">The filepath selected by the user to save the report in </param>
         public void createReportForUser(int userID, DateTime startDate,
-                                        DateTime endDate, string exportFilePath) {
+                                        DateTime endDate) {
             // Create blank list of AuditLogs and fill with all AuditLogs for the given request ID
             var requestLogs = new List<AuditLog>();
             foreach (
@@ -106,6 +105,7 @@ namespace SasquatchCAIRS.Controllers {
             });
 
             // Call XLSExporter with table
+            // TODO: determine file paths to be passed.
             //ExcelExportController.ExportAuditLogTable(xlsExport, exportFilePath);
         }
     }

@@ -1,0 +1,75 @@
+﻿@model SasquatchCAIRS.Controllers.AuditController
+
+@{
+    ViewBag.Title = "Audit";
+}
+
+<h2>Audit</h2>
+
+@using (Html.BeginForm("GenerateAudit", "Audit", FormMethod.Post)) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>AuditCriteria</legend>
+
+        <div class="editor-label">
+            <br />
+            @Html.Label("Audit Report Criteria:")
+        </div>
+        <div class="editor-field">
+            <input type="radio" name="criteria" value="user">User ID<br>
+            <input type="radio" name="criteria" value="request"> Request ID<br>
+        </div>
+        
+        <h2>USER ID CRITERIA</h2>
+        
+        <div class="editor-label">
+            <br />
+            @Html.Label("User ID")
+        </div>
+        <div class="editor-field">
+            <input type="text" class="input-medium" name="userID" placeholder="Enter User ID">
+        </div>
+        
+        <div class="editor-label">
+            <br />
+            @Html.Label("Start Date")
+        </div>
+        <div class="#startDate" data-format="y-m-d">
+            <input type="text" class="input-medium dp" name="startDate" placeholder="YYYY/MM/DD">
+        </div>
+        <span class="add-on"><i class="icon-calendar"></i></span>
+        
+        <div class="editor-label">
+            <br />
+            @Html.Label("End Date")
+        </div>
+        <div class="editor-field">
+            <input type="text" class="input-medium dp" name="endDate" placeholder="YYYY/MM/DD">
+        </div>
+        
+        <h2>REQUEST ID CRITERIA</h2>
+        
+        <div class="editor-label">
+            <br />
+            @Html.Label("Request ID")
+        </div>
+        <div class="editor-field">
+            <input type="text" class="input-medium" name="requestID" placeholder="Enter Request IDs.">
+        </div>
+
+        <p>
+            <br />
+            <input class="btn" type="submit" value="Generate Audit Report" />
+        </p>
+    </fieldset>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    $(function() {
+        $('.dp').datepicker();
+    });
+</script>

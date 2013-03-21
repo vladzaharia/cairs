@@ -29,7 +29,7 @@ namespace SasquatchCAIRS.Controllers.Security
         /// <exception cref="AlreadyLockedException">Exception if request is already locked</exception>
         public void addLock(long requestId, int userId) {
             if (isLocked(requestId)) {
-                throw new AlreadyLockedException(requestId);
+                //throw new AlreadyLockedException(requestId);
             }
 
             // Create a new lock, using the Request ID and User ID provided.
