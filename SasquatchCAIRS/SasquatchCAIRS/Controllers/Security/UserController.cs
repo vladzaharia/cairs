@@ -15,12 +15,12 @@ namespace SasquatchCAIRS.Controllers.Security {
         private CAIRSDataContext _db = new CAIRSDataContext();
 
         /// <summary>
-        ///     Get the User Profile for the entered username.
+        /// Log into the system and return the user profile for the user.
         /// </summary>
-        /// <param name="username">Username to look for.</param>
-        /// <returns>The UserProfile for the user.</returns>
-        public UserProfile getUserProfile(string username) {
-            // Check if user already exists
+        /// <param name="username">The username to login with</param>
+        /// <returns>The UserProfile of the user</returns>
+        public UserProfile loginAndGetUserProfile(string username) {
+            // Check if the user exists, and create them otherwise.
             if (!WebSecurity.UserExists(username)) {
                 // Register the User as a local user in the database w/ AD info
                 string[] adUser = getADInformation(username.ToLower());
@@ -43,8 +43,18 @@ namespace SasquatchCAIRS.Controllers.Security {
                 }
             }
 
-            // Log the user in and return their profile.
+            // Login to the system properly
             WebSecurity.Login(username, username, true);
+
+            return getUserProfile(username);
+        }
+
+        /// <summary>
+        ///     Get the User Profile for the entered username.
+        /// </summary>
+        /// <param name="username">Username to look for.</param>
+        /// <returns>The UserProfile for the user.</returns>
+        public UserProfile getUserProfile(string username) {
             return _db.UserProfiles.FirstOrDefault(u =>
                                                    u.UserName.ToLower() ==
                                                    username.ToLower());
