@@ -10,7 +10,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
             new DropdownController();
         private CAIRSDataContext _db = new CAIRSDataContext();
 
-        private DropdownController() {
+        public DropdownController() {
         }
 
         public static DropdownController instance {

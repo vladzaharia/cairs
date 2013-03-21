@@ -5,22 +5,38 @@
         <title>@ViewBag.Title - /sasquatch/CAIRS</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
+        
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
         @Styles.Render("~/Content/bootstrap")
         @Scripts.Render("~/bundles/bootstrap")
+        @Styles.Render("~/Content/flat-ui")
         @Styles.Render("~/Content/css")
+        <!--[if lt IE 8]>
+            @Styles.Render("~/Content/ie7")
+        <![endif]-->
         @Scripts.Render("~/bundles/modernizr")
     </head>
     <body>
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p class="site-title">@Html.ActionLink(" ", "Index", "Home", new { @class="logo" })</p>
+                    <p class="site-title">@Html.ActionLink(" ", "Index", "Home", new {}, new { @class="logo" })</p>
                     <nav>
                         <ul id="menu">
                             <li>@Html.ActionLink("Dashboard", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Add New Request", "About", "Home")</li>
+
+                            @if (User.IsInRole("RequestEditor")) {
+                            <li>@Html.ActionLink("Add New Request", "Add", "Request")</li>
+                            }
+
+                            @if (User.IsInRole("ReportGenerator")) {
                             <li>@Html.ActionLink("Reports", "Contact", "Home")</li>
-                            <li>@Html.ActionLink("Admin", "Index", "Home")</li>
+                            }
+
+                            @if (User.IsInRole("Administrator")) {
+                            <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+                            }
                         </ul>
                     </nav>
                 </div>
@@ -28,9 +44,11 @@
                     <section id="login">
                         @Html.Partial("_LoginPartial")
                     </section>
+                    @if (User.IsInRole("Viewer")) {
                     <section id="search">
                         @Html.Partial("_SearchPartial")
                     </section>
+                    }
                 </div>
             </div>
         </header>
@@ -47,8 +65,7 @@
                 </div>
             </div>
         </footer>
-
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
+        
+        @Scripts.Render("~/bundles/flat-ui")
     </body>
 </html>
