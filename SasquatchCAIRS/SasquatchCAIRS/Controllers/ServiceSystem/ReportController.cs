@@ -200,8 +200,8 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
         {
             var dataTablesForReport = new List<DataTable>();
 
-            var start = new DateTime(startYear, 4, 1, 0, 0, 0);
-            var end = new DateTime(endYear, 3, DateTime.DaysInMonth(endYear, 3), 23, 59, 59);
+            var startDate = new DateTime(startYear, 4, 1, 0, 0, 0);
+            var enDated = new DateTime(endYear, 3, DateTime.DaysInMonth(endYear, 3), 23, 59, 59);
 
             switch (stratifyBy) {
                 case Constants.StratifyOption.Region:
@@ -209,8 +209,8 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                     //then group them by the region
                     Dictionary<byte, List<Request>> regionDictionary = (from reqs in _db.Requests
                                                                          where
-                                                                             reqs.TimeOpened > start &&
-                                                                             reqs.TimeOpened <= end
+                                                                             reqs.TimeOpened > startDate &&
+                                                                             reqs.TimeOpened <= enDated
                                                                          group reqs by reqs.RegionID
                                                                              into regionGroups
                                                                              select regionGroups).ToDictionary(r => nullableToByte(r.Key),
@@ -236,8 +236,8 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                     //then group them by the callerType
                     Dictionary<byte, List<Request>> callerDictionary = (from reqs in _db.Requests
                                                                          where
-                                                                             reqs.TimeOpened > start &&
-                                                                             reqs.TimeOpened <= end
+                                                                             reqs.TimeOpened > startDate &&
+                                                                             reqs.TimeOpened <= enDated
                                                                          group reqs by reqs.RequestorTypeID
                                                                              into callerGroups
                                                                             select callerGroups).ToDictionary(r => nullableToByte(r.Key),
@@ -260,8 +260,8 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                     Dictionary<byte, List<QandRwithTimestamp>> qrTumourGrpDic =
                         (from reqs in _db.Requests
                          where
-                             reqs.TimeOpened > start &&
-                             reqs.TimeOpened <= end
+                             reqs.TimeOpened > startDate &&
+                             reqs.TimeOpened <= enDated
                          join qr in _db.QuestionResponses on reqs.RequestID
                              equals qr.RequestID
                          select
@@ -294,10 +294,10 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                                                                               where
                                                                                   reqs
                                                                                       .TimeOpened >
-                                                                                  start &&
+                                                                                  startDate &&
                                                                                   reqs
                                                                                       .TimeOpened <=
-                                                                                  end
+                                                                                  enDated
                                                                               select
                                                                                   reqs)
                         .ToList().GroupBy(r => new FiscalYear(r.TimeOpened))
@@ -419,10 +419,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                                                                   .Select(grp => grp)
                                                                   .ToDictionary(grp => grp.Key, grp => grp.ToList()));
 
-                    //foreach (Constants.DataType dataType in dataToDisplay) {
-                    //    DataTable dt = createDtForEachYear(startYear, endYear, stratifyBy, dataType, regionAndYear);
-                    //    dataTablesForReport.Add(dt);
-                    //}
+                   
                     dataTablesForReport.AddRange(
                         dataToDisplay.Select(
                             dataType => createDtForEachYear(startYear, endYear, stratifyBy, dataType, regionAndYear)));
@@ -1071,16 +1068,15 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
         /// <returns>average time from start to complete for given list of requests</returns>
         private Int32 avgTimeFromStartToComplete(List<Request> reqList) {
             var totalTimeSpan = new TimeSpan(0);
-            totalTimeSpan = reqList.Aggregate(totalTimeSpan,
-                                              (current, curRequest) =>
-                                              curRequest.TimeClosed.HasValue
-                                                  ? current.Add(
-                                                      curRequest.TimeClosed
-                                                                .Value -
-                                                      curRequest.TimeOpened)
-                                                  : current.Add(DateTime.Now -
-                                                                curRequest
-                                                                    .TimeOpened));
+            foreach (Request current in reqList) {
+                if (current.TimeClosed.HasValue) {
+                    totalTimeSpan += (current.TimeClosed.Value -
+                                      current.TimeOpened);
+                } else {
+                    totalTimeSpan += (DateTime.Now - current.TimeOpened);
+                }
+            }
+            
             return totalTimeSpan.Minutes/reqList.Count;
         }
 
@@ -1093,14 +1089,14 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
         private Int32 avgTimeFromStartToComplete(List<QandRwithTimestamp> qrList) {
             var totalTimeSpan = new TimeSpan(0);
 
-            totalTimeSpan = qrList.Aggregate(totalTimeSpan,
-                                             (current, curQr) =>
-                                             curQr.timeClosed.HasValue
-                                                 ? current.Add(
-                                                     curQr.timeClosed.Value -
-                                                     curQr.timeOpened)
-                                                 : current.Add(DateTime.Now -
-                                                               curQr.timeOpened));
+            foreach (QandRwithTimestamp current in qrList) {
+                if (current.timeClosed.HasValue) {
+                    totalTimeSpan += (current.timeClosed.Value -
+                                      current.timeOpened);
+                } else {
+                    totalTimeSpan += (DateTime.Now - current.timeOpened);
+                }
+            }
 
             return totalTimeSpan.Minutes/qrList.Count;
         }
