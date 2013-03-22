@@ -58,7 +58,7 @@ namespace SasquatchCAIRS.Models {
 
         public enum DataType {
             AvgTimePerRequest = 0,
-            AvgTimeFromStartToComplete = 1,
+            AvgTimeToComplete = 1,
             TotalNumOfRequests = 2,
             TotalTimeSpent = 3
         }
@@ -98,28 +98,7 @@ namespace SasquatchCAIRS.Models {
         public static string REQUESTORTYPE_TBL_ACTIVE_ATTR = "Active";
 
         public static string TUMOURGROUP_TBL_ID_ATTR = "TumourGroupID";
-        // For Report Generation
-        public enum Month {
-            January = 1,
-            Feburary = 2,
-            March = 3,
-            April = 4,
-            May = 5,
-            June = 6,
-            July = 7,
-            August = 8,
-            September = 9,
-            October = 10,
-            November = 11,
-            December = 12
-        }
 
-        public enum DataType {
-            AvgTimePerRequest = 0,
-            AvgTimeToComplete = 1,
-            TotalNumOfRequests = 2,
-            TotalTimeSpent = 3
-        }
 
         public static class DataTypeStrings {
             public static string DATA_TYPE = "Data Type";
@@ -129,12 +108,7 @@ namespace SasquatchCAIRS.Models {
             public static string TOTAL_TIME_SPENT = "Total Time Spent";
         }
 
-        public enum StratifyOption {
-            None = 0,
-            Region = 1,
-            CallerType = 2,
-            TumorGroup = 3
-        }
+     
 
         public enum CellDataType {
             Number = 0,
