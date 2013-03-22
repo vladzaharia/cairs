@@ -882,7 +882,15 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             return dt;
         }
 
-
+        /// <summary>
+        /// creates a dataTable fore each fiscal year for given stratify grouping
+        /// </summary>
+        /// <param name="startTime">report start date</param>
+        /// <param name="endTime">report end date</param>
+        /// <param name="stratifyBy">stratifyOption to retireve group names</param>
+        /// <param name="dataType">data to be displayed</param>
+        /// <param name="dictionary">requests grouped into stratify group then in to their month/year pair</param>
+        /// <returns>dataTable fore each  month for given stratify grouping</returns>
         private DataTable createDtForEachMonth(DateTime startTime, DateTime endTime, Constants.StratifyOption stratifyBy,
                                               Constants.DataType dataType,
                                               Dictionary<byte, Dictionary<MonthYearPair, List<Request>>> dictionary) {
@@ -1033,19 +1041,34 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             return dt;
         }
 
-        // below are for calculating each cell values for each data type given the list of requests to be used 
+        
+        /// <summary>
+        /// below are for calculating each cell values for each data type given the list of requests to be used 
+        /// </summary>
+        /// <param name="requestsList">list of requests to find the average time</param>
+        /// <returns>average time spent for the given list of requests</returns>
         private Int32 averageTime(List<Request> requestsList) {
             Int32 total = totalTimeSpent(requestsList);
             return total / requestsList.Count;
         }
 
-        // below are for calculating each cell values for each data type given the list of QnR to be used 
+        
+        /// <summary>
+        ///  below are for calculating each cell values for each data type given the list of QnR to be used 
+        /// </summary>
+        /// <param name="qrList">list of QandRs to find the average time</param>
+        /// <returns>average time spent for the given list of requests</returns>
         private Int32 averageTime(List<QandRwithTimestamp> qrList) {
             Int32 total = totalTimeSpent(qrList);
             return total / qrList.Count;
         }
 
-        //Given the list of requests, calculates the average time from open to close
+
+        /// <summary>
+        /// Given the list of requests, calculates the average time from open to close
+        /// </summary>
+        /// <param name="reqList">list of requests</param>
+        /// <returns>average time from start to complete for given list of requests</returns>
         private Int32 avgTimeFromStartToComplete(List<Request> reqList) {
             var totalTimeSpan = new TimeSpan(0);
             totalTimeSpan = reqList.Aggregate(totalTimeSpan,
@@ -1061,7 +1084,12 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             return totalTimeSpan.Minutes/reqList.Count;
         }
 
-        //Given the list of requests, calculates the average time from open to close
+        
+        /// <summary>
+        /// Given the list of requests, calculates the average time from open to close
+        /// </summary>
+        /// <param name="qrList">list of QandRs with time stamps</param>
+        /// <returns> average time from start to complete for given list of questions</returns>
         private Int32 avgTimeFromStartToComplete(List<QandRwithTimestamp> qrList) {
             var totalTimeSpan = new TimeSpan(0);
 
@@ -1077,7 +1105,11 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             return totalTimeSpan.Minutes/qrList.Count;
         }
 
-        //calculates the total time spent for all Q&R pair in each requestin the given list
+        /// <summary>
+        /// calculates the total time spent for all Q&R pair in each requestin the given list
+        /// </summary>
+        /// <param name="reqList">list of requests</param>
+        /// <returns>total time spent on the list given</returns>
         private Int32 totalTimeSpent(IEnumerable<Request> reqList) {
            
             return
@@ -1095,7 +1127,11 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                        .Sum();
         }
 
-        //calculates the total time spent for all the Q&A pair in the given list
+        /// <summary>
+        /// calculates the total time spent for all the Q&A pair in the given list
+        /// </summary>
+        /// <param name="qrList">list of questions</param>
+        /// <returns>total time spent on the given list of questions</returns>
         private Int32 totalTimeSpent(IEnumerable<QandRwithTimestamp> qrList) {
             return qrList.Where(qr => qr.qr.TimeSpent.HasValue)
                          .Aggregate(0,
@@ -1105,7 +1141,12 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                                         : 0);
         }
 
-        //creates dictionary for the names of stratify groups to be used in the dataTable 
+        
+        /// <summary>
+        /// creates dictionary for the names of stratify groups to be used in the dataTable 
+        /// </summary>
+        /// <param name="stratifyOption">stratify option selected</param>
+        /// <returns>returns the dictionary of subgroup codes for the stratify option selected</returns>
         private Dictionary<byte, string> getTypeNames(Constants.StratifyOption stratifyOption)
         {
             Dictionary<byte, string> codes = null;
@@ -1126,14 +1167,16 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                              orderby tumorGroup.Value
                              select tumorGroup).ToDictionary(tg => tg.TumourGroupID, tg => tg.Code);
                     break;
-                default:
-            
-                    //silent fail
-                    break;
             }
             return codes;
         }
 
+        /// <summary>
+        /// currently if the key is null (ie. if the request/question does not have assigned stratify group,
+        /// the key gets set to the highest value
+        /// </summary>
+        /// <param name="key">stratifyGroupID</param>
+        /// <returns>returns the value of the key, or 255 if the key is null</returns>
         private byte nullableToByte(byte? key) {
             if (key.HasValue) {
                 return key.Value;
