@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
 namespace SasquatchCAIRS.Models.ServiceSystem {
+
     public class RequestContent {
         private long _requestID = -1;
         private long? _parentRequestID = null;
