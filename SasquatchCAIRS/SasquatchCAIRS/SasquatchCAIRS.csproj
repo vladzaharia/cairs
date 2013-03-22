@@ -16,10 +16,10 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressSSLPort>44300</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -76,6 +76,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NuGet.Core, Version=1.6.30117.9648, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -177,6 +178,7 @@
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ExcelExportController.cs" />
+    <Compile Include="Controllers\ServiceSystem\ServiceSystemController.cs" />
     <Compile Include="Controllers\ServiceSystem\ReportController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -188,13 +190,15 @@
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Controllers\ServiceSystem\DropdownController.cs" />
     <Compile Include="Models\ServiceSystem\DropdownEntry.cs" />
+    <Compile Include="Models\ServiceSystem\ReportDictionaryKeys.cs" />
     <Compile Include="Models\ServiceSystem\Request.cs" />
     <Compile Include="Controllers\ServiceSystem\RequestController.cs" />
     <Compile Include="Controllers\ServiceSystem\ServiceManager.cs" />
-    <Compile Include="Models\XLSContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-datepicker.css" />
+    <Content Include="Content\bootstrap-datepicker.min.css" />
     <Content Include="Content\bootstrap-responsive.css" />
     <Content Include="Content\bootstrap-responsive.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -265,15 +269,16 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Images\logo.png" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="CAIRS.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>CAIRS.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Images\logo.png" />
+    <Content Include="Scripts\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="AuditLogTemplate.xlsx" />
     <None Include="Properties\PublishProfiles\DevHanna.pubxml" />
     <Content Include="ReportTemplate.xlsx" />
@@ -330,6 +335,8 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Account\_ViewUserInfo.cshtml" />
     <Content Include="Views\Account\Auth.cshtml" />
+    <Content Include="Views\ServiceSystem\Reports.cshtml" />
+    <Content Include="Views\ServiceSystem\GenaratingReport.cshtml" />
     <Content Include="Views\Request\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -345,6 +352,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
