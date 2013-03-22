@@ -14,13 +14,14 @@ namespace SasquatchCAIRS.Controllers {
         private CAIRSDataContext _db = new CAIRSDataContext();
 
         /// <summary>
-        /// Given a list of keywords returns all requests with one or more of those keywords
+        /// Given a comma delimited string of keywords returns all requests with one or more of those keywords
         /// </summary>
         /// <param name="keywords">String of comma delimited keywords</param>
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Search(String keywords) {
+            Session["criteria"] = null;
             ViewBag.keywords = keywords;
             SearchCriteria sc = new SearchCriteria();
             sc.keywordString = keywords;
@@ -39,6 +40,7 @@ namespace SasquatchCAIRS.Controllers {
         [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Advanced() {
             SearchCriteria criteria = new SearchCriteria();
+            Session["criteria"] = null;
 
             ViewBag.TumorGroups =
                 _dropdownController.getActiveEntries(
@@ -107,11 +109,6 @@ namespace SasquatchCAIRS.Controllers {
         /// Clean up managed and unmanaged resources
         /// </summary>
         /// <param name="disposing">Scenario to operate under</param>
-        protected override void Dispose(bool disposing) {
-            _db.Dispose();
-            base.Dispose(disposing);
-        }
-
         /// <summary>
         /// Converts an input String into a list of Int, used for Question Type ID and Tumour Group ID
         /// </summary>
@@ -130,14 +127,15 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="delimiters">Delimiter inside the string</param>
         /// <returns>Corresponding List of Strings</returns>
         private List<String> keywordsToList(string input, string delimiters) {
-            return input.Split(delimiters.ToCharArray()).ToList();
+            String[] stringArr = input.Split(delimiters.ToCharArray());
+            return stringArr.Select(s => s.Trim()).ToList();
         }
 
         /// <summary>
         /// Converts a String into List of Intgers based on its Enum value specified in Constants.cs
         /// </summary>
         /// <param name="input">Input String</param>
-        /// <param name="type">Specific Type (Severity or Consequence)</param>
+        /// <param name="type">Enumeration Type</param>
         /// <returns>Corresponding List of Integers for that Type and Input</returns>
         private List<int> enumToIDs(string input, Type type) {
             String[] stringArr = input.Split(",".ToCharArray());
@@ -149,17 +147,28 @@ namespace SasquatchCAIRS.Controllers {
         /// </summary>
         /// <param name="requests">List of requests to be displayed</param>
         private void fillUpKeywordDict(IEnumerable<Request> requests) {
+            if (requests == null) {
+                return;
+            }
             var keywords = new Dictionary<long, List<string>>();
             foreach (Request request in requests) {
-                Request request1 = request;
-                IQueryable<KeywordQuestion> keywordQuestions =
-                    _db.KeywordQuestions.Where(
-                        keywordQuestion =>
-                        keywordQuestion.RequestID == request1.RequestID);
-                keywords.Add(request.RequestID, (from keyword in _db.Keywords
-                                                 join keywordQuestion in keywordQuestions
-                                                 on keyword.KeywordID equals keywordQuestion.KeywordID
-                                                 select keyword.KeywordValue).ToList());
+                List<string> kw =
+                    (from kws in _db.Keywords
+                     join kqs in _db.KeywordQuestions 
+                         on kws.KeywordID equals kqs.KeywordID
+                     where kqs.RequestID == request.RequestID
+                     select kws.KeywordValue)
+                        .ToList();
+                keywords.Add(request.RequestID, kw);
+
+                //IQueryable<KeywordQuestion> keywordQuestions =
+                //    from keywordQuestion in _db.KeywordQuestions
+                //    where keywordQuestion.RequestID == request.RequestID
+                //    select keywordQuestion;
+                //keywords.Add(request.RequestID, (from keyword in _db.Keywords
+                //                                    join keywordQuestion in keywordQuestions
+                //                                    on keyword.KeywordID equals keywordQuestion.KeywordID
+                //                                    select keyword.KeywordValue).Distinct().ToList());
             }
             ViewBag.keywordDict = keywords;
         }
@@ -278,8 +287,8 @@ namespace SasquatchCAIRS.Controllers {
             return (from r in requests
                     join qr in questionResponses
                     on r.RequestID equals qr.RequestID
-                    select r).ToList();
+                    select r).Distinct().ToList();
         }
 
     }
-}
+}   

@@ -26,6 +26,9 @@ a {
         color: #333;
     }
 
+    a:hover {
+        background-color: #c7d1d6;
+    }
     a.btn {
         color: white;
         text-decoration: none;
