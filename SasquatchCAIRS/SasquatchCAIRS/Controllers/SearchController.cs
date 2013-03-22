@@ -21,6 +21,7 @@ namespace SasquatchCAIRS.Controllers {
         [HttpPost]
         [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Search(String keywords) {
+            Session["criteria"] = null;
             ViewBag.keywords = keywords;
             SearchCriteria sc = new SearchCriteria();
             sc.keywordString = keywords;
@@ -39,6 +40,7 @@ namespace SasquatchCAIRS.Controllers {
         [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Advanced() {
             SearchCriteria criteria = new SearchCriteria();
+            Session["criteria"] = null;
 
             ViewBag.TumorGroups =
                 _dropdownController.getActiveEntries(
@@ -122,7 +124,8 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="delimiters">Delimiter inside the string</param>
         /// <returns>Corresponding List of Strings</returns>
         private List<String> stringToStringList(string input, string delimiters) {
-            return input.Split(delimiters.ToCharArray()).ToList();
+            String[] stringArr = input.Split(delimiters.ToCharArray());
+            return stringArr.Select(s => s.Trim()).ToList();
         }
 
         /// <summary>
@@ -141,16 +144,28 @@ namespace SasquatchCAIRS.Controllers {
         /// </summary>
         /// <param name="requests">List of requests to be displayed</param>
         private void fillUpKeywordDict(IEnumerable<Request> requests) {
+            if (requests == null) {
+                return;
+            }
             var keywords = new Dictionary<long, List<string>>();
             foreach (Request request in requests) {
-                IQueryable<KeywordQuestion> keywordQuestions =
-                    from keywordQuestion in _db.KeywordQuestions
-                    where keywordQuestion.RequestID == request.RequestID
-                    select keywordQuestion;
-                keywords.Add(request.RequestID, (from keyword in _db.Keywords
-                                                 join keywordQuestion in keywordQuestions
-                                                 on keyword.KeywordID equals keywordQuestion.KeywordID
-                                                 select keyword.KeywordValue).ToList());
+                List<string> kw =
+                    (from kws in _db.Keywords
+                     join kqs in _db.KeywordQuestions 
+                         on kws.KeywordID equals kqs.KeywordID
+                     where kqs.RequestID == request.RequestID
+                     select kws.KeywordValue)
+                        .ToList();
+                keywords.Add(request.RequestID, kw);
+
+                //IQueryable<KeywordQuestion> keywordQuestions =
+                //    from keywordQuestion in _db.KeywordQuestions
+                //    where keywordQuestion.RequestID == request.RequestID
+                //    select keywordQuestion;
+                //keywords.Add(request.RequestID, (from keyword in _db.Keywords
+                //                                    join keywordQuestion in keywordQuestions
+                //                                    on keyword.KeywordID equals keywordQuestion.KeywordID
+                //                                    select keyword.KeywordValue).Distinct().ToList());
             }
             ViewBag.keywordDict = keywords;
         }
@@ -269,8 +284,8 @@ namespace SasquatchCAIRS.Controllers {
             return (from r in requests
                     join qr in questionResponses
                     on r.RequestID equals qr.RequestID
-                    select r).ToList();
+                    select r).Distinct().ToList();
         }
 
     }
-}
+}   

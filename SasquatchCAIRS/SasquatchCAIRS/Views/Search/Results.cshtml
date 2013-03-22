@@ -5,7 +5,7 @@
     ViewBag.Title = Constants.UIString.TitleText.RESULTS;
 }
 
-<h2>Constants.UIString.TitleText.RESULTS</h2>
+<h2>@Constants.UIString.TitleText.RESULTS</h2>
 
 <div class="btn-group float-right">
     @LinkExtensions.ActionLink(Html, Constants.UIString.ButtonText.MODIFY_SEARCH, "Modify", new {
@@ -25,10 +25,11 @@ For keywords: @ViewBag.keywords
 <div>
 </div>
 @if (@ViewBag.ResultSetSize < 1) {
-    <div class="message palette-danger-dark">@Constants.UIString.FieldLabel.NO_RESULTS</div>
+    <div class="message palette-danger-dark">@Constants.UIString.Response.NO_RESULTS</div>
 } else {
 
     <fieldset class="results">
+        <legend>@Constants.UIString.TitleText.RESULTS</legend>
         <div>
             <table class="table table-bordered table-hover">
                 <tr>
@@ -83,7 +84,7 @@ For keywords: @ViewBag.keywords
                             @Html.DisplayFor(modelItem => request.TimeClosed)
                         </td>
                     </tr>
-}
+                }
             </table>
         </div>
     </fieldset>

@@ -35,6 +35,8 @@ a {
 
     a.btn:hover, a.btn:active {
         color: white;
+    }
+
 header, footer, hgroup,
 nav, section {
     display: block;
