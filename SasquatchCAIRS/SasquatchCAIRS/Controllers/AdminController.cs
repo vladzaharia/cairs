@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using SasquatchCAIRS.Controllers.Security;
 using SasquatchCAIRS.Models;
-using SasquatchCAIRS.Models.ServiceSystem;
 
 namespace SasquatchCAIRS.Controllers {
     [Authorize(Roles = "Administrator")]
@@ -32,7 +31,8 @@ namespace SasquatchCAIRS.Controllers {
         public ActionResult UserDetails(int id, bool success = false) {
             UserProfile userProfile =
                 _db.UserProfiles.FirstOrDefault(up => up.UserId == id);
-            var dc = new DropdownController();
+            var dc = ServiceSystem.DropdownController
+                              .instance;
 
             ViewBag.Groups =
                 dc.getActiveEntries(
