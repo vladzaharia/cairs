@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - /sasquatch/CAIRS</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
+        @Styles.Render("~/Content/bootstrap")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title">@Html.ActionLink(" ", "Index", "Home", new {}, new { @class="logo" })</p>
+                    <nav>
+                        <ul id="menu">
+                            <li>@Html.ActionLink("Dashboard", "Index", "Home")</li>
+
+                            @if (User.IsInRole("RequestEditor")) {
+                            <li>@Html.ActionLink("Add New Request", "Add", "Request")</li>
+                            }
+
+                            @if (User.IsInRole("ReportGenerator")) {
+                            <li>@Html.ActionLink("Reports", "Contact", "Home")</li>
+                            }
+
+                            @if (User.IsInRole("Administrator")) {
+                            <li>@Html.ActionLink("Admin", "Index", "Home")</li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>
+<<<<<<< HEAD
+                    <section id="search">
+                        @Html.Partial("_SearchPartial")
+                    </section>
+=======
+
+                    @if (User.IsInRole("Viewer")) {
+                    <section id="search">
+                        Search Box Goes Here
+                    </section>
+                    }
+>>>>>>> a844498e6acae159e7c0deb6e4e071febcbf2c35
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - CAIRS by /sasquatch/. <strong>Confidential.</strong></p>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

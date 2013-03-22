@@ -151,10 +151,11 @@ namespace SasquatchCAIRS.Controllers {
         private void fillUpKeywordDict(IEnumerable<Request> requests) {
             var keywords = new Dictionary<long, List<string>>();
             foreach (Request request in requests) {
+                Request request1 = request;
                 IQueryable<KeywordQuestion> keywordQuestions =
-                    from keywordQuestion in _db.KeywordQuestions
-                    where keywordQuestion.RequestID == request.RequestID
-                    select keywordQuestion;
+                    _db.KeywordQuestions.Where(
+                        keywordQuestion =>
+                        keywordQuestion.RequestID == request1.RequestID);
                 keywords.Add(request.RequestID, (from keyword in _db.Keywords
                                                  join keywordQuestion in keywordQuestions
                                                  on keyword.KeywordID equals keywordQuestion.KeywordID
