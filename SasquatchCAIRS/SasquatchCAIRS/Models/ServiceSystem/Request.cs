@@ -6,17 +6,6 @@ using System.Web;
 
 namespace SasquatchCAIRS.Models.ServiceSystem {
 
-    public class SearchContext : DbContext {
-        public SearchContext()
-            : base("sasquatchConnectionString") {
-        }
-
-        public DbSet<Request> SearchResults {
-            get;
-            set;
-        }
-    }
-
     public class RequestContent {
         private long _requestID = -1;
         private long? _parentRequestID = null;

@@ -23,6 +23,7 @@ namespace SasquatchCAIRS.Models.SearchSystem {
             set;
         }
 
+        [DataType(DataType.Text)]
         public String requestStatus {
             get;
             set;
@@ -51,21 +52,25 @@ namespace SasquatchCAIRS.Models.SearchSystem {
             set;
         }
 
+        [DataType(DataType.Text)]
         public String tumorGroup {
             get;
             set;
         }
 
+        [DataType(DataType.Text)]
         public String questionType {
             get;
             set;
         }
 
+        [DataType(DataType.Text)]
         public String severity {
             get;
             set;
         }
 
+        [DataType(DataType.Text)]
         public String consequence {
             get;
             set;

@@ -44,10 +44,9 @@
                     <section id="login">
                         @Html.Partial("_LoginPartial")
                     </section>
-
                     @if (User.IsInRole("Viewer")) {
                     <section id="search">
-                        Search Box Goes Here
+                        @Html.Partial("_SearchPartial")
                     </section>
                     }
                 </div>

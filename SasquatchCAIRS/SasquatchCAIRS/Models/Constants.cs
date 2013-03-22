@@ -77,6 +77,7 @@ namespace SasquatchCAIRS.Models {
         public const string USERGROUP_TBL_CODE_ATTR = "Code";
         public const string USERGROUP_TBL_ACTIVE_ATTR = "Active";
 
+        // Date Format & Default
         public const string EMPTY_DATE = "0001-01-01";
         public const string DATE_FORMAT = "yyyy-MM-dd";
 
@@ -88,6 +89,12 @@ namespace SasquatchCAIRS.Models {
         }
 
         public static class UIString {
+            // String Responses
+            public static class Response {
+                public const string NO_RESULTS = "No results were found.";
+            }
+            
+
             // Labels used for fields
             public static class FieldLabel {
                 // Request Information
@@ -107,7 +114,6 @@ namespace SasquatchCAIRS.Models {
                 public const string CALLER_PHONE = "Phone Number";
                 public const string CALLER_TYPE = "Caller Type";
                 public const string CALLER_REGION = "Region";
-                
 
                 // Patient Information
                 public const string PATIENT_NAME = "Name";
@@ -116,6 +122,10 @@ namespace SasquatchCAIRS.Models {
                 public const string PATIENT_LNAME = "Last Name";
                 public const string PATIENT_GENDER = "Gender";
                 public const string PATIENT_AGE = "Age";
+
+                // Search Information
+                public const string PATIENT_NAME_LABEL = "Patient Name";
+                public const string CALLER_NAME_LABEL = "Caller Name";
 
                 // Question Information
                 public const string QUESTION = "Question";
@@ -150,6 +160,9 @@ namespace SasquatchCAIRS.Models {
                 public const string SAVE_DRAFT = "Save Draft";
                 public const string MARK_COMPLETE = "Mark as Complete";
                 public const string DELETE_REQUEST = "Delete Request";
+                public const string MODIFY_SEARCH = "Modify Search";
+                public const string NEW_SEARCH = "New Search";
+                public const string SEARCH = "Search!";
             }
 
             // Text used in Page Titles
@@ -164,6 +177,8 @@ namespace SasquatchCAIRS.Models {
                 public const string DROPDOWN_LISTS = "Dropdown Lists";
                 public const string EDIT_DROPDOWN = "Edit Dropdown Value";
                 public static string AUDIT_LOG = "Audit Log";
+                public const string ADVANCED_SEARCH = "Advanced Search";
+                public const string RESULTS = "Results";
             }
         }
 
