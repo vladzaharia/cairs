@@ -41,7 +41,6 @@ namespace SasquatchCAIRS.Models {
 
         // For Report Generation
         public enum Month {
-            None = 0,
             January = 1,
             Feburary = 2,
             March = 3,

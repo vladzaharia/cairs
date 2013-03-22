@@ -46,10 +46,6 @@ namespace SasquatchCAIRS.Controllers
                     Enum.Parse(typeof (Constants.StratifyOption), stratify))
                                      .ToList();
 
-            //Constants.StratifyOption stratifyOption =
-            //    (Constants.StratifyOption)
-            //    Enum.Parse(typeof(Constants.StratifyOption), form["stratigyBy"]);
-
             ReportController rg = new ReportController();
             ExcelExportController eec = new ExcelExportController();
 

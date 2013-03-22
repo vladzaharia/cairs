@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web.Mvc;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using SasquatchCAIRS.Models;
@@ -23,17 +25,17 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="reportType">Either Report or AuditLog from constants</param>
         /// <param name="tableList">list of the tables to be exported. for either type,
         ///     the number of tables in the list must not exceed 15</param>
-        /// <param name="fromPath">template file path</param>
-        /// <param name="toPath">working copy path</param>
+        /// <param name="templatePath">template file path</param>
+        /// <param name="workingCopyPath">working copy path</param>
         public void exportDataTable(Constants.ReportType reportType,
-            List<DataTable> tableList, string fromPath, string toPath) {
+            List<DataTable> tableList, string templatePath, string workingCopyPath) {
             //Instead of creating a new excel file, let's use the template and make a copy to work with.
-            System.IO.File.Copy(fromPath, toPath, true);
+            System.IO.File.Copy(templatePath, workingCopyPath, true);
 
             if (tableList.Count > 0) {
                 //populate the data into the spreadsheet
                 using (SpreadsheetDocument spreadsheet =
-                    SpreadsheetDocument.Open(toPath, true)) {
+                    SpreadsheetDocument.Open(workingCopyPath, true)) {
                     WorkbookPart workbook = spreadsheet.WorkbookPart;
                     //Workbook workbook = spreadsheet.WorkbookPart.Workbook;
                     IEnumerable<WorksheetPart> sheets =
@@ -54,7 +56,6 @@ namespace SasquatchCAIRS.Controllers {
                         worksheetPart = getWorksheetPart(workbook, sheetName);
                         
                         data = worksheetPart.Worksheet.GetFirstChild<SheetData>();
-                        // = enumerator.Current.Worksheet.GetFirstChild<SheetData>();
 
                         //add column names to the first row
                         var header = new Row();
@@ -92,7 +93,7 @@ namespace SasquatchCAIRS.Controllers {
                                 ChartPart chartPart =
                                     drawingsPart.GetPartsOfType<ChartPart>()
                                                 .FirstOrDefault();
-                                fixChartData(chartPart, table.Rows.Count + 1, table.Columns.Count);
+                                fixChartData(chartPart, table.Rows.Count, table.Columns.Count);
                             }
                         }
                         
@@ -112,12 +113,12 @@ namespace SasquatchCAIRS.Controllers {
             response.Clear();
             response.ContentType = "application/vnd.ms-excel";
             response.AddHeader("Content-Disposition", "attachment; filename=" + fileName + ";");
-            response.TransmitFile(toPath);
+            response.TransmitFile(workingCopyPath);
             response.Flush();
             response.End();
 
-            if (System.IO.File.Exists(toPath)) {
-                System.IO.File.Delete(toPath);
+            if (System.IO.File.Exists(workingCopyPath)) {
+                System.IO.File.Delete(workingCopyPath);
             }
         }
 
@@ -143,25 +144,56 @@ namespace SasquatchCAIRS.Controllers {
         /// this method corrects the XML so the chart covers the correct range of data
         /// </summary>
         /// <param name="chartPart">Chartpart to be fixed</param>
-        /// <param name="totalRowCount">total number of rows of the data</param>
+        /// <param name="totalRowCount">total number of dataRows of the data</param>
         /// <param name="totalColCount">total nu</param>
         private void fixChartData(ChartPart chartPart, int totalRowCount, int totalColCount) {
             //Get the appropriate chart part from template file.
             //ChartPart chartPart = workbookPart.ChartsheetParts.First().DrawingsPart.ChartParts.First();
             //Change the ranges to accomodate the newly inserted data.
             if (chartPart != null) {
-                foreach (DocumentFormat.OpenXml.Drawing.Charts.Formula formula in chartPart.ChartSpace.Descendants<DocumentFormat.OpenXml.Drawing.Charts.Formula>()) {
-                    //if (formula.Text.Contains("$3")) {
-                    //    TODO replacing does not work -> need to create new formulas for rows...
-                    //    formula.Text = formula.Text.Replace("3", totalRowCount.ToString());
-                    //}
 
+                //the following code changes the range of columns in the chart
+                foreach (DocumentFormat.OpenXml.Drawing.Charts.Formula formula in chartPart.ChartSpace.Descendants<DocumentFormat.OpenXml.Drawing.Charts.Formula>()) {
+                   
                     if (formula.Text.Contains("$D")) {
-                        //string s = formula.Text.Split('$')[1];
-                        //formula.Text += ":$" + s + "$" + (totalRowCount+1);
                         formula.Text = formula.Text.Replace("D", getColumnName(totalColCount));
                     }
                 }
+
+                //the following code changes the range of rows in the chart 
+                //(by adding BarChartSeries element for additional rows filled with correct data)
+                BarChart barChart = chartPart.ChartSpace.Descendants<BarChart>().FirstOrDefault();
+                
+                var descendants = chartPart.ChartSpace.Descendants<BarChartSeries>().ToList();
+                int numOfInitBarChartSeries = descendants.Count;
+
+                BarChartSeries refChild = descendants.Last();
+                for (int i = 1; i <= totalRowCount - numOfInitBarChartSeries; i++) {
+                    BarChartSeries barChartSeriesTemplate = descendants.FirstOrDefault();
+                    if (barChartSeriesTemplate != null) {
+                        BarChartSeries barChartSeriesToBeAdded = barChartSeriesTemplate.CloneNode(true) as BarChartSeries;
+
+                        foreach (
+                                DocumentFormat.OpenXml.Drawing.Charts.Formula formula in
+                                    barChartSeriesToBeAdded
+                                        .Descendants
+                                        <DocumentFormat.OpenXml.Drawing.Charts.Formula>()
+                                ) {
+                            if (formula.Text.Contains("$2")) {
+                                formula.Text = formula.Text.Replace("2", (numOfInitBarChartSeries + i + 1).ToString());
+                            }
+
+                        }
+
+                        //saves the correct order/index value for the current BarChartSeries
+                        barChartSeriesToBeAdded.Index.Val = UInt32Value.FromUInt32((uint)i+1);
+                        barChartSeriesToBeAdded.Order.Val = UInt32Value.FromUInt32((uint) i + 1);
+
+                        barChart.InsertAfter(barChartSeriesToBeAdded, refChild);
+                        refChild = barChartSeriesToBeAdded;
+                    }
+                }
+
                 chartPart.ChartSpace.Save();   
             }
         }
