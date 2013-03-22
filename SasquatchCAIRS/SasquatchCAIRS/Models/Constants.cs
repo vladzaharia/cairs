@@ -100,7 +100,6 @@ namespace SasquatchCAIRS.Models {
         public static string TUMOURGROUP_TBL_ID_ATTR = "TumourGroupID";
         // For Report Generation
         public enum Month {
-            None = 0,
             January = 1,
             Feburary = 2,
             March = 3,
@@ -117,9 +116,17 @@ namespace SasquatchCAIRS.Models {
 
         public enum DataType {
             AvgTimePerRequest = 0,
-            AvgTimeFromStartToComplete = 1,
+            AvgTimeToComplete = 1,
             TotalNumOfRequests = 2,
             TotalTimeSpent = 3
+        }
+
+        public static class DataTypeStrings {
+            public static string DATA_TYPE = "Data Type";
+            public static string AVG_TIME = "Avg Time Per Request/Question";
+            public static string AVG_TIME_TO_COMPLETE = "Avg Time To Complete";
+            public static string TOTAL_NUM = "Total Number";
+            public static string TOTAL_TIME_SPENT = "Total Time Spent";
         }
 
         public enum StratifyOption {
@@ -128,6 +135,17 @@ namespace SasquatchCAIRS.Models {
             CallerType = 2,
             TumorGroup = 3
         }
+
+        public enum CellDataType {
+            Number = 0,
+            Text = 1
+        }
+
+        public enum ReportType {
+            Report = 0,
+            AuditLog = 1
+        }
+
         public static string TUMOURGROUP_TBL_VALUE_ATTR = "Value";
         public static string TUMOURGROUP_TBL_CODE_ATTR = "Code";
         public static string TUMOURGROUP_TBL_ACTIVE_ATTR = "Active";
