@@ -146,9 +146,9 @@
         </div>
 
         <div>
-        @foreach (string severity in Enum.GetValues(typeof(Constants.Severity))) {
+        @foreach (var severity in Enum.GetValues(typeof(Constants.Severity))) {
             <label class="checkboxlist">
-                @if (!String.IsNullOrEmpty(Model.severity) && Model.severity.Contains(@severity)) {
+                @if (!String.IsNullOrEmpty(Model.severity) && Model.severity.Contains( (string) @severity)) {
                     <label class="checkbox" for="severity-@severity">
                         <input type="checkbox" value="@severity" id="severity-@severity" name="severity" checked="checked">
                         @severity
@@ -191,9 +191,3 @@
         </p>
     </fieldset>
 }
-<script type="text/javascript">
-    $(function() {
-        $('#startTime').datepicker();
-        $('#completionTime').datepicker();
-    });
-</script>
