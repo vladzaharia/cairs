@@ -31,14 +31,14 @@ namespace SasquatchCAIRS.Controllers
             ViewBag.form = templatePath;
             List<DataTable> dataTables = new List<DataTable>();
 
-            List<string> dataTypeStrings = form["dataType"].Split(',').ToList();
+            List<string> dataTypeStrings = form[Constants.ReportFormStrings.DATATYPE].Split(',').ToList();
             List<Constants.DataType> dataTypes =
                 dataTypeStrings.Select(
                     dType =>
                     (Constants.DataType)
                     Enum.Parse(typeof (Constants.DataType), dType)).ToList();
 
-            List<string> stratifyOptionStrings = form["stratigyBy"].Split(',').ToList();
+            List<string> stratifyOptionStrings = form[Constants.ReportFormStrings.STRATIFY_BY].Split(',').ToList();
             List<Constants.StratifyOption> stratifyOptions =
                 stratifyOptionStrings.Select(
                     stratify =>
@@ -49,13 +49,13 @@ namespace SasquatchCAIRS.Controllers
             ReportController rg = new ReportController();
             ExcelExportController eec = new ExcelExportController();
 
-            switch (form["reportOption"]) {
+            switch (form[Constants.ReportFormStrings.REPORT_OPTION]) {
                 case "Monthly":
                     DateTime startDate =
                         Convert.ToDateTime(form["fromdatePicker"]);
                     DateTime endDate = Convert.ToDateTime(form["todatePicker"]);
                     foreach (Constants.StratifyOption stratifyOption in stratifyOptions) {
-                        dataTables.AddRange(rg.generateMonthlyReport(startDate, endDate,
+                        dataTables.AddRange(rg.generateMonthlyReport(startDate, endDate.AddMonths(1),
                                                           dataTypes,
                                                           stratifyOption));
                     }

@@ -107,6 +107,13 @@ namespace SasquatchCAIRS.Models {
             public static string TOTAL_TIME_SPENT = "Total Time Spent";
         }
 
+        public static class ReportFormStrings {
+            public static string REPORT_OPTION = "reportOption";
+            public static string DATATYPE = "dataType";
+            public static string STRATIFY_BY = "stratifyBy";
+
+        }
+
      
 
         public enum CellDataType {

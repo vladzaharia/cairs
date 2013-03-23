@@ -34,7 +34,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                     Dictionary<byte, List<Request>> regionDictionary = (from reqs in _db.Requests
                                                                          where
                                                                              reqs.TimeOpened > startDate &&
-                                                                             reqs.TimeOpened <= endDate 
+                                                                             reqs.TimeOpened < endDate 
                                                                          group reqs by reqs.RegionID
                                                                              into regionGroups
                                                                              select regionGroups).ToDictionary(r => nullableToByte(r.Key),
@@ -61,7 +61,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                     Dictionary<byte, List<Request>> callerDictionary = (from reqs in _db.Requests
                                                                          where
                                                                              reqs.TimeOpened > startDate &&
-                                                                             reqs.TimeOpened <= endDate
+                                                                             reqs.TimeOpened < endDate
                                                                          group reqs by reqs.RequestorTypeID
                                                                              into callerGroups
                                                                              select callerGroups).ToDictionary(r => nullableToByte(r.Key),
@@ -88,7 +88,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                         (from reqs in _db.Requests
                          where
                              reqs.TimeOpened > startDate &&
-                             reqs.TimeOpened <= endDate
+                             reqs.TimeOpened < endDate
                          join qr in _db.QuestionResponses on reqs.RequestID
                              equals qr.RequestID
                          select
@@ -115,14 +115,19 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the year
                     Dictionary<MonthYearPair, List<Request>> dictionaryByMonth = (from reqs in _db.Requests
-                                                                       where
-                                                                           reqs.TimeOpened > startDate &&
-                                                                           reqs.TimeOpened <= endDate
-                                                                       group reqs by new {reqs.TimeOpened.Month, reqs.TimeOpened.Year}
-                                                                           into listByYear
-                                                                           select listByYear).ToDictionary(r => new MonthYearPair(r.Key.Month, r.Key.Year),
+                                                                                      where
+                                                                                          reqs.TimeOpened > startDate &&
+                                                                                          reqs.TimeOpened < endDate
+                                                                                      group reqs by new {
+                                                                                          reqs.TimeOpened.Month,
+                                                                                          reqs.TimeOpened.Year
+                                                                                      }
+                                                                                          into listByYear
+                                                                                          select listByYear).ToDictionary(r => new MonthYearPair(r.Key.Month, r.Key.Year),
                                                                                                            r =>
                                                                                                            r.ToList());
+                    
+                    
                     DataTable dt = new DataTable();
                     dt.Clear();
 

@@ -17,24 +17,26 @@
 
         <div>
             <div>
-                <input type="radio" name="reportOption" value="Monthly">
+                <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="Monthly">
                 Month Range
                 <br>
                 <span>from 
-                    @Html.TextBox("fromdatePicker", @DateTime.Now.ToShortDateString(), new { 
-                        @id = "fromdatepicker",
-                        data_date_format = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern.ToLower()
+                    @Html.TextBox("fromdatePicker", @DateTime.Now.ToString("MM/yyyy"), new { 
+                        @id = "fromdatepicker", data_date_viewMode = "Months"
                     })
                     to
-                    @Html.TextBox("todatePicker", @DateTime.Now.ToShortDateString(), new { 
-                        @id = "todatepicker",
-                        data_date_format = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern.ToLower()
-                        })
+                    @Html.TextBox("todatePicker", @DateTime.Now.ToString("MM/yyyy"), new { 
+                        @id = "todatepicker"
+                    })
+                    
                 </span>
+            </div>
+            <div class="alert alert-error" id="alert">
+                <strong>Oh snap!</strong>
             </div>
 
             <div>
-                <input type="radio" name="reportOption" value="MonthPerYear">
+                <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="MonthPerYear">
                 Month by Year<br>
                 <select name="MPYMonth">
                     @foreach (var month in Enum.GetNames(typeof(Constants.Month))) {
@@ -57,7 +59,7 @@
             </div>
 
             <div>
-                <input type="radio" name="reportOption" value="FiscalYear">
+                <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="FiscalYear">
                 Reporting Year Range<br>
                 from 
                     <select name="FYStartYear">
@@ -81,15 +83,15 @@
         </div>
 
         <div>
-            <input type="checkbox" name="dataType" value="@Constants.DataType.AvgTimePerRequest">
+            <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.AvgTimePerRequest">
             Average time spent per request (per question for "Tumour Group" stratification)<br>
-            <input type="checkbox" name="dataType" value="@Constants.DataType.AvgTimeToComplete">
+            <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.AvgTimeToComplete">
             Average time from start to completion per request (per questions for "Tumour Group" stratification)
             <br>
-            <input type="checkbox" name="dataType" value="@Constants.DataType.TotalNumOfRequests">
+            <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.TotalNumOfRequests">
             Total requests (total questions for "Tumour Group" stratification) per month/year
             <br>
-            <input type="checkbox" name="dataType" value="@Constants.DataType.TotalTimeSpent">
+            <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.TotalTimeSpent">
             Total time spent per month/year
             <br>
         </div>
@@ -101,15 +103,15 @@
         </div>
 
         <div>
-            <input type="checkbox" name="stratigyBy" value="@Constants.StratifyOption.None">
+            <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.None">
             None <br>
-            <input type="checkbox" name="stratigyBy" value="@Constants.StratifyOption.Region">
+            <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.Region">
             Geographic Region
             <br>
-            <input type="checkbox" name="stratigyBy" value="@Constants.StratifyOption.CallerType">
+            <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.CallerType">
             Caller Type
             <br>
-            <input type="checkbox" name="stratigyBy" value="@Constants.StratifyOption.TumorGroup">
+            <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.TumorGroup">
             Tumor Group
             <br>  
         </div>
@@ -121,13 +123,39 @@
     </fieldset>
     //}
     
+    <style>
+        #alert { display: none;}
+    </style>
+    
 }
-@section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-    <script src="~/Scripts/bootstrap-datepicker.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        $("#fromdatepicker").datepicker("autoclose", true);
-        $("#todatepicker").datepicker("autoclose", true);
-    </script>
-}
+<script type="text/javascript">
+
+    var startDate = new Date();
+    var endDate = new Date();
+    
+    var frompicker = $("#fromdatepicker").datepicker({format:"dd/mm/yyyy", viewMode:"months", minViewMode:"months"}).on("changeDate", function (ev) {
+        if (ev.date.valueOf() > endDate.valueOf()) {
+            $('#alert').show().find('strong').text('The start date can not be greater then the end date');
+        } else {
+            $('#alert').hide();
+            startDate = new Date(ev.date);
+            $('#startDate').text($('#fromdatepicker').data('date'));
+        }
+        $("#fromdatepicker").datepicker("hide");
+    });
+    
+    var toPicker = $("#todatepicker").datepicker({ format: "mm/yyyy", viewMode: "months", minViewMode: "months" }).on("changeDate", function (ev) {
+        if (ev.date.valueOf() < startDate.valueOf()) {
+            $('#alert').show().find('strong').text('The end date can not be less then the start date');
+        } else {
+            $('#alert').hide();
+            endDate = new Date(ev.date);
+            $('#endDate').text($('#todatepicker').data('date'));
+        }
+        $("#todatepicker").datepicker("hide");
+    });
+
+</script>
+   

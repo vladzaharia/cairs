@@ -5,10 +5,15 @@
         <title>@ViewBag.Title - /sasquatch/CAIRS</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
+
+        @Scripts.Render("~/bundles/jquery")
         @Styles.Render("~/Content/bootstrap")
         @Scripts.Render("~/bundles/bootstrap")
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")
+        @Styles.Render("~/Content/datepicker")
+        @Scripts.Render("~/bundles/datepicker")
+        @RenderSection("scripts", required: false)
     </head>
     <body>
         <header>
@@ -44,8 +49,5 @@
                 </div>
             </div>
         </footer>
-
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
     </body>
 </html>
