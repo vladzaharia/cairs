@@ -535,7 +535,7 @@ namespace SasquatchCAIRS
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private byte _QuestionTypeID;
+		private int _QuestionTypeID;
 		
 		private string _Value;
 		
@@ -549,7 +549,7 @@ namespace SasquatchCAIRS
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnQuestionTypeIDChanging(byte value);
+    partial void OnQuestionTypeIDChanging(int value);
     partial void OnQuestionTypeIDChanged();
     partial void OnValueChanging(string value);
     partial void OnValueChanged();
@@ -565,8 +565,8 @@ namespace SasquatchCAIRS
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionTypeID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public byte QuestionTypeID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionTypeID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int QuestionTypeID
 		{
 			get
 			{
@@ -697,7 +697,7 @@ namespace SasquatchCAIRS
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private byte _RegionID;
+		private int _RegionID;
 		
 		private string _Value;
 		
@@ -711,7 +711,7 @@ namespace SasquatchCAIRS
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnRegionIDChanging(byte value);
+    partial void OnRegionIDChanging(int value);
     partial void OnRegionIDChanged();
     partial void OnValueChanging(string value);
     partial void OnValueChanged();
@@ -727,8 +727,8 @@ namespace SasquatchCAIRS
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegionID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public byte RegionID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegionID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int RegionID
 		{
 			get
 			{
@@ -859,7 +859,7 @@ namespace SasquatchCAIRS
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private byte _RequestorTypeID;
+		private int _RequestorTypeID;
 		
 		private string _Value;
 		
@@ -873,7 +873,7 @@ namespace SasquatchCAIRS
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnRequestorTypeIDChanging(byte value);
+    partial void OnRequestorTypeIDChanging(int value);
     partial void OnRequestorTypeIDChanged();
     partial void OnValueChanging(string value);
     partial void OnValueChanged();
@@ -889,8 +889,8 @@ namespace SasquatchCAIRS
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorTypeID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public byte RequestorTypeID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorTypeID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int RequestorTypeID
 		{
 			get
 			{
@@ -1021,7 +1021,7 @@ namespace SasquatchCAIRS
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private byte _TumourGroupID;
+		private int _TumourGroupID;
 		
 		private string _Value;
 		
@@ -1035,7 +1035,7 @@ namespace SasquatchCAIRS
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnTumourGroupIDChanging(byte value);
+    partial void OnTumourGroupIDChanging(int value);
     partial void OnTumourGroupIDChanged();
     partial void OnValueChanging(string value);
     partial void OnValueChanged();
@@ -1051,8 +1051,8 @@ namespace SasquatchCAIRS
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TumourGroupID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public byte TumourGroupID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TumourGroupID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int TumourGroupID
 		{
 			get
 			{
@@ -1183,7 +1183,7 @@ namespace SasquatchCAIRS
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private byte _GroupID;
+		private int _GroupID;
 		
 		private string _Value;
 		
@@ -1197,7 +1197,7 @@ namespace SasquatchCAIRS
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnGroupIDChanging(byte value);
+    partial void OnGroupIDChanging(int value);
     partial void OnGroupIDChanged();
     partial void OnValueChanging(string value);
     partial void OnValueChanged();
@@ -1213,8 +1213,8 @@ namespace SasquatchCAIRS
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public byte GroupID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int GroupID
 		{
 			get
 			{
@@ -1293,7 +1293,7 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserGroup_UserGroup1", Storage="_UserGroups", ThisKey="GroupID", OtherKey="GroupID")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserGroup_UserGroups", Storage="_UserGroups", ThisKey="GroupID", OtherKey="GroupID")]
 		public EntitySet<UserGroups> UserGroups
 		{
 			get
@@ -1420,9 +1420,9 @@ namespace SasquatchCAIRS
 		
 		private string _SpecialNotes;
 		
-		private System.Nullable<byte> _QuestionTypeID;
+		private System.Nullable<int> _QuestionTypeID;
 		
-		private System.Nullable<byte> _TumourGroupID;
+		private System.Nullable<int> _TumourGroupID;
 		
 		private System.Nullable<byte> _Severity;
 		
@@ -1452,9 +1452,9 @@ namespace SasquatchCAIRS
     partial void OnTimeSpentChanged();
     partial void OnSpecialNotesChanging(string value);
     partial void OnSpecialNotesChanged();
-    partial void OnQuestionTypeIDChanging(System.Nullable<byte> value);
+    partial void OnQuestionTypeIDChanging(System.Nullable<int> value);
     partial void OnQuestionTypeIDChanged();
-    partial void OnTumourGroupIDChanging(System.Nullable<byte> value);
+    partial void OnTumourGroupIDChanging(System.Nullable<int> value);
     partial void OnTumourGroupIDChanged();
     partial void OnSeverityChanging(System.Nullable<byte> value);
     partial void OnSeverityChanged();
@@ -1595,8 +1595,8 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionTypeID", DbType="TinyInt")]
-		public System.Nullable<byte> QuestionTypeID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionTypeID", DbType="Int")]
+		public System.Nullable<int> QuestionTypeID
 		{
 			get
 			{
@@ -1619,8 +1619,8 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TumourGroupID", DbType="TinyInt")]
-		public System.Nullable<byte> TumourGroupID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TumourGroupID", DbType="Int")]
+		public System.Nullable<int> TumourGroupID
 		{
 			get
 			{
@@ -1723,7 +1723,7 @@ namespace SasquatchCAIRS
 					}
 					else
 					{
-						this._QuestionTypeID = default(Nullable<byte>);
+						this._QuestionTypeID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("QuestionType");
 				}
@@ -1757,7 +1757,7 @@ namespace SasquatchCAIRS
 					}
 					else
 					{
-						this._TumourGroupID = default(Nullable<byte>);
+						this._TumourGroupID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("TumourGroup");
 				}
@@ -1867,9 +1867,9 @@ namespace SasquatchCAIRS
 		
 		private System.Nullable<System.DateTime> _TimeClosed;
 		
-		private System.Nullable<byte> _RegionID;
+		private System.Nullable<int> _RegionID;
 		
-		private System.Nullable<byte> _RequestorTypeID;
+		private System.Nullable<int> _RequestorTypeID;
 		
 		private EntitySet<QuestionResponse> _QuestionResponses;
 		
@@ -1919,9 +1919,9 @@ namespace SasquatchCAIRS
     partial void OnTimeOpenedChanged();
     partial void OnTimeClosedChanging(System.Nullable<System.DateTime> value);
     partial void OnTimeClosedChanged();
-    partial void OnRegionIDChanging(System.Nullable<byte> value);
+    partial void OnRegionIDChanging(System.Nullable<int> value);
     partial void OnRegionIDChanged();
-    partial void OnRequestorTypeIDChanging(System.Nullable<byte> value);
+    partial void OnRequestorTypeIDChanging(System.Nullable<int> value);
     partial void OnRequestorTypeIDChanged();
     #endregion
 		
@@ -2241,8 +2241,8 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegionID", DbType="TinyInt")]
-		public System.Nullable<byte> RegionID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegionID", DbType="Int")]
+		public System.Nullable<int> RegionID
 		{
 			get
 			{
@@ -2265,8 +2265,8 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorTypeID", DbType="TinyInt")]
-		public System.Nullable<byte> RequestorTypeID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorTypeID", DbType="Int")]
+		public System.Nullable<int> RequestorTypeID
 		{
 			get
 			{
@@ -2368,7 +2368,7 @@ namespace SasquatchCAIRS
 					}
 					else
 					{
-						this._RegionID = default(Nullable<byte>);
+						this._RegionID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Region");
 				}
@@ -2436,7 +2436,7 @@ namespace SasquatchCAIRS
 					}
 					else
 					{
-						this._RequestorTypeID = default(Nullable<byte>);
+						this._RequestorTypeID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("RequestorType");
 				}
@@ -3168,7 +3168,7 @@ namespace SasquatchCAIRS
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private byte _GroupID;
+		private int _GroupID;
 		
 		private int _UserID;
 		
@@ -3180,7 +3180,7 @@ namespace SasquatchCAIRS
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnGroupIDChanging(byte value);
+    partial void OnGroupIDChanging(int value);
     partial void OnGroupIDChanged();
     partial void OnUserIDChanging(int value);
     partial void OnUserIDChanged();
@@ -3193,8 +3193,8 @@ namespace SasquatchCAIRS
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
-		public byte GroupID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int GroupID
 		{
 			get
 			{
@@ -3241,7 +3241,7 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserGroup_UserGroup1", Storage="_UserGroup", ThisKey="GroupID", OtherKey="GroupID", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserGroup_UserGroups", Storage="_UserGroup", ThisKey="GroupID", OtherKey="GroupID", IsForeignKey=true)]
 		public UserGroup UserGroup
 		{
 			get
@@ -3268,7 +3268,7 @@ namespace SasquatchCAIRS
 					}
 					else
 					{
-						this._GroupID = default(byte);
+						this._GroupID = default(int);
 					}
 					this.SendPropertyChanged("UserGroup");
 				}
