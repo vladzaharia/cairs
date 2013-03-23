@@ -52,7 +52,8 @@ namespace SasquatchCAIRS.Models {
         public enum URLStatus {
             None = 0,
             Expired = 1,
-            Unlocked = 2
+            Unlocked = 2,
+            Deleted = 3
         }
 
         public static readonly DropdownTable[] DROPDOWN_TABLES = new DropdownTable[6] {
