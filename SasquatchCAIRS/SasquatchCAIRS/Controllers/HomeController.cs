@@ -21,14 +21,14 @@ namespace SasquatchCAIRS.Controllers {
             IQueryable<Request> requests;
 
             // Create request list based on roles
-            if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
+            if (User.IsInRole(Constants.Roles.ADMINISTRATOR)) {
+                requests = db.Requests.Select(r => r);
+            } else if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
                 requests = db.Requests.Select(r => r).Where(
                     r =>
                     (Constants.RequestStatus) r.RequestStatus !=
                     Constants.RequestStatus.Invalid);
                 //.Where(r => !rlc.isLocked(r.RequestID)); TODO: Fix this
-            } else if (User.IsInRole(Constants.Roles.ADMINISTRATOR)) {
-                requests = db.Requests.Select(r => r);
             } else {
                 requests = db.Requests.Select(r => r).Where(
                     r =>
@@ -69,6 +69,10 @@ namespace SasquatchCAIRS.Controllers {
             } else if (status == Constants.URLStatus.Unlocked) {
                 ViewBag.Status =
                     "The request has now been unlocked and is available for editing by all users.";
+                ViewBag.StatusColor = "success";
+            } else if (status == Constants.URLStatus.Deleted) {
+                ViewBag.Status =
+                    "The request has been marked as invalid and cannot be seen by non-Administrators.";
                 ViewBag.StatusColor = "success";
             }
 
