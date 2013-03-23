@@ -178,6 +178,9 @@ namespace SasquatchCAIRS.Models {
                 public const string SAVE_DRAFT = "Save Draft";
                 public const string MARK_COMPLETE = "Mark as Complete";
                 public const string DELETE_REQUEST = "Delete Request";
+                public const string EDIT_USER = "Edit User";
+                public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
+                public const string CREATE_DROPDOWN = "Create Dropdown Entry";
                 public const string USERS = "Users";
                 public const string LOOKUP = "Lookup Fields";
                 public const string GEN_AUDIT = "Generate Audit Report";
@@ -197,7 +200,6 @@ namespace SasquatchCAIRS.Models {
                 public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
                 public static string AUDIT_LOG = "Generate Audit Report";
-                public const string AUDIT_LOG = "Audit Log";
                 public const string CREATE_REQUEST = "Create Request";
                 public const string REPORTS = "Reports";
                 public const string CREATE = "Create";
