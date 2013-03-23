@@ -165,8 +165,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\Security\AccountController.cs" />
@@ -179,7 +179,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Exceptions.cs" />
-    <Compile Include="Models\Constants.cs" />
     <Compile Include="Controllers\ServiceSystem\DropdownController.cs" />
     <Compile Include="Models\ServiceSystem\DropdownEntry.cs" />
     <Compile Include="Models\ServiceSystem\Request.cs" />

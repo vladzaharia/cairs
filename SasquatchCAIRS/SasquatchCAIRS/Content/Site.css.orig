@@ -26,15 +26,29 @@ a {
         color: #333;
     }
 
+<<<<<<< HEAD
+=======
+    a:hover {
+        background-color: #c7d1d6;
+    }
+>>>>>>> fcee5683b200340000399815419706f95ff75706
     a.btn {
         color: white;
         text-decoration: none;
     }
 
+<<<<<<< HEAD
         a.btn:hover, a.btn:active {
             color: white;
         }
         header, footer, hgroup,
+=======
+    a.btn:hover, a.btn:active {
+        color: white;
+    }
+
+header, footer, hgroup,
+>>>>>>> fcee5683b200340000399815419706f95ff75706
 nav, section {
     display: block;
     position: relative;

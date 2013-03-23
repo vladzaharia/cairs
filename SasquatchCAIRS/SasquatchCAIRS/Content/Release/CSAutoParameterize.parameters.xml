@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <parameter name="sasquatchConnectionString-Web.config Connection String" description="sasquatchConnectionString Connection String used in web.config by the application to access the database." defaultValue="Data Source=sasquatch.cloudapp.net;Initial Catalog=sasquatch;Persist Security Info=True;User ID=team;Password=trecU5He" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="C:\\Users\\jingyuan\\Documents\\Visual\ Studio\ 2012\\Projects\\cloaked-octo-bear\\SasquatchCAIRS\\SasquatchCAIRS\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='sasquatchConnectionString']/@connectionString" />
-  </parameter>
-  <parameter name="ADConn-Web.config Connection String" description="ADConn Connection String used in web.config by the application to access the database." defaultValue="LDAP://sasquatch.cloudapp.net/CN=Users,DC=sasquatch,DC=cloudapp,DC=net" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="C:\\Users\\jingyuan\\Documents\\Visual\ Studio\ 2012\\Projects\\cloaked-octo-bear\\SasquatchCAIRS\\SasquatchCAIRS\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='ADConn']/@connectionString" />
-  </parameter>
-</parameters>
