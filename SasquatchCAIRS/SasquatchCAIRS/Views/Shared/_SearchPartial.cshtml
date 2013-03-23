@@ -18,4 +18,21 @@
         <br />
         @Html.ActionLink("Search", "Advanced", "Search")
     </div>
+}
+
+<script type="text/javascript">
+    $('#apply-form input').blur(function() {
+        if (!$(this).val()) {
+            alert('empty');
+        }
+    })
+    /*
+    $("#myform").validate({
+        rules: {
+            keywords: "required"
+        },
+        messages: {
+          keywords: "Please enter Keywords or a Request ID"
     }
+    }) */
+</script>
