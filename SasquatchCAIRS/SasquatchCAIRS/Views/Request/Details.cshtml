@@ -11,14 +11,14 @@
     <table class="table information-table">
         <tr>
             <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.CREATED_BY</td>
-            <td class="tbl-content-4 tbl-top">@* TODO: Created By *@</td>
+            <td class="tbl-content-4 tbl-top">@ViewBag.CreatedBy</td>
 
             <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.START_TIME</td>
             <td class="tbl-content-4 tbl-top">@Model.timeOpened</td>
         </tr>
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.COMPLETED_BY</td>
-            <td class="tbl-content-4">@* TODO: Completed By *@</td>
+            <td class="tbl-content-4">@ViewBag.CompletedBy</td>
 
             <td class="tbl-label">@Constants.UIString.FieldLabel.COMPLETED_TIME</td>
             <td class="tbl-content-4">@Model.timeClosed</td>

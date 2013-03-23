@@ -72,8 +72,16 @@ namespace SasquatchCAIRS.Controllers {
                 }
             }
 
+            AuditLog log = ;
+
+            UserProfile profile = _db.UserProfiles.FirstOrDefault(up =>
+                                                                  up.UserId ==
+                                                                  log.UserID);
+
             ViewBag.TimeSpent = timeSpent;
             ViewBag.DataContext = _db;
+            ViewBag.CreatedBy = ""; // TODO: Use Audit
+            ViewBag.ClosedBy = ""; // TODO: Use Audit
 
             return View(request);
         }
@@ -83,13 +91,9 @@ namespace SasquatchCAIRS.Controllers {
 
         [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
         public ActionResult Unlock(long id) {
-            var locks = _db.RequestLocks.Where(rl => rl.RequestID == id);
+            RequestLockController rlc = new RequestLockController();
 
-            foreach (RequestLock lck in locks) {
-                _db.RequestLocks.DeleteOnSubmit(lck);
-            }
-
-            _db.SubmitChanges();
+            rlc.removeLock(id);
 
             return RedirectToAction("Index", "Home", new {
                 status = Constants.URLStatus.Unlocked
@@ -101,12 +105,9 @@ namespace SasquatchCAIRS.Controllers {
 
         [Authorize(Roles = Constants.Roles.REQUEST_EDITOR)]
         public ActionResult Delete(long id) {
-            var request = _db.Requests.FirstOrDefault(r => r.RequestID == id);
+            RequestManagementController rmc = new RequestManagementController();
 
-            if (request != null) {
-                request.RequestStatus = (byte) Constants.RequestStatus.Invalid;
-                _db.SubmitChanges();
-            }
+            rmc.invalidate(id);
 
             return RedirectToAction("Index", "Home", new {
                 status = Constants.URLStatus.Deleted
