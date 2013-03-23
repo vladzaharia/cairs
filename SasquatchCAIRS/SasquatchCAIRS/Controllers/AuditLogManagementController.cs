@@ -74,16 +74,7 @@ namespace SasquatchCAIRS.Controllers {
         public void createReportForUser(int userID, DateTime startDate,
                                         DateTime endDate) {
             // Create blank list of AuditLogs and fill with all AuditLogs for the given request ID
-            var requestLogs = new List<AuditLog>();
-            foreach (
-                AuditLog log in
-                    (_db.AuditLogs.Where(
-                        r =>
-                        r.UserID == userID && 
-                        r.AuditDate.Date > startDate.Date &&
-                        r.AuditDate.Date < endDate.Date))) {
-                requestLogs.Add(log);
-            }
+            var requestLogs = (_db.AuditLogs.Where(r => r.UserID == userID && r.AuditDate.Date > startDate.Date && r.AuditDate.Date < endDate.Date)).ToList();
 
             // Create DataTable with requestLogs to send to XLSExporter
             var xlsExport =

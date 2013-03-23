@@ -8,22 +8,6 @@ namespace SasquatchCAIRS.Controllers {
      [Authorize(Roles = "Administrator")]
     public class AuditController : Controller {
 
-        //
-        // GET: /Admin/Audit
-
-        public ActionResult Audit() {
-
-            return View();
-        }
-
-        //
-        // GET: /Admin/GenerateAudit
-
-        public ActionResult GenerateAudit(FormCollection form) {
-
-            return View();
-        }
-
         public class AuditReportGenerator {
 
             [DataType(DataType.Text)]

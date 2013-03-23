@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
 using SasquatchCAIRS.Controllers.Security;
+using SasquatchCAIRS.Controllers.ServiceSystem;
 using SasquatchCAIRS.Models;
 using SasquatchCAIRS.Models.ServiceSystem;
 
@@ -116,6 +117,51 @@ namespace SasquatchCAIRS.Controllers {
             }
 
             return RedirectToAction("UserDetails", new {success = true});
+        }
+
+        //
+        // GET: /Admin/Audit
+
+        public ActionResult Audit() {
+
+            return View();
+        }
+
+        //
+        // GET: /Admin/GenerateAudit
+
+        public ActionResult GenerateAudit(FormCollection form) {
+            
+            // check if user selected search by User ID
+            if (form["criteria"].Equals("user")) {
+                
+                // parse comma delimited IDs entered
+                string [] auditUsers = form["username"].Split(',').Select(sValue => sValue.Trim()).ToArray();
+
+                // create list of IDs
+                List<int> auditIDs = new List<int>();
+
+                // find int user ID that matches given username
+                foreach (string username in auditUsers) {
+                    auditIDs =
+                        (from u in _db.UserProfiles
+                         where u.UserName == username  
+                  select u.UserId).ToList(); 
+                }
+
+                // call createReportForUser for all users
+                foreach (int ID in auditIDs) {
+                    DateTime start = Convert.ToDateTime(form["startDate"]);
+                    DateTime end = Convert.ToDateTime(form["endDate"]);
+
+                    AuditLogManagementController.createReportForUser(ID, start,
+                                                                     end);
+                }
+                
+            }
+
+
+            return View();
         }
     }
 }

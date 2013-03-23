@@ -135,6 +135,15 @@ namespace SasquatchCAIRS.Models {
                 public const string ROLES = "Roles";
                 public const string GROUPS = "Groups";
                 public const string USER_EMAIL = "Email Address";
+
+                // Report Information
+                public const string USER_CRITERIA = "User ID Criteria";
+                public const string REQUEST_CRITERIA = "Request ID Criteria";
+                public const string SEARCH_CRITERIA = "Select Search Criteria";
+                public const string START_DATE = "Start Date";
+                public const string END_DATE = "End Date";
+
+
             }
 
             // Text used in Buttons
@@ -148,7 +157,7 @@ namespace SasquatchCAIRS.Models {
                 public const string DELETE_REQUEST = "Delete Request";
                 public const string USERS = "Users";
                 public const string LOOKUP = "Lookup Fields";
-                public const string AUDIT = "Audit Report";
+                public const string GEN_AUDIT = "Generate Audit Report";
             }
 
             // Text used in Page Titles
@@ -162,7 +171,7 @@ namespace SasquatchCAIRS.Models {
                 public const string EDIT_USER = "Edit User";
                 public const string DROPDOWN_LISTS = "Dropdown Lists";
                 public const string EDIT_DROPDOWN = "Edit Dropdown Value";
-                public static string AUDIT_LOG = "Audit Log";
+                public static string AUDIT_LOG = "Generate Audit Report";
             }
         }
 

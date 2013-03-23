@@ -1,0 +1,70 @@
+﻿@using SasquatchCAIRS
+@using SasquatchCAIRS.Models
+@using SasquatchCAIRS.Models.ServiceSystem
+@model SasquatchCAIRS.Controllers.AuditController
+
+@{
+    ViewBag.Title = "Audit";
+    ViewBag.Page = "admin";
+}
+
+@Html.Partial("_AdminNavPartial", new ViewDataDictionary{ { "active", "audit" } })
+
+
+<h2>@Constants.UIString.TitleText.ADMIN - @Constants.UIString.TitleText.AUDIT_LOG</h2>
+
+@using (Html.BeginForm("GenerateAudit", "Admin",
+    FormMethod.Post, new { @class = "form" })) {
+    <table class="table unbordered-table">
+        <tr>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.SEARCH_CRITERIA</td>
+            <td class="tbl-content-4">
+                <input type="radio" name="criteria" value="user">User ID<br>
+                                                                        <input type="radio" name="criteria" value="request"> Request ID<br>
+            </td>
+        </tr>
+        <tr><td></td></tr>
+        <tr>
+            <td class="tbl-label palette-silver" colspan="2">@Constants.UIString.FieldLabel.USER_CRITERIA</td>
+        </tr>
+        <tr>
+            <td class ="tbl-label">@Constants.UIString.FieldLabel.USERNAME</td>
+            <td colspan="2">
+                <input type="text" class="input-medium" name="username" placeholder="Enter username(s)">
+            </td>
+        </tr>
+        <tr>
+            <td class ="tbl-label">@Constants.UIString.FieldLabel.START_DATE</td>
+            <td colspan="2">
+                <input type="text" id = "startDate" name="startDate" placeholder="MM/DD/YYYY">
+            </td>
+        </tr>
+        <tr>
+            <td class ="tbl-label">@Constants.UIString.FieldLabel.END_DATE</td>
+            <td colspan="2">
+                <input type="text" id = "endDate" name="endDate" placeholder="MM/DD/YYYY">
+            </td>
+        </tr>
+        <tr>
+            <td class="tbl-label palette-silver" colspan="2">@Constants.UIString.FieldLabel.REQUEST_CRITERIA</td>
+        </tr>
+        <tr>
+            <td class ="tbl-label">@Constants.UIString.FieldLabel.REQUEST_ID</td>
+            <td colspan="2">
+                <input type="text" class="input-medium" name="requestIDs" placeholder="Enter Request ID(s)">
+            </td>
+        </tr>
+    </table>
+    
+    <input class="btn" type="submit" value="@Constants.UIString.ButtonText.GEN_AUDIT" />
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    $(function() {
+        $('#endDate').datepicker();
+        $('#startDate').datepicker();
+    });
+</script>
