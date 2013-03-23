@@ -21,14 +21,14 @@ namespace SasquatchCAIRS.Controllers {
             IQueryable<Request> requests;
 
             // Create request list based on roles
-            if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
+            if (User.IsInRole(Constants.Roles.ADMINISTRATOR)) {
+                requests = db.Requests.Select(r => r);
+            } else if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
                 requests = db.Requests.Select(r => r).Where(
                     r =>
                     (Constants.RequestStatus) r.RequestStatus !=
                     Constants.RequestStatus.Invalid);
                 //.Where(r => !rlc.isLocked(r.RequestID)); TODO: Fix this
-            } else if (User.IsInRole(Constants.Roles.ADMINISTRATOR)) {
-                requests = db.Requests.Select(r => r);
             } else {
                 requests = db.Requests.Select(r => r).Where(
                     r =>
