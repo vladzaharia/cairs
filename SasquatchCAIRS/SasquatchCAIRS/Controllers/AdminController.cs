@@ -73,10 +73,10 @@ namespace SasquatchCAIRS.Controllers {
                 foreach (string groupId in userGroup) {
                     if (
                         !_db.UserGroups1.Any(
-                            ug => ug.GroupID == Convert.ToByte(groupId)
+                            ug => ug.GroupID == Convert.ToInt32(groupId)
                                   && ug.UserID == up.UserId)) {
                         _db.UserGroups1.InsertOnSubmit(new UserGroups {
-                            GroupID = Convert.ToByte(groupId),
+                            GroupID = Convert.ToInt32(groupId),
                             UserID = up.UserId
                         });
                         _db.SubmitChanges();
