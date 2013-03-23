@@ -1,20 +1,28 @@
 ﻿@using SasquatchCAIRS.Models
 @{
     ViewBag.Title = Constants.UIString.TitleText.DASHBOARD;
+    ViewBag.Page = "dashboard";
 }
 
 <h2>@Constants.UIString.TitleText.DASHBOARD</h2>
 @if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
-    @Html.ActionLink(Constants.UIString.ButtonText.ADD_REQUEST, "Add", "Request", new {}, new {
-        @class = "btn btn-info dashboard add-button"
+    @Html.ActionLink(Constants.UIString.ButtonText.CREATE_REQUEST, "Create", "Request", new {}, new {
+        @class = "btn btn-custom dashboard add-button"
     })
+}
+
+@if (ViewBag.Status != null) {
+    <br />
+    <div class="message palette-@ViewBag.StatusColor-dark">
+        @ViewBag.Status
+    </div>
 }
 
 @if (ViewBag.Requests != null) {
 <table class="table table-hover">
     <tr>
         <th>@Constants.UIString.FieldLabel.REQUEST_ID</th>
-        <th>@Constants.UIString.FieldLabel.CALLER_NAME</th>
+        <th>@Constants.UIString.FieldLabel.CALLER_NAME_TABLE</th>
         <th>@Constants.UIString.FieldLabel.STATUS</th>
         <th>@Constants.UIString.FieldLabel.KEYWORDS</th>
         <th>@Constants.UIString.FieldLabel.START_TIME</th>

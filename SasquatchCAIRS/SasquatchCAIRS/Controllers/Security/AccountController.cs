@@ -13,7 +13,7 @@ namespace SasquatchCAIRS.Controllers.Security {
             ViewBag.ReturnUrl = returnUrl;
 
             if (returnUrl == "/") {
-                return RedirectToLocal(returnUrl);
+                return RedirectToAction("Index", "Home");
             }
 
             return View();
@@ -25,32 +25,9 @@ namespace SasquatchCAIRS.Controllers.Security {
         public ActionResult Manage() {
             ViewBag.ReturnUrl = Url.Action("Manage");
 
-            return View();
+            UserController uc = new UserController();
+
+            return View(uc.getUserProfile(User.Identity.Name));
         }
-
-        //
-        // GET: /Account/RoleManager
-        // ONLY HERE UNTIL ADMIN WORKS
-        [Authorize]
-        public ActionResult RoleManager(string roleAction, string role) {
-            if (roleAction.Equals("add")) {
-                Roles.AddUserToRole(User.Identity.Name, role);
-            } else if (roleAction.Equals("remove")) {
-                Roles.RemoveUserFromRole(User.Identity.Name, role);
-            }
-
-            return RedirectToLocal("/Account/Manage");
-        }
-
-        #region Helpers
-        private ActionResult RedirectToLocal(string returnUrl) {
-            if (Url.IsLocalUrl(returnUrl)) {
-                return Redirect(returnUrl);
-            }
-
-            return RedirectToAction("Index", "Home");
-        }
-
-        #endregion
     }
 }
