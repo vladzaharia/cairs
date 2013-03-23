@@ -182,31 +182,6 @@ footer {
 
 /* search
 ----------------------------------------------------------*/
-.quick-search {
-    display: inline-block;
-    height: 35px;
-}
-
-.quick-search-div {
-    position: relative;
-    left: 16px;
-    top: -9px;
-}
-
-.quick-search-button {
-    position: relative;
-    top: 5px;
-}
-
-.adv-search-div {
-    display: inline-block;
-    text-align: left;
-    line-height: 15px;
-    position: relative;
-    top: 3px;
-    left: 6px;
-}
-
 div.scroll
 {
     border-radius: 5px;
@@ -282,8 +257,6 @@ ul#menu {
     height: 40px;
     margin: -10px 0 12px 8px;
     padding: 0;
-    position: relative;
-    top: 7px;
 }
 
 ul#menu li {

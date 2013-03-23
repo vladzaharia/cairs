@@ -6,6 +6,7 @@ using System.Web.Security;
 using SasquatchCAIRS.Controllers.Security;
 using SasquatchCAIRS.Controllers.ServiceSystem;
 using SasquatchCAIRS.Models;
+using SasquatchCAIRS.Models.ServiceSystem;
 
 namespace SasquatchCAIRS.Controllers {
     [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
@@ -41,7 +42,6 @@ namespace SasquatchCAIRS.Controllers {
             UserProfile userProfile =
                 _db.UserProfiles.FirstOrDefault(up => up.UserId == id);
             var dc = new DropdownController();
-                              .instance;
 
             ViewBag.Groups =
                 _dc.getEntries(
