@@ -199,13 +199,31 @@
         <p>
             <br />
             <input class="btn" type="submit" value="@Constants.UIString.ButtonText.SEARCH" />
-        </p>
+
+
     </fieldset>
 }
 
+    
+<script type="text/javascript">
     // TODO validate that there is at LEAST one value filled in
-        $('.advanced-search-div :submit').click(function (e) {
-            if ($('keywords').val().length == 0) {
-                e.preventDefault();
+    $(document).ready(function() {
+        $('.advanced-search-div').submit(function () {
+            var i,
+                validateFields = ['keywords'], // fields to validate
+                invalidFields = []; // store of empty fields
+            for (i in validateFields) {
+                // check if field is empty
+                if ($('#' + validateFields[i]).val().replace(/(^\s+|\s+$)/g, '') === '') {
+                    invalidFields.push(validateFields[i]);
+                }
             }
+            if (invalidFields.length) {
+                alert('The following fields were empty: ' + invalidFields.join(', '));
+                return false; // cancel the form submit
+            }
+            return true;
         });
+    });
+          
+</script>
