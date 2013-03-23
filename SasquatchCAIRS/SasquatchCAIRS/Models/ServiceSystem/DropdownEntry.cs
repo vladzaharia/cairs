@@ -38,17 +38,26 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             get {
                 return _code;
             }
+            set {
+                code = _code;
+            }
         }
 
         public string value {
             get {
                 return _value;
             }
+            set {
+                _value = value;
+            }
         }
 
         public bool active {
             get {
                 return _active;
+            }
+            set { 
+                _active = active;
             }
         }
     }

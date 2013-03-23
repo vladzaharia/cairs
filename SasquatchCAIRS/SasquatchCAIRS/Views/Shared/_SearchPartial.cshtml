@@ -1,0 +1,19 @@
+﻿@using (Html.BeginForm("Search", "Home", FormMethod.Post,
+                       new {
+                           @class = "form search-form"
+                       })) {
+    <div class="input-append quick-search-div">
+        @Html.TextBox("keywords", "",
+                      new {
+                          @class = "span2 search-query",
+                          @dp = "Quick Search"
+                      })
+        <button class="btn btn-custom menu-button search-button" type="submit">
+            <i class="icon-search icon-white"></i>
+        </button>
+    </div>
+}
+
+<div class="adv-search-div">
+    @Html.ActionLink("Advanced Search", "Advanced", "Home", new {}, new{ @class = "btn menu-button btn-custom" })
+</div>

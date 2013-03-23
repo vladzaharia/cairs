@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>@ViewBag.Title - /sasquatch/CAIRS</title>
+        <title>@ViewBag.Title - BC Cancer Agency CAIRS</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         
@@ -11,42 +11,33 @@
         @Styles.Render("~/Content/bootstrap")
         @Scripts.Render("~/bundles/bootstrap")
         @Styles.Render("~/Content/flat-ui")
+        @Styles.Render("~/Content/fontawesome")
         @Styles.Render("~/Content/css")
+        <!--[if lt IE 8]>
+            @Styles.Render("~/Content/ie7")
+            @Styles.Render("~/Content/fontawesome-ie7")
+        <![endif]-->
         @Scripts.Render("~/bundles/modernizr")
     </head>
     <body>
         <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink(" ", "Index", "Home", new {}, new { @class="logo" })</p>
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Dashboard", "Index", "Home")</li>
-
-                            @if (User.IsInRole("RequestEditor")) {
-                            <li>@Html.ActionLink("Add New Request", "Add", "Request")</li>
-                            }
-
-                            @if (User.IsInRole("ReportGenerator")) {
-                            <li>@Html.ActionLink("Reports", "Contact", "Home")</li>
-                            }
-
-                            @if (User.IsInRole("Administrator")) {
-                            <li>@Html.ActionLink("Admin", "Index", "Home")</li>
-                            }
-                        </ul>
-                    </nav>
-                </div>
-                <div class="float-right">
+            <div class="logo-wrapper content-wrapper">
+                <p class="site-title">@Html.ActionLink(" ", "Index", "Home", new {}, new { @class="logo" })</p>
+                <div class="position-right">
                     <section id="login">
                         @Html.Partial("_LoginPartial")
                     </section>
+                </div>
+            </div>
+            <div class="menu-wrapper">
+                <div class="menu-wrapper content-wrapper">
+                    @Html.Partial("_NavPartial")
 
-                    @if (User.IsInRole("Viewer")) {
-                    <section id="search">
-                        Search Box Goes Here
-                    </section>
-                    }
+                    <div class="position-right search-div">
+                        @if (User.IsInRole("Viewer")) {
+                            @Html.Partial("_SearchPartial")
+                        }
+                    </div>
                 </div>
             </div>
         </header>
@@ -59,11 +50,48 @@
         <footer>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - CAIRS by /sasquatch/. <strong>Confidential.</strong></p>
+                    <p>Copyright &copy; @DateTime.Now.Year BC Cancer Agency. All Rights Reserved.</p>
                 </div>
             </div>
         </footer>
         
+        <div class="session-timeout palette-danger-dark">
+            Your session will expire in <strong><span id="timeout-mins"></span> minute(s)</strong>. 
+            Please save all changes and navigate to another page to keep it alive.
+        </div>
+        
         @Scripts.Render("~/bundles/flat-ui")
+        <script type="text/javascript">
+            $(function() {
+                $('input, textarea').placeholder();
+            });
+        </script>
+        
+        <script type="text/javascript">
+            var sessionTimeout = "@Session.Timeout";
+
+            function DisplaySessionTimeout() {
+                //assigning minutes left to session timeout to Label
+                $('#timeout-mins').text(sessionTimeout);
+                sessionTimeout = sessionTimeout - 1;
+
+                //call the function again after 1 minute delay
+                window.setTimeout("DisplaySessionTimeout()", 60000);
+
+                //if session is not less than 0
+                if (sessionTimeout < 0)  {
+                    window.location.href = '/';
+                    $('.session-timeout').text("Your session has timed out. Please visit the dashboard to start again.")
+                } else if (sessionTimeout < 5) {
+                    $(".session-timeout").show();
+                    $("footer").addClass("timeout");
+                } 
+            }
+
+            $(function () {
+                $(".session-timeout").hide();
+                DisplaySessionTimeout();
+            });
+        </script>  
     </body>
 </html>

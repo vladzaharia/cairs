@@ -1,0 +1,23 @@
+﻿@using SasquatchCAIRS.Models
+
+<div class="btn-toolbar">
+    <div class="btn-group">
+        @if (((string) ViewData["active"]) == "users") {
+            @Html.ActionLink(Constants.UIString.TitleText.USERS, "Users", "Admin", new {}, new {@class = "btn btn-custom active"})
+        } else {
+            @Html.ActionLink(Constants.UIString.TitleText.USERS, "Users", "Admin", new {}, new {@class = "btn btn-custom"})
+        }
+            
+        @if (((string) ViewData["active"]) == "dropdowns") {
+            @Html.ActionLink(Constants.UIString.TitleText.DROPDOWN_LISTS, "Dropdowns", "Admin", new {}, new {@class = "btn btn-custom active"})
+        } else {
+            @Html.ActionLink(Constants.UIString.TitleText.DROPDOWN_LISTS, "Dropdowns", "Admin", new {}, new {@class = "btn btn-custom"})
+        }
+            
+        @if (((string) ViewData["active"]) == "audit") {
+            @Html.ActionLink(Constants.UIString.TitleText.AUDIT_LOG, "Audit", "Admin", new {}, new {@class = "btn btn-custom active"})
+        } else {
+            @Html.ActionLink(Constants.UIString.TitleText.AUDIT_LOG, "Audit", "Admin", new {}, new {@class = "btn btn-custom"})
+        }
+    </div>
+</div>

@@ -1,7 +1,7 @@
 /*! http://mths.be/placeholder v2.0.7 by @mathias */
 ;(function(window, document, $) {
 
-	var isInputSupported = 'placeholder' in document.createElement('input'),
+	var isInputSupported = false,
 	    isTextareaSupported = 'placeholder' in document.createElement('textarea'),
 	    prototype = $.fn,
 	    valHooks = $.valHooks,
@@ -21,7 +21,7 @@
 		placeholder = prototype.placeholder = function() {
 			var $this = this;
 			$this
-				.filter((isInputSupported ? 'textarea' : ':input') + '[placeholder]')
+				.filter((isInputSupported ? 'textarea' : ':input') + '[dp]')
 				.not('.placeholder')
 				.bind({
 					'focus.placeholder': clearPlaceholder,
@@ -100,7 +100,7 @@
 	function clearPlaceholder(event, value) {
 		var input = this,
 		    $input = $(input);
-		if (input.value == $input.attr('placeholder') && $input.hasClass('placeholder')) {
+		if (input.value == $input.attr('dp') && $input.hasClass('placeholder')) {
 			if ($input.data('placeholder-password')) {
 				$input = $input.hide().next().show().attr('id', $input.removeAttr('id').data('placeholder-id'));
 				// If `clearPlaceholder` was called from `$.valHooks.input.set`
@@ -148,7 +148,7 @@
 				// Note: `$input[0] != input` now!
 			}
 			$input.addClass('placeholder');
-			$input[0].value = $input.attr('placeholder');
+			$input[0].value = $input.attr('dp');
 		} else {
 			$input.removeClass('placeholder');
 		}

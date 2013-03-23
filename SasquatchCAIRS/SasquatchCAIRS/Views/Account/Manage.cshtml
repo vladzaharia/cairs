@@ -3,18 +3,15 @@
 }
 
 <hgroup class="title">
-    <h1>@ViewBag.Title</h1>
+    <h2>@ViewBag.Title</h2>
 </hgroup>
-
-<p class="message-success">@ViewBag.StatusMessage</p>
-
-<p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
 
 @Html.Partial("_ViewUserInfo")
 
-<h3>Change Password</h3>
+<h4>Change Password</h4>
 <p>
-    Please change your password through Windows Login.
+    Your password is managed through Windows. <br /> 
+    To change your password, press CTRL + ALT + DEL, and select "Change Password..."
 </p>
 
 @section Scripts {

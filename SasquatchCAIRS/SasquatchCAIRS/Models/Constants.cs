@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace SasquatchCAIRS.Models {
     public static class Constants {
@@ -47,6 +48,21 @@ namespace SasquatchCAIRS.Models {
             TumourGroup,
             UserGroup
         }
+
+        public enum URLStatus {
+            None = 0,
+            Expired = 1,
+            Unlocked = 2
+        }
+
+        public static readonly DropdownTable[] DROPDOWN_TABLES = new DropdownTable[6] {
+            DropdownTable.Keyword,
+            DropdownTable.QuestionType, 
+            DropdownTable.Region, 
+            DropdownTable.RequestorType, 
+            DropdownTable.TumourGroup, 
+            DropdownTable.UserGroup
+        };
 
         public const string KEYWORD_TBL_ID_ATTR = "KeywordID";
         public const string KEYWORD_TBL_KEYWORD_ATTR = "Keyword";
@@ -97,7 +113,8 @@ namespace SasquatchCAIRS.Models {
                 public const string TOTAL_TIME_SPENT = "Total Time Spent";
 
                 // Caller Information
-                public const string CALLER_NAME = "Caller Name";
+                public const string CALLER_NAME = "Name";
+                public const string CALLER_NAME_TABLE = "Caller Name";
                 public const string CALLER_FNAME = "First Name";
                 public const string CALLER_LNAME = "Last Name";
                 public const string CALLER_EMAIL = "Email";
@@ -106,6 +123,7 @@ namespace SasquatchCAIRS.Models {
                 public const string CALLER_REGION = "Region";
 
                 // Patient Information
+                public const string PATIENT_NAME = "Name";
                 public const string PATIENT_ID = "Patient ID";
                 public const string PATIENT_FNAME = "First Name";
                 public const string PATIENT_LNAME = "Last Name";
@@ -115,24 +133,46 @@ namespace SasquatchCAIRS.Models {
                 // Question Information
                 public const string QUESTION = "Question";
                 public const string RESPONSE = "Response";
-                public const string SPECIAL_NOTES = "Special Notes";
+                public const string SPECIAL_NOTES = "Special Notes/Followup";
+                public const string TUMOUR_GROUP = "Tumour Group";
+                public const string QUESTION_TYPE = "Question Type";
                 public const string SEVERITY = "Severity";
                 public const string CONSEQUENCE = "Probability of Consequence";
                 public const string IMPACT_SCORE = "Impact Score";
                 public const string KEYWORDS = "Keywords";
                 public const string REFERENCES = "References";
                 public const string PARENT_REQUEST = "Parent Request ID";
+                public const string TIME_SPENT = "Time Spent";
+
+                // General
+                public const string FULL_NAME = "Full Name";
+
+                // User
+                public const string USERNAME = "Username";
+                public const string ROLES = "Roles";
+                public const string GROUPS = "Groups";
+                public const string USER_EMAIL = "Email Address";
+
+                // Dropdowns
+                public const string DROPDOWN_CODE = "Code";
+                public const string DROPDOWN_VALUE = "Value";
+                public const string DROPDOWN_KEYWORD = "Keyword";
+                public const string DROPDOWN_STATUS = "Status";
             }
 
             // Text used in Buttons
             public static class ButtonText {
-                public const string ADD_REQUEST = "Add New Request";
+                public const string CREATE_REQUEST = "Create Request";
                 public const string EDIT_REQUEST = "Edit Request";
                 public const string UNLOCK_REQUEST = "Unlock Request";
                 public const string EXPORT_REQUEST = "Export Request";
                 public const string SAVE_DRAFT = "Save Draft";
                 public const string MARK_COMPLETE = "Mark as Complete";
                 public const string DELETE_REQUEST = "Delete Request";
+                public const string EDIT_USER = "Edit User";
+                public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
+                public const string CREATE_DROPDOWN = "Create Dropdown Entry";
+                public const string CREATE = "Create";
             }
 
             // Text used in Page Titles
@@ -141,6 +181,22 @@ namespace SasquatchCAIRS.Models {
                 public const string VIEW_REQUEST = "View Request";
                 public const string REQUEST_NUM = "Request #";
                 public const string ERROR = "Error";
+                public const string ADMIN = "Admin Settings";
+                public const string USERS = "Users";
+                public const string EDIT_USER = "Edit User";
+                public const string DROPDOWN_LISTS = "Dropdown Lists";
+                public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
+                public const string CREATE_DROPDOWN = "Create Dropdown Entry";
+                public const string AUDIT_LOG = "Audit Log";
+                public const string CREATE_REQUEST = "Create Request";
+                public const string REPORTS = "Reports";
+                public const string CREATE = "Create";
+                public const string EDIT = "Edit";
+            }
+
+            public static class GeneralText {
+                public const string ACTIVE = "Active";
+                public const string DISABLED = "Disabled";
             }
         }
 
@@ -163,11 +219,29 @@ namespace SasquatchCAIRS.Models {
         }
 
         /// <summary>
+        /// Gets the string value for the reference type
+        /// </summary>
+        /// <param name="type">Reference Type as a Constants.ReferenceType</param>
+        /// <returns>String representing the status</returns>
+        public static string getReferenceString(ReferenceType type) {
+            switch (type) {
+                case ReferenceType.URL:
+                    return "URL";
+                case ReferenceType.File:
+                    return "File";
+                case ReferenceType.Text:
+                    return "Text";
+                default:
+                    return "";
+            }
+        }
+
+        /// <summary>
         /// Gets the string value for the gender.
         /// </summary>
         /// <param name="gender">Gender as a Constants.Gender</param>
         /// <returns>String representing the gender</returns>
-        public static string getGenderString(Gender gender) {
+        public static string getGenderString(Gender? gender) {
             switch (gender) {
                 case Gender.Female:
                     return "Female";
@@ -181,12 +255,60 @@ namespace SasquatchCAIRS.Models {
         }
 
         /// <summary>
+        /// Get the string value for a dropdown list
+        /// </summary>
+        /// <param name="dropdown">Dropdown list as Constants.DropdownTable</param>
+        /// <returns>String representing the DropdownTable name</returns>
+        public static string getDropdownString(DropdownTable? dropdown) {
+            switch (dropdown) {
+                case DropdownTable.Keyword:
+                    return "Keyword";
+                case DropdownTable.QuestionType:
+                    return "Question Type";
+                case DropdownTable.Region:
+                    return "Region";
+                case DropdownTable.RequestorType:
+                    return "Requestor Type";
+                case DropdownTable.TumourGroup:
+                    return "Tumour Group";
+                case DropdownTable.UserGroup:
+                    return "User Group";
+                default:
+                    return "";
+            }
+        }
+
+        /// <summary>
+        /// Get the DropdownTable for a String
+        /// </summary>
+        /// <param name="s">The string to parse</param>
+        /// <returns>The DropdownTable for the string</returns>
+        public static DropdownTable getTableForString(string s) {
+            switch (s) {
+                case "Keyword":
+                    return DropdownTable.Keyword;
+                case "Question Type":
+                    return DropdownTable.QuestionType;
+                case "Region":
+                    return DropdownTable.Region;
+                case "Requestor Type":
+                    return DropdownTable.RequestorType;
+                case "Tumour Group":
+                    return DropdownTable.TumourGroup;
+                case "User Group":
+                    return DropdownTable.UserGroup;
+                default:
+                    return DropdownTable.Keyword;
+            }
+        }
+
+        /// <summary>
         /// Gets the Impact score from severity and consequence
         /// </summary>
         /// <param name="severity">Severity as Constants.Severity</param>
         /// <param name="consequence">Consequence as Constants.Consequence</param>
         /// <returns>A string representing the impact score.</returns>
-        public static string getImpactScore(Severity severity, Consequence consequence) {
+        public static string getImpactScore(Severity? severity, Consequence? consequence) {
             switch (consequence) {
                 case Consequence.Certain:
                 case Consequence.Probable:

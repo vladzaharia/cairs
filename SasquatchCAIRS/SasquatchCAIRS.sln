@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SasquatchCAIRS", "SasquatchCAIRS\SasquatchCAIRS.csproj", "{13C99E73-2753-42D9-9651-333E1600B7F7}"
 EndProject
 Global
-	GlobalSection(CodealikeProperties) = postSolution
-		SolutionGuid = 3eda407a-9ee2-4b3f-8332-748ab5078489
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -19,5 +16,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = 3eda407a-9ee2-4b3f-8332-748ab5078489
 	EndGlobalSection
 EndGlobal

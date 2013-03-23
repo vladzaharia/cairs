@@ -5,10 +5,6 @@
     }
 
     <text>
-        Hello, @Html.ActionLink(name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
+        @Html.ActionLink(name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-custom menu-button username", title = "Manage" })
     </text>
-} else {
-    <ul>
-        <li>Not Authenticated</li>
-    </ul>
 }
