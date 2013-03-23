@@ -10,7 +10,7 @@
 
 @using (Html.BeginForm("Results", "Search", FormMethod.Post,
     new {
-        @class = "form form-search"
+        @class = "form advanced-search-div"
     })) {
     @Html.ValidationSummary(true)
 
@@ -21,8 +21,7 @@
             @Html.Label(Constants.UIString.FieldLabel.KEYWORDS)
         </div>
         <div>
-            @Html.EditorFor(model => model.keywordString)
-            @Html.ValidationMessageFor(model => model.keywordString)
+            <input class="input-medium" name="keywords" id="keywords" type="text"/>
         </div>
 
         <div>
@@ -54,25 +53,31 @@
             }
         </div>
 
+        @if (@Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)|| Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
         <div>
-            <br />
+            <br/>
             @Html.Label(Constants.UIString.FieldLabel.STATUS)
         </div>
 
         <div>
             @foreach (var status in Enum.GetValues(
-                typeof(Constants.RequestStatus))) {
+                typeof (Constants.RequestStatus))) {
+                if (Constants.RequestStatus.Invalid.CompareTo(status) == 0 && !Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) 
+                {}
+                else {
                 <label class="checkbox inline">
-                    @if (!String.IsNullOrEmpty(Model.requestStatus) && 
-                         Model.requestStatus.Contains(@status.ToString())) {
+                    @if (!String.IsNullOrEmpty(Model.requestStatus) &&
+                            Model.requestStatus.Contains(@status.ToString())) {
                         <input type="checkbox" name="status" value="@status" checked/>
                     } else {
                         <input type="checkbox" name="status" value="@status" />
                     }
                     @status
                 </label>
+                }
             }
         </div>
+        }
 
         <div>
             <br />
@@ -108,9 +113,13 @@
                 <label class="checkboxlist">
                     @if (!String.IsNullOrEmpty(Model.tumorGroup) &&
                          Model.tumorGroup.Contains(@item.id + "")) {
-                        <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" checked/>
+                        <label class="checkbox inline">
+                            <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" checked/>
+                        </label>
                     } else {
-                        <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" />
+                        <label class="checkbox inline">
+                            <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" />
+                        </label>
                     }
                     @item.value
                 </label>
@@ -128,17 +137,19 @@
                 <label class="checkboxlist">
                     @if (!String.IsNullOrEmpty(Model.questionType) && 
                          Model.questionType.Contains(@item.id+"")) {
-                        <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id" checked/>
+                        <label class="checkbox inline">
+                            <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id" checked/>
+                        </label>
                     } else {
-                        <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id"/>
+                        <label class="checkbox inline">
+                            <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id"/>
+                        </label>
                     }
                     @item.value
                 </label>
                 <br/>
             }
         </div>
-
-        <div></div>
 
         <div>
             <br/>
@@ -148,7 +159,7 @@
         <div>
         @foreach (var severity in Enum.GetValues(typeof(Constants.Severity))) {
             <label class="checkboxlist">
-                @if (!String.IsNullOrEmpty(Model.severity) && Model.severity.Contains( (string) @severity)) {
+                @if (!String.IsNullOrEmpty(Model.severity) && Model.severity.Contains(@severity.ToString())) {
                     <label class="checkbox" for="severity-@severity">
                         <input type="checkbox" value="@severity" id="severity-@severity" name="severity" checked="checked">
                         @severity
@@ -191,3 +202,10 @@
         </p>
     </fieldset>
 }
+
+    // TODO validate that there is at LEAST one value filled in
+        $('.advanced-search-div :submit').click(function (e) {
+            if ($('keywords').val().length == 0) {
+                e.preventDefault();
+            }
+        });

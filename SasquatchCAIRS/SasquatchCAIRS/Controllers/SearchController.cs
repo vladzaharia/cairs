@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Security;
 using SasquatchCAIRS.Controllers.ServiceSystem;
 using SasquatchCAIRS.Models.SearchSystem;
 using SasquatchCAIRS.Models;
@@ -26,6 +27,12 @@ namespace SasquatchCAIRS.Controllers {
             SearchCriteria sc = new SearchCriteria();
             sc.keywordString = keywords;
             Session["criteria"] = sc;
+
+            long requestId;
+            if (long.TryParse(keywords, out requestId)) {
+                return RedirectToAction("Details", "Request", new {id=requestId});
+            }
+
             List<Request> list = searchCriteriaQuery(sc);
             fillUpKeywordDict(list);
             ViewBag.ResultSetSize = list.Count;
@@ -43,10 +50,10 @@ namespace SasquatchCAIRS.Controllers {
             Session["criteria"] = null;
 
             ViewBag.TumorGroups =
-                _dropdownController.getActiveEntries(
+                _dropdownController.getEntries(
                     Constants.DropdownTable.TumourGroup).OrderBy(tg => tg.value);
             ViewBag.QuestionType =
-                _dropdownController.getActiveEntries(
+                _dropdownController.getEntries(
                     Constants.DropdownTable.QuestionType).OrderBy(qt => qt.value);
 
             return View(criteria);
@@ -69,6 +76,7 @@ namespace SasquatchCAIRS.Controllers {
             if (DateTime.TryParse(form["completionTime"], out temp)) {
                 criteria.completionTime = temp;
             }
+            criteria.keywordString = form["keywords"];
             criteria.requestStatus = form["status"];
             criteria.severity = form["severity"];
             criteria.consequence = form["consequence"];
@@ -96,10 +104,10 @@ namespace SasquatchCAIRS.Controllers {
         public ActionResult Modify() {
 
             ViewBag.TumorGroups =
-                _dropdownController.getActiveEntries(
+                _dropdownController.getEntries(
                     Constants.DropdownTable.TumourGroup).OrderBy(tg => tg.value);
             ViewBag.QuestionType =
-                _dropdownController.getActiveEntries(
+                _dropdownController.getEntries(
                     Constants.DropdownTable.QuestionType).OrderBy(qt => qt.value);
 
             SearchCriteria criteria = (SearchCriteria) Session["criteria"];
@@ -160,15 +168,6 @@ namespace SasquatchCAIRS.Controllers {
                      select kws.KeywordValue)
                         .ToList();
                 keywords.Add(request.RequestID, kw);
-
-                //IQueryable<KeywordQuestion> keywordQuestions =
-                //    from keywordQuestion in _db.KeywordQuestions
-                //    where keywordQuestion.RequestID == request.RequestID
-                //    select keywordQuestion;
-                //keywords.Add(request.RequestID, (from keyword in _db.Keywords
-                //                                    join keywordQuestion in keywordQuestions
-                //                                    on keyword.KeywordID equals keywordQuestion.KeywordID
-                //                                    select keyword.KeywordValue).Distinct().ToList());
             }
             ViewBag.keywordDict = keywords;
         }
@@ -219,15 +218,24 @@ namespace SasquatchCAIRS.Controllers {
                     requests.Where(r => r.TimeClosed != null && (criteria.completionTime.CompareTo(r.TimeClosed) <= 0));
             }
 
+            // Set Criteria based on Users Role(s)
+            if (Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) {}
+            else if (String.IsNullOrEmpty(criteria.requestStatus) && Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
+                criteria.requestStatus = Enum.GetName(typeof(Constants.RequestStatus), Constants.RequestStatus.Completed) 
+                    + "," + Enum.GetName(typeof(Constants.RequestStatus), Constants.RequestStatus.Open);
+            }
+            else if (String.IsNullOrEmpty(criteria.requestStatus) && Roles.IsUserInRole(Constants.Roles.VIEWER)) {
+                criteria.requestStatus = Enum.GetName(typeof(Constants.RequestStatus), Constants.RequestStatus.Completed);
+            }
             // Filter on request status
             if (!String.IsNullOrEmpty(criteria.requestStatus)) {
-                requests =
-                    requests.Where(
-                        r =>
-                        enumToIDs(criteria.requestStatus,
-                                  typeof(Constants.RequestStatus))
-                            .Contains(r.RequestStatus));
-            }
+                    requests =
+                        requests.Where(
+                            r =>
+                            enumToIDs(criteria.requestStatus,
+                                      typeof (Constants.RequestStatus))
+                                .Contains(r.RequestStatus));
+                }
 
             // Filter on Question/Response tuples
             IQueryable<QuestionResponse> questionResponses = _db.QuestionResponses;

@@ -1,0 +1,57 @@
+﻿@using SasquatchCAIRS.Models
+<nav>
+    <ul id="menu">
+        @if (ViewBag.Page == "dashboard") {
+        <li>@Html.ActionLink(Constants.UIString.TitleText.DASHBOARD, "Index", "Home", new {
+            }, new {
+                @class = "btn menu-button btn-custom first active"
+            })</li>
+        } else {
+        <li>@Html.ActionLink(Constants.UIString.TitleText.DASHBOARD, "Index", "Home", new {
+            }, new {
+                @class = "btn menu-button btn-custom first"
+            })</li>
+        }
+        @if (ViewBag.Page == "add-request") {
+            if (User.IsInRole("RequestEditor")) {
+                <li>@Html.ActionLink(Constants.UIString.TitleText.CREATE_REQUEST, "Create", "Request", new {}, new {
+                        @class = "btn menu-button btn-custom active"
+                    })</li>
+            }
+        } else {
+            if (User.IsInRole("RequestEditor")) {
+                <li>@Html.ActionLink(Constants.UIString.TitleText.CREATE_REQUEST, "Create", "Request", new {}, new {
+                        @class = "btn menu-button btn-custom"
+                    })</li>
+            }
+        }
+        
+        @if (ViewBag.Page == "reports") {
+            if (User.IsInRole("ReportGenerator")) {
+                 <li>@Html.ActionLink(Constants.UIString.TitleText.REPORTS, "Contact", "Home", new {}, new {
+                         @class = "btn menu-button btn-custom active"
+                     })</li>
+             }
+        } else {
+            if (User.IsInRole("ReportGenerator")) {
+                 <li>@Html.ActionLink(Constants.UIString.TitleText.REPORTS, "Contact", "Home", new {}, new {
+                         @class = "btn menu-button btn-custom"
+                     })</li>
+             }
+        }
+        
+        @if (ViewBag.Page == "admin") {
+            if (User.IsInRole("Administrator")) {
+                <li>@Html.ActionLink(Constants.UIString.TitleText.ADMIN, "Index", "Admin", new {}, new {
+                        @class = "btn menu-button btn-custom active"
+                    })</li>
+            }
+        } else {
+            if (User.IsInRole("Administrator")) {
+                <li>@Html.ActionLink(Constants.UIString.TitleText.ADMIN, "Index", "Admin", new {}, new {
+                        @class = "btn menu-button btn-custom"
+                    })</li>
+            }
+        }
+    </ul>
+</nav>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace SasquatchCAIRS.Models {
     public static class Constants {
@@ -47,6 +48,22 @@ namespace SasquatchCAIRS.Models {
             TumourGroup,
             UserGroup
         }
+
+        public enum URLStatus {
+            None = 0,
+            Expired = 1,
+            Unlocked = 2,
+            Deleted = 3
+        }
+
+        public static readonly DropdownTable[] DROPDOWN_TABLES = new DropdownTable[6] {
+            DropdownTable.Keyword,
+            DropdownTable.QuestionType, 
+            DropdownTable.Region, 
+            DropdownTable.RequestorType, 
+            DropdownTable.TumourGroup, 
+            DropdownTable.UserGroup
+        };
 
         public const string KEYWORD_TBL_ID_ATTR = "KeywordID";
         public const string KEYWORD_TBL_KEYWORD_ATTR = "Keyword";
@@ -108,6 +125,7 @@ namespace SasquatchCAIRS.Models {
 
                 // Caller Information
                 public const string CALLER_NAME = "Name";
+                public const string CALLER_NAME_TABLE = "Caller Name";
                 public const string CALLER_FNAME = "First Name";
                 public const string CALLER_LNAME = "Last Name";
                 public const string CALLER_EMAIL = "Email";
@@ -143,17 +161,24 @@ namespace SasquatchCAIRS.Models {
 
                 // General
                 public const string FULL_NAME = "Full Name";
+                public const string QUICK_SEARCH = "Quick Search";
 
                 // User
                 public const string USERNAME = "Username";
                 public const string ROLES = "Roles";
                 public const string GROUPS = "Groups";
                 public const string USER_EMAIL = "Email Address";
+
+                // Dropdowns
+                public const string DROPDOWN_CODE = "Code";
+                public const string DROPDOWN_VALUE = "Value";
+                public const string DROPDOWN_KEYWORD = "Keyword";
+                public const string DROPDOWN_STATUS = "Status";
             }
 
             // Text used in Buttons
             public static class ButtonText {
-                public const string ADD_REQUEST = "Add New Request";
+                public const string CREATE_REQUEST = "Create Request";
                 public const string EDIT_REQUEST = "Edit Request";
                 public const string UNLOCK_REQUEST = "Unlock Request";
                 public const string EXPORT_REQUEST = "Export Request";
@@ -163,6 +188,10 @@ namespace SasquatchCAIRS.Models {
                 public const string MODIFY_SEARCH = "Modify Search";
                 public const string NEW_SEARCH = "New Search";
                 public const string SEARCH = "Search!";
+                public const string EDIT_USER = "Edit User";
+                public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
+                public const string CREATE_DROPDOWN = "Create Dropdown Entry";
+                public const string CREATE = "Create";
             }
 
             // Text used in Page Titles
@@ -175,10 +204,20 @@ namespace SasquatchCAIRS.Models {
                 public const string USERS = "Users";
                 public const string EDIT_USER = "Edit User";
                 public const string DROPDOWN_LISTS = "Dropdown Lists";
-                public const string EDIT_DROPDOWN = "Edit Dropdown Value";
-                public static string AUDIT_LOG = "Audit Log";
+                public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
+                public const string CREATE_DROPDOWN = "Create Dropdown Entry";
                 public const string ADVANCED_SEARCH = "Advanced Search";
                 public const string RESULTS = "Results";
+                public const string AUDIT_LOG = "Audit Log";
+                public const string CREATE_REQUEST = "Create Request";
+                public const string REPORTS = "Reports";
+                public const string CREATE = "Create";
+                public const string EDIT = "Edit";
+            }
+
+            public static class GeneralText {
+                public const string ACTIVE = "Active";
+                public const string DISABLED = "Disabled";
             }
         }
 
@@ -233,6 +272,54 @@ namespace SasquatchCAIRS.Models {
                     return "Other";
                 default:
                     return "None";
+            }
+        }
+
+        /// <summary>
+        /// Get the string value for a dropdown list
+        /// </summary>
+        /// <param name="dropdown">Dropdown list as Constants.DropdownTable</param>
+        /// <returns>String representing the DropdownTable name</returns>
+        public static string getDropdownString(DropdownTable? dropdown) {
+            switch (dropdown) {
+                case DropdownTable.Keyword:
+                    return "Keyword";
+                case DropdownTable.QuestionType:
+                    return "Question Type";
+                case DropdownTable.Region:
+                    return "Region";
+                case DropdownTable.RequestorType:
+                    return "Requestor Type";
+                case DropdownTable.TumourGroup:
+                    return "Tumour Group";
+                case DropdownTable.UserGroup:
+                    return "User Group";
+                default:
+                    return "";
+            }
+        }
+
+        /// <summary>
+        /// Get the DropdownTable for a String
+        /// </summary>
+        /// <param name="s">The string to parse</param>
+        /// <returns>The DropdownTable for the string</returns>
+        public static DropdownTable getTableForString(string s) {
+            switch (s) {
+                case "Keyword":
+                    return DropdownTable.Keyword;
+                case "Question Type":
+                    return DropdownTable.QuestionType;
+                case "Region":
+                    return DropdownTable.Region;
+                case "Requestor Type":
+                    return DropdownTable.RequestorType;
+                case "Tumour Group":
+                    return DropdownTable.TumourGroup;
+                case "User Group":
+                    return DropdownTable.UserGroup;
+                default:
+                    return DropdownTable.Keyword;
             }
         }
 
