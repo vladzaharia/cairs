@@ -91,7 +91,26 @@ namespace SasquatchCAIRS.Controllers {
 
             _db.SubmitChanges();
 
-            return RedirectToAction("Index", "Home", new { status = Constants.URLStatus.Unlocked });
+            return RedirectToAction("Index", "Home", new {
+                status = Constants.URLStatus.Unlocked
+            });
+        }
+
+        //
+        // GET: /Request/Delete/{id}
+
+        [Authorize(Roles = Constants.Roles.REQUEST_EDITOR)]
+        public ActionResult Delete(long id) {
+            var request = _db.Requests.FirstOrDefault(r => r.RequestID == id);
+
+            if (request != null) {
+                request.RequestStatus = (byte) Constants.RequestStatus.Invalid;
+                _db.SubmitChanges();
+            }
+
+            return RedirectToAction("Index", "Home", new {
+                status = Constants.URLStatus.Deleted
+            });
         }
     }
 }
