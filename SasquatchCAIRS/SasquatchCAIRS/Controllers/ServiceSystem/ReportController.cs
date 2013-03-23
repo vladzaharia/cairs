@@ -31,18 +31,18 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 case Constants.StratifyOption.Region:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the region
-                    Dictionary<int, List<Request>> regionDictionary = (from reqs in _db.Requests
+                    Dictionary<byte, List<Request>> regionDictionary = (from reqs in _db.Requests
                                                                          where
                                                                              reqs.TimeOpened > startDate &&
-                                                                             reqs.TimeOpened < endDate 
+                                                                             reqs.TimeOpened <= endDate 
                                                                          group reqs by reqs.RegionID
                                                                              into regionGroups
-                                                                             select regionGroups).ToDictionary(r => nullableToInt(r.Key),
+                                                                             select regionGroups).ToDictionary(r => nullableToByte(r.Key),
                                                                                                            r =>
                                                                                                            r.ToList());
 
                     //Sub-groups the regionGroups by the year the request is opened.
-                    Dictionary<int, Dictionary<MonthYearPair, List<Request>>> regionAndYear =
+                    Dictionary<byte, Dictionary<MonthYearPair, List<Request>>> regionAndYear =
                         regionDictionary.ToDictionary(keyValuePair => keyValuePair.Key,
                                                       keyValuePair =>
                                                       keyValuePair.Value.GroupBy(r => new MonthYearPair(r.TimeOpened.Year, r.TimeOpened.Month))
@@ -58,18 +58,18 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 case Constants.StratifyOption.CallerType:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the callerType
-                    Dictionary<int, List<Request>> callerDictionary = (from reqs in _db.Requests
+                    Dictionary<byte, List<Request>> callerDictionary = (from reqs in _db.Requests
                                                                          where
                                                                              reqs.TimeOpened > startDate &&
-                                                                             reqs.TimeOpened < endDate
+                                                                             reqs.TimeOpened <= endDate
                                                                          group reqs by reqs.RequestorTypeID
                                                                              into callerGroups
-                                                                             select callerGroups).ToDictionary(r => nullableToInt(r.Key),
+                                                                             select callerGroups).ToDictionary(r => nullableToByte(r.Key),
                                                                                                            r =>
                                                                                                            r.ToList());
 
                     //Sub-groups the regionGroups by the year the request is opened.
-                    Dictionary<int, Dictionary<MonthYearPair, List<Request>>> callerAndYear =
+                    Dictionary<byte, Dictionary<MonthYearPair, List<Request>>> callerAndYear =
                         callerDictionary.ToDictionary(keyValuePair => keyValuePair.Key,
                                                       keyValuePair =>
                                                       keyValuePair.Value.GroupBy(r => new MonthYearPair(r.TimeOpened))
@@ -84,11 +84,11 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 case Constants.StratifyOption.TumorGroup:
                     //Retrieves the QuestionResponse from the database which opened within the given timeFrame,
                     //adds the open, close timestamps, then group them by the tumourGroup
-                    Dictionary<int, List<QandRwithTimestamp>> qrTumourGrpDic =
+                    Dictionary<byte, List<QandRwithTimestamp>> qrTumourGrpDic =
                         (from reqs in _db.Requests
                          where
                              reqs.TimeOpened > startDate &&
-                             reqs.TimeOpened < endDate
+                             reqs.TimeOpened <= endDate
                          join qr in _db.QuestionResponses on reqs.RequestID
                              equals qr.RequestID
                          select
@@ -96,10 +96,10 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                                                     reqs.TimeClosed)).ToList().GroupBy(
                                                         q => q.qr.TumourGroupID).Select(grp => grp)
                                                                      .ToDictionary
-                            (grp => nullableToInt(grp.Key), grp => grp.ToList());
+                            (grp => nullableToByte(grp.Key), grp => grp.ToList());
 
                     //Sub-groups the regionGroups by the year the question(request) is opened.
-                    Dictionary<int, Dictionary<MonthYearPair, List<QandRwithTimestamp>>> tgAndYear =
+                    Dictionary<byte, Dictionary<MonthYearPair, List<QandRwithTimestamp>>> tgAndYear =
                         qrTumourGrpDic.ToDictionary(keyValuePair => keyValuePair.Key,
                                                       keyValuePair =>
                                                       keyValuePair.Value.GroupBy(r => new MonthYearPair(r.timeOpened))
@@ -115,19 +115,14 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the year
                     Dictionary<MonthYearPair, List<Request>> dictionaryByMonth = (from reqs in _db.Requests
-                                                                                      where
-                                                                                          reqs.TimeOpened > startDate &&
-                                                                                          reqs.TimeOpened < endDate
-                                                                                      group reqs by new {
-                                                                                          reqs.TimeOpened.Month,
-                                                                                          reqs.TimeOpened.Year
-                                                                                      }
-                                                                                          into listByYear
-                                                                                          select listByYear).ToDictionary(r => new MonthYearPair(r.Key.Month, r.Key.Year),
+                                                                       where
+                                                                           reqs.TimeOpened > startDate &&
+                                                                           reqs.TimeOpened <= endDate
+                                                                       group reqs by new {reqs.TimeOpened.Month, reqs.TimeOpened.Year}
+                                                                           into listByYear
+                                                                           select listByYear).ToDictionary(r => new MonthYearPair(r.Key.Month, r.Key.Year),
                                                                                                            r =>
                                                                                                            r.ToList());
-                    
-                    
                     DataTable dt = new DataTable();
                     dt.Clear();
 
@@ -212,18 +207,18 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 case Constants.StratifyOption.Region:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the region
-                    Dictionary<int, List<Request>> regionDictionary = (from reqs in _db.Requests
+                    Dictionary<byte, List<Request>> regionDictionary = (from reqs in _db.Requests
                                                                          where
                                                                              reqs.TimeOpened > startDate &&
                                                                              reqs.TimeOpened <= enDated
                                                                          group reqs by reqs.RegionID
                                                                              into regionGroups
-                                                                             select regionGroups).ToDictionary(r => nullableToInt(r.Key),
+                                                                             select regionGroups).ToDictionary(r => nullableToByte(r.Key),
                                                                                                            r =>
                                                                                                            r.ToList());
 
                     //Sub-groups the regionGroups by the year the request is opened.
-                    Dictionary<int, Dictionary<FiscalYear, List<Request>>> regionAndYear =
+                    Dictionary<byte, Dictionary<FiscalYear, List<Request>>> regionAndYear =
                         regionDictionary.ToDictionary(keyValuePair => keyValuePair.Key,
                                                       keyValuePair =>
                                                       keyValuePair.Value.GroupBy(r => new FiscalYear(r.TimeOpened))
@@ -239,18 +234,18 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 case Constants.StratifyOption.CallerType:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the callerType
-                    Dictionary<int, List<Request>> callerDictionary = (from reqs in _db.Requests
+                    Dictionary<byte, List<Request>> callerDictionary = (from reqs in _db.Requests
                                                                          where
                                                                              reqs.TimeOpened > startDate &&
                                                                              reqs.TimeOpened <= enDated
                                                                          group reqs by reqs.RequestorTypeID
                                                                              into callerGroups
-                                                                            select callerGroups).ToDictionary(r => nullableToInt(r.Key),
+                                                                            select callerGroups).ToDictionary(r => nullableToByte(r.Key),
                                                                                                            r =>
                                                                                                            r.ToList());
 
                     //Sub-groups the regionGroups by the year the request is opened.
-                    Dictionary<int, Dictionary<FiscalYear, List<Request>>> callerAndYear =
+                    Dictionary<byte, Dictionary<FiscalYear, List<Request>>> callerAndYear =
                         callerDictionary.ToDictionary(keyValuePair => keyValuePair.Key,
                                                       keyValuePair =>
                                                       keyValuePair.Value.GroupBy(r => new FiscalYear(r.TimeOpened))
@@ -262,7 +257,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                             dataType => createDtForEachFiscalYear(startYear, endYear, stratifyBy, dataType, callerAndYear)));
                     break;
                 case Constants.StratifyOption.TumorGroup:
-                    Dictionary<int, List<QandRwithTimestamp>> qrTumourGrpDic =
+                    Dictionary<byte, List<QandRwithTimestamp>> qrTumourGrpDic =
                         (from reqs in _db.Requests
                          where
                              reqs.TimeOpened > startDate &&
@@ -274,9 +269,9 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                                                     reqs.TimeClosed)).ToList().GroupBy(
                                                         q => q.qr.TumourGroupID).Select(grp => grp)
                                                                      .ToDictionary
-                            (grp => nullableToInt(grp.Key), grp => grp.ToList());
+                            (grp => nullableToByte(grp.Key), grp => grp.ToList());
 
-                    Dictionary<int, Dictionary<FiscalYear, List<QandRwithTimestamp>>> tgAndYear =
+                    Dictionary<byte, Dictionary<FiscalYear, List<QandRwithTimestamp>>> tgAndYear =
                         qrTumourGrpDic.ToDictionary(keyValuePair => keyValuePair.Key,
                                                       keyValuePair =>
                                                       keyValuePair.Value.GroupBy(r => new FiscalYear(r.timeOpened))
@@ -405,19 +400,19 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 case Constants.StratifyOption.Region:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the region
-                    Dictionary<int, List<Request>> regionDictionary = (from reqs in _db.Requests
+                    Dictionary<byte, List<Request>> regionDictionary = (from reqs in _db.Requests
                                                                          where
                                                                              reqs.TimeOpened > start &&
                                                                              reqs.TimeOpened <= end &&
                                                                              reqs.TimeOpened.Month == month
                                                                          group reqs by reqs.RegionID
                                                                          into regionGroups
-                                                                            select regionGroups).ToDictionary(r => nullableToInt(r.Key),
+                                                                            select regionGroups).ToDictionary(r => nullableToByte(r.Key),
                                                                                                            r =>
                                                                                                            r.ToList());
 
                     //Sub-groups the regionGroups by the year the request is opened.
-                    Dictionary<int, Dictionary<int, List<Request>>> regionAndYear =
+                    Dictionary<byte, Dictionary<int, List<Request>>> regionAndYear =
                         regionDictionary.ToDictionary(keyValuePair => keyValuePair.Key,
                                                       keyValuePair =>
                                                       keyValuePair.Value.GroupBy(r => r.TimeOpened.Year)
@@ -433,19 +428,19 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 case Constants.StratifyOption.CallerType:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the callerType
-                    Dictionary<int, List<Request>> callerDictionary = (from reqs in _db.Requests
+                    Dictionary<byte, List<Request>> callerDictionary = (from reqs in _db.Requests
                                                                          where
                                                                              reqs.TimeOpened > start &&
                                                                              reqs.TimeOpened <= end &&
                                                                              reqs.TimeOpened.Month == month
                                                                          group reqs by reqs.RequestorTypeID
                                                                          into callerGroups
-                                                                            select callerGroups).ToDictionary(r => nullableToInt(r.Key),
+                                                                            select callerGroups).ToDictionary(r => nullableToByte(r.Key),
                                                                                                            r =>
                                                                                                            r.ToList());
 
                     //Sub-groups the regionGroups by the year the request is opened.
-                    Dictionary<int, Dictionary<int, List<Request>>> callerAndYear =
+                    Dictionary<byte, Dictionary<int, List<Request>>> callerAndYear =
                         callerDictionary.ToDictionary(keyValuePair => keyValuePair.Key,
                                                       keyValuePair =>
                                                       keyValuePair.Value.GroupBy(r => r.TimeOpened.Year)
@@ -457,7 +452,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                             dataType => createDtForEachYear(startYear, endYear, stratifyBy, dataType, callerAndYear)));
                     break;
                 case Constants.StratifyOption.TumorGroup:
-                    Dictionary<int, List<QandRwithTimestamp>> qrTumourGrpDic =
+                    Dictionary<byte, List<QandRwithTimestamp>> qrTumourGrpDic =
                         (from reqs in _db.Requests
                          where
                              reqs.TimeOpened > start &&
@@ -469,9 +464,9 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                                                     reqs.TimeClosed)).ToList().GroupBy(
                                                         q => q.qr.TumourGroupID).Select(grp=>grp)
                                                                      .ToDictionary
-                            (grp => nullableToInt(grp.Key), grp => grp.ToList());
+                            (grp => nullableToByte(grp.Key), grp => grp.ToList());
 
-                    Dictionary<int, Dictionary<int, List<QandRwithTimestamp>>> tgAndYear =
+                    Dictionary<byte, Dictionary<int, List<QandRwithTimestamp>>> tgAndYear =
                         qrTumourGrpDic.ToDictionary(keyValuePair => keyValuePair.Key,
                                                       keyValuePair =>
                                                       keyValuePair.Value.GroupBy(r => r.timeOpened.Year)
@@ -569,7 +564,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                                                      stratifyBy,
                                                  Constants.DataType dataType,
                                                  Dictionary
-                                                     <int,
+                                                     <byte,
                                                      Dictionary<int, List<Request>>>
                                                      dictionary) {
             var dt = new DataTable();
@@ -592,7 +587,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             }
 
             //gets the names of the stratify groups. ie, callerType,region or tumourGroup Codes
-            Dictionary<int, string> idToName = getTypeNames(stratifyBy);
+            Dictionary<byte, string> idToName = getTypeNames(stratifyBy);
 
 
             foreach (var keyValuePair in dictionary) {
@@ -600,7 +595,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 DataRow newRow = dt.NewRow();
 
                 //if the key is null then it should create a row for 'No group assigned' requests
-                if (keyValuePair.Key != -1) {
+                if (keyValuePair.Key != 255) {
                     newRow[stratifyGroups] = idToName[keyValuePair.Key];
                     idToName.Remove(keyValuePair.Key);
                 } else {
@@ -657,7 +652,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                                                      stratifyBy,
                                                  Constants.DataType dataType,
                                                  Dictionary
-                                                     <int,
+                                                     <byte,
                                                      Dictionary<int, List<QandRwithTimestamp>>>
                                                      dictionary) {
             var dt = new DataTable();
@@ -680,7 +675,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             }
 
             //gets the names of the stratify groups. ie, callerType,region or tumourGroup Codes
-            Dictionary<int, string> idToName = getTypeNames(stratifyBy);
+            Dictionary<byte, string> idToName = getTypeNames(stratifyBy);
 
 
             foreach (var keyValuePair in dictionary) {
@@ -688,7 +683,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 DataRow newRow = dt.NewRow();
 
                 //if the key is null then it should create a row for 'No group assigned' requests
-                if (keyValuePair.Key != -1) {
+                if (keyValuePair.Key != 255) {
                     newRow[stratifyGroups] = idToName[keyValuePair.Key];
                     idToName.Remove(keyValuePair.Key);
                 } else {
@@ -741,7 +736,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
         /// <returns>dataTable fore each fiscal year for given stratify grouping</returns>
         private DataTable createDtForEachFiscalYear(int startYear, int endYear, Constants.StratifyOption stratifyBy,
                                               Constants.DataType dataType,
-                                              Dictionary<int, Dictionary<FiscalYear, List<Request>>> dictionary) {
+                                              Dictionary<byte, Dictionary<FiscalYear, List<Request>>> dictionary) {
             var dt = new DataTable();
             dt.Clear();
 
@@ -762,14 +757,14 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             }
 
             //gets the names of the stratify groups. ie, callerType,region or tumourGroup Codes
-            Dictionary<int, string> idToName = getTypeNames(stratifyBy);
+            Dictionary<byte, string> idToName = getTypeNames(stratifyBy);
 
             //adds a row for each startify groups with proper data filled in
             foreach (var keyValuePair in dictionary) {
                 DataRow newRow = dt.NewRow();
 
                 //if the key is null then it should create a row for 'No group assigned' requests
-                if (keyValuePair.Key != -1) {
+                if (keyValuePair.Key != 255) {
                     newRow[stratifyGroups] = idToName[keyValuePair.Key];
                     idToName.Remove(keyValuePair.Key);
                 } else {
@@ -818,7 +813,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
         /// <returns>dataTable fore each fiscal year for given stratify grouping</returns>
         private DataTable createDtForEachFiscalYear(int startYear, int endYear, Constants.StratifyOption stratifyBy,
                                               Constants.DataType dataType,
-                                              Dictionary<int, Dictionary<FiscalYear, List<QandRwithTimestamp>>> dictionary) {
+                                              Dictionary<byte, Dictionary<FiscalYear, List<QandRwithTimestamp>>> dictionary) {
             var dt = new DataTable();
             dt.Clear();
 
@@ -839,14 +834,14 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             }
 
             //gets the names of the stratify groups. ie, callerType,region or tumourGroup Codes
-            Dictionary<int, string> idToName = getTypeNames(stratifyBy);
+            Dictionary<byte, string> idToName = getTypeNames(stratifyBy);
 
             //adds a row for each startify groups with perper data filled in
             foreach (var keyValuePair in dictionary) {
                 DataRow newRow = dt.NewRow();
 
                 //if the key is null then it should create a row for 'No group assigned' requests
-                if (keyValuePair.Key != -1) {
+                if (keyValuePair.Key != 255) {
                     newRow[stratifyGroups] = idToName[keyValuePair.Key];
                     idToName.Remove(keyValuePair.Key);
                 } else {
@@ -895,7 +890,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
         /// <returns>dataTable fore each  month for given stratify grouping</returns>
         private DataTable createDtForEachMonth(DateTime startTime, DateTime endTime, Constants.StratifyOption stratifyBy,
                                               Constants.DataType dataType,
-                                              Dictionary<int, Dictionary<MonthYearPair, List<Request>>> dictionary) {
+                                              Dictionary<byte, Dictionary<MonthYearPair, List<Request>>> dictionary) {
             var dt = new DataTable();
             dt.Clear();
 
@@ -918,7 +913,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             }
 
             //gets the names of the stratify groups. ie, callerType,region or tumourGroup Codes
-            Dictionary<int, string> idToName = getTypeNames(stratifyBy);
+            Dictionary<byte, string> idToName = getTypeNames(stratifyBy);
 
 
             foreach (var keyValuePair in dictionary) {
@@ -926,7 +921,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 DataRow newRow = dt.NewRow();
 
                 //if the key is null then it should create a row for 'No group assigned' requests
-                if (keyValuePair.Key != -1) {
+                if (keyValuePair.Key != 255) {
                     newRow[stratifyGroups] = idToName[keyValuePair.Key];
                     idToName.Remove(keyValuePair.Key);
                 } else {
@@ -975,7 +970,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
         /// <returns>dataTable for each month for given stratify grouping</returns>
         private DataTable createDtForEachMonth(DateTime startTime, DateTime endTime, Constants.StratifyOption stratifyBy,
                                               Constants.DataType dataType,
-                                              Dictionary<int, Dictionary<MonthYearPair, List<QandRwithTimestamp>>> dictionary) {
+                                              Dictionary<byte, Dictionary<MonthYearPair, List<QandRwithTimestamp>>> dictionary) {
             var dt = new DataTable();
             dt.Clear();
 
@@ -998,7 +993,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             }
 
             //gets the names of the stratify groups. ie, callerType,region or tumourGroup Codes
-            Dictionary<int, string> idToName = getTypeNames(stratifyBy);
+            Dictionary<byte, string> idToName = getTypeNames(stratifyBy);
 
 
             foreach (var keyValuePair in dictionary) {
@@ -1006,7 +1001,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 DataRow newRow = dt.NewRow();
 
                 //if the key is null then it should create a row for 'No group assigned' requests
-                if (keyValuePair.Key!=-1) {
+                if (keyValuePair.Key!=255) {
                     newRow[stratifyGroups] = idToName[keyValuePair.Key];
                 } else {
                     newRow[stratifyGroups] = "No " + stratifyGroups;
@@ -1148,9 +1143,9 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
         /// </summary>
         /// <param name="stratifyOption">stratify option selected</param>
         /// <returns>returns the dictionary of subgroup codes for the stratify option selected</returns>
-        private Dictionary<int, string> getTypeNames(Constants.StratifyOption stratifyOption)
+        private Dictionary<byte, string> getTypeNames(Constants.StratifyOption stratifyOption)
         {
-            Dictionary<int, string> codes = null;
+            Dictionary<byte, string> codes = null;
             switch (stratifyOption)
             {
                 case Constants.StratifyOption.Region:
@@ -1177,12 +1172,12 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
         /// the key gets set to the highest value
         /// </summary>
         /// <param name="key">stratifyGroupID</param>
-        /// <returns>returns the value of the key, or -1 if the key is null</returns>
-        private int nullableToInt(int? key) {
+        /// <returns>returns the value of the key, or 255 if the key is null</returns>
+        private byte nullableToByte(byte? key) {
             if (key.HasValue) {
                 return key.Value;
             } else {
-                return -1;
+                return 255;
             }
         }
 
