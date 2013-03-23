@@ -173,11 +173,19 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		public System.Data.Linq.Table<Request> Requests
+		public System.Data.Linq.Table<QuestionType> QuestionTypes
 		{
 			get
 			{
-				return this.GetTable<Request>();
+				return this.GetTable<QuestionType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Region> Regions
+		{
+			get
+			{
+				return this.GetTable<Region>();
 			}
 		}
 		
@@ -186,6 +194,8 @@ namespace SasquatchCAIRS
 			get
 			{
 				return this.GetTable<AuditLog>();
+			}
+		}
 			}
 		}
 		
@@ -217,16 +227,33 @@ namespace SasquatchCAIRS
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Reference")]
 	public partial class Reference : INotifyPropertyChanging, INotifyPropertyChanged
 	{
+			{
+				return this.GetTable<QuestionResponse>();
+			}
+		}
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
+		{
+			get
+			{
+				return this.GetTable<Request>();
+			}
+		}
+	}
+	
 		private long _ReferenceID;
+	public partial class Reference : INotifyPropertyChanging, INotifyPropertyChanged
+	{
 		
 		private long _QuestionResponseID;
 		
 		private long _RequestID;
 		
 		private byte _ReferenceType;
+		
+		private string _ReferenceString;
+		
+		private EntityRef<QuestionResponse> _QuestionResponse;
 		
 		private string _ReferenceString;
 		
@@ -1128,7 +1155,19 @@ namespace SasquatchCAIRS
 					this.SendPropertyChanged("Active");
 					this.OnActiveChanged();
 				}
+				}
 			}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TumourGroup_QuestionResponse", Storage="_QuestionResponses", ThisKey="TumourGroupID", OtherKey="TumourGroupID")]
+		public EntitySet<QuestionResponse> QuestionResponses
+		{
+			get
+			{
+				return this._QuestionResponses;
+			}
+			set
+			{
+				this._QuestionResponses.Assign(value);
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TumourGroup_QuestionResponse", Storage="_QuestionResponses", ThisKey="TumourGroupID", OtherKey="TumourGroupID")]
@@ -1184,7 +1223,6 @@ namespace SasquatchCAIRS
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		private int _GroupID;
-		
 		private string _Value;
 		
 		private string _Code;
@@ -1474,6 +1512,14 @@ namespace SasquatchCAIRS
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionResponseID", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public long QuestionResponseID
 		{
+			get
+			{
+				return this._QuestionResponseID;
+			}
+			set
+			{
+				if ((this._QuestionResponseID != value))
+				{
 			get
 			{
 				return this._QuestionResponseID;
@@ -1868,9 +1914,7 @@ namespace SasquatchCAIRS
 		private System.Nullable<System.DateTime> _TimeClosed;
 		
 		private System.Nullable<int> _RegionID;
-		
 		private System.Nullable<int> _RequestorTypeID;
-		
 		private EntitySet<QuestionResponse> _QuestionResponses;
 		
 		private EntitySet<Request> _Requests;
@@ -1878,6 +1922,14 @@ namespace SasquatchCAIRS
 		private EntitySet<AuditLog> _AuditLogs;
 		
 		private EntitySet<RequestLock> _RequestLocks;
+		
+		private EntityRef<Region> _Region;
+		
+		private EntityRef<Request> _Request1;
+		
+		private EntityRef<RequestorType> _RequestorType;
+		
+		private EntitySet<Request> _Requests;
 		
 		private EntityRef<Region> _Region;
 		

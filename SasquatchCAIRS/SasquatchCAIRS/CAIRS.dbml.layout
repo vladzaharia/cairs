@@ -4,6 +4,7 @@
   <nestedChildShapes>
     <classShape Id="5cedc61b-65ee-4536-8f43-b7cabfcd3e33" absoluteBounds="0.75, 1, 2, 1.7765549372633296">
       <DataClassMoniker Name="/CAIRSDataContext/Reference" />
+      <DataClassMoniker Name="/CAIRSDataContext/Reference" />
       <nestedChildShapes>
         <elementListCompartment Id="34ff23da-5240-4c70-8f34-09897074ce27" absoluteBounds="0.76500000000000012, 1.46, 1.9700000000000002, 1.2165549372633298" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
