@@ -104,47 +104,53 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                              DropdownEntry entry) {
             switch (table) {
                 case Constants.DropdownTable.Keyword:
-                    Keyword kw = new Keyword();
-                    kw.KeywordValue = entry.value;
+                    Keyword kw = new Keyword {
+                        KeywordValue = entry.value
+                    };
 
                     _db.Keywords.InsertOnSubmit(kw);
                     break;
                 case Constants.DropdownTable.QuestionType:
-                    QuestionType qType = new QuestionType();
-                    qType.Code = entry.code;
-                    qType.Value = entry.value;
+                    QuestionType qType = new QuestionType {
+                        Code = entry.code,
+                        Value = entry.value
+                    };
 
                     _db.QuestionTypes.InsertOnSubmit(qType);
 
                     break;
                 case Constants.DropdownTable.Region:
-                    Region region = new Region();
-                    region.Code = entry.code;
-                    region.Value = entry.value;
+                    Region region = new Region {
+                        Code = entry.code,
+                        Value = entry.value
+                    };
 
                     _db.Regions.InsertOnSubmit(region);
 
                     break;
                 case Constants.DropdownTable.RequestorType:
-                    RequestorType rType = new RequestorType();
-                    rType.Code = entry.code;
-                    rType.Value = entry.value;
+                    RequestorType rType = new RequestorType {
+                        Code = entry.code,
+                        Value = entry.value
+                    };
 
                     _db.RequestorTypes.InsertOnSubmit(rType);
 
                     break;
                 case Constants.DropdownTable.TumourGroup:
-                    TumourGroup tGroup = new TumourGroup();
-                    tGroup.Code = entry.code;
-                    tGroup.Value = entry.value;
+                    TumourGroup tGroup = new TumourGroup {
+                        Code = entry.code,
+                        Value = entry.value
+                    };
 
                     _db.TumourGroups.InsertOnSubmit(tGroup);
 
                     break;
                 case Constants.DropdownTable.UserGroup:
-                    UserGroup uGroup = new UserGroup();
-                    uGroup.Code = entry.code;
-                    uGroup.Value = entry.value;
+                    UserGroup uGroup = new UserGroup {
+                        Code = entry.code,
+                        Value = entry.value
+                    };
 
                     _db.UserGroups.InsertOnSubmit(uGroup);
 
@@ -223,7 +229,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
 
                 _db.SubmitChanges();
             }
-            catch (InvalidOperationException ioEx) {
+            catch (InvalidOperationException) {
                 // No such entry
                 // TODO: Do something
             }
