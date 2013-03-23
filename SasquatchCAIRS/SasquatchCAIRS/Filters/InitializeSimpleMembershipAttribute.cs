@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Web.Mvc;
+using SasquatchCAIRS.Controllers.Security;
 using WebMatrix.WebData;
-using SasquatchCAIRS.Models;
 using System.Web.Security;
-using SasquatchCAIRS.Controllers;
+using SasquatchCAIRS.Models;
 
 namespace SasquatchCAIRS.Filters {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
@@ -21,17 +20,15 @@ namespace SasquatchCAIRS.Filters {
 
             // Add Profile Information to ViewBag for header
             dynamic viewBag = filterContext.Controller.ViewBag;
-            UserProfileController profileController = new UserProfileController();
-            viewBag.Profile = profileController.getUserProfile(filterContext.HttpContext.User.Identity.Name);
+            UserController profileController = new UserController();
+            viewBag.Profile = profileController.loginAndGetUserProfile(filterContext.HttpContext.User.Identity.Name);
         }
 
         private class SimpleMembershipInitializer {
             public SimpleMembershipInitializer() {
-                Database.SetInitializer<UsersContext>(null);
-
                 try {
-                    using (var context = new UsersContext()) {
-                        if (!context.Database.Exists()) {
+                    using (var context = new CAIRSDataContext()) {
+                        if (!context.DatabaseExists()) {
                             // Create the SimpleMembership database without 
                             // Entity Framework migration schema
                             ((IObjectContextAdapter) context)
@@ -48,10 +45,10 @@ namespace SasquatchCAIRS.Filters {
                         autoCreateTables: true);
 
                     // Initialize Roles
-                    initializeRole("Administrator");
-                    initializeRole("ReportGenerator");
-                    initializeRole("RequestEditor");
-                    initializeRole("Viewer");
+                    initializeRole(Constants.Roles.ADMINISTRATOR);
+                    initializeRole(Constants.Roles.REPORT_GENERATOR);
+                    initializeRole(Constants.Roles.REQUEST_EDITOR);
+                    initializeRole(Constants.Roles.VIEWER);
                 } catch (Exception ex) {
                     throw new InvalidOperationException(
                         "Database could not be initialized!", ex);

@@ -1,6 +1,56 @@
-﻿@{
-    ViewBag.Title = "Home";
+﻿@using SasquatchCAIRS.Models
+@{
+    ViewBag.Title = Constants.UIString.TitleText.DASHBOARD;
+    ViewBag.Page = "dashboard";
 }
 
-<h1>Dashboard</h1>
-A dashboard will be added here.
+<h2>@Constants.UIString.TitleText.DASHBOARD</h2>
+@if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
+    @Html.ActionLink(Constants.UIString.ButtonText.CREATE_REQUEST, "Create", "Request", new {}, new {
+        @class = "btn btn-custom dashboard add-button"
+    })
+}
+
+@if (ViewBag.Status != null) {
+    <br />
+    <div class="message palette-@ViewBag.StatusColor-dark">
+        @ViewBag.Status
+    </div>
+}
+
+@if (ViewBag.Requests != null) {
+<table class="table table-hover">
+    <tr>
+        <th>@Constants.UIString.FieldLabel.REQUEST_ID</th>
+        <th>@Constants.UIString.FieldLabel.CALLER_NAME_TABLE</th>
+        <th>@Constants.UIString.FieldLabel.STATUS</th>
+        <th>@Constants.UIString.FieldLabel.KEYWORDS</th>
+        <th>@Constants.UIString.FieldLabel.START_TIME</th>
+        <th>@Constants.UIString.FieldLabel.COMPLETED_TIME</th>
+    </tr>
+    @foreach (var request in ViewBag.Requests) {
+        <tr>
+            <td class="clickable" data-id="@request.RequestID">@request.RequestID</td>
+            <td class="clickable" data-id="@request.RequestID">@request.RequestorFName @request.RequestorLName</td>
+            <td class="clickable" data-id="@request.RequestID">@Constants.getStatusString((Constants.RequestStatus) request.RequestStatus)</td>
+            <td class="clickable" data-id="@request.RequestID">@foreach(string keyword in ViewBag.Keywords[@request.RequestID]) { <span>@keyword </span> }</td>
+            <td class="clickable" data-id="@request.RequestID">@request.TimeOpened</td>
+            <td class="clickable" data-id="@request.RequestID">@request.TimeClosed</td>
+            @* TODO: Edit Link *@
+        </tr>
+    }
+</table>
+}
+
+@if (ViewBag.Requests == null) {
+    <p>Nothing to see here!</p>
+}
+
+<script type="text/javascript">
+    $(function() {
+        $(".clickable").click(function() {
+            document.location.href = "/Request/Details/" + $(this).attr("data-id");
+        });
+    })
+</script>
+

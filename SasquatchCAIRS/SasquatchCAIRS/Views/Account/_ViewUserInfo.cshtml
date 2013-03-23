@@ -1,35 +1,31 @@
-﻿<h3>User Information</h3>
-<p>
-    Name: @ViewBag.Profile.UserFullName <br />
-    Email: @ViewBag.Profile.UserEmail <br />
-    Status: @ViewBag.Profile.UserStatus <br />
-</p>
+﻿@model SasquatchCAIRS.UserProfile
 
-<!-- This is only here until we get an admin page up -->
-<h3>Role Information</h3>
-<p>
-    Viewer: @System.Web.Security.Roles.IsUserInRole("Viewer") -
-            @Html.ActionLink("Add", "RoleManager", "Account",
-                new { roleAction = "add", role = "Viewer" }, null) /
-            @Html.ActionLink("Remove", "RoleManager", "Account",
-                new { roleAction = "remove", role = "Viewer" }, null)
-                <br />
-    Request Editor: @System.Web.Security.Roles.IsUserInRole("RequestEditor") -
-            @Html.ActionLink("Add", "RoleManager", "Account",
-                new { roleAction = "add", role = "RequestEditor" }, null) /
-            @Html.ActionLink("Remove", "RoleManager", "Account",
-                new { roleAction = "remove", role = "RequestEditor" }, null)
-                <br />
-    Report Generator: @System.Web.Security.Roles.IsUserInRole("ReportGenerator") -
-            @Html.ActionLink("Add", "RoleManager", "Account",
-                new { roleAction = "add", role = "ReportGenerator" }, null) /
-            @Html.ActionLink("Remove", "RoleManager", "Account",
-                new { roleAction = "remove", role = "ReportGenerator" }, null)
-                <br />
-    Administrator: @System.Web.Security.Roles.IsUserInRole("Administrator") -
-            @Html.ActionLink("Add", "RoleManager", "Account",
-                new { roleAction = "add", role = "Administrator" }, null) /
-            @Html.ActionLink("Remove", "RoleManager", "Account",
-                new { roleAction = "remove", role = "Administrator" }, null)
-                <br />
-</p>
+@using SasquatchCAIRS
+@using SasquatchCAIRS.Controllers.Security
+@using SasquatchCAIRS.Models
+<h4>User Information</h4>
+<table class ="table">
+    <tr>
+        <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.USERNAME</td>
+        <td class="tbl-top">@Model.UserName</td>
+    </tr>
+    <tr>
+        <td class="tbl-label">@Constants.UIString.FieldLabel.FULL_NAME</td>
+        <td>@Model.UserFullName</td>
+    </tr>
+    <tr>
+        <td class="tbl-label">@Constants.UIString.FieldLabel.USER_EMAIL</td>
+        <td>@Model.UserEmail</td>
+    </tr>
+    <tr>
+        <td class="tbl-label">@Constants.UIString.FieldLabel.ROLES</td>
+        <td>@foreach (string role in Roles.GetRolesForUser(Model.UserName)) { @role <br /> }</td>
+    </tr>
+    <tr>
+        <td class="tbl-label">@Constants.UIString.FieldLabel.GROUPS</td>
+        <td>@foreach (UserGroup group in (new UserController()).getUserGroups(Model.UserName)) {
+                                                                 <span>@group.Code - @group.Value</span>
+                                                                 <br />
+                                                             }</td>
+    </tr>
+</table>

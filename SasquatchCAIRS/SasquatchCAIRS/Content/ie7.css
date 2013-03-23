@@ -1,0 +1,39 @@
+﻿.sxs-one.keywords {
+    position: relative;
+}
+
+ul#menu {
+    position: relative;
+    top: 9px;
+}
+
+ul#menu li {
+    margin-left: -4px;
+}
+
+.logo-wrapper {
+    height: 20px;
+}
+
+.search-div {
+    top: -2px;
+}
+
+.adv-search-div {
+    position: relative;
+    top: -10px;
+}
+
+.adv-search-div a {
+    padding-top: 8px;
+    padding-bottom: 9px;
+}
+
+.search-button {
+    position: relative;
+    top: 1px;
+}
+
+.dashboard.add-button {
+    top: 10px;
+}

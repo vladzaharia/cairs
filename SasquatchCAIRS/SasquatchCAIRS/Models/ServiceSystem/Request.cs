@@ -25,11 +25,8 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         private DateTime _timeOpened = new DateTime();
         private DateTime? _timeClosed = null;
 
-        private Constants.Priority _priority = Constants.Priority.None;
-        private Constants.Consequence _consequence =
-            Constants.Consequence.None;
-        private byte? _regionID = null;
-        private byte? _requestorTypeID = null;
+        private int? _regionID = null;
+        private int? _requestorTypeID = null;
 
         private List<QuestionResponseContent> _questionResponseList
             = new List<QuestionResponseContent>();
@@ -58,14 +55,6 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             _requestStatus = (Constants.RequestStatus) req.RequestStatus;
             _timeOpened = req.TimeOpened;
             _timeClosed = req.TimeClosed;
-
-            if (req.Priority != null) {
-                _priority = (Constants.Priority) req.Priority;
-            }
-
-            if (req.Consequence != null) {
-                _consequence = (Constants.Consequence) req.Consequence;
-            }
 
             _regionID = req.RegionID;
             _requestorTypeID = req.RequestorTypeID;
@@ -208,25 +197,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public Constants.Priority priority {
-            get {
-                return _priority;
-            }
-            set {
-                _priority = value;
-            }
-        }
-
-        public Constants.Consequence consequence {
-            get {
-                return _consequence;
-            }
-            set {
-                _consequence = value;
-            }
-        }
-
-        public byte? regionID {
+        public int? regionID {
             get {
                 return _regionID;
             }
@@ -235,7 +206,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public byte? requestorTypeID {
+        public int? requestorTypeID {
             get {
                 return _requestorTypeID;
             }
@@ -271,11 +242,17 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         private string _response = null;
         private short? _timeSpent = null;
         private string _specialNotes = null;
-        private byte? _questionTypeID = null;
-        private byte? _tumourGroupID = null;
+        private int? _questionTypeID = null;
+        private int? _tumourGroupID = null;
+
+        private Constants.Severity _severity = Constants.Severity.None;
+        private Constants.Consequence _consequence =
+            Constants.Consequence.None;
 
         private List<ReferenceContent> _referenceList =
             new List<ReferenceContent>();
+
+        private List<KeywordContent> _keywords = new List<KeywordContent>();
 
         public QuestionResponseContent(QuestionResponse qr) {
             _requestID = qr.RequestID;
@@ -287,6 +264,14 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             _specialNotes = qr.SpecialNotes;
             _questionTypeID = qr.QuestionTypeID;
             _tumourGroupID = qr.TumourGroupID;
+
+            if (qr.Severity != null) {
+                _severity = (Constants.Severity) qr.Severity;
+            }
+
+            if (qr.Consequence != null) {
+                _consequence = (Constants.Consequence) qr.Consequence;
+            }
         }
 
         public QuestionResponseContent() {}
@@ -345,7 +330,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public byte? questionTypeID {
+        public int? questionTypeID {
             get {
                 return _questionTypeID;
             }
@@ -354,12 +339,30 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public byte? tumourGroupID {
+        public int? tumourGroupID {
             get {
                 return _tumourGroupID;
             }
             set {
                 _tumourGroupID = value;
+            }
+        }
+
+        public Constants.Severity severity {
+            get {
+                return _severity;
+            }
+            set {
+                _severity = value;
+            }
+        }
+
+        public Constants.Consequence consequence {
+            get {
+                return _consequence;
+            }
+            set {
+                _consequence = value;
             }
         }
 
@@ -377,6 +380,24 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             foreach (ReferenceContent r in _referenceList) {
                 if (r.referenceID == referenceID) {
                     _referenceList.Remove(r);
+                }
+            }
+        }
+
+        public List<KeywordContent> keywords {
+            get {
+                return _keywords;
+            }
+        }
+
+        public void addKeyword(KeywordContent newKeyword) {
+            _keywords.Add(newKeyword);
+        }
+
+        public void removeKeyword(int keywordId) {
+            foreach (KeywordContent kw in _keywords) {
+                if (kw.keywordId == keywordId) {
+                    _keywords.Remove(kw);
                 }
             }
         }
@@ -477,6 +498,37 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
             set {
                 _referenceString = value;
+            }
+        }
+    }
+
+    public class KeywordContent {
+        private int _keywordID = -1;
+        private string _keywordStr = null;
+
+        public KeywordContent(Keyword kw) {
+            _keywordID = kw.KeywordID;
+            _keywordStr = kw.KeywordValue;
+        }
+
+        public KeywordContent() {
+        }
+
+        public int keywordId {
+            get {
+                return _keywordID;
+            }
+            set {
+                _keywordID = value;
+            }
+        }
+
+        public string keywordStr {
+            get {
+                return _keywordStr;
+            }
+            set {
+                _keywordStr = value;
             }
         }
     }
