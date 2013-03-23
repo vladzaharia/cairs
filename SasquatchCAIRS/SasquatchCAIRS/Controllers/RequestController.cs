@@ -13,7 +13,7 @@ namespace SasquatchCAIRS.Controllers {
         //
         // GET: /Request/Details/{id}
 
-        [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
+        [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Details(long id) {
             
             RequestManagementController rmc = new RequestManagementController();
