@@ -139,27 +139,51 @@ namespace SasquatchCAIRS.Controllers {
                 string [] auditUsers = form["username"].Split(',').Select(sValue => sValue.Trim()).ToArray();
 
                 // create list of IDs
-                List<int> auditIDs = new List<int>();
+                List<long> auditIDs = new List<long>();
 
-                // find int user ID that matches given username
+                // find long user ID that matches given username
                 foreach (string username in auditUsers) {
                     auditIDs =
                         (from u in _db.UserProfiles
                          where u.UserName == username  
-                  select u.UserId).ToList(); 
+                  select Convert.ToInt64(u.UserId)).ToList(); 
                 }
 
                 // call createReportForUser for all users
-                foreach (int ID in auditIDs) {
                     DateTime start = Convert.ToDateTime(form["startDate"]);
                     DateTime end = Convert.ToDateTime(form["endDate"]);
 
-                    AuditLogManagementController.createReportForUser(ID, start,
+                    AuditLogManagementController.createReportForUser(auditIDs, start,
                                                                      end);
-                }
                 
             }
 
+            // check if user selected search by Request ID
+            if (form["criteria"].Equals("request")) {
+
+                // parse comma delimited IDs entered
+                string[] auditRequestsString = form["requestIDs"].Split(',').Select(sValue => sValue.Trim()).ToArray();
+
+                // create list of long IDs
+                List<long> auditRequestsLong = auditRequestsString.Select(ID => Convert.ToInt64(ID)).ToList();
+                    
+                // convert string -> long
+
+                // Create blank list of Requests
+                List<Request> auditRequests = new List<Request>();
+
+                // find request that matches given request ID
+                foreach (long requestID in auditRequestsLong) {
+                    auditRequests =
+                        (from r in _db.Requests
+                         where r.RequestID == requestID
+                         select r).ToList();
+                }
+
+                // call createReportForRequest for all requests
+                AuditLogManagementController.createReportForRequest(auditRequests);
+
+            }
 
             return View();
         }
