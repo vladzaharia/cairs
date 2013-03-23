@@ -70,6 +70,10 @@ namespace SasquatchCAIRS.Controllers {
                 ViewBag.Status =
                     "The request has now been unlocked and is available for editing by all users.";
                 ViewBag.StatusColor = "success";
+            } else if (status == Constants.URLStatus.Deleted) {
+                ViewBag.Status =
+                    "The request has been marked as invalid and cannot be seen by non-Administrators.";
+                ViewBag.StatusColor = "success";
             }
 
             return View();
