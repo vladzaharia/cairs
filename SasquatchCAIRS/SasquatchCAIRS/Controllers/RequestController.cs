@@ -72,12 +72,6 @@ namespace SasquatchCAIRS.Controllers {
                 }
             }
 
-            AuditLog log = ;
-
-            UserProfile profile = _db.UserProfiles.FirstOrDefault(up =>
-                                                                  up.UserId ==
-                                                                  log.UserID);
-
             ViewBag.TimeSpent = timeSpent;
             ViewBag.DataContext = _db;
             ViewBag.CreatedBy = ""; // TODO: Use Audit

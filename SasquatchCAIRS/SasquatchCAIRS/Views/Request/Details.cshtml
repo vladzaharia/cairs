@@ -16,13 +16,15 @@
             <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.START_TIME</td>
             <td class="tbl-content-4 tbl-top">@Model.timeOpened</td>
         </tr>
-        <tr>
-            <td class="tbl-label">@Constants.UIString.FieldLabel.COMPLETED_BY</td>
-            <td class="tbl-content-4">@ViewBag.CompletedBy</td>
+        @if (Model.timeClosed != null) {
+            <tr>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.COMPLETED_BY</td>
+                <td class="tbl-content-4">@ViewBag.CompletedBy</td>
 
-            <td class="tbl-label">@Constants.UIString.FieldLabel.COMPLETED_TIME</td>
-            <td class="tbl-content-4">@Model.timeClosed</td>
-        </tr>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.COMPLETED_TIME</td>
+                <td class="tbl-content-4">@Model.timeClosed</td>
+            </tr>
+        }
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.STATUS</td>
             <td class="tbl-content-4">@Constants.getStatusString(Model.requestStatus)</td>
