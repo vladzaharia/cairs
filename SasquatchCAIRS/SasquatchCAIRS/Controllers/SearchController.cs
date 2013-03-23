@@ -26,6 +26,12 @@ namespace SasquatchCAIRS.Controllers {
             SearchCriteria sc = new SearchCriteria();
             sc.keywordString = keywords;
             Session["criteria"] = sc;
+
+            long requestID;
+            if (long.TryParse(keywords, out requestID)) {
+                return RedirectToAction("Details", "Request", new {id=requestID});
+            }
+
             List<Request> list = searchCriteriaQuery(sc);
             fillUpKeywordDict(list);
             ViewBag.ResultSetSize = list.Count;
