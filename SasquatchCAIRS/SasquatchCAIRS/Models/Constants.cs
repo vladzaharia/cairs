@@ -161,6 +161,7 @@ namespace SasquatchCAIRS.Models {
 
                 // General
                 public const string FULL_NAME = "Full Name";
+                public const string QUICK_SEARCH = "Quick Search";
 
                 // User
                 public const string USERNAME = "Username";
