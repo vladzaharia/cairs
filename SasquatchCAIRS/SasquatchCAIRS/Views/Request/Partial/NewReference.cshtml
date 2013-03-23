@@ -11,9 +11,23 @@
     @using (Html.BeginCollectionItemFromIndex(
         "questionResponseList[" + ((String) ViewBag.Guid) + "].referenceList",
         (String) ViewBag.RefGuid)) {
+        
+        if (Model.requestID != -1) {
+            @:@Html.HiddenFor(model => model.requestID)
+        }
+
+        if (Model.questionResponseID != -1) {
+            @:@Html.HiddenFor(model => model.questionResponseID);
+        }
+
+        if (Model.referenceID != -1) {
+            @:@Html.HiddenFor(model => model.referenceID);
+        }
+        
         <td>
             @Html.DropDownListFor(model => model.referenceType,
-                                  (SelectList) @ViewBag.ReferenceTypes)
+                                  (SelectList) @ViewBag.ReferenceTypes,
+                                          new {@class="span3"})
         
         </td>
         <td>
@@ -31,6 +45,8 @@
 
 <script type="text/javascript">
     $(function () {
+        $("#@(ViewBag.HtmlIdPrefix)referenceType").dropkick();
+
         $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").hide();
 
         $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").change(function () {

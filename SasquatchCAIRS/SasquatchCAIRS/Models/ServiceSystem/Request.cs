@@ -137,10 +137,6 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
     }
 
     public class QuestionResponseContent : IComparable {
-        private Constants.Severity _severity = Constants.Severity.None;
-        private Constants.Consequence _consequence =
-            Constants.Consequence.None;
-
         public QuestionResponseContent(QuestionResponse qr) {
             referenceList = new List<ReferenceContent>();
             keywords = new List<String>();
@@ -154,16 +150,13 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             questionTypeID = qr.QuestionTypeID;
             tumourGroupID = qr.TumourGroupID;
 
-            if (qr.Severity != null) {
-                _severity = (Constants.Severity) qr.Severity;
-            }
-
-            if (qr.Consequence != null) {
-                _consequence = (Constants.Consequence) qr.Consequence;
-            }
+            severity = (Constants.Severity?) qr.Severity;
+            consequence = (Constants.Consequence?) qr.Consequence;
         }
 
         public QuestionResponseContent() {
+            consequence = null;
+            severity = null;
             referenceList = new List<ReferenceContent>();
             keywords = new List<String>();
             tumourGroupID = null;
@@ -201,26 +194,14 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         [Display(Name = "Tumour Group")]
         public byte? tumourGroupID { get; set; }
 
-        public Constants.Severity severity {
-            get {
-                return _severity;
-            }
-            set {
-                _severity = value;
-            }
-        }
+        [Display(Name = "Severity")]
+        public Constants.Severity? severity { get; set; }
 
-        public Constants.Consequence consequence {
-            get {
-                return _consequence;
-            }
-            set {
-                _consequence = value;
-            }
-        }
+        [Display(Name = "Probability of Consequence")]
+        public Constants.Consequence? consequence { get; set; }
 
         [Display(Name = "References")]
-        public List<ReferenceContent> referenceList { get; private set; }
+        public List<ReferenceContent> referenceList { get; set; }
 
         public void addReference(ReferenceContent newRef) {
             referenceList.Add(newRef);
@@ -235,7 +216,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         }
 
         [Display(Name = "Keywords")]
-        public List<String> keywords { get; private set; }
+        public List<String> keywords { get; set; }
 
         public void addKeyword(String newKeyword) {
             keywords.Add(newKeyword);
@@ -292,6 +273,10 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         public ReferenceContent() {
             referenceString = "";
             referenceType = Constants.ReferenceType.Text;
+
+            requestID = -1;
+            questionResponseID = -1;
+            referenceID = -1;
         }
 
         public long requestID { get; set; }
@@ -303,21 +288,5 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         public Constants.ReferenceType referenceType { get; set; }
 
         public string referenceString { get; set; }
-    }
-
-    public class KeywordContent {
-        public KeywordContent(Keyword kw) {
-            keywordId = kw.KeywordID;
-            keywordStr = kw.KeywordValue;
-        }
-
-        public KeywordContent() {
-            keywordStr = null;
-            keywordId = -1;
-        }
-
-        public int keywordId { get; set; }
-
-        public string keywordStr { get; set; }
     }
 }

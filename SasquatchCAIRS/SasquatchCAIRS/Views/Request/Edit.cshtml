@@ -4,15 +4,18 @@
 @model SasquatchCAIRS.Models.ServiceSystem.RequestContent
 
 @{
-    ViewBag.Title = "Add New Request";
+    ViewBag.Title = "Edit Request";
 }
 
-<h2>Add New Request</h2>
+<h2>Edit Request - Request #@Model.requestID</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary()
-
+    
+    @Html.HiddenFor(model => model.requestID)
+    @Html.HiddenFor(model => model.requestStatus)
     @Html.HiddenFor(model => model.timeOpened)
+    @Html.HiddenFor(model => model.timeClosed)
     
     <h3>Caller Information</h3>
     <table>

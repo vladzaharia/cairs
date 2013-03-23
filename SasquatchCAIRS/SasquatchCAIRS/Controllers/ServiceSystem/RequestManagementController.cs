@@ -18,8 +18,9 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
             Request req = new Request();
 
             if (content.requestID != -1) {
-                // Existing Request; has a RequestID
-                req.RequestID = content.requestID;
+                req = (from r in _db.Requests
+                       where r.RequestID == content.requestID
+                       select r).Single();
             }
 
             req.ParentRequestID = content.parentRequestID;
@@ -55,32 +56,25 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         private QuestionResponse createQuestionResponseEntity(
             QuestionResponseContent content) {
 
-            QuestionResponse qr = new QuestionResponse {
-                RequestID = content.requestID,
-                Question = content.question,
-                Response = content.response,
-                TimeSpent = content.timeSpent,
-                SpecialNotes = content.specialNotes,
-                QuestionTypeID = content.questionTypeID,
-                TumourGroupID = content.tumourGroupID
-            };
+            QuestionResponse qr = new QuestionResponse();
 
             if (content.questionResponseID != -1) {
                 // Existing QuestionResponse; has a QuestionResponseID
-                qr.QuestionResponseID = content.questionResponseID;
+                qr = (from q in _db.QuestionResponses
+                     where q.QuestionResponseID == content.questionResponseID &&
+                           q.RequestID == content.requestID
+                     select q).Single();
             }
 
-            if (content.severity != Constants.Severity.None) {
-                qr.Severity = (byte) content.severity;
-            } else {
-                qr.Severity = null;
-            }
-
-            if (content.consequence != Constants.Consequence.None) {
-                qr.Consequence = (byte) content.consequence;
-            } else {
-                qr.Consequence = null;
-            }
+            qr.RequestID = content.requestID;
+            qr.Question = content.question;
+            qr.Response = content.response;
+            qr.TimeSpent = content.timeSpent;
+            qr.SpecialNotes = content.specialNotes;
+            qr.QuestionTypeID = content.questionTypeID;
+            qr.TumourGroupID = content.tumourGroupID;
+            qr.Severity = (byte?) content.severity;
+            qr.Consequence = (byte?) content.consequence;
 
             return qr;
         }
@@ -91,17 +85,21 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// <param name="content">Reference content holder.</param>
         /// <returns>Reference entity based off of content.</returns>
         private Reference createReferenceEntity(ReferenceContent content) {
-            Reference r = new Reference {
-                RequestID = content.requestID,
-                QuestionResponseID = content.questionResponseID,
-                ReferenceType = (byte) content.referenceType,
-                ReferenceString = content.referenceString
-            };
+            Reference r = new Reference();
 
             if (content.referenceID != -1) {
                 // Existing Reference; has a ReferenceID
-                r.ReferenceID = content.referenceID;
+                r = (from rf in _db.References
+                     where rf.ReferenceID == content.referenceID &&
+                           rf.QuestionResponseID == content.questionResponseID &&
+                           rf.RequestID == content.requestID
+                     select rf).Single();
             }
+
+            r.RequestID = content.requestID;
+            r.QuestionResponseID = content.questionResponseID;
+            r.ReferenceType = (byte) content.referenceType;
+            r.ReferenceString = content.referenceString;
 
             return r;
         }
@@ -137,7 +135,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                         // QuestionResponse
                         foreach (String kw in qrContent.keywords) {
 
-                            int kwId = getKeywordId(kw);
+                            int kwId = getKeywordIdAndActivate(kw);
 
                             KeywordQuestion kq = new KeywordQuestion {
                                 KeywordID = kwId,
@@ -181,9 +179,12 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// <param name="keywordStr">Keyword string to create.</param>
         /// <returns>Keyword ID of the new keyword, or existing keyword
         /// ID if already exists.</returns>
-        private int getKeywordId(string keywordStr) {
+        private int getKeywordIdAndActivate(string keywordStr) {
             // Keyword may not exist
-            Keyword kw = new Keyword {KeywordValue = keywordStr};
+            Keyword kw = new Keyword {
+                KeywordValue = keywordStr,
+                Active = true
+            };
 
             try {
                 _db.Keywords.InsertOnSubmit(kw);
@@ -198,6 +199,9 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                       where kws.KeywordValue == keywordStr
                       select kws)
                       .First();
+
+                kw.Active = true;
+                _db.SubmitChanges();
             }
 
             int id = kw.KeywordID;
@@ -283,7 +287,6 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// Request content to modify in the database.
         /// </param>
         public void edit(RequestContent reqContent) {
-            try {
                 if (reqContent.requestID == -1) {
                     throw new Exception("Invalid request.");
                 }
@@ -329,7 +332,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                             // Check all Keywords for the QuestionResponse
                             foreach (String kw in
                                      qrContent.keywords) {
-                                int kwId = getKeywordId(kw);
+                                int kwId = getKeywordIdAndActivate(kw);
 
                                 if (!currKwIds.Remove(kwId)) {
                                     // Set Keyword for QuestionResponse
@@ -399,7 +402,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
 
                             // Add new Keywords to QuestionResponse
                             foreach (String kw in qrContent.keywords) {
-                                int kwId = getKeywordId(kw);
+                                int kwId = getKeywordIdAndActivate(kw);
 
                                 // Set Keyword for QuestionResponse
                                 KeywordQuestion kq = new KeywordQuestion {
@@ -461,9 +464,6 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
 
                     trans.Complete();
                 }
-            } catch (Exception) {
-                // TODO: Do something
-            }
         }
 
         /// <summary>

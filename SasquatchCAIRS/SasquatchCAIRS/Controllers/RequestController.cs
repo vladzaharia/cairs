@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using SasquatchCAIRS.Controllers.Security;
 ﻿using SasquatchCAIRS.Controllers.ServiceSystem;
 ﻿using SasquatchCAIRS.Helper;
@@ -16,11 +18,10 @@ namespace SasquatchCAIRS.Controllers
         [Authorize(Roles = "RequestEditor")]
         public ActionResult Create() {
             DropdownController dc = new DropdownController();
-            var reqContent = new RequestContent() {
+            var reqContent = new RequestContent {
                 timeOpened = DateTime.Now
             };
 
-            ViewBag.CurrentTime = DateTime.Now;
             ViewBag.RequestorTypes = new SelectList(
                 dc.getActiveEntries(Constants.DropdownTable.RequestorType),
                 "id", "text");
@@ -39,27 +40,191 @@ namespace SasquatchCAIRS.Controllers
         [HttpPost]
         [Authorize(Roles = "RequestEditor")]
         public ActionResult Create(RequestContent reqContent) {
-            // TODO: Redirect to request page?
+            bool valid = true;
+
             if (!ModelState.IsValid) {
-                return Create();
+                valid = false;
+            } else if (Request.Form["mark_as_complete"] != null) {
+                foreach (var qrContent in reqContent.questionResponseList) {
+                    if (String.IsNullOrEmpty(qrContent.question) ||
+                        String.IsNullOrEmpty(qrContent.response) || 
+                        qrContent.questionTypeID == null ||
+                        qrContent.tumourGroupID == null ||
+                        qrContent.timeSpent == null ||
+                        qrContent.severity == null ||
+                        qrContent.consequence == null ||
+                        qrContent.keywords.Count < 1) {
+                        
+                        ModelState.AddModelError("IncompleteQuestion",
+                            "Questions must be completed before marking request as complete.");
+                        valid = false;
+                        break;
+                    }
+
+                    foreach (var refContent in qrContent.referenceList) {
+                        if (String.IsNullOrEmpty(refContent.referenceString)) {
+                            ModelState.AddModelError("IncompleteReference",
+                                "References must be completed before marking request as complete.");
+                            valid = false;
+                            break;
+                        }
+                    }
+                }
+
+                reqContent.timeClosed = DateTime.Now;
+                reqContent.requestStatus = Constants.RequestStatus.Completed;
             }
 
-            // Remove empty references
-            foreach (var qrCon in reqContent.questionResponseList) {
-                qrCon.referenceList.RemoveAll(
-                    r => r.referenceString == null);
+            if (!valid) {
+                DropdownController dc = new DropdownController();
+
+                ViewBag.RequestorTypes = new SelectList(
+                    dc.getActiveEntries(Constants.DropdownTable.RequestorType),
+                    "id", "text");
+                ViewBag.Regions = new SelectList(
+                    dc.getActiveEntries(Constants.DropdownTable.Region),
+                    "id", "text");
+
+                ViewBag.GenderOptions = new SelectList(Constants.genderOptions);
+
+                return View(reqContent);
+            }
+
+            // Replace null references with empty string
+            foreach (var qrContent in reqContent.questionResponseList) {
+                foreach (var refContent in qrContent.referenceList.Where(
+                    refContent => refContent.referenceString == null)) {
+
+                    refContent.referenceString = "";
+                }
             }
 
             RequestManagementController rmc = new RequestManagementController();
             rmc.create(reqContent);
 
+            // TODO: Audit log
+
+            // TODO: Redirect to View if user has Viewer role
             return Redirect("/Home/Index");
         }
 
+        //
+        // GET: /Request/Edit/
+
         [Authorize(Roles = "RequestEditor")]
-        public ActionResult NewQuestionResponse() {
+        public ActionResult Edit(long id) {
+            var dc = new DropdownController();
+            var rmc = new RequestManagementController();
+
+            var reqContent = rmc.getRequestDetails(id);
+
+            ViewBag.RequestorTypes = new SelectList(
+                dc.getActiveEntries(Constants.DropdownTable.RequestorType),
+                "id", "text");
+            ViewBag.Regions = new SelectList(
+                dc.getActiveEntries(Constants.DropdownTable.Region),
+                "id", "text");
+
+            ViewBag.GenderOptions = new SelectList(Constants.genderOptions);
+
+            // TODO: Lock request
+            // TODO: Audit log
+
+            return View(reqContent);
+        }
+
+        //
+        // POST: /Request/Create/
+
+        [HttpPost]
+        [Authorize(Roles = "RequestEditor")]
+        public ActionResult Edit(RequestContent reqContent) {
+            RequestManagementController rmc = new RequestManagementController();
+
+            if (Request.Form["delete"] != null) {
+                rmc.invalidate(reqContent.requestID);
+                return Redirect("/Home/Index");
+            }
+
+            bool valid = true;
+
+            if (!ModelState.IsValid) {
+                valid = false;
+            } else if (Request.Form["mark_as_complete"] != null) {
+                foreach (var qrContent in reqContent.questionResponseList) {
+                    if (String.IsNullOrEmpty(qrContent.question) ||
+                        String.IsNullOrEmpty(qrContent.response) ||
+                        qrContent.questionTypeID == null ||
+                        qrContent.tumourGroupID == null ||
+                        qrContent.timeSpent == null ||
+                        qrContent.severity == null ||
+                        qrContent.consequence == null ||
+                        qrContent.keywords.Count < 1) {
+
+                        ModelState.AddModelError("IncompleteQuestion",
+                            "Questions must be completed before marking request as complete.");
+                        valid = false;
+                        break;
+                    }
+
+                    foreach (var refContent in qrContent.referenceList) {
+                        if (String.IsNullOrEmpty(refContent.referenceString)) {
+                            ModelState.AddModelError("IncompleteReference",
+                                "References must be completed before marking request as complete.");
+                            valid = false;
+                            break;
+                        }
+                    }
+                }
+
+                reqContent.timeClosed = DateTime.Now;
+                reqContent.requestStatus = Constants.RequestStatus.Completed;
+            }
+
+            if (!valid) {
+                DropdownController dc = new DropdownController();
+
+                ViewBag.RequestorTypes = new SelectList(
+                    dc.getActiveEntries(Constants.DropdownTable.RequestorType),
+                    "id", "text");
+                ViewBag.Regions = new SelectList(
+                    dc.getActiveEntries(Constants.DropdownTable.Region),
+                    "id", "text");
+
+                ViewBag.GenderOptions = new SelectList(Constants.genderOptions);
+
+                return View(reqContent);
+            }
+
+            // Replace null references with empty string
+            foreach (var qrContent in reqContent.questionResponseList) {
+                foreach (var refContent in qrContent.referenceList.Where(
+                    refContent => refContent.referenceString == null)) {
+
+                    refContent.referenceString = "";
+                }
+            }
+
+            rmc.edit(reqContent);
+
+            // TODO: Audit log
+
+            // TODO: Redirect to View if user has Viewer role
+            return Redirect("/Home/Index");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "RequestEditor")]
+        public ActionResult NewQuestionResponse(String json) {
             DropdownController dc = new DropdownController();
-            var qrContent = new QuestionResponseContent();
+            QuestionResponseContent qrContent;
+
+            if (String.IsNullOrEmpty(json)) {
+                qrContent = new QuestionResponseContent();
+            } else {
+                qrContent = new JavaScriptSerializer()
+                        .Deserialize<QuestionResponseContent>(json);
+            }
 
             // Used to set dynamic model binding index
             ViewBag.Guid = HtmlPrefixScopeExtensions.CreateItemIndex(
@@ -71,14 +236,25 @@ namespace SasquatchCAIRS.Controllers
             ViewBag.TumourGroups = new SelectList(
                 dc.getActiveEntries(Constants.DropdownTable.TumourGroup),
                 "id", "text");
+            ViewBag.Severitys = new SelectList(Constants.severityOptions);
+            ViewBag.Consequences = new SelectList(Constants.consequenceOptions);
 
             return View("Partial/NewQuestionResponse", qrContent);
         }
 
+        [HttpPost]
         [Authorize(Roles = "RequestEditor")]
-        public ActionResult NewReference(string id) {
-            var refContent = new ReferenceContent();
+        public ActionResult NewReference(string id, string json) {
+            ReferenceContent refContent;
 
+            if (String.IsNullOrEmpty(json)) {
+                refContent = new ReferenceContent();
+            } else {
+                refContent =
+                    new JavaScriptSerializer().Deserialize<ReferenceContent>(
+                        json);
+            }
+             
             // Used to set dynamic model binding index
             ViewBag.Guid = id;
             ViewBag.RefGuid = HtmlPrefixScopeExtensions.CreateItemIndex(

@@ -9,57 +9,90 @@
 
 <div id="qr-@(ViewBag.Guid)">
     @using (Html.BeginCollectionItemFromIndex("questionResponseList", (String) ViewBag.Guid)) {
+
+        if (Model.requestID != -1) {
+            @:@Html.HiddenFor(model => model.requestID)
+        }
+
+        if (Model.questionResponseID != -1) {
+            @:@Html.HiddenFor(model => model.questionResponseID)
+        }
+        
         <table>
             <tr>
-                <td>
+                <td class="tbl-label">
                     @Html.LabelFor(model => model.question)
                 </td>
-                <td>
+                <td class="tbl-content-4">
                     @Html.TextAreaFor(model => model.question)
                 </td>
             </tr>
             <tr>
-                <td>
+                <td class="tbl-label">
                     @Html.LabelFor(model => model.response)
                 </td>
-                <td>
+                <td class="tbl-content-4">
                     @Html.TextAreaFor(model => model.response)
                 </td>
             </tr>
             <tr>
-                <td>
+                <td class="tbl-label">
                     @Html.LabelFor(model => model.specialNotes)
                 </td>
-                <td>
+                <td class="tbl-content-4">
                     @Html.TextAreaFor(model => model.specialNotes)
                 </td>
             </tr>
         </table>
         <table>
             <tr>
-                <td>
+                <td class="tbl-label">
                     @Html.LabelFor(model => model.questionTypeID)
                 </td>
-                <td>
+                <td class="tbl-content-4">
                     @Html.DropDownListFor(model => model.questionTypeID,
-                                          (SelectList) ViewBag.QuestionTypes, "")
+                                          (SelectList) ViewBag.QuestionTypes, "",
+                                          new {@class="span3"})
                 </td>
-                <td>
+                <td class="tbl-label">
                     @Html.LabelFor(model => model.tumourGroupID)
                 </td>
-                <td>
+                <td class="tbl-content-4">
                     @Html.DropDownListFor(model => model.tumourGroupID,
-                                          (SelectList) ViewBag.TumourGroups, "")
+                                          (SelectList) ViewBag.TumourGroups, "",
+                                          new {@class="span3"})
                 </td>
             </tr>
             <tr>
-                <td>
+                <td class="tbl-label">
                     @Html.LabelFor(model => model.timeSpent)
                 </td>
-                <td>
+                <td class="tbl-content-4">
                     <div class="input-append">
                         @Html.TextBoxFor(model => model.timeSpent)
                         <span class="add-on textbox-add-on">min</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="tbl-label">
+                    @Html.LabelFor(model => model.severity)
+                </td>
+                <td class="tbl-content-4">
+                    <div class="input-append">
+                        @Html.DropDownListFor(model => model.severity,
+                            (SelectList) ViewBag.Severitys, "",
+                            new {@class="span3"})
+                    </div>
+                </td>
+                <td class="tbl-label">
+                    @Html.LabelFor(model => model.consequence)
+                </td>
+                <td class="tbl-content-4">
+                    <div class="input-append">
+                        @Html.DropDownListFor(model => model.consequence,
+                            (SelectList) ViewBag.Consequences, "",
+                            new {@class="span3"})
                     </div>
                 </td>
             </tr>
@@ -76,8 +109,8 @@
         
         <table>
             <tr>
-                <td>@Html.LabelFor(model => model.keywords)</td>
-                <td>
+                <td class="tbl-label">@Html.LabelFor(model => model.keywords)</td>
+                <td class="tbl-content-4">
                     <input id="qr-keywords-@(ViewBag.Guid)" type="text"
                            data-provide="typeahead" autocomplete="off"/>
                     <div id="qr-keyword-list-@(ViewBag.Guid)"></div>
@@ -90,13 +123,20 @@
             &nbsp;@Constants.UIString.ButtonText.DELETE_QUESTION
         </a>
     }
+    <hr />
 
     <script type="text/javascript">
         $(function () {
+            // Flat UI styling
+            $("#questionResponseList_@(ViewBag.Guid)__questionTypeID").dropkick();
+            $("#questionResponseList_@(ViewBag.Guid)__tumourGroupID").dropkick();
+            $("#questionResponseList_@(ViewBag.Guid)__severity").dropkick();
+            $("#questionResponseList_@(ViewBag.Guid)__consequence").dropkick();
+
             $("#qr-references-add-@(ViewBag.Guid)").click(function (e) {
                 e.preventDefault();
 
-                $.get("@Url.Action("NewReference", "Request")/@(ViewBag.Guid)", function (r) {
+                $.post("@Url.Action("NewReference", "Request")", {'id': '@(ViewBag.Guid)'}, function (r) {
                     $("#qr-references-@(ViewBag.Guid)").append(r);
                     $("#qr-references-@(ViewBag.Guid) .del-ref").attr("disabled", false);
                     $("#qr-references-@(ViewBag.Guid) .del-ref").attr("href", "#warning_modal");
@@ -152,6 +192,11 @@
                             'value="' + terms[i] + '">');
                 }
             });
+            
+            // Set keywords
+            @if (Model.keywords.Count > 0) {
+                @:$("#qr-keywords-@(ViewBag.Guid)").val("@string.Join(", ", Model.keywords.ToArray())");
+            }
         });
     </script>
 </div>

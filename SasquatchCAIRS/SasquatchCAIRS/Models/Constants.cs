@@ -17,19 +17,28 @@
         }
 
         public enum Severity {
-            None = -1,
             Major = 0,
             Moderate = 1,
             Minor = 2
         }
 
+        public static readonly Severity[] severityOptions = {
+            Severity.Major, Severity.Moderate, Severity.Minor
+        };
+
         public enum Consequence {
-            None = -1,
             Certain = 0,
             Probable = 1,
             Possible = 2,
             Unlikely = 3
         }
+
+        public static readonly Consequence[] consequenceOptions = {
+            Consequence.Certain,
+            Consequence.Probable,
+            Consequence.Probable,
+            Consequence.Unlikely
+        };
 
         public enum ReferenceType {
             URL = 0,
