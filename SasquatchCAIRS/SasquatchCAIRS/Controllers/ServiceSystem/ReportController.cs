@@ -21,7 +21,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
         /// <param name="stratifyBy">stratify option, selected by the user</param>
         /// <returns>the list of data tables, one table for each data type chosen</returns>
         public List<DataTable> generateMonthlyReport(DateTime startDate, DateTime endDate,
-                                                      IEnumerable<Constants.DataType> dataToDisplay,
+                                                      IEnumerable<Constants.DataTypeStrings> dataToDisplay,
                                                       Constants.StratifyOption stratifyBy)
         {
             var dataTablesForReport = new List<DataTable>();

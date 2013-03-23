@@ -9,7 +9,7 @@ using SasquatchCAIRS.Models;
 namespace SasquatchCAIRS.Controllers {
     [Authorize(Roles = "Administrator")]
     public class AuditLogManagementController : Controller {
-        private static CAIRSDataContext _db = new CAIRSDataContext();
+        private CAIRSDataContext _db = new CAIRSDataContext();
   
         /// <summary>
         ///     Add entry to audit log table when an AuditType action is performed on a request.
@@ -36,7 +36,7 @@ namespace SasquatchCAIRS.Controllers {
         ///     Create an audit report with all AuditLog entries for a specified request ID.
         /// </summary>
         /// <param name="auditRequests">The request to track activitiy for</param>
-        public static void createReportForRequest(IEnumerable<Request> auditRequests) {
+        public void createReportForRequest(IEnumerable<Request> auditRequests) {
 
             // Create a blank list of DataTables, each DataTable will correspond to user ID
             List<DataTable> xlsExports = new List<DataTable>();
@@ -77,7 +77,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="userIDs">The user ID to track activitiy for</param>
         /// <param name="startDate"> The start of the specified date range</param>
         /// <param name="endDate">The end of the specified date range</param>
-        public static void createReportForUser(IEnumerable<long> userIDs, DateTime startDate,
+        public void createReportForUser(IEnumerable<long> userIDs, DateTime startDate,
                                         DateTime endDate) {
             
             // Create a blank list of DataTables, each DataTable will correspond to user ID
@@ -113,7 +113,14 @@ namespace SasquatchCAIRS.Controllers {
             
             // Call XLSExporter with table(s)
             // TODO: determine file paths to be passed.
-            //ExcelExportController.ExportAuditLogTable(xlsExport, exportFilePath);
+            DateTime markDate = new DateTime(2010, 01, 01, 00, 00, 00, 00);
+            TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
+            string fromPath = Server.MapPath("~/AuditLogTemplate.xlsx");
+            string toPath = Server.MapPath("~/AuditLogTemplate"+ dateStamp.TotalSeconds.ToString()+".xlsx");
+            
+            ExcelExportController eeController = new ExcelExportController();
+            
+            eeController.exportDataTable(Constants.ReportType.AuditLog, xlsExports, fromPath, toPath);
         }
     }
 }

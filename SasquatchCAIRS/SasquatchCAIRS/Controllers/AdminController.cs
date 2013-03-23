@@ -139,58 +139,76 @@ namespace SasquatchCAIRS.Controllers {
         // GET: /Admin/GenerateAudit
 
         public ActionResult GenerateAudit(FormCollection form) {
-            
-            // check if user selected search by User ID
-            if (form["criteria"].Equals("user")) {
-                
-                // parse comma delimited IDs entered
-                string [] auditUsers = form["username"].Split(',').Select(sValue => sValue.Trim()).ToArray();
 
-                // create list of IDs
-                List<long> auditIDs = new List<long>();
+                // check if user selected search by User ID
+                if (form["criteria"].Equals("user")) {
 
-                // find long user ID that matches given username
-                foreach (string username in auditUsers) {
-                    auditIDs =
-                        (from u in _db.UserProfiles
-                         where u.UserName == username  
-                  select Convert.ToInt64(u.UserId)).ToList(); 
-                }
+                    // parse comma delimited IDs entered
+                    string[] auditUsers = form["username"].Split(',').Select(sValue => sValue.Trim()).ToArray();
 
-                // call createReportForUser for all users
+                    // create list of IDs
+                    List<long> auditIDs = new List<long>();
+
+                    // find long user ID that matches given username
+                    foreach (string username in auditUsers) {
+                        auditIDs =
+                            (from u in _db.UserProfiles
+                             where u.UserName == username
+                             select Convert.ToInt64(u.UserId)).ToList();
+                    }
+
+                    // call createReportForUser for all users
                     DateTime start = Convert.ToDateTime(form["startDate"]);
                     DateTime end = Convert.ToDateTime(form["endDate"]);
 
-                    AuditLogManagementController.createReportForUser(auditIDs, start,
-                                                                     end);
-                
-            }
+                    AuditLogManagementController almController =
+                        new AuditLogManagementController();
 
-            // check if user selected search by Request ID
-            if (form["criteria"].Equals("request")) {
+                    almController.createReportForUser(auditIDs, start,
+                                                                          end);
 
-                // parse comma delimited IDs entered
-                string[] auditRequestsString = form["requestIDs"].Split(',').Select(sValue => sValue.Trim()).ToArray();
+                    return View();
 
-                // create list of long IDs
-                List<long> auditRequestsLong = auditRequestsString.Select(ID => Convert.ToInt64(ID)).ToList();
-                    
-                // convert string -> long
-
-                // Create blank list of Requests
-                List<Request> auditRequests = new List<Request>();
-
-                // find request that matches given request ID
-                foreach (long requestID in auditRequestsLong) {
-                    auditRequests =
-                        (from r in _db.Requests
-                         where r.RequestID == requestID
-                         select r).ToList();
                 }
 
-                // call createReportForRequest for all requests
-                AuditLogManagementController.createReportForRequest(auditRequests);
+                // check if user selected search by Request ID
+                if (form["criteria"].Equals("request")) {
 
+                    // parse comma delimited IDs entered
+                    string[] auditRequestsString = form["requestIDs"].Split(',').Select(sValue => sValue.Trim()).ToArray();
+
+                    // create list of long IDs
+                    List<long> auditRequestsLong = auditRequestsString.Select(ID => Convert.ToInt64(ID)).ToList();
+
+                    // convert string -> long
+
+                    // Create blank list of Requests
+                    List<Request> auditRequests = new List<Request>();
+
+                    // find request that matches given request ID
+                    foreach (long requestID in auditRequestsLong) {
+                        auditRequests =
+                            (from r in _db.Requests
+                             where r.RequestID == requestID
+                             select r).ToList();
+                    }
+
+                    // call createReportForRequest for all requests
+                    AuditLogManagementController almController =
+                       new AuditLogManagementController();
+
+                    almController.createReportForRequest(auditRequests);
+
+                    return View();
+
+                }
+
+                // Blank Value Sanity Checks
+            if (form["criteria"] == "") {
+                ModelState.AddModelError("criteria",
+                                         "Please select a search criteria!");
+
+                return View();
             }
 
             return View();

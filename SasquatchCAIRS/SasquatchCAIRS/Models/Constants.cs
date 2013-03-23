@@ -65,6 +65,21 @@ namespace SasquatchCAIRS.Models {
             DropdownTable.UserGroup
         };
 
+        public static class DataTypeStrings {
+            public static string DATA_TYPE = "Data Type";
+            public static string AVG_TIME = "Avg Time Per Request/Question";
+            public static string AVG_TIME_TO_COMPLETE = "Avg Time To Complete";
+            public static string TOTAL_NUM = "Total Number";
+            public static string TOTAL_TIME_SPENT = "Total Time Spent";
+        }
+
+        public static class ReportFormStrings {
+            public static string REPORT_OPTION = "reportOption";
+            public static string DATATYPE = "dataType";
+            public static string STRATIFY_BY = "stratifyBy";
+
+        }
+
         public const string KEYWORD_TBL_ID_ATTR = "KeywordID";
         public const string KEYWORD_TBL_KEYWORD_ATTR = "Keyword";
         public const string KEYWORD_TBL_ACTIVE_ATTR = "Active";
@@ -199,7 +214,7 @@ namespace SasquatchCAIRS.Models {
                 public const string DROPDOWN_LISTS = "Dropdown Lists";
                 public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
-                public static string AUDIT_LOG = "Generate Audit Report";
+                public const string AUDIT_LOG = "Generate Audit Report";
                 public const string CREATE_REQUEST = "Create Request";
                 public const string REPORTS = "Reports";
                 public const string CREATE = "Create";
@@ -210,6 +225,18 @@ namespace SasquatchCAIRS.Models {
                 public const string ACTIVE = "Active";
                 public const string DISABLED = "Disabled";
             }
+
+            
+        }
+
+        public enum CellDataType {
+            Number = 0,
+            Text = 1
+        }
+
+        public enum ReportType {
+            Report = 0,
+            AuditLog = 1
         }
 
         /// <summary>
