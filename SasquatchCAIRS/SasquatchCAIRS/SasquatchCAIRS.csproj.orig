@@ -29,6 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\SasquatchCAIRS.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -75,8 +76,12 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Data.Linq">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.DirectoryServices">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -164,12 +169,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-<<<<<<< HEAD
-    <Compile Include="Controllers\AuditController.cs" />
-    <Compile Include="Controllers\AuditLogManagementController.cs" />
-=======
+    <Compile Include="Controllers\Security\AuditController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
->>>>>>> 75b177bc2ad029fe22ba5dadcbbd33c061d00b63
+    <Compile Include="Controllers\AuditLogManagementController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
     <Compile Include="Controllers\Security\AccountController.cs" />
     <Compile Include="Controllers\Security\RequestLockController.cs" />
@@ -179,6 +181,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Exceptions.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Controllers\ServiceSystem\DropdownController.cs" />
     <Compile Include="Models\ServiceSystem\DropdownEntry.cs" />
@@ -200,46 +203,25 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\flat-ui.css" />
+    <Content Include="Content\font-awesome-ie7.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\fonts\Flat-UI-Icons-16.dev.svg" />
     <Content Include="Content\fonts\Flat-UI-Icons-16.svg" />
     <Content Include="Content\fonts\Flat-UI-Icons-24.dev.svg" />
     <Content Include="Content\fonts\Flat-UI-Icons-24.svg" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\ie7.css" />
     <Content Include="Content\images\checkbox-2x.png" />
     <Content Include="Content\images\checkbox.png" />
-    <Content Include="Content\images\demo\browser-2x.png" />
-    <Content Include="Content\images\demo\browser-author.jpg" />
-    <Content Include="Content\images\demo\browser-pic-1.jpg" />
-    <Content Include="Content\images\demo\browser-pic-2.jpg" />
-    <Content Include="Content\images\demo\browser-pic-3.jpg" />
-    <Content Include="Content\images\demo\browser-pic-4.jpg" />
-    <Content Include="Content\images\demo\browser-pic-5.jpg" />
-    <Content Include="Content\images\demo\browser-pic-6.jpg" />
-    <Content Include="Content\images\demo\browser.png" />
-    <Content Include="Content\images\demo\html-icon.png" />
-    <Content Include="Content\images\demo\logo-mask-2x.png" />
-    <Content Include="Content\images\demo\logo-mask.png" />
-    <Content Include="Content\images\demo\video.jpg" />
     <Content Include="Content\images\footer\logo.png" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
-    <Content Include="Content\images\illustrations\bag.png" />
-    <Content Include="Content\images\illustrations\book.png" />
-    <Content Include="Content\images\illustrations\calendar.png" />
-    <Content Include="Content\images\illustrations\clipboard.png" />
-    <Content Include="Content\images\illustrations\colors.png" />
-    <Content Include="Content\images\illustrations\compass.png" />
-    <Content Include="Content\images\illustrations\gift.png" />
-    <Content Include="Content\images\illustrations\infinity.png" />
-    <Content Include="Content\images\illustrations\mail.png" />
-    <Content Include="Content\images\illustrations\map.png" />
-    <Content Include="Content\images\illustrations\paper.png" />
-    <Content Include="Content\images\illustrations\retina.png" />
-    <Content Include="Content\images\illustrations\share.png" />
-    <Content Include="Content\images\illustrations\time.png" />
     <Content Include="Content\images\login\icon.png" />
     <Content Include="Content\images\login\imac-2x.png" />
     <Content Include="Content\images\login\imac.png" />
+    <Content Include="Content\images\logo%402x.png" />
+    <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\pager\next.png" />
     <Content Include="Content\images\pager\previous.png" />
     <Content Include="Content\images\radio-2x.png" />
@@ -259,17 +241,6 @@
     <Content Include="Content\images\toggle\icon-off.png" />
     <Content Include="Content\images\toggle\icon-on-2x.png" />
     <Content Include="Content\images\toggle\icon-on.png" />
-    <Content Include="Content\images\video\fullscreen-2x.png" />
-    <Content Include="Content\images\video\fullscreen.png" />
-    <Content Include="Content\images\video\pause-2x.png" />
-    <Content Include="Content\images\video\pause.png" />
-    <Content Include="Content\images\video\play-2x.png" />
-    <Content Include="Content\images\video\play.png" />
-    <Content Include="Content\images\video\poster.jpg" />
-    <Content Include="Content\images\video\volume-full-2x.png" />
-    <Content Include="Content\images\video\volume-full.png" />
-    <Content Include="Content\images\video\volume-off-2x.png" />
-    <Content Include="Content\images\video\volume-off.png" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -344,8 +315,6 @@
       <LastGenOutput>CAIRS.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-<<<<<<< HEAD
-=======
     <Content Include="Content\fonts\Flat-UI-Icons-16.eot" />
     <Content Include="Content\fonts\Flat-UI-Icons-16.ttf" />
     <Content Include="Content\fonts\Flat-UI-Icons-16.woff" />
@@ -355,9 +324,14 @@
     <Content Include="Content\images\.DS_Store" />
     <Content Include="Content\images\todo\Thumbs.db" />
     <Content Include="Content\images\toggle\Thumbs.db" />
-    <Content Include="Content\images\video\Thumbs.db" />
+<<<<<<< HEAD
+=======
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\Michelle.pubxml" />
->>>>>>> 75b177bc2ad029fe22ba5dadcbbd33c061d00b63
+>>>>>>> 2ee41ec44ee063846088972c7fc357bce9fce945
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\flat-ui\application.js" />
     <Content Include="Scripts\flat-ui\bootstrap-tooltip.js" />
@@ -418,16 +392,19 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Account\_ViewUserInfo.cshtml" />
     <Content Include="Views\Account\Auth.cshtml" />
-    <Content Include="Views\Audit\Audit.cshtml" />
-    <Content Include="Views\Audit\GenerateAudit.cshtml" />
+    <Content Include="Views\Admin\Audit.cshtml" />
+    <Content Include="Views\Admin\GenerateAudit.cshtml" />
     <Content Include="Views\Request\Details.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\Home\Index.cshtml" />
-=======
     <Content Include="Views\Admin\Users.cshtml" />
-    <Content Include="Views\Admin\UserDetails.cshtml" />
+    <Content Include="Views\Admin\UserEdit.cshtml" />
     <Content Include="Views\Admin\_AdminNavPartial.cshtml" />
->>>>>>> 75b177bc2ad029fe22ba5dadcbbd33c061d00b63
+    <Content Include="Views\Admin\Dropdowns.cshtml" />
+    <Content Include="Views\Shared\_SearchPartial.cshtml" />
+    <Content Include="Views\Shared\_NavPartial.cshtml" />
+    <Content Include="Views\Admin\DropdownEdit.cshtml" />
+    <Content Include="Views\Admin\DropdownCreate.cshtml" />
+    <Content Include="Views\Admin\_DropdownForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
