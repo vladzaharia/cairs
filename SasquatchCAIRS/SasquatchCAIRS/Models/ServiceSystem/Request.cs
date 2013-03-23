@@ -27,8 +27,8 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         private DateTime _timeOpened = new DateTime();
         private DateTime? _timeClosed = null;
 
-        private byte? _regionID = null;
-        private byte? _requestorTypeID = null;
+        private int? _regionID = null;
+        private int? _requestorTypeID = null;
 
         private List<QuestionResponseContent> _questionResponseList
             = new List<QuestionResponseContent>();
@@ -199,7 +199,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public byte? regionID {
+        public int? regionID {
             get {
                 return _regionID;
             }
@@ -208,7 +208,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public byte? requestorTypeID {
+        public int? requestorTypeID {
             get {
                 return _requestorTypeID;
             }
@@ -244,8 +244,8 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         private string _response = null;
         private short? _timeSpent = null;
         private string _specialNotes = null;
-        private byte? _questionTypeID = null;
-        private byte? _tumourGroupID = null;
+        private int? _questionTypeID = null;
+        private int? _tumourGroupID = null;
 
         private Constants.Severity _severity = Constants.Severity.None;
         private Constants.Consequence _consequence =
@@ -332,7 +332,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public byte? questionTypeID {
+        public int? questionTypeID {
             get {
                 return _questionTypeID;
             }
@@ -341,7 +341,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             }
         }
 
-        public byte? tumourGroupID {
+        public int? tumourGroupID {
             get {
                 return _tumourGroupID;
             }
