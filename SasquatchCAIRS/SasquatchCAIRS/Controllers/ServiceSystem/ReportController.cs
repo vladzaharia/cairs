@@ -595,7 +595,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 DataRow newRow = dt.NewRow();
 
                 //if the key is null then it should create a row for 'No group assigned' requests
-                if (keyValuePair.Key != 255) {
+                if (keyValuePair.Key != -1) {
                     newRow[stratifyGroups] = idToName[keyValuePair.Key];
                     idToName.Remove(keyValuePair.Key);
                 } else {
@@ -683,7 +683,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 DataRow newRow = dt.NewRow();
 
                 //if the key is null then it should create a row for 'No group assigned' requests
-                if (keyValuePair.Key != 255) {
+                if (keyValuePair.Key != -1) {
                     newRow[stratifyGroups] = idToName[keyValuePair.Key];
                     idToName.Remove(keyValuePair.Key);
                 } else {
@@ -764,7 +764,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 DataRow newRow = dt.NewRow();
 
                 //if the key is null then it should create a row for 'No group assigned' requests
-                if (keyValuePair.Key != 255) {
+                if (keyValuePair.Key != -1) {
                     newRow[stratifyGroups] = idToName[keyValuePair.Key];
                     idToName.Remove(keyValuePair.Key);
                 } else {
@@ -841,7 +841,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 DataRow newRow = dt.NewRow();
 
                 //if the key is null then it should create a row for 'No group assigned' requests
-                if (keyValuePair.Key != 255) {
+                if (keyValuePair.Key != -1) {
                     newRow[stratifyGroups] = idToName[keyValuePair.Key];
                     idToName.Remove(keyValuePair.Key);
                 } else {
@@ -921,7 +921,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 DataRow newRow = dt.NewRow();
 
                 //if the key is null then it should create a row for 'No group assigned' requests
-                if (keyValuePair.Key != 255) {
+                if (keyValuePair.Key != -1) {
                     newRow[stratifyGroups] = idToName[keyValuePair.Key];
                     idToName.Remove(keyValuePair.Key);
                 } else {
@@ -1001,7 +1001,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 DataRow newRow = dt.NewRow();
 
                 //if the key is null then it should create a row for 'No group assigned' requests
-                if (keyValuePair.Key!=255) {
+                if (keyValuePair.Key!= -1) {
                     newRow[stratifyGroups] = idToName[keyValuePair.Key];
                 } else {
                     newRow[stratifyGroups] = "No " + stratifyGroups;
