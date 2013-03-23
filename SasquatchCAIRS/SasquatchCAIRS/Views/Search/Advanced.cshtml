@@ -54,25 +54,30 @@
             }
         </div>
 
+@if (@Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)|| Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
         <div>
-            <br />
+            <br/>
             @Html.Label(Constants.UIString.FieldLabel.STATUS)
         </div>
 
         <div>
             @foreach (var status in Enum.GetValues(
-                typeof(Constants.RequestStatus))) {
+                typeof (Constants.RequestStatus))) {
+                if (@Constants.RequestStatus.Invalid.CompareTo(@status) >= 0 && Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) 
+                {}else {
                 <label class="checkbox inline">
-                    @if (!String.IsNullOrEmpty(Model.requestStatus) && 
-                         Model.requestStatus.Contains(@status.ToString())) {
+                    @if (!String.IsNullOrEmpty(Model.requestStatus) &&
+                            Model.requestStatus.Contains(@status.ToString())) {
                         <input type="checkbox" name="status" value="@status" checked/>
                     } else {
                         <input type="checkbox" name="status" value="@status" />
                     }
                     @status
                 </label>
+                }
             }
         </div>
+}
 
         <div>
             <br />
@@ -191,9 +196,10 @@
         </p>
     </fieldset>
 }
-@*<script type="text/javascript">
+
+<script type="text/javascript">
     $(function() {
         $('#startTime').datepicker();
         $('#completionTime').datepicker();
     });
-</script>*@
+</script>

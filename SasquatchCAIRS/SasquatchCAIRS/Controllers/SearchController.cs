@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Security;
 using SasquatchCAIRS.Controllers.ServiceSystem;
 using SasquatchCAIRS.Models.SearchSystem;
 using SasquatchCAIRS.Models;
@@ -223,14 +224,24 @@ namespace SasquatchCAIRS.Controllers {
             }
 
             // Filter on request status
-            if (!String.IsNullOrEmpty(criteria.requestStatus)) {
-                requests =
-                    requests.Where(
-                        r =>
-                        enumToIDs(criteria.requestStatus,
-                                  typeof(Constants.RequestStatus))
-                            .Contains(r.RequestStatus));
+            if (Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) {
+                
             }
+            else if (Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
+                
+            }
+            else if (Roles.IsUserInRole(Constants.Roles.VIEWER)) {
+                criteria.
+            }
+
+            if (!String.IsNullOrEmpty(criteria.requestStatus)) {
+                    requests =
+                        requests.Where(
+                            r =>
+                            enumToIDs(criteria.requestStatus,
+                                      typeof (Constants.RequestStatus))
+                                .Contains(r.RequestStatus));
+                }
 
             // Filter on Question/Response tuples
             IQueryable<QuestionResponse> questionResponses = _db.QuestionResponses;
