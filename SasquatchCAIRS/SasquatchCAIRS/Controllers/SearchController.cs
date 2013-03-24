@@ -8,6 +8,9 @@ using SasquatchCAIRS.Models.SearchSystem;
 using SasquatchCAIRS.Models;
 
 namespace SasquatchCAIRS.Controllers {
+    /// <summary>
+    /// Controller responsible for executing searches and returing the relevant requests
+    /// </summary>
     public class SearchController : Controller {
 
         private DropdownController _dropdownController =
@@ -218,10 +221,9 @@ namespace SasquatchCAIRS.Controllers {
             // Set Criteria based on Users Role(s)
             if (Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) {}
             else if (String.IsNullOrEmpty(criteria.requestStatus) && Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
-                criteria.requestStatus = Enum.GetName(typeof(Constants.RequestStatus), Constants.RequestStatus.Completed) 
+                criteria.requestStatus = Enum.GetName(typeof(Constants.RequestStatus), Constants.RequestStatus.Completed)
                     + "," + Enum.GetName(typeof(Constants.RequestStatus), Constants.RequestStatus.Open);
-            }
-            else if (String.IsNullOrEmpty(criteria.requestStatus) && Roles.IsUserInRole(Constants.Roles.VIEWER)) {
+            } else if (String.IsNullOrEmpty(criteria.requestStatus) && Roles.IsUserInRole(Constants.Roles.VIEWER)) {
                 criteria.requestStatus = Enum.GetName(typeof(Constants.RequestStatus), Constants.RequestStatus.Completed);
             }
             // Filter on request status
