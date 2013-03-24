@@ -86,6 +86,7 @@ namespace SasquatchCAIRS.Controllers {
             criteria.requestorLastName = form["requestorLast"];
             criteria.patientFirstName = form["patientFirst"];
             criteria.patientLastName = form["patientLast"];
+
             if (isEmptySearchCriteria(criteria)) {
                 ViewBag.emptyForm = true;
                 setDropdownViewbags();
@@ -93,7 +94,6 @@ namespace SasquatchCAIRS.Controllers {
             }
 
             Session["criteria"] = criteria;
-
 
             ViewBag.keywords = criteria.keywordString;
             List<Request> list = searchCriteriaQuery(criteria);
@@ -115,6 +115,11 @@ namespace SasquatchCAIRS.Controllers {
             return View("Advanced", criteria);
         }
 
+        /// <summary>
+        /// Checks if SearchCriteria objects are empty/set to default values
+        /// </summary>
+        /// <param name="sc">The SearchCriteria to be checked for not-null values</param>
+        /// <returns>True if the SearchCriteria is empty, false otherwise</returns>
         private bool isEmptySearchCriteria(SearchCriteria sc) {
             if (!String.IsNullOrEmpty(sc.keywordString) || !String.IsNullOrEmpty(sc.consequence) ||
                 !String.IsNullOrEmpty(sc.patientFirstName) || !String.IsNullOrEmpty(sc.patientLastName)
@@ -129,6 +134,9 @@ namespace SasquatchCAIRS.Controllers {
             return true;
         }
 
+        /// <summary>
+        /// Sets the ViewBag objects to hold dropdown values
+        /// </summary>
         private void setDropdownViewbags() {
             ViewBag.TumorGroups =
                 _dropdownController.getEntries(
@@ -137,6 +145,7 @@ namespace SasquatchCAIRS.Controllers {
                 _dropdownController.getEntries(
                     Constants.DropdownTable.QuestionType).OrderBy(qt => qt.value);
         }
+
         /// <summary>
         /// Clean up managed and unmanaged resources
         /// </summary>
