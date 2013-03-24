@@ -4,38 +4,46 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
 using SasquatchCAIRS.Controllers.Security;
+using SasquatchCAIRS.Controllers.ServiceSystem;
 using SasquatchCAIRS.Models;
 
 namespace SasquatchCAIRS.Controllers {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
     public class AdminController : Controller {
         private CAIRSDataContext _db = new CAIRSDataContext();
+        private DropdownController _dc = new DropdownController();
 
         //
-        // GEET: /Admin/Index
+        // GET: /Admin/Index
 
         public ActionResult Index() {
             return RedirectToAction("Users");
         }
 
-        //
-        // GET: /Admin/Users
+        #region Users
 
-        public ActionResult Users() {
+        //
+        // GET: /Admin/User/List
+
+        [HttpGet]
+        public ActionResult Users(bool success = false) {
+            ViewBag.SuccessMessage = success
+                                         ? "Your changes have been saved."
+                                         : null;
             return View(_db.UserProfiles.Select(up => up));
         }
 
         //
-        // GET: /Admin/UserDetails
+        // GET: /Admin/UserEdit
+
         [HttpGet]
-        public ActionResult UserDetails(int id, bool success = false) {
+        public ActionResult UserEdit(int id) {
             UserProfile userProfile =
                 _db.UserProfiles.FirstOrDefault(up => up.UserId == id);
-            var dc = ServiceSystem.DropdownController
-                              .instance;
+            var dc = new DropdownController();
 
             ViewBag.Groups =
-                dc.getActiveEntries(
+                _dc.getEntries(
                     Constants.DropdownTable.UserGroup);
             ViewBag.Roles = Roles.GetAllRoles();
 
@@ -45,17 +53,18 @@ namespace SasquatchCAIRS.Controllers {
                     Roles.GetRolesForUser(userProfile.UserName).ToList();
             }
 
-            ViewBag.SuccessMessage = success ? "Your changes have been saved." : null;
-
             return View(userProfile);
         }
 
+        
+
         //
-        // POST: /Admin/UserDetails
+        // POST: /Admin/User/Edit
+
         [HttpPost]
-        public ActionResult UserDetails(string userName,
-                                        List<string> userGroup,
-                                        List<string> userRole) {
+        public ActionResult UserEdit(string userName,
+                                     List<string> userGroup,
+                                     List<string> userRole) {
             var uc = new UserController();
             UserProfile up = uc.getUserProfile(userName);
 
@@ -64,10 +73,10 @@ namespace SasquatchCAIRS.Controllers {
                 foreach (string groupId in userGroup) {
                     if (
                         !_db.UserGroups1.Any(
-                            ug => ug.GroupID == Convert.ToByte(groupId)
+                            ug => ug.GroupID == Convert.ToInt32(groupId)
                                   && ug.UserID == up.UserId)) {
                         _db.UserGroups1.InsertOnSubmit(new UserGroups {
-                            GroupID = Convert.ToByte(groupId),
+                            GroupID = Convert.ToInt32(groupId),
                             UserID = up.UserId
                         });
                         _db.SubmitChanges();
@@ -115,7 +124,197 @@ namespace SasquatchCAIRS.Controllers {
                                           Roles.GetRolesForUser(userName));
             }
 
-            return RedirectToAction("UserDetails", new {success = true});
+            return RedirectToAction("Users", new {success = true});
         }
+
+        #endregion
+
+        #region Dropdowns
+
+        //
+        // GET: /Admin/Dropdown/List
+
+        public ActionResult Dropdowns(bool success = false) {
+            Dictionary<Constants.DropdownTable, List<DropdownEntry>> model =
+                Constants.DROPDOWN_TABLES.ToDictionary(dropdown => dropdown,
+                                                       dropdown =>
+                                                       _dc.getEntries(dropdown,
+                                                                      false));
+            ViewBag.SuccessMessage = success
+                                         ? "Your changes have been saved."
+                                         : null;
+
+            return View(model);
+        }
+
+        //
+        // GET: /Admin/Dropdown/Edit
+
+        [HttpGet]
+        public ActionResult DropdownEdit(Constants.DropdownTable table, int id) {
+            DropdownEntry model =
+                _dc.getEntries(table, false).FirstOrDefault(dd => dd.id == id);
+
+            var slis = new List<SelectListItem> {
+                new SelectListItem {
+                    Text = Constants.UIString.GeneralText.ACTIVE,
+                    Value = "true",
+                    Selected = true
+                },
+                new SelectListItem {
+                    Text = Constants.UIString.GeneralText.DISABLED,
+                    Value = "false",
+                    Selected = false
+                }
+            };
+
+            ViewBag.SelectList = new SelectList(slis, "Value", "Text",
+                                                model != null && model.active);
+            ViewBag.Table = table;
+
+            return View(model);
+        }
+
+        //
+        // POST: /Admin/Dropdown/Edit
+
+        [HttpPost]
+        public ActionResult DropdownEdit(Constants.DropdownTable table, int id,
+                                         string code, string value,
+                                         bool active) {
+            // Blank Value Sanity Checks
+            if (table != Constants.DropdownTable.Keyword && code == "") {
+                ModelState.AddModelError("value", "Value cannot be empty!");
+            }
+            if (value == "") {
+                ModelState.AddModelError("code", "Value cannot be empty!");
+            }
+
+            // Real Sanity Checks
+            if (table != Constants.DropdownTable.Keyword &&
+                _dc.getEntries(table).Any(dt => dt.code == code && 
+                    dt.id != id)) {
+                ModelState.AddModelError("code", "That code is already in use!");
+            }
+            if (_dc.getEntries(table).Any(dt => dt.value == value && dt.id != id)) {
+                ModelState.AddModelError("value",
+                                         "That " + (table ==
+                                                    Constants.DropdownTable
+                                                             .Keyword
+                                                        ? "keyword"
+                                                        : "value") +
+                                         " is already in use!");
+            }
+
+            // Route to List page if valid, or back to create with errors
+            if (ModelState.IsValid) {
+                _dc.editEntry(table, id, code, value, active);
+                return RedirectToAction("Dropdowns", new {
+                    success = true
+                });
+            }
+            var slis = new List<SelectListItem> {
+                new SelectListItem {
+                    Text = Constants.UIString.GeneralText.ACTIVE,
+                    Value = "true",
+                    Selected = true
+                },
+                new SelectListItem {
+                    Text = Constants.UIString.GeneralText.DISABLED,
+                    Value = "false",
+                    Selected = false
+                }
+            };
+
+            ViewBag.SelectList = new SelectList(slis, "Value", "Text",
+                                                Convert.ToBoolean(active));
+            ViewBag.Table = table;
+            return
+                View(new DropdownEntry(id, code, value, active));
+        }
+
+        //
+        // GET: /Admin/Dropdown/Create
+
+        [HttpGet]
+        public ActionResult DropdownCreate(Constants.DropdownTable? table) {
+            var slis = new List<SelectListItem> {
+                new SelectListItem {
+                    Text = Constants.UIString.GeneralText.ACTIVE,
+                    Value = "true",
+                    Selected = true
+                },
+                new SelectListItem {
+                    Text = Constants.UIString.GeneralText.DISABLED,
+                    Value = "false",
+                    Selected = false
+                }
+            };
+
+            ViewBag.SelectList = new SelectList(slis, "Value", "Text", true);
+            ViewBag.Table = table;
+
+            return View();
+        }
+
+        //
+        // POST: /Admin/Dropdown/Create
+
+        [HttpPost]
+        public ActionResult DropdownCreate(Constants.DropdownTable table,
+                                           string code, string value,
+                                           bool active) {
+            // Blank Value Sanity Checks
+            if (table != Constants.DropdownTable.Keyword && code == "") {
+                ModelState.AddModelError("value", "Value cannot be empty!");
+            }
+            if (value == "") {
+                ModelState.AddModelError("code", "Value cannot be empty!");
+            }
+
+            // Real Sanity Checks
+            if (table != Constants.DropdownTable.Keyword && 
+                _dc.getEntries(table).Any(dt => dt.code == code)) {
+                ModelState.AddModelError("code", "That code is already in use!");
+            }
+            if (_dc.getEntries(table).Any(dt => dt.value == value)) {
+                ModelState.AddModelError("value",
+                                         "That " + (table ==
+                                                    Constants.DropdownTable
+                                                             .Keyword
+                                                        ? "keyword"
+                                                        : "value") +
+                                         " is already in use!");
+            }
+
+            // Route to List page if valid, or back to create with errors
+            if (ModelState.IsValid) {
+                _dc.createEntry(table, code, value, active);
+
+                return RedirectToAction("Dropdowns", new {
+                    success = true
+                });
+            }
+
+            var slis = new List<SelectListItem> {
+                new SelectListItem {
+                    Text = Constants.UIString.GeneralText.ACTIVE,
+                    Value = "true",
+                    Selected = true
+                },
+                new SelectListItem {
+                    Text = Constants.UIString.GeneralText.DISABLED,
+                    Value = "false",
+                    Selected = false
+                }
+            };
+
+            ViewBag.SelectList = new SelectList(slis, "Value", "Text", active);
+            ViewBag.Table = table;
+            return
+                View(new DropdownEntry(0, code, value, active));
+        }
+
+        #endregion
     }
 }

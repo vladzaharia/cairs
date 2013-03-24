@@ -6,16 +6,16 @@
         @Html.TextBox("keywords", "",
                     new {
                         @class = "span2 search-query",
-                        @placeholder = "Quick Search"
+                          @dp = "Quick Search"
                     })
         <button class="btn quick-search-button" type="submit">
             <i class="icon-search"></i>
         </button>
     </div>
 
-    <div class="adv-search-div">
+<div class="adv-search-div">
         @Html.ActionLink("Advanced", "Advanced", "Search")
         <br />
         @Html.ActionLink("Search", "Advanced", "Search")
-    </div>
+</div>
     }
