@@ -1,11 +1,11 @@
-﻿using System;
+﻿using SasquatchCAIRS.Controllers.ServiceSystem;
+using SasquatchCAIRS.Models;
+using SasquatchCAIRS.Models.SearchSystem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
-using SasquatchCAIRS.Controllers.ServiceSystem;
-using SasquatchCAIRS.Models.SearchSystem;
-using SasquatchCAIRS.Models;
 
 namespace SasquatchCAIRS.Controllers {
     /// <summary>
@@ -121,14 +121,12 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="sc">The SearchCriteria to be checked for not-null values</param>
         /// <returns>True if the SearchCriteria is empty, false otherwise</returns>
         private bool isEmptySearchCriteria(SearchCriteria sc) {
-            if (!String.IsNullOrEmpty(sc.keywordString) || !String.IsNullOrEmpty(sc.consequence) ||
-                !String.IsNullOrEmpty(sc.patientFirstName) || !String.IsNullOrEmpty(sc.patientLastName)
+            if (!String.IsNullOrEmpty(sc.keywordString) || !String.IsNullOrEmpty(sc.consequence) 
+                || !String.IsNullOrEmpty(sc.patientFirstName) || !String.IsNullOrEmpty(sc.patientLastName)
                 || !String.IsNullOrEmpty(sc.questionType) || !String.IsNullOrEmpty(sc.requestStatus)
                 || !String.IsNullOrEmpty(sc.requestorFirstName) || !String.IsNullOrEmpty(sc.requestorLastName)
-                || !String.IsNullOrEmpty(sc.severity) || !String.IsNullOrEmpty(sc.tumorGroup)) {
-                return false;
-            }
-            if (sc.startTime.CompareTo(new DateTime()) != 0 || sc.completionTime.CompareTo(new DateTime()) != 0) {
+                || !String.IsNullOrEmpty(sc.severity) || !String.IsNullOrEmpty(sc.tumorGroup)
+                || sc.startTime.CompareTo(new DateTime()) != 0 || sc.completionTime.CompareTo(new DateTime()) != 0) {
                 return false;
             }
             return true;
@@ -147,10 +145,6 @@ namespace SasquatchCAIRS.Controllers {
         }
 
         /// <summary>
-        /// Clean up managed and unmanaged resources
-        /// </summary>
-        /// <param name="disposing">Scenario to operate under</param>
-        /// <summary>
         /// Converts an input String into a list of Int, used for Question Type ID and Tumour Group ID
         /// </summary>
         /// <param name="input">Input String</param>
@@ -158,7 +152,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <returns>Corresponding List of Integers</returns>
         private List<int> typeIDStringtoList(string input, string delimiters) {
             string[] arr = input.Split(delimiters.ToCharArray());
-            return arr.Select(s => int.Parse(s)).ToList();
+            return arr.Select(int.Parse).ToList();
         }
 
         /// <summary>
