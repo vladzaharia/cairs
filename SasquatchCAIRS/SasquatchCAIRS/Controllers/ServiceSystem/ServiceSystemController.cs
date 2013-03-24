@@ -21,14 +21,20 @@ namespace SasquatchCAIRS.Controllers
             return View();
         }
 
-        public ViewResult GenaratingReport(FormCollection form) {
+        public ActionResult InputCheck(FormCollection templateForm) {
+
+
+            return RedirectToAction("GeneratingReport", new {form = templateForm});
+        }
+
+        public ViewResult GeneratingReport(FormCollection form) {
             //string path = Server.MapPath("~/Report.xlsx").ToString();
-            string templatePath = Server.MapPath("~/ReportTemplate.xlsx");
+            string templatePath = Path.Combine(HttpRuntime.AppDomainAppPath, "ReportTemplate.xlsx");
             DateTime markDate = new DateTime(2010,01,01, 00, 00, 00, 00);
             TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
 
-            string copiedPath = Server.MapPath("~/Report"+dateStamp.TotalSeconds.ToString()+".xlsx");
-            ViewBag.form = templatePath;
+            string copiedPath = Path.Combine(HttpRuntime.AppDomainAppPath, "Report" + dateStamp.TotalSeconds.ToString() + ".xlsx");
+            
             List<DataTable> dataTables = new List<DataTable>();
 
             List<string> dataTypeStrings = form[Constants.ReportFormStrings.DATATYPE].Split(',').ToList();

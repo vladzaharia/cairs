@@ -5,7 +5,7 @@
 }
 <h2>Generate Reports</h2>
 
-@using (Html.BeginForm("GenaratingReport", "ServiceSystem", 
+@using (Html.BeginForm("GeneratingReport", "ServiceSystem", 
     new {
         @class = "form form-report"
     })) {
@@ -38,41 +38,47 @@
             <div>
                 <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="MonthPerYear">
                 Month by Year<br>
-                <select name="MPYMonth">
-                    @foreach (var month in Enum.GetNames(typeof(Constants.Month))) {
-                        <option value="@month">@month</option>
-                        }
-                </select>
-                from 
-                    <select name="MPYStartYear">
-                        @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
-                            <option value="@i">@i</option>
-                        }
-                    </select>
-                to                                                                  
-                    <select name="MPYEndYear">
-                        @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
-                            <option value="@i">@i</option>
-                        }
-                    </select>
+                             <select name="MPYMonth">
+                                 @foreach (var month in Enum.GetNames(typeof(Constants.Month))) {
+                                     <option value="@month">@month</option>
+                                 }
+                             </select>
+                             from 
+                             <select name="MPYStartYear">
+                                 @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
+                                     <option value="@i">@i</option>
+                                 }
+                             </select>
+                             to                                                                  
+                             <select name="MPYEndYear">
+                                 @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
+                                     <option value="@i">@i</option>
+                                 }
+                             </select>
 
+            </div>
+            <div class="alert alert-error" id="alert2">
+                <strong>Oh snap!</strong>
             </div>
 
             <div>
                 <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="FiscalYear">
                 Reporting Year Range<br>
-                from 
-                    <select name="FYStartYear">
-                        @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
-                            <option value="@i">@i - @(i+1)</option>
-                            }
-                    </select>
-                to                
-                    <select name="FYEndYear">
-                        @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
-                            <option value="@i">@i - @(i+1)</option>
-                            }
-                    </select>
+                                    from 
+                                    <select name="FYStartYear">
+                                        @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
+                                            <option value="@i">@i - @(i+1)</option>
+                                        }
+                                    </select>
+                                    to                
+                                    <select name="FYEndYear">
+                                        @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
+                                            <option value="@i">@i - @(i+1)</option>
+                                        }
+                                    </select>
+            </div>
+            <div class="alert alert-error" id="alert3">
+                <strong>Oh snap!</strong>
             </div>
 
 
@@ -95,7 +101,9 @@
             Total time spent per month/year
             <br>
         </div>
-
+        <div class="alert alert-error" id="alert4">
+            <strong>Oh snap!</strong>
+        </div>
 
         <div>
             <br />
@@ -115,6 +123,9 @@
             Tumor Group
             <br>  
         </div>
+        <div class="alert alert-error" id="alert5">
+            <strong>Oh snap!</strong>
+        </div>
 
         <p>
             <br />
@@ -125,6 +136,10 @@
     
     <style>
         #alert { display: none;}
+        #alert2 { display: none;}
+        #alert3 { display: none;}
+        #alert4 { display: none;}
+        #alert5 { display: none;}
     </style>
     
 }
@@ -135,7 +150,7 @@
     var startDate = new Date();
     var endDate = new Date();
     
-    var frompicker = $("#fromdatepicker").datepicker({format:"dd/mm/yyyy", viewMode:"months", minViewMode:"months"}).on("changeDate", function (ev) {
+    var frompicker = $("#fromdatepicker").datepicker({format:"mm/yyyy", viewMode:"months", minViewMode:"months"}).on("changeDate", function (ev) {
         if (ev.date.valueOf() > endDate.valueOf()) {
             $('#alert').show().find('strong').text('The start date can not be greater then the end date');
         } else {
