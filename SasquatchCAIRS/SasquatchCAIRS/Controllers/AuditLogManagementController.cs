@@ -61,8 +61,11 @@ namespace SasquatchCAIRS.Controllers {
 
                 // Populate table rows
                 requestLogs.ForEach(
-                    a => xlsTable.Rows.Add(a.AuditType.ToString(), a.AuditDate,
-                                            a.UserID));
+                    a =>
+                    xlsTable.Rows.Add(
+                        Enum.GetName(typeof (Constants.AuditType), a.AuditType),
+                        a.AuditDate, a.UserProfile.UserName
+                        ));
 
                 // add DataTable to xlsExports
                 xlsExports.Add(xlsTable);
@@ -95,7 +98,7 @@ namespace SasquatchCAIRS.Controllers {
             // Create blank list of AuditLogs and fill with all AuditLogs for each user ID
            foreach (long userID in userIDs) {
                
-               var requestLogs = (_db.AuditLogs.Where(r => r.UserID == userID && r.AuditDate.Date > startDate.Date && r.AuditDate.Date < endDate.Date)).ToList();
+               var requestLogs = (_db.AuditLogs.Where(r => r.UserID == userID && r.AuditDate.Date >= startDate.Date && r.AuditDate.Date <= endDate.Date)).ToList();
 
                // Create DataTable with requestLogs to send to XLSExporter
                var xlsTable =
@@ -110,11 +113,11 @@ namespace SasquatchCAIRS.Controllers {
                xlsTable.Columns.Add("Action Timestamp", typeof(DateTime));
 
                // Populate table rows
-               requestLogs.ForEach(delegate(AuditLog a) {
-                   // TODO: Formatting on AuditDate may need to be corrected once Hanna's exporter can be tested
-                   xlsTable.Rows.Add(a.AuditType.ToString(),
-                                      a.RequestID.ToString(), a.AuditDate);
-               });
+               requestLogs.ForEach(
+                   a =>
+                   xlsTable.Rows.Add(
+                       Enum.GetName(typeof (Constants.AuditType), a.AuditType),
+                       a.RequestID.ToString(), a.AuditDate));
 
                // add DataTable for this ID to xlsExports
                xlsExports.Add(xlsTable);
@@ -124,8 +127,9 @@ namespace SasquatchCAIRS.Controllers {
             // TODO: determine file paths to be passed.
             DateTime markDate = new DateTime(2010, 01, 01, 00, 00, 00, 00);
             TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
-            string fromPath = Server.MapPath("~/AuditLogTemplate.xlsx");
-            string toPath = Server.MapPath("~/AuditLogTemplate"+ dateStamp.TotalSeconds.ToString()+".xlsx");
+            string fromPath = Path.Combine(HttpRuntime.AppDomainAppPath,
+                                           "AuditLogTemplate.xlsx");
+            string toPath = Path.Combine(HttpRuntime.AppDomainAppPath, "AuditLogTemplate" + dateStamp.TotalSeconds.ToString() + ".xlsx");
             
             ExcelExportController eeController = new ExcelExportController();
             
