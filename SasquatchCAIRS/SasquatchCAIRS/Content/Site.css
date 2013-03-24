@@ -892,5 +892,11 @@ footer.timout { height: 60px; }
         text-align: center;
     }
 
-    footer p { margin: 0; }
+    footer p {
+            margin: 0;
+    }
+}
+
+.textbox-add-on {
+    margin-top: 5px;
 }

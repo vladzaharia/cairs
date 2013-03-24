@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using SasquatchCAIRS.Controllers.ServiceSystem;
 using SasquatchCAIRS.Controllers.Security;
 using SasquatchCAIRS.Models;
 
@@ -74,6 +75,26 @@ namespace SasquatchCAIRS.Controllers {
                 ViewBag.Status =
                     "The request has been marked as invalid and cannot be seen by non-Administrators.";
                 ViewBag.StatusColor = "success";
+            } else if (status == Constants.URLStatus.AccessingLocked) {
+                ViewBag.Status =
+                    "The request is locked and cannot be edited.";
+                ViewBag.StatusColor = "danger";
+            } else if (status == Constants.URLStatus.LockedToOtherUser) {
+                ViewBag.Status =
+                    "The request is not locked to you and cannot be edited.";
+                ViewBag.StatusColor = "danger";
+            } else if (status == Constants.URLStatus.SuccessfulEdit) {
+                ViewBag.Status =
+                    "The request has been successfully edited.";
+                ViewBag.StatusColor = "success";
+            } else if (status == Constants.URLStatus.NoRequestEditorRole) {
+                ViewBag.Status =
+                    "You no longer have permissions to create or edit requests.";
+                ViewBag.StatusColor = "danger";
+            } else if (status == Constants.URLStatus.SuccessfulCreate) {
+                ViewBag.Status =
+                    "The request has been successfully created.";
+                ViewBag.StatusColor = "danger";
             }
 
             return View();

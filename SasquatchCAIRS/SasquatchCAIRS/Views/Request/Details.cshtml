@@ -184,9 +184,7 @@
                         <td class="focal">@Constants.UIString.FieldLabel.KEYWORDS</td>
                     </tr>
                     <tr>
-                        <td>@foreach (KeywordContent kw in qr.keywords) {
-                                <span>@kw.keywordStr </span>
-                            }</td>
+                        <td>@foreach(String kw in qr.keywords) { <span>@kw </span> }</td>
                     </tr>
                 </table>
             </div>

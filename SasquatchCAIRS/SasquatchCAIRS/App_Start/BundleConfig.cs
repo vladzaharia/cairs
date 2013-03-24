@@ -32,6 +32,10 @@ namespace SasquatchCAIRS {
             bundles.Add(new StyleBundle("~/Content/fontawesome").Include("~/Content/font-awesome.css"));
             bundles.Add(new StyleBundle("~/Content/fontawesome-ie7").Include("~/Content/font-awesome-ie7.css"));
 
+            // CKEditor
+            bundles.Add(new ScriptBundle("~/bundles/ckeditor").Include(
+                        "~/Scripts/ckeditor/ckeditor.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
             bundles.Add(new StyleBundle("~/Content/ie7").Include("~/Content/ie7.css"));
 

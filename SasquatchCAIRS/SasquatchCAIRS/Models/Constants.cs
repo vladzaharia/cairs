@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace SasquatchCAIRS.Models {
+﻿namespace SasquatchCAIRS.Models {
     public static class Constants {
         public enum Gender {
-            None = -1,
             Female = 0,
-            Male = 2,
-            Other = 3
+            Male = 1,
+            Other = 2
         }
+
+        public readonly static Gender[] genderOptions = {
+            Gender.Female, Gender.Male, Gender.Other
+        };
 
         public enum RequestStatus {
             Open = 0,
@@ -20,25 +17,38 @@ namespace SasquatchCAIRS.Models {
         }
 
         public enum Severity {
-            None = -1,
             Major = 0,
             Moderate = 1,
             Minor = 2
         }
 
+        public static readonly Severity[] severityOptions = {
+            Severity.Major, Severity.Moderate, Severity.Minor
+        };
+
         public enum Consequence {
-            None = -1,
             Certain = 0,
             Probable = 1,
             Possible = 2,
             Unlikely = 3
         }
 
+        public static readonly Consequence[] consequenceOptions = {
+            Consequence.Certain,
+            Consequence.Probable,
+            Consequence.Probable,
+            Consequence.Unlikely
+        };
+
         public enum ReferenceType {
             URL = 0,
             File = 1,
             Text = 2
         }
+
+        public static readonly ReferenceType[] referenceTypeOptions = {
+            ReferenceType.URL, ReferenceType.File, ReferenceType.Text
+        };
 
         public enum DropdownTable {
             Keyword,
@@ -53,7 +63,12 @@ namespace SasquatchCAIRS.Models {
             None = 0,
             Expired = 1,
             Unlocked = 2,
-            Deleted = 3
+            Deleted = 3,
+            AccessingLocked = 4,
+            LockedToOtherUser = 5,
+            SuccessfulEdit = 6,
+            NoRequestEditorRole = 7,
+            SuccessfulCreate = 8
         }
 
         public static readonly DropdownTable[] DROPDOWN_TABLES = new DropdownTable[6] {
@@ -64,36 +79,7 @@ namespace SasquatchCAIRS.Models {
             DropdownTable.TumourGroup, 
             DropdownTable.UserGroup
         };
-
-        public const string KEYWORD_TBL_ID_ATTR = "KeywordID";
-        public const string KEYWORD_TBL_KEYWORD_ATTR = "Keyword";
-        public const string KEYWORD_TBL_ACTIVE_ATTR = "Active";
-
-        public const string QUESTIONTYPE_TBL_ID_ATTR = "QuestionTypeID";
-        public const string QUESTIONTYPE_TBL_VALUE_ATTR = "Value";
-        public const string QUESTIONTYPE_TBL_CODE_ATTR = "Code";
-        public const string QUESTIONTYPE_TBL_ACTIVE_ATTR = "Active";
-
-        public const string REGION_TBL_ID_ATTR = "RegionID";
-        public const string REGION_TBL_VALUE_ATTR = "Value";
-        public const string REGION_TBL_CODE_ATTR = "Code";
-        public const string REGION_TBL_ACTIVE_ATTR = "Active";
-
-        public const string REQUESTORTYPE_TBL_ID_ATTR = "RequestorTypeID";
-        public const string REQUESTORTYPE_TBL_VALUE_ATTR = "Value";
-        public const string REQUESTORTYPE_TBL_CODE_ATTR = "Code";
-        public const string REQUESTORTYPE_TBL_ACTIVE_ATTR = "Active";
-
-        public const string TUMOURGROUP_TBL_ID_ATTR = "TumourGroupID";
-        public const string TUMOURGROUP_TBL_VALUE_ATTR = "Value";
-        public const string TUMOURGROUP_TBL_CODE_ATTR = "Code";
-        public const string TUMOURGROUP_TBL_ACTIVE_ATTR = "Active";
-
-        public const string USERGROUP_TBL_ID_ATTR = "GroupID";
-        public const string USERGROUP_TBL_VALUE_ATTR = "Value";
-        public const string USERGROUP_TBL_CODE_ATTR = "Code";
-        public const string USERGROUP_TBL_ACTIVE_ATTR = "Active";
-
+        
         public static class Roles {
             public const string VIEWER = "Viewer";
             public const string REQUEST_EDITOR = "RequestEditor";
@@ -170,6 +156,9 @@ namespace SasquatchCAIRS.Models {
                 public const string SAVE_DRAFT = "Save Draft";
                 public const string MARK_COMPLETE = "Mark as Complete";
                 public const string DELETE_REQUEST = "Delete Request";
+                public const string ADD_QUESTION = "Add Question";
+                public const string DELETE_QUESTION = "Delete Question";
+                public const string ADD_REFERENCE = "Add Reference";
                 public const string EDIT_USER = "Edit User";
                 public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
@@ -198,6 +187,15 @@ namespace SasquatchCAIRS.Models {
             public static class GeneralText {
                 public const string ACTIVE = "Active";
                 public const string DISABLED = "Disabled";
+            }
+
+            public static class Messages {
+                public const string DELETE_REFERENCE_WARNING =
+                    "Are you sure you would like to delete this reference?";
+                public const string DELETE_QUESTION_WARNING =
+                    "Are you sure you would like to delete this question?";
+                public const string NO_CONTACT_WARNING =
+                    "Are you sure you would like to mark this request as complete without requestor contact information?";
             }
         }
 
@@ -309,7 +307,8 @@ namespace SasquatchCAIRS.Models {
         /// <param name="severity">Severity as Constants.Severity</param>
         /// <param name="consequence">Consequence as Constants.Consequence</param>
         /// <returns>A string representing the impact score.</returns>
-        public static string getImpactScore(Severity? severity, Consequence? consequence) {
+        public static string getImpactScore(Severity? severity,
+                                            Consequence? consequence) {
             switch (consequence) {
                 case Consequence.Certain:
                 case Consequence.Probable:
