@@ -116,6 +116,68 @@ namespace SasquatchCAIRS.Models {
             public const string ADMINISTRATOR = "Administrator";
         }
 
+        public static class Export {
+            // File Section
+            public const string REPORT_TEMPLATE_PATH = "~/ReportTemplate.docx";
+            public const string REPORT_TEMP_PATH = "~/Report";
+            public const string WORD_CONTENT_TYPE = "application/vnd.ms-word";
+            public const string WORD_FILE_EXT = ".docx";
+            public const string CONTENT_DISPOSITION = "Content-Disposition";
+            public const string REQUEST_ATTACHMENT = "attachment; filename=Request";
+
+            // Request Information Section
+            public const string REQUEST_INFORMATION = "Request Information: ";
+            public const string REQUEST_ID = "Request ID: ";
+            public const string REQUEST_CREATED_BY = "Created By: ";
+            public const string REQUEST_CLOSED_BY = "Closed By: ";
+            public const string REQUEST_START_TIME = "Start Time: ";
+            public const string REQUEST_COMPLETION_TIME = "Completed Time: ";
+            public const string REQUEST_TIME_SPENT = "Total Time Spent: ";
+            public const string REQUEST_PARENT_ID = "Parent Request ID: ";
+            public const string REQUEST_PROPERTIES = "Request Properties";
+
+            // Requestor Information Section
+            public const string REQUESTOR_INFORMATION = "Requestor Information:";
+            public const string REQUESTOR_NAME = "Requestor Name: ";
+            public const string REQUESTOR_EMAIL = "Requestor's Email: ";
+            public const string REQUESTOR_PHONE = "Requestor's Phone Number: ";
+            public const string REQUESTOR_PHONE_EXT = "Ext: ";
+            public const string REQUESTOR_TYPE = "Requestor Type: ";
+            public const string REQUSTOR_REGION = "Requestor Region: ";
+
+            // Patient Information Section
+            public const string PATIENT_INFORMATION = "Patient Information:";
+            public const string PATIENT_NAME ="Patient Name: ";
+            public const string PATIENT_ID = "Patient ID: ";
+            public const string PATIENT_AGE = "Patient Age: ";
+            public const string PATIENT_GENDER = "Patient Gender: ";
+
+            // Question/Response Information Section
+            public const string QUESTION_INFORATION = "Question Information:";
+            public const string QUESTION_NUMBER = "Question #";
+            public const string QUESTION_RESPONSE = "Response: ";
+            public const string QUESTION_SPECIAL_NOTES = "Special Notes/Followup: ";
+            public const string QUESTION_TYPE = "Question Type: ";
+            public const string QUESTION_TUMOUR_GROUP = "Tumour Group: ";
+            public const string QUESTION_TIME_SPENT = "Time Spent: ";
+            public const string QUESTION_IMPACT_SCORE = "Impact Score: ";
+            public const string QUESTION_KEYWORDS = "Keywords: ";
+            public const string QUESTION_REFERENCES = "References: ";
+
+            // Random
+
+            public const string TIME_UNITS = " min(s)";
+            // Header List
+            public static readonly List<string> EXPORT_HEADERS = new List<string>{
+                REQUEST_INFORMATION,
+                REQUESTOR_INFORMATION,
+                PATIENT_INFORMATION,
+                QUESTION_INFORATION,
+                REQUEST_PROPERTIES
+            }; 
+
+        }
+
         public static class UIString {
             // Labels used for fields
             public static class FieldLabel {

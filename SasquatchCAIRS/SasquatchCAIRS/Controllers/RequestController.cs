@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using SasquatchCAIRS.Controllers.Security;
@@ -115,6 +116,23 @@ namespace SasquatchCAIRS.Controllers {
             return RedirectToAction("Index", "Home", new {
                 status = Constants.URLStatus.Deleted
             });
+        }
+
+        //
+        // GET: /Request/Export/{id}
+        public ActionResult Export(long id) {
+            WordExportController wec = new WordExportController();
+            Request request = _db.Requests.FirstOrDefault(r => r.RequestID == id);
+
+            DateTime markDate = new DateTime(2010, 01, 01, 00, 00, 00, 00);
+            TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
+            string filePath = Server.MapPath(Constants.Export.REPORT_TEMP_PATH + dateStamp.TotalSeconds + ".docx");
+            string templatePath = Server.MapPath(Constants.Export.REPORT_TEMPLATE_PATH);
+
+            IEnumerable<string> output = wec.requestToStrings(request);
+            wec.generateDocument(output, templatePath, filePath, id);
+
+            return View("Details", new RequestContent(request));
         }
     }
 }

@@ -186,6 +186,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServiceSystem\ReportController.cs" />
     <Compile Include="Controllers\ServiceSystem\ServiceSystemController.cs" />
+    <Compile Include="Controllers\WordExportController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -342,6 +343,8 @@
     <Content Include="AuditLogTemplate.xlsx" />
     <None Include="Properties\PublishProfiles\Michelle.pubxml" />
     <Content Include="ReportTemplate.xlsx" />
+    <Content Include="ReportTemplate.docx" />
+    <None Include="Properties\PublishProfiles\Sasquatch.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\flat-ui\application.js" />
     <Content Include="Scripts\flat-ui\bootstrap-tooltip.js" />
