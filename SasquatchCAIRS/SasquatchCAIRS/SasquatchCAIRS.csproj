@@ -170,9 +170,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\Security\AccountController.cs" />
     <Compile Include="Controllers\Security\RequestLockController.cs" />
     <Compile Include="Controllers\Security\UserController.cs" />
@@ -183,7 +184,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Exceptions.cs" />
-    <Compile Include="Models\Constants.cs" />
     <Compile Include="Controllers\ServiceSystem\DropdownController.cs" />
     <Compile Include="Models\ServiceSystem\DropdownEntry.cs" />
     <Compile Include="Models\ServiceSystem\Request.cs" />
@@ -389,8 +389,6 @@
     <Content Include="Views\Account\_ViewUserInfo.cshtml" />
     <Content Include="Views\Shared\_SearchPartial.cshtml" />
     <Content Include="Views\Account\Auth.cshtml" />
-    <Content Include="Views\Search\Advanced.cshtml" />
-    <Content Include="Views\Search\Results.cshtml" />
     <Content Include="Views\Request\Details.cshtml" />
     <Content Include="Views\Admin\Users.cshtml" />
     <Content Include="Views\Admin\UserEdit.cshtml" />
@@ -400,6 +398,7 @@
     <Content Include="Views\Admin\DropdownEdit.cshtml" />
     <Content Include="Views\Admin\DropdownCreate.cshtml" />
     <Content Include="Views\Admin\_DropdownForm.cshtml" />
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

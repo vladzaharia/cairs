@@ -1,5 +1,5 @@
 ﻿html {
-    background-color: #eceff1;
+    background-color: #e2e2e2;
     margin: 0;
     padding: 0;
 }
@@ -8,12 +8,13 @@ body {
     background-color: #023187;
     color: #333;
     font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
 }
 
 a {
-    /*color: #333;*/
+    color: #333;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
@@ -32,8 +33,7 @@ a.btn {
 }
 
 a.btn:hover, a.btn:active { color: white; }
-
-header, footer, hgroup,
+        header, footer, hgroup,
 nav, section {
     display: block;
     position: relative;
@@ -64,12 +64,36 @@ mark {
 
 h1, h2, h3,
 h4, h5, h6 {
-    color: #34495e;
+    color: #000;
     margin-bottom: 0;
     padding-bottom: 0;
 }
 
 h4 { padding-top: 10px; }
+
+}
+
+h2 {
+    font-size: 1.75em;
+}
+
+h3 {
+    font-size: 1.2em;
+}
+
+h4 {
+    font-size: 1.1em;
+}
+
+h5, h6 {
+    font-size: 1em;
+}
+
+    h5 a:link, h5 a:visited, h5 a:active {
+        padding: 0;
+        text-decoration: none;
+    }
+
 
 /* main layout
 ----------------------------------------------------------*/
@@ -109,7 +133,7 @@ h4 { padding-top: 10px; }
 }
 
 #body {
-    background-color: #fafafa;
+    background-color: #efeeef;
     clear: both;
     padding-bottom: 35px;
 }
@@ -122,8 +146,8 @@ h4 { padding-top: 10px; }
 footer {
     clear: both;
     color: #34495e;
-    font-size: 13px;
-    height: 30px;
+    font-size: .9em;
+    height: 100px;
     padding-top: 12px;
 }
 
@@ -483,8 +507,56 @@ fieldset ol {
 fieldset ol li { padding-bottom: 5px; }
 
 label { padding-top: 2px; }
+    font-size: 1.2em;
+    font-weight: 600;
 
 label.checkbox { display: inline; }
+
+input, textarea {
+    border: 1px solid #e2e2e2;
+    background: #fff;
+    color: #333;
+    font-size: 1.2em;
+    margin: 5px 0 6px 0;
+    padding: 5px;
+    width: 300px;
+}
+
+textarea {
+    font-family: inherit;
+    width: 500px;
+}
+
+    input:focus, textarea:focus {
+        border: 1px solid #7ac0da;
+    }
+
+    input[type="checkbox"] {
+        background: transparent;
+        border: inherit;
+        width: auto;
+    }
+
+    input[type="submit"],
+    input[type="button"],
+    button {
+        background-color: #d3dce0;
+        border: 1px solid #787878;
+        cursor: pointer;
+        font-size: 1.2em;
+        font-weight: 600;
+        padding: 7px;
+        margin-right: 8px;
+        width: auto;
+    }
+
+    td input[type="submit"],
+    td input[type="button"],
+    td button {
+        font-size: 1em;
+        padding: 4px;
+        margin-right: 4px;
+    }
 
 /* info and errors */
 
@@ -610,12 +682,8 @@ td.clickable { cursor: pointer; }
     width: 30%
 }
 
-.table .tbl-info {
-    font-style: italic;
     text-align: center;
     vertical-align: middle;
-}
-
 .table .tbl-content-4 { width: 35%; }
 
 .table .tbl-content-6 { width: 18%; }
@@ -623,121 +691,34 @@ td.clickable { cursor: pointer; }
 .table .tbl-top { border-width: 0; }
 
 .unbordered-table { width: 100%; }
-
 .unbordered-table td { border-width: 0; }
-
 .table .focal { font-size: 125%; }
-
 .unbordered-table .tbl-border { border-width: 1px; }
-
 .unbordered-table.no-margin { margin-bottom: 0; }
-
-table .impact {
-    font-size: 50px;
-    font-weight: normal;
     height: 50px;
-    text-align: center;
     width: 18% !important;
-}
-
 table .impact .score { padding-top: 20px; }
-
 table .tbl-impact-label { font-weight: bold; }
-
-table .impact-calc {
     background-color: #95A5A6;
-    color: white;
-    padding-left: 16px;
     width: 50%;
-}
-
-table .spacer {
-    padding: 3px;
     width: 0%;
-}
-
 table .impact-calc.label { font-weight: bold; }
-
-table .calc-impact-1 {
-    border: 2px solid #e74c3c;
     color: #e74c3c;
-}
-
-table .calc-sev-Major,
-table .calc-cons-certain {
-    background-color: #E74C3C;
-    border: 2px solid #E74C3C;
-}
-
-table .calc-impact-2 {
-    border: 2px solid #e67e22;
     color: #e67e22;
-}
-
-table .calc-cons-Probable {
-    background-color: #e67e22;
-    border: 2px solid #e67e22;
-}
-
-table .calc-impact-3 {
-    border: 2px solid #f39c12;
     color: #F39C12;
-}
-
-table .calc-sev-Moderate {
-    background-color: #F39C12;
-    border: 2px solid #f39c12;
-}
-
-table .calc-impact-4 {
-    border: 2px solid #f1c40f;
     color: #f1c40f;
-}
-
-table .calc-cons-Possible {
-    background-color: #f1c40f;
-    border: 2px solid #f1c40f;
-}
-
-table .calc-impact-5 {
-    border: 2px solid #2ecc71;
     color: #2ECC71;
-}
-
-table .calc-cons-Unlikely,
-table .calc-sev-Minor {
-    background-color: #2ECC71;
-    border: 2px solid #2ecc71;
-}
-
 .table .clickable.status { width: 15%; }
 
 .table .clickable.code { width: 15%; }
 
 .table .clickable.value { width: 70%; }
 
-.sxs-one {
-    display: inline-block;
-    width: 49%;
-}
-
 .sxs-one.keywords { position: absolute; }
-
 .sxs-one.impact { padding-right: 10px; }
-
-.sxs .divider {
-    border-left: 1px solid #dddddd;
     display: inline-block;
-    height: 181px;
     left: 2px;
-    position: relative;
-    top: 25px;
-}
-
 div.buttons { float: right; }
-
-div.message {
-    color: #ffffff;
     padding: 8px;
     text-align: center;
 }
