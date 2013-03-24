@@ -67,7 +67,8 @@
             AccessingLocked = 4,
             LockedToOtherUser = 5,
             SuccessfulEdit = 6,
-            NoRequestEditorRole = 7
+            NoRequestEditorRole = 7,
+            SuccessfulCreate = 8
         }
 
         public static readonly DropdownTable[] DROPDOWN_TABLES = new DropdownTable[6] {

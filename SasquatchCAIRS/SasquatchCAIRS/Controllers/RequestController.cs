@@ -115,8 +115,18 @@ namespace SasquatchCAIRS.Controllers
 
             // TODO: Audit log
 
-            // TODO: Redirect to View if user has Viewer role
-            return Redirect("/Home/Index");
+
+            if (Roles.IsUserInRole(Constants.Roles.VIEWER)) {
+                return RedirectToAction("Details", "Request",
+                    new {
+                        id = reqContent.requestID
+                    });
+            }
+
+            return RedirectToAction("Index", "Home",
+                new {
+                    status = Constants.URLStatus.SuccessfulCreate
+                });
         }
 
         //

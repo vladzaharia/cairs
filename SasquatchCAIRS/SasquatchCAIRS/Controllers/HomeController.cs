@@ -91,6 +91,10 @@ namespace SasquatchCAIRS.Controllers {
                 ViewBag.Status =
                     "You no longer have permissions to create or edit requests.";
                 ViewBag.StatusColor = "danger";
+            } else if (status == Constants.URLStatus.SuccessfulCreate) {
+                ViewBag.Status =
+                    "The request has been successfully created.";
+                ViewBag.StatusColor = "danger";
             }
 
             return View();

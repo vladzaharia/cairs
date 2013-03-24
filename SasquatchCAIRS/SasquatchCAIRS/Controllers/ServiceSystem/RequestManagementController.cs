@@ -111,66 +111,61 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// <param name="reqContent">RequestContent containing
         /// QuestionResponseContents, ReferenceContents and Keywords</param>
         public void create(RequestContent reqContent) {
-            //try {
-                using (TransactionScope trans = new TransactionScope()) {
-                    // Insert new Request entity
-                    Request req = createRequestEntity(reqContent);
-                    _db.Requests.InsertOnSubmit(req);
+            using (TransactionScope trans = new TransactionScope()) {
+                // Insert new Request entity
+                Request req = createRequestEntity(reqContent);
+                _db.Requests.InsertOnSubmit(req);
+                _db.SubmitChanges();
+
+                // For each QuestionResponse associated with the request
+                foreach (QuestionResponseContent qrContent
+                    in reqContent.questionResponseList) {
+
+                    // Set the new RequestID
+                    qrContent.requestID = req.RequestID;
+
+                    // Insert new QuestionResponse entity
+                    QuestionResponse qr =
+                        createQuestionResponseEntity(qrContent);
+                    _db.QuestionResponses.InsertOnSubmit(qr);
                     _db.SubmitChanges();
 
-                    // For each QuestionResponse associated with the request
-                    foreach (QuestionResponseContent qrContent
-                        in reqContent.questionResponseList) {
+                    // For each Keyword associated with the
+                    // QuestionResponse
+                    foreach (String kw in qrContent.keywords) {
 
-                        // Set the new RequestID
-                        qrContent.requestID = req.RequestID;
+                        int kwId = getKeywordIdAndActivate(kw);
 
-                        // Insert new QuestionResponse entity
-                        QuestionResponse qr =
-                            createQuestionResponseEntity(qrContent);
-                        _db.QuestionResponses.InsertOnSubmit(qr);
+                        KeywordQuestion kq = new KeywordQuestion {
+                            KeywordID = kwId,
+                            RequestID = req.RequestID,
+                            QuestionResponseID = qr.QuestionResponseID
+                        };
+
+                        _db.KeywordQuestions.InsertOnSubmit(kq);
                         _db.SubmitChanges();
-
-                        // For each Keyword associated with the
-                        // QuestionResponse
-                        foreach (String kw in qrContent.keywords) {
-
-                            int kwId = getKeywordIdAndActivate(kw);
-
-                            KeywordQuestion kq = new KeywordQuestion {
-                                KeywordID = kwId,
-                                RequestID = req.RequestID,
-                                QuestionResponseID = qr.QuestionResponseID
-                            };
-
-                            _db.KeywordQuestions.InsertOnSubmit(kq);
-                            _db.SubmitChanges();
-                        }
-
-                        // For each Reference associated with the
-                        // QuestionResponse
-                        foreach (ReferenceContent refContent
-                            in qrContent.referenceList) {
-
-                            // Set the new RequestID and
-                            // QuestionResponseID
-                            refContent.requestID = req.RequestID;
-                            refContent.questionResponseID =
-                                qr.QuestionResponseID;
-
-                            // Insert new Reference entity
-                            _db.References.InsertOnSubmit(
-                                createReferenceEntity(refContent));
-                            _db.SubmitChanges();
-                        }
                     }
 
-                    trans.Complete();
+                    // For each Reference associated with the
+                    // QuestionResponse
+                    foreach (ReferenceContent refContent
+                        in qrContent.referenceList) {
+
+                        // Set the new RequestID and
+                        // QuestionResponseID
+                        refContent.requestID = req.RequestID;
+                        refContent.questionResponseID =
+                            qr.QuestionResponseID;
+
+                        // Insert new Reference entity
+                        _db.References.InsertOnSubmit(
+                            createReferenceEntity(refContent));
+                        _db.SubmitChanges();
+                    }
                 }
-            //} catch (Exception ex) {
-            //    // TODO: Do something
-            //    throw ex;
-            //}
+
+                trans.Complete();
+            }
         }
 
         /// <summary>
@@ -570,15 +565,11 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// </summary>
         /// <param name="requestId">Request ID.</param>
         public void invalidate(long requestId) {
-            try {
-                Request req = (from reqs in _db.Requests
+            Request req = (from reqs in _db.Requests
                                where reqs.RequestID == requestId
                                select reqs).First();
-                req.RequestStatus = (byte) Constants.RequestStatus.Invalid;
-                _db.SubmitChanges();
-            } catch (Exception) {
-                // TODO: Do something
-            }
+            req.RequestStatus = (byte) Constants.RequestStatus.Invalid;
+            _db.SubmitChanges();
         }
 
         /// <summary>
