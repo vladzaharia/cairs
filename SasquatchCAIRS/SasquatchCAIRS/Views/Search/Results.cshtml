@@ -1,0 +1,99 @@
+﻿@using SasquatchCAIRS.Models
+@model IEnumerable<SasquatchCAIRS.Request>
+
+@{
+    ViewBag.Title = Constants.UIString.TitleText.RESULTS;
+}
+
+<h2>@Constants.UIString.TitleText.RESULTS</h2>
+
+<div class="btn-group float-right">
+    @LinkExtensions.ActionLink(Html, Constants.UIString.ButtonText.MODIFY_SEARCH, "Modify", new {
+    controller = "Search"
+}, new {
+    @class = "btn btn-info"
+})
+    @LinkExtensions.ActionLink(Html, Constants.UIString.ButtonText.NEW_SEARCH, "Advanced", new {
+    controller = "Search"
+}, new {
+    @class = "btn btn-info"
+})
+</div>
+
+For keywords: @ViewBag.keywords
+
+<div>
+</div>
+@if (@ViewBag.ResultSetSize < 1) {
+    <div class="message palette-danger-dark">@Constants.UIString.Response.NO_RESULTS</div>
+} else {
+
+    <fieldset class="results">
+        <legend>@Constants.UIString.TitleText.RESULTS</legend>
+        <div>
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>
+                        @Html.DisplayName(Constants.UIString.FieldLabel.REQUEST_ID)
+                    </th>
+                    <th>
+                        @Html.DisplayName(Constants.UIString.FieldLabel.CALLER_NAME_LABEL)
+                    </th>
+                    <th>
+                        @Html.DisplayName(Constants.UIString.FieldLabel.PATIENT_NAME_LABEL)
+                    </th>
+                    <th>
+                        @Html.DisplayName(Constants.UIString.FieldLabel.STATUS)
+                    </th>
+                    <th>
+                        @Html.DisplayName(Constants.UIString.FieldLabel.KEYWORDS)
+                    </th>
+                    <th>
+                        @Html.DisplayName(Constants.UIString.FieldLabel.START_TIME)
+                    </th>
+                    <th>
+                        @Html.DisplayName(Constants.UIString.FieldLabel.COMPLETED_TIME)
+                    </th>
+                </tr>
+
+
+                @foreach (var request in Model) {
+                    <tr>
+                        <td class="clickable" data-id="@request.RequestID">
+                            @Html.DisplayFor(modelItem => request.RequestID)
+                        </td>
+                        <td class="clickable" data-id="@request.RequestID"> 
+                            @Html.DisplayFor(modelItem => request.RequestorFName) 
+                            @Html.DisplayFor(modelItem => request.RequestorLName)
+                        </td>
+                        <td  class="clickable" data-id="@request.RequestID">
+                            @Html.DisplayFor(modelItem => request.PatientFName) 
+                            @Html.DisplayFor(modelItem => request.PatientLName)
+                        </td>
+                        <td class="clickable" data-id="@request.RequestID">
+                            @Enum.GetName(typeof(Constants.RequestStatus), @request.RequestStatus)
+                        </td>
+                        <td class="clickable" data-id="@request.RequestID">
+                            @foreach(string keyword in ViewBag.keywordDict[@request.RequestID])
+                            { <span>@keyword </span> }
+                        </td>
+                        <td class="clickable" data-id="@request.RequestID">
+                            @Html.DisplayFor(modelItem => request.TimeOpened)
+                        </td>
+                        <td class="clickable" data-id="@request.RequestID">
+                            @Html.DisplayFor(modelItem => request.TimeClosed)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </fieldset>
+}
+
+<script type="text/javascript">
+    $(function() {
+        $(".clickable").click(function() {
+            document.location.href = "/Request/Details/" + $(this).attr("data-id");
+        });
+    })
+</script>

@@ -41,6 +41,7 @@ namespace SasquatchCAIRS.Controllers {
         public ActionResult UserEdit(int id) {
             UserProfile userProfile =
                 _db.UserProfiles.FirstOrDefault(up => up.UserId == id);
+            var dc = new DropdownController();
 
             ViewBag.Groups =
                 _dc.getEntries(

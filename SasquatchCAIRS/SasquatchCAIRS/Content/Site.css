@@ -23,6 +23,9 @@ a {
 a:link, a:visited,
 a:active, a:hover { color: #333; }
 
+    a:hover {
+        background-color: #c7d1d6;
+    }
 a.btn {
     color: white;
     text-decoration: none;
@@ -155,6 +158,9 @@ footer {
     font-size: .85em;
     margin: 0 0 10px;
     text-align: right;
+    position: relative;
+    top: -5px;
+    margin: 0px;
 }
 
 #login a { color: #FFFFFF; }
@@ -172,6 +178,76 @@ footer {
     display: inline;
     list-style: none;
 }
+
+
+/* search
+----------------------------------------------------------*/
+div.scroll
+{
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #CCCCCC;
+    width:300px;
+    height:150px;
+    overflow-y:scroll;
+    padding: 4px;
+}
+
+label.checkboxlist {
+    font-size: 14px;    
+}
+
+input.internalcheckbox {
+    position: relative;
+    top: -3px;
+}
+
+
+fieldset.results {
+    padding-top: 10px;
+}
+
+
+.adv-search-top {
+}
+
+.adv-search-bottom {
+}
+
+#search {
+    display: block;
+    font-size: .85em;
+    margin: 0 0 10px;
+    text-align: right;
+    color: #FFFFFF;
+    height: 35px;
+}
+
+    #search a {
+        color: #FFFFFF;
+        margin-left: 10px;
+        margin-right: 3px;
+        padding: 2px 3px;
+        text-decoration: none;
+    }
+
+    #search a.username {
+        background: none;
+        margin: 0;
+        padding: 0;
+        text-decoration: underline;
+    }
+
+    #search ul {
+        margin: 0;
+    }
+
+    #search li {
+        display: inline;
+        list-style: none;
+    }
 
 
 /* menu
