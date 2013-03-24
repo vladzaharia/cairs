@@ -38,7 +38,7 @@ namespace SasquatchCAIRS.Controllers {
             }
 
             requests = requests.OrderBy(r => r.RequestStatus)
-                .ThenByDescending(r => r.TimeOpened).Take(20);
+                .ThenByDescending(r => r.TimeOpened).Take(10);
 
             // Set the requests to null if there isn't anything on it,
             // as the view doesn't seem to have Any() available.
