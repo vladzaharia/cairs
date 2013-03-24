@@ -1,0 +1,203 @@
+﻿@using SasquatchCAIRS.Models
+@using SasquatchCAIRS.Models.ServiceSystem
+@model SasquatchCAIRS.Models.SearchSystem.SearchCriteria
+
+@{
+    ViewBag.Title = Constants.UIString.TitleText.ADVANCED_SEARCH;
+}
+
+<h2>@Constants.UIString.TitleText.ADVANCED_SEARCH</h2>
+
+@if (@ViewBag.emptyForm != null) {
+    <div class="message palette-danger-dark">@Constants.UIString.Response.EMPTY_QUERY</div>
+}
+
+@using (Html.BeginForm("Results", "Search", FormMethod.Post,
+    new {
+        @class = "form advanced-search-form"
+    })) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>@Constants.UIString.TitleText.ADVANCED_SEARCH</legend>
+        <div>
+            <br>
+            @Html.Label(Constants.UIString.FieldLabel.KEYWORDS)
+        </div>
+        <div>
+            <input class="input-medium" name="keywords" id="keywords" type="text"/>
+        </div>
+
+        <div>
+            <br />
+            @Html.Label(Constants.UIString.FieldLabel.START_TIME)
+        </div>
+
+        <div>
+            @if (Model.startTime != null && !Model.startTime.ToString(Constants.DATE_FORMAT)
+                       .Equals(Constants.EMPTY_DATE)) {
+                <input class="input-medium" name="startTime" id="startTime" type="date" 
+                       value="@Model.startTime.ToString(Constants.DATE_FORMAT)" />    
+            } else {
+                <input class="input-medium" name="startTime" id="startTime" type="date" />
+            }
+        </div>
+
+        <div>
+            <br />
+            @Html.Label(Constants.UIString.FieldLabel.COMPLETED_TIME)
+        </div>
+        <div>
+            @if (!Model.completionTime.ToString(Constants.DATE_FORMAT)
+                       .Equals(Constants.EMPTY_DATE)) {
+                <input class="input-medium" name="completionTime" id="completionTime" type="date" 
+                       value="@Model.completionTime.ToString(Constants.DATE_FORMAT)" />    
+            } else {
+                <input class="input-medium" name="completionTime" id="completionTime" type="date" />
+            }
+        </div>
+
+        @if (@Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)|| Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
+        <div>
+            <br/>
+            @Html.Label(Constants.UIString.FieldLabel.STATUS)
+        </div>
+
+        <div>
+            @foreach (var status in Enum.GetValues(
+                typeof (Constants.RequestStatus))) {
+                if (Constants.RequestStatus.Invalid.CompareTo(status) == 0 && !Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) 
+                {}
+                else {
+                <label class="checkbox inline">
+                    @if (!String.IsNullOrEmpty(Model.requestStatus) &&
+                            Model.requestStatus.Contains(@status.ToString())) {
+                        <input type="checkbox" name="status" value="@status" checked/>
+                    } else {
+                        <input type="checkbox" name="status" value="@status" />
+                    }
+                    @status
+                </label>
+                }
+            }
+        </div>
+        }
+
+        <div>
+            <br />
+            @Html.Label(Constants.UIString.FieldLabel.CALLER_NAME_LABEL)
+        </div>
+
+        <div>
+            <input type="text" class="input-medium" name="requestorFirst" 
+                   placeholder="@Constants.UIString.FieldLabel.CALLER_FNAME" value="@Model.requestorFirstName">
+            <input type="text" class="input-medium" name="requestorLast" 
+                   placeholder="@Constants.UIString.FieldLabel.CALLER_LNAME" value="@Model.requestorLastName">
+        </div>
+
+        <div>
+            <br />
+            @Html.Label(Constants.UIString.FieldLabel.PATIENT_NAME_LABEL)
+        </div>
+
+        <div>
+            <input type="text" class="input-medium" name="patientFirst"
+                   placeholder="@Constants.UIString.FieldLabel.PATIENT_FNAME" value="@Model.patientFirstName">
+            <input type="text" class="input-medium" name="patientLast" 
+                   placeholder="@Constants.UIString.FieldLabel.PATIENT_FNAME" value="@Model.patientLastName">
+        </div>
+
+        <div>
+            <br />
+            @Html.Label(Constants.UIString.FieldLabel.TUMOUR_GROUP)
+        </div>
+
+        <div class="scroll">
+            @foreach (DropdownEntry item in @ViewBag.TumorGroups) {
+                <label class="checkboxlist">
+                    @if (!String.IsNullOrEmpty(Model.tumorGroup) &&
+                         Model.tumorGroup.Contains(@item.id + "")) {
+                        <label class="checkbox inline">
+                            <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" checked/>
+                        </label>
+                    } else {
+                        <label class="checkbox inline">
+                            <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" />
+                        </label>
+                    }
+                    @item.value
+                </label>
+            }
+        </div>
+
+        <div>
+            <br />
+            @Html.Label(Constants.UIString.FieldLabel.QUESTION_TYPE)
+        </div>
+
+        <div class="scroll">
+            @foreach (DropdownEntry item in @ViewBag.QuestionType) {
+                <label class="checkboxlist">
+                    @if (!String.IsNullOrEmpty(Model.questionType) && 
+                         Model.questionType.Contains(@item.id+"")) {
+                        <label class="checkbox inline">
+                            <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id" checked/>
+                        </label>
+                    } else {
+                        <label class="checkbox inline">
+                            <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id"/>
+                        </label>
+                    }
+                    @item.value
+                </label>
+            }
+        </div>
+
+        <div>
+            <br/>
+            @Html.Label(Constants.UIString.FieldLabel.SEVERITY)
+        </div>
+
+        <div>
+        @foreach (var severity in Enum.GetValues(typeof(Constants.Severity))) {
+                <label class="checkbox inline">
+                    @if (!String.IsNullOrEmpty(Model.consequence) && 
+                         Model.consequence.Contains(@severity.ToString())) {
+                        <input type="checkbox" name="consequence" value="@severity" checked/>
+                    } else
+                    {
+                        <input type="checkbox" name="consequence" value="@severity" />  
+                    }
+                    @severity
+                </label>
+            }
+        </div>
+
+        <div>
+            <br/>
+            @Html.Label(Constants.UIString.FieldLabel.CONSEQUENCE)
+        </div>
+
+        <div>
+            @foreach (var consequence in Enum.GetValues(
+                typeof(Constants.Consequence))) {
+                <label class="checkbox inline">
+                    @if (!String.IsNullOrEmpty(Model.consequence) && 
+                         Model.consequence.Contains(@consequence.ToString())) {
+                        <input type="checkbox" name="consequence" value="@consequence" checked/>
+                    } else
+                    {
+                        <input type="checkbox" name="consequence" value="@consequence" />  
+                    }
+                    @consequence
+                </label>
+            }
+        </div>
+
+        <div>
+            <br />
+            <input class="btn " type="submit" id="search-submit-button" value="@Constants.UIString.ButtonText.SEARCH" />
+        </div>
+
+    </fieldset>
+}

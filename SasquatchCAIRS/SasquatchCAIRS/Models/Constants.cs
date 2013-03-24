@@ -80,6 +80,10 @@
             DropdownTable.UserGroup
         };
         
+        // Date Format & Default
+        public const string EMPTY_DATE = "0001-01-01";
+        public const string DATE_FORMAT = "yyyy-MM-dd";
+
         public static class Roles {
             public const string VIEWER = "Viewer";
             public const string REQUEST_EDITOR = "RequestEditor";
@@ -88,6 +92,15 @@
         }
 
         public static class UIString {
+            // String Responses
+            public static class Response {
+                public const string NO_RESULTS = "No results were found.";
+
+                public const string EMPTY_QUERY =
+                    "You have not specified any search criteria.";
+            }
+            
+
             // Labels used for fields
             public static class FieldLabel {
                 // Request Information
@@ -117,6 +130,10 @@
                 public const string PATIENT_GENDER = "Gender";
                 public const string PATIENT_AGE = "Age";
 
+                // Search Information
+                public const string PATIENT_NAME_LABEL = "Patient Name";
+                public const string CALLER_NAME_LABEL = "Caller Name";
+
                 // Question Information
                 public const string QUESTION = "Question";
                 public const string RESPONSE = "Response";
@@ -133,6 +150,7 @@
 
                 // General
                 public const string FULL_NAME = "Full Name";
+                public const string QUICK_SEARCH = "Quick Search";
 
                 // User
                 public const string USERNAME = "Username";
@@ -159,6 +177,9 @@
                 public const string ADD_QUESTION = "Add Question";
                 public const string DELETE_QUESTION = "Delete Question";
                 public const string ADD_REFERENCE = "Add Reference";
+                public const string MODIFY_SEARCH = "Modify Search";
+                public const string NEW_SEARCH = "New Search";
+                public const string SEARCH = "Search!";
                 public const string EDIT_USER = "Edit User";
                 public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
@@ -177,6 +198,8 @@
                 public const string DROPDOWN_LISTS = "Dropdown Lists";
                 public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
+                public const string ADVANCED_SEARCH = "Advanced Search";
+                public const string RESULTS = "Results";
                 public const string AUDIT_LOG = "Audit Log";
                 public const string CREATE_REQUEST = "Create Request";
                 public const string REPORTS = "Reports";

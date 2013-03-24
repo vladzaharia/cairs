@@ -23,8 +23,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -32,12 +32,13 @@
     <DocumentationFile>bin\SasquatchCAIRS.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime, Version=3.3.1.7705, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -170,12 +171,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
     <Compile Include="Controllers\Security\AccountController.cs" />
     <Compile Include="Controllers\Security\RequestLockController.cs" />
     <Compile Include="Controllers\Security\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
+    <Compile Include="Models\SearchSystem\SearchCriteria.cs" />
+    <Compile Include="Models\ServiceSystem\Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -669,6 +672,7 @@
     <Content Include="Content\fonts\fontawesome-webfont.eot" />
     <Content Include="Content\fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\Michelle.pubxml" />
+    <None Include="Properties\PublishProfiles\Sasquatch.pubxml" />
     <Content Include="Scripts\flat-ui\application.js" />
     <Content Include="Scripts\flat-ui\bootstrap-tooltip.js" />
     <Content Include="Scripts\flat-ui\custom_checkbox_and_radio.js" />
@@ -732,9 +736,12 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Account\_ViewUserInfo.cshtml" />
+    <Content Include="Views\Shared\_SearchPartial.cshtml" />
     <Content Include="Views\Account\Auth.cshtml" />
     <Content Include="Views\Request\Create.cshtml" />
     <Content Include="Views\Request\Partial\NewQuestionResponse.cshtml" />
+    <Content Include="Views\Search\Advanced.cshtml" />
+    <Content Include="Views\Search\Results.cshtml" />
     <Content Include="Views\Request\Partial\NewReference.cshtml" />
     <Content Include="Views\Request\Details.cshtml" />
     <Content Include="Views\Admin\Users.cshtml" />
@@ -742,7 +749,6 @@
     <Content Include="Views\Admin\_AdminNavPartial.cshtml" />
     <Content Include="Views\Request\Edit.cshtml" />
     <Content Include="Views\Admin\Dropdowns.cshtml" />
-    <Content Include="Views\Shared\_SearchPartial.cshtml" />
     <Content Include="Views\Shared\_NavPartial.cshtml" />
     <Content Include="Views\Admin\DropdownEdit.cshtml" />
     <Content Include="Views\Admin\DropdownCreate.cshtml" />
@@ -750,9 +756,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
@@ -776,11 +779,12 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>3709</DevelopmentServerPort>
+          <DevelopmentServerPort>15744</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:52530/</IISUrl>
+          <IISUrl>
+          </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
