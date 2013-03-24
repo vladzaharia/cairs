@@ -207,23 +207,24 @@
     
 <script type="text/javascript">
     // TODO validate that there is at LEAST one value filled in
-    $(document).ready(function() {
-        $('.advanced-search-div').submit(function () {
-            var i,
-                validateFields = ['keywords'], // fields to validate
-                invalidFields = []; // store of empty fields
-            for (i in validateFields) {
-                // check if field is empty
-                if ($('#' + validateFields[i]).val().replace(/(^\s+|\s+$)/g, '') === '') {
-                    invalidFields.push(validateFields[i]);
-                }
-            }
-            if (invalidFields.length) {
-                alert('The following fields were empty: ' + invalidFields.join(', '));
-                return false; // cancel the form submit
-            }
-            return true;
-        });
-    });
+
+    $('.advanced-search-div').submit(function() {
+
+        var validateFields = ['keywords']; // fields to validate
+        //invalidFields = []; // store of empty fields
+        for (i = 0; i < validateFields.length; i++) {
+            
+            var input = $('#' +validateFields[i]); 
+        if (input.val() == '') {
+            alert("empty fields");
+            return false;
+        }
+            
+    }
+    return true;
+    })
+            
+        
+  
           
 </script>
