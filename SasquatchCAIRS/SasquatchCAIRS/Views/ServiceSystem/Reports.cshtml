@@ -37,6 +37,9 @@
             <div class="alert alert-error" id="alert">
                 <strong>Oh snap!</strong>
             </div>
+            <div class="alert alert-block" id="alertError">
+                <strong>Oh snap!</strong>
+            </div>
 
             <div>
                 <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="MonthPerYear">
@@ -140,6 +143,7 @@
     <style>
         #reportOptionAlert{display: none;}
         #alert { display: none;}
+        #alertError { display: none;}
         #alert2 { display: none;}
         #alert3 { display: none;}
         #dataTypeAlert { display: none;}
@@ -157,10 +161,8 @@
     
     var frompicker = $("#fromdatepicker").datepicker({format:"mm/yyyy", viewMode:"months", minViewMode:"months"}).on("changeDate", function (ev) {
         if (ev.date.valueOf() > endDate.valueOf()) {
-            //$('#alert').show().find('strong').text('The start date can not be greater then the end date');
             initCheck = true;
         } else {
-            //$('#alert').hide();
             startDate = new Date(ev.date);
             $('#startDate').text($('#fromdatepicker').data('date'));
             initCheck = false;
@@ -170,13 +172,17 @@
 
     var toPicker = $("#todatepicker").datepicker({ format: "mm/yyyy", viewMode: "months", minViewMode: "months" }).on("changeDate", function(ev) {
         if (ev.date.valueOf() < startDate.valueOf()) {
-            //$('#alert').show().find('strong').text('The end date can not be less then the start date');
             initCheck = true;
         } else {
-            //$('#alert').hide();
             endDate = new Date(ev.date);
             $('#endDate').text($('#todatepicker').data('date'));
             initCheck = false;
+        }
+
+        if (ev.date.valueOf() > new Date()) {
+            $('#alertError').show().find('strong').text('Warning! End date selected is in the future. Might not have valid data values.');
+        } else {
+            $('#alertError').hide();
         }
         $("#todatepicker").datepicker("hide");
     });
@@ -191,35 +197,47 @@
         for (var i = 0, j = reportOPtions.length; i < j; i++) {
             switch (reportOPtions[i].value) {
                 case "Monthly":
-                    if (initCheck && reportOPtions[i].checked) {
+                    if (reportOPtions[i].checked) {
                         reportOptionNotChecked = false;
-                        validationCheck = true;
-                        $('#alert').show().find('strong').text('The end month can not be before the start month.');
-                    } else {
-                        $('#alert').hide();
-                    }
+                        if (initCheck) {
+                            validationCheck = true;
+                            $('#alert').show().find('strong').text('The end month can not be before the start month.');
+                        } else {
+                            $('#alert').hide();
+                        }
+                    } else { $('#alert3').hide(); }
                     break;
                 case "MonthPerYear":
                     $start = $("#MPYStartYear"),
                     $end = $("#MPYEndYear");
-                    if ($start.val() > $end.val() && reportOPtions[i].checked) {
+                    if (reportOPtions[i].checked) {
                         reportOptionNotChecked = false;
-                        validationCheck = true;
-                        $('#alert2').show().find('strong').text('The end year can not be before the start year.');
+                        if ($start.val() > $end.val()) {
+                            validationCheck = true;
+                            $('#alert2').show().find('strong').text('The end year can not be before the start year.');
+                        } else {
+                            $('#alert2').hide();
+                        }
                     } else {
                         $('#alert2').hide();
                     }
+                    
                     break;
                 case "FiscalYear":
                     $start = $("#FYStartYear"),
                     $end = $("#FYEndYear");
-                    if ($start.val() > $end.val() && reportOPtions[i].checked) {
+                    if (reportOPtions[i].checked) {
                         reportOptionNotChecked = false;
-                        validationCheck = true;
-                        $('#alert3').show().find('strong').text('The end range can not begin before the start range.');
+                        if ($start.val() > $end.val()) {
+                            validationCheck = true;
+                            $('#alert3').show().find('strong').text('The end range can not begin before the start range.');
+                        } else {
+                            $('#alert3').hide();
+                        }
                     } else {
                         $('#alert3').hide();
                     }
+                    
                     break;
                 default:
                     break;
