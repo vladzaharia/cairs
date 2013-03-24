@@ -78,5 +78,11 @@ namespace SasquatchCAIRS.Controllers {
 
             return View();
         }
+
+        //
+        // GET: /Index/Error
+        public ActionResult Error() {
+            return View("Error");
+        }
     }
 }
