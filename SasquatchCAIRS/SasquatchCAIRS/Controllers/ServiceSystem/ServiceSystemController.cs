@@ -21,12 +21,6 @@ namespace SasquatchCAIRS.Controllers
             return View();
         }
 
-        public ActionResult InputCheck(FormCollection templateForm) {
-
-
-            return RedirectToAction("GeneratingReport", new {form = templateForm});
-        }
-
         public ViewResult GeneratingReport(FormCollection form) {
             //string path = Server.MapPath("~/Report.xlsx").ToString();
             string templatePath = Path.Combine(HttpRuntime.AppDomainAppPath, "ReportTemplate.xlsx");
