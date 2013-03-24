@@ -21,8 +21,8 @@ namespace SasquatchCAIRS {
                         "~/Scripts/modernizr-*"));
 
             // Bootstrap
-            bundles.Add(new StyleBundle("~/Content/bootstrap").Include("~/Content/bootstrap.css"));
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include("~/Scripts/bootstrap.js"));
+            bundles.Add(new StyleBundle("~/Content/bootstrap").Include("~/Content/bootstrap*"));
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include("~/Scripts/bootstrap*"));
 
             // Flat-UI
             bundles.Add(new StyleBundle("~/Content/flat-ui").Include("~/Content/flat-ui.css"));

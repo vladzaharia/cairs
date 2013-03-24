@@ -54,6 +54,14 @@ namespace SasquatchCAIRS {
                 });
 
             routes.MapRoute(
+                name: "AuditGenerate",
+                url: "Admin/Audit/Generate",
+                defaults: new {
+                    controller = "Admin",
+                    action = "GenerateAudit"
+                });
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new {

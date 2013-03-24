@@ -113,7 +113,19 @@ namespace SasquatchCAIRS.Controllers
 
             rmc.create(reqContent);
 
-            // TODO: Audit log
+            UserController uc = new UserController();
+            UserProfile up = uc.getUserProfile(User.Identity.Name);
+            AuditLogManagementController almc = new AuditLogManagementController();
+            almc.addEntry(reqContent.requestID, up.UserId,
+                Constants.AuditType.RequestCreation,
+                reqContent.timeOpened);
+
+            if (reqContent.requestStatus == Constants.RequestStatus.Completed &&
+                reqContent.timeClosed != null) {
+                almc.addEntry(reqContent.requestID, up.UserId,
+                    Constants.AuditType.RequestCompletion,
+                    (DateTime) reqContent.timeClosed);
+            }
 
             // TODO: Redirect to View if user has Viewer role
             return Redirect("/Home/Index");
@@ -152,8 +164,6 @@ namespace SasquatchCAIRS.Controllers
 
             ViewBag.GenderOptions = new SelectList(Constants.genderOptions);
 
-            // TODO: Audit log
-
             return View(reqContent);
         }
 
@@ -166,6 +176,7 @@ namespace SasquatchCAIRS.Controllers
             RequestManagementController rmc = new RequestManagementController();
             RequestLockController rlc = new RequestLockController();
             UserController uc = new UserController();
+            AuditLogManagementController almc = new AuditLogManagementController();
 
             UserProfile up = uc.getUserProfile(User.Identity.Name);
 
@@ -178,6 +189,10 @@ namespace SasquatchCAIRS.Controllers
 
             if (Request.Form["delete"] != null) {
                 rmc.invalidate(reqContent.requestID);
+
+                almc.addEntry(reqContent.requestID, up.UserId,
+                    Constants.AuditType.RequestDeletion,
+                    reqContent.timeOpened);
 
                 return RedirectToAction("Index", "Home", new {
                     status = Constants.URLStatus.Deleted
@@ -252,7 +267,16 @@ namespace SasquatchCAIRS.Controllers
             rmc.edit(reqContent);
             rlc.removeLock(reqContent.requestID);
 
-            // TODO: Audit log
+            almc.addEntry(reqContent.requestID, up.UserId,
+                Constants.AuditType.RequestModification,
+                reqContent.timeOpened);
+
+            if (reqContent.requestStatus == Constants.RequestStatus.Completed &&
+                reqContent.timeClosed != null) {
+                almc.addEntry(reqContent.requestID, up.UserId,
+                    Constants.AuditType.RequestCompletion,
+                    (DateTime) reqContent.timeClosed);
+            }
 
             if (Roles.IsUserInRole(Constants.Roles.VIEWER)) {
                 return RedirectToAction("Details", "Request",
@@ -402,6 +426,10 @@ namespace SasquatchCAIRS.Controllers
 
             ViewBag.TimeSpent = timeSpent;
             ViewBag.DataContext = new CAIRSDataContext();
+
+            // add AuditLog entry for viewing
+            AuditLogManagementController almc = new AuditLogManagementController();
+            almc.addEntry(id, upc.getUserProfile(User.Identity.Name).UserId, Constants.AuditType.RequestView);
 
             return View(request);
         }

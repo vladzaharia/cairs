@@ -78,6 +78,21 @@
             DropdownTable.TumourGroup, 
             DropdownTable.UserGroup
         };
+
+        public static class DataTypeStrings {
+            public static string DATA_TYPE = "Data Type";
+            public static string AVG_TIME = "Avg Time Per Request/Question";
+            public static string AVG_TIME_TO_COMPLETE = "Avg Time To Complete";
+            public static string TOTAL_NUM = "Total Number";
+            public static string TOTAL_TIME_SPENT = "Total Time Spent";
+        }
+
+        public static class ReportFormStrings {
+            public static string REPORT_OPTION = "reportOption";
+            public static string DATATYPE = "dataType";
+            public static string STRATIFY_BY = "stratifyBy";
+
+        }
         
         public static class Roles {
             public const string VIEWER = "Viewer";
@@ -139,11 +154,22 @@
                 public const string GROUPS = "Groups";
                 public const string USER_EMAIL = "Email Address";
 
+                // Report Information
+                public const string USER_CRITERIA = "Username Criteria";
+                public const string REQUEST_CRITERIA = "Request ID Criteria";
+                public const string SEARCH_CRITERIA = "Select Search Criteria";
+                public const string START_DATE = "Start Date";
+                public const string CRITERIA_TYPE = "audit criteria type";
+                public const string AUDIT_CRITERIA = "Select Audit Criteria";
+
                 // Dropdowns
                 public const string DROPDOWN_CODE = "Code";
                 public const string DROPDOWN_VALUE = "Value";
                 public const string DROPDOWN_KEYWORD = "Keyword";
                 public const string DROPDOWN_STATUS = "Status";
+                public const string END_DATE = "End Date";
+
+
             }
 
             // Text used in Buttons
@@ -161,6 +187,9 @@
                 public const string EDIT_USER = "Edit User";
                 public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
+                public const string USERS = "Users";
+                public const string LOOKUP = "Lookup Fields";
+                public const string GEN_AUDIT = "Generate Audit Report";
                 public const string CREATE = "Create";
             }
 
@@ -176,7 +205,7 @@
                 public const string DROPDOWN_LISTS = "Dropdown Lists";
                 public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
-                public const string AUDIT_LOG = "Audit Log";
+                public const string AUDIT_LOG = "Generate Audit Report";
                 public const string CREATE_REQUEST = "Create Request";
                 public const string REPORTS = "Reports";
                 public const string CREATE = "Create";
@@ -195,7 +224,48 @@
                     "Are you sure you would like to delete this question?";
                 public const string NO_CONTACT_WARNING =
                     "Are you sure you would like to mark this request as complete without requestor contact information?";
-            }
+            }            
+        }
+
+        // For Report Generation
+        public enum Month {
+            January = 1,
+            Feburary = 2,
+            March = 3,
+            April = 4,
+            May = 5,
+            June = 6,
+            July = 7,
+            August = 8,
+            September = 9,
+            October = 10,
+            November = 11,
+            December = 12
+        }
+
+        public enum DataType {
+            AvgTimePerRequest = 0,
+            AvgTimeToComplete = 1,
+            TotalNumOfRequests = 2,
+            TotalTimeSpent = 3
+        }
+
+        public enum StratifyOption {
+            None = 0,
+            Region = 1,
+            CallerType = 2,
+            TumorGroup = 3
+        }
+
+
+        public enum CellDataType {
+            Number = 0,
+            Text = 1
+        }
+
+        public enum ReportType {
+            Report = 0,
+            AuditLog = 1
         }
 
         /// <summary>
@@ -336,6 +406,21 @@
                 default:
                     return "";
             }
+        }
+
+        public enum AuditType
+        {
+            RequestCreation = 0,
+            RequestCompletion = 1,
+            RequestDeletion = 2,
+            RequestModification = 3,
+            RequestView = 4
+
+        }
+
+        public enum AuditCriteriaType {
+            user = 0,
+            request = 1
         }
     }
 }
