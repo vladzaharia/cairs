@@ -16,6 +16,9 @@
         <legend>Generate Report</legend>
 
         <div>
+            <div class="alert alert-error" id="reportOptionAlert">
+                <strong>Oh snap!</strong>
+            </div>
             <div>
                 <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="Monthly">
                 Month Range
@@ -38,19 +41,19 @@
             <div>
                 <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="MonthPerYear">
                 Month by Year<br>
-                             <select name="MPYMonth">
+                             <select name="MPYMonth" id="MPYMonth">
                                  @foreach (var month in Enum.GetNames(typeof(Constants.Month))) {
                                      <option value="@month">@month</option>
                                  }
                              </select>
                              from 
-                             <select name="MPYStartYear">
+                             <select name="MPYStartYear" id="MPYStartYear">
                                  @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
                                      <option value="@i">@i</option>
                                  }
                              </select>
                              to                                                                  
-                             <select name="MPYEndYear">
+                             <select name="MPYEndYear" id="MPYEndYear">
                                  @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
                                      <option value="@i">@i</option>
                                  }
@@ -65,13 +68,13 @@
                 <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="FiscalYear">
                 Reporting Year Range<br>
                                     from 
-                                    <select name="FYStartYear">
+                                    <select name="FYStartYear" id="FYStartYear">
                                         @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
                                             <option value="@i">@i - @(i+1)</option>
                                         }
                                     </select>
                                     to                
-                                    <select name="FYEndYear">
+                                    <select name="FYEndYear" id="FYEndYear">
                                         @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
                                             <option value="@i">@i - @(i+1)</option>
                                         }
@@ -87,7 +90,9 @@
             <br />
             @Html.Label("Include:")
         </div>
-
+        <div class="alert alert-error" id="dataTypeAlert">
+            <strong>Oh snap!</strong>
+        </div>
         <div>
             <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.AvgTimePerRequest">
             Average time spent per request (per question for "Tumour Group" stratification)<br>
@@ -101,15 +106,15 @@
             Total time spent per month/year
             <br>
         </div>
-        <div class="alert alert-error" id="alert4">
-            <strong>Oh snap!</strong>
-        </div>
+        
 
         <div>
             <br />
             @Html.Label("Stratify by:")
         </div>
-
+        <div class="alert alert-error" id="stratifyAlert">
+            <strong>Oh snap!</strong>
+        </div>
         <div>
             <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.None">
             None <br>
@@ -123,23 +128,22 @@
             Tumor Group
             <br>  
         </div>
-        <div class="alert alert-error" id="alert5">
-            <strong>Oh snap!</strong>
-        </div>
+        
 
         <p>
             <br />
-            <input class="btn" type="submit" value="Generate Report" />
+            <input class="btn" id="submitBtn" type="submit" value="Generate Report" />
         </p>
     </fieldset>
     //}
     
     <style>
+        #reportOptionAlert{display: none;}
         #alert { display: none;}
         #alert2 { display: none;}
         #alert3 { display: none;}
-        #alert4 { display: none;}
-        #alert5 { display: none;}
+        #dataTypeAlert { display: none;}
+        #stratifyAlert { display: none;}
     </style>
     
 }
@@ -147,29 +151,120 @@
 
 <script type="text/javascript">
 
+    var initCheck = false;
     var startDate = new Date();
     var endDate = new Date();
     
     var frompicker = $("#fromdatepicker").datepicker({format:"mm/yyyy", viewMode:"months", minViewMode:"months"}).on("changeDate", function (ev) {
         if (ev.date.valueOf() > endDate.valueOf()) {
-            $('#alert').show().find('strong').text('The start date can not be greater then the end date');
+            //$('#alert').show().find('strong').text('The start date can not be greater then the end date');
+            initCheck = true;
         } else {
-            $('#alert').hide();
+            //$('#alert').hide();
             startDate = new Date(ev.date);
             $('#startDate').text($('#fromdatepicker').data('date'));
+            initCheck = false;
         }
         $("#fromdatepicker").datepicker("hide");
     });
-    
-    var toPicker = $("#todatepicker").datepicker({ format: "mm/yyyy", viewMode: "months", minViewMode: "months" }).on("changeDate", function (ev) {
+
+    var toPicker = $("#todatepicker").datepicker({ format: "mm/yyyy", viewMode: "months", minViewMode: "months" }).on("changeDate", function(ev) {
         if (ev.date.valueOf() < startDate.valueOf()) {
-            $('#alert').show().find('strong').text('The end date can not be less then the start date');
+            //$('#alert').show().find('strong').text('The end date can not be less then the start date');
+            initCheck = true;
         } else {
-            $('#alert').hide();
+            //$('#alert').hide();
             endDate = new Date(ev.date);
             $('#endDate').text($('#todatepicker').data('date'));
+            initCheck = false;
         }
         $("#todatepicker").datepicker("hide");
+    });
+
+    $("#submitBtn").click(function (e) {
+        var validationCheck = false;
+
+        var $start, $end;
+
+        var reportOptionNotChecked = true;
+        var reportOPtions = document.getElementsByName('@Constants.ReportFormStrings.REPORT_OPTION'); 
+        for (var i = 0, j = reportOPtions.length; i < j; i++) {
+            switch (reportOPtions[i].value) {
+                case "Monthly":
+                    if (initCheck && reportOPtions[i].checked) {
+                        reportOptionNotChecked = false;
+                        validationCheck = true;
+                        $('#alert').show().find('strong').text('The end month can not be before the start month.');
+                    } else {
+                        $('#alert').hide();
+                    }
+                    break;
+                case "MonthPerYear":
+                    $start = $("#MPYStartYear"),
+                    $end = $("#MPYEndYear");
+                    if ($start.val() > $end.val() && reportOPtions[i].checked) {
+                        reportOptionNotChecked = false;
+                        validationCheck = true;
+                        $('#alert2').show().find('strong').text('The end year can not be before the start year.');
+                    } else {
+                        $('#alert2').hide();
+                    }
+                    break;
+                case "FiscalYear":
+                    $start = $("#FYStartYear"),
+                    $end = $("#FYEndYear");
+                    if ($start.val() > $end.val() && reportOPtions[i].checked) {
+                        reportOptionNotChecked = false;
+                        validationCheck = true;
+                        $('#alert3').show().find('strong').text('The end range can not begin before the start range.');
+                    } else {
+                        $('#alert3').hide();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (reportOptionNotChecked) {
+            validationCheck = true;
+            $('#reportOptionAlert').show().find('strong').text('You must select a report option.');
+        } else {
+            $('#reportOptionAlert').hide();
+        }
+        
+
+        var dataTypeNotChecked = true;
+        var dataTypes = document.getElementsByName('@Constants.ReportFormStrings.DATATYPE');
+        for (i = 0, j = dataTypes.length; i < j; i++) {
+            if (dataTypes[i].checked) {
+                dataTypeNotChecked = false;
+            }
+        }
+        if (dataTypeNotChecked) {
+            validationCheck = true;
+            $('#dataTypeAlert').show().find('strong').text('You must select at least one data type.');
+        } else {
+            $('#dataTypeAlert').hide();
+        }
+        
+
+        var stratifyNotChecked = true;
+        var stratifyOptions = document.getElementsByName('@Constants.ReportFormStrings.STRATIFY_BY');
+        for (i = 0, j = stratifyOptions.length; i < j; i++) {
+            if (stratifyOptions[i].checked) {
+                stratifyNotChecked = false;
+            }
+        }
+        if (stratifyNotChecked) {
+            validationCheck = true;
+            $('#stratifyAlert').show().find('strong').text('You must select at least one stratify option. Select None if no stratifying is wanted.');
+        } else {
+            $('#stratifyAlert').hide();
+        }
+        
+        if (validationCheck == true) {
+            e.preventDefault();
+        }
     });
 
 </script>
