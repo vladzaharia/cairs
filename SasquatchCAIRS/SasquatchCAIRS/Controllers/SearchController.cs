@@ -14,7 +14,7 @@ namespace SasquatchCAIRS.Controllers {
     public class SearchController : Controller {
 
         private DropdownController _dropdownController =
-            DropdownController.instance;
+            new DropdownController();
         private CAIRSDataContext _db = new CAIRSDataContext();
 
         /// <summary>
