@@ -59,6 +59,26 @@
             UserGroup
         }
 
+        public enum URLStatus {
+            None = 0,
+            Expired = 1,
+            Unlocked = 2,
+            Deleted = 3,
+            AccessingLocked = 4,
+            LockedToOtherUser = 5,
+            SuccessfulEdit = 6,
+            NoRequestEditorRole = 7
+        }
+
+        public static readonly DropdownTable[] DROPDOWN_TABLES = new DropdownTable[6] {
+            DropdownTable.Keyword,
+            DropdownTable.QuestionType, 
+            DropdownTable.Region, 
+            DropdownTable.RequestorType, 
+            DropdownTable.TumourGroup, 
+            DropdownTable.UserGroup
+        };
+        
         public static class Roles {
             public const string VIEWER = "Viewer";
             public const string REQUEST_EDITOR = "RequestEditor";
@@ -80,6 +100,7 @@
 
                 // Caller Information
                 public const string CALLER_NAME = "Name";
+                public const string CALLER_NAME_TABLE = "Caller Name";
                 public const string CALLER_FNAME = "First Name";
                 public const string CALLER_LNAME = "Last Name";
                 public const string CALLER_EMAIL = "Email";
@@ -117,11 +138,17 @@
                 public const string ROLES = "Roles";
                 public const string GROUPS = "Groups";
                 public const string USER_EMAIL = "Email Address";
+
+                // Dropdowns
+                public const string DROPDOWN_CODE = "Code";
+                public const string DROPDOWN_VALUE = "Value";
+                public const string DROPDOWN_KEYWORD = "Keyword";
+                public const string DROPDOWN_STATUS = "Status";
             }
 
             // Text used in Buttons
             public static class ButtonText {
-                public const string ADD_REQUEST = "Add New Request";
+                public const string CREATE_REQUEST = "Create Request";
                 public const string EDIT_REQUEST = "Edit Request";
                 public const string UNLOCK_REQUEST = "Unlock Request";
                 public const string EXPORT_REQUEST = "Export Request";
@@ -131,6 +158,10 @@
                 public const string ADD_QUESTION = "Add Question";
                 public const string DELETE_QUESTION = "Delete Question";
                 public const string ADD_REFERENCE = "Add Reference";
+                public const string EDIT_USER = "Edit User";
+                public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
+                public const string CREATE_DROPDOWN = "Create Dropdown Entry";
+                public const string CREATE = "Create";
             }
 
             // Text used in Page Titles
@@ -143,8 +174,18 @@
                 public const string USERS = "Users";
                 public const string EDIT_USER = "Edit User";
                 public const string DROPDOWN_LISTS = "Dropdown Lists";
-                public const string EDIT_DROPDOWN = "Edit Dropdown Value";
-                public static string AUDIT_LOG = "Audit Log";
+                public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
+                public const string CREATE_DROPDOWN = "Create Dropdown Entry";
+                public const string AUDIT_LOG = "Audit Log";
+                public const string CREATE_REQUEST = "Create Request";
+                public const string REPORTS = "Reports";
+                public const string CREATE = "Create";
+                public const string EDIT = "Edit";
+            }
+
+            public static class GeneralText {
+                public const string ACTIVE = "Active";
+                public const string DISABLED = "Disabled";
             }
 
             public static class Messages {
@@ -152,6 +193,8 @@
                     "Are you sure you would like to delete this reference?";
                 public const string DELETE_QUESTION_WARNING =
                     "Are you sure you would like to delete this question?";
+                public const string NO_CONTACT_WARNING =
+                    "Are you sure you would like to mark this request as complete without requestor contact information?";
             }
         }
 
@@ -206,6 +249,54 @@
                     return "Other";
                 default:
                     return "None";
+            }
+        }
+
+        /// <summary>
+        /// Get the string value for a dropdown list
+        /// </summary>
+        /// <param name="dropdown">Dropdown list as Constants.DropdownTable</param>
+        /// <returns>String representing the DropdownTable name</returns>
+        public static string getDropdownString(DropdownTable? dropdown) {
+            switch (dropdown) {
+                case DropdownTable.Keyword:
+                    return "Keyword";
+                case DropdownTable.QuestionType:
+                    return "Question Type";
+                case DropdownTable.Region:
+                    return "Region";
+                case DropdownTable.RequestorType:
+                    return "Requestor Type";
+                case DropdownTable.TumourGroup:
+                    return "Tumour Group";
+                case DropdownTable.UserGroup:
+                    return "User Group";
+                default:
+                    return "";
+            }
+        }
+
+        /// <summary>
+        /// Get the DropdownTable for a String
+        /// </summary>
+        /// <param name="s">The string to parse</param>
+        /// <returns>The DropdownTable for the string</returns>
+        public static DropdownTable getTableForString(string s) {
+            switch (s) {
+                case "Keyword":
+                    return DropdownTable.Keyword;
+                case "Question Type":
+                    return DropdownTable.QuestionType;
+                case "Region":
+                    return DropdownTable.Region;
+                case "Requestor Type":
+                    return DropdownTable.RequestorType;
+                case "Tumour Group":
+                    return DropdownTable.TumourGroup;
+                case "User Group":
+                    return DropdownTable.UserGroup;
+                default:
+                    return DropdownTable.Keyword;
             }
         }
 

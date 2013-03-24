@@ -71,11 +71,21 @@
         &nbsp;@Constants.UIString.ButtonText.ADD_QUESTION
     </a>
     
+    <h3>Properties</h3>
+    <table>
+        <tr>
+            <td class="tbl-label">@Html.LabelFor(model => model.parentRequestID)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.parentRequestID)</td>
+        </tr>
+    </table>
+    
     <br />
     <br />
     <div>
         <input type="submit" name="save_draft" value="@Constants.UIString.ButtonText.SAVE_DRAFT" class="btn btn-primary"/>
-        <input type="submit" name="mark_as_complete" value="@Constants.UIString.ButtonText.MARK_COMPLETE" class="btn btn-primary"/>
+        <input type="submit" name="mark_as_complete"
+               value="@Constants.UIString.ButtonText.MARK_COMPLETE" class="btn btn-primary"
+               id="mark_as_complete"/>
     </div>
 }
 
@@ -112,6 +122,25 @@
         $(document).keypress(function (event) {
             if (event.which == '13') {
                 event.preventDefault();
+            }
+        });
+
+        var submitForComplete = false;
+        $("#mark_as_complete").click(function (e) {
+            if (!submitForComplete &&
+                $("#requestorEmail").val() == "" &&
+                $("#requestorPhoneNum").val() == "") {
+                
+                e.preventDefault();
+
+                $("#warning_modal_text").text("@Constants.UIString.Messages.NO_CONTACT_WARNING");
+                $("#warning_modal_yes_btn").unbind().click(function () {
+                    submitForComplete = true;
+                    $("#mark_as_complete").click();
+                    return hideModal();
+                });
+
+                $("#warning_modal").modal("show");
             }
         });
     });

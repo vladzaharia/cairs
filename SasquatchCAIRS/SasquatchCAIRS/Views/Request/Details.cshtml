@@ -1,7 +1,8 @@
-﻿@using SasquatchCAIRS.Controllers.Security
+﻿
+@using SasquatchCAIRS
+@using SasquatchCAIRS.Controllers.Security
 @using SasquatchCAIRS.Models
 @using SasquatchCAIRS.Models.ServiceSystem
-
 @model SasquatchCAIRS.Models.ServiceSystem.RequestContent
 
 @if (Model != null) {
@@ -42,14 +43,34 @@
             <td class="tbl-border tbl-content-4">@Model.requestorEmail</td>
 
             <td class="tbl-label">@Constants.UIString.FieldLabel.CALLER_TYPE</td>
-            <td class="tbl-content-4">@Model.requestorTypeID @*TODO: Convert to String Value using DB*@</td>
+            <td class="tbl-content-4">
+                @{
+                    RequestorType requestorType = ((CAIRSDataContext) ViewBag.DataContext)
+                        .RequestorTypes
+                        .FirstOrDefault(rt => rt.RequestorTypeID == Model.requestorTypeID);
+                }
+
+                @if (requestorType != null) {
+                    <span>@requestorType.Code - @requestorType.Value</span>
+                }
+            </td>
         </tr>
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.CALLER_PHONE</td>
             <td class="tbl-content-4">@Model.requestorPhoneNum @Model.requestorPhoneExt</td>
 
             <td class="tbl-label">@Constants.UIString.FieldLabel.CALLER_REGION</td>
-            <td class="tbl-content-4">@Model.regionID @*TODO: Convert to String Value using DB*@</td>
+            <td class="tbl-content-4">
+                @{
+                    Region region = ((CAIRSDataContext) ViewBag.DataContext)
+                        .Regions
+                        .FirstOrDefault(r => r.RegionID == Model.regionID);
+                }
+
+                @if (region != null) {
+                    <span>@region.Code - @region.Value</span>
+                }
+            </td>
         </tr>
     </table>
 
@@ -73,7 +94,7 @@
 
     foreach (QuestionResponseContent qr in Model.questionResponseList) {
         <h4>Question Information</h4>
-    
+
         <table class="table unbordered-table no-margin">
             <tr>
                 <td class="focal">@qr.question</td>
@@ -82,7 +103,7 @@
                 <td>@qr.response</td>
             </tr>
         </table>
-    
+
         <table class="table unbordered-table no-margin">
             <tr>
                 <td class="focal" colspan="6">@Constants.UIString.FieldLabel.SPECIAL_NOTES</td>
@@ -93,16 +114,36 @@
             
             <tr>
                 <td class="tbl-label">@Constants.UIString.FieldLabel.QUESTION_TYPE</td>
-                <td class="tbl-content-6">@qr.questionTypeID @*TODO: Convert using DB *@</td>
+                <td class="tbl-content-6">
+                    @{
+                        QuestionType questionType = ((CAIRSDataContext) ViewBag.DataContext)
+                            .QuestionTypes
+                            .FirstOrDefault(qt => qt.QuestionTypeID == qr.questionTypeID);
+                    }
+
+                    @if (questionType != null) {
+                        <span>@questionType.Code - @questionType.Value</span>
+                    }
+                </td>
 
                 <td class="tbl-label">@Constants.UIString.FieldLabel.TUMOUR_GROUP</td>
-                <td class="tbl-content-6">@qr.tumourGroupID @*TODO: Convert to String Value using DB*@</td>
+                <td class="tbl-content-6">
+                    @{
+                        TumourGroup tumourGroup = ((CAIRSDataContext) ViewBag.DataContext)
+                            .TumourGroups
+                            .FirstOrDefault(tg => tg.TumourGroupID == qr.tumourGroupID);
+                    }
+
+                    @if (tumourGroup != null) {
+                        <span>@tumourGroup.Code - @tumourGroup.Value</span>
+                    }
+                </td>
 
                 <td class="tbl-label">@Constants.UIString.FieldLabel.TIME_SPENT</td>
                 <td class="tbl-content-6">@qr.timeSpent mins</td>
             </tr>
         </table>
-    
+
         <div class="sxs">
             <div class="sxs-one impact">
                 <table class="table unbordered-table no-margin">
@@ -146,8 +187,7 @@
                 </table>
             </div>
         </div>
-        
-        
+
         <div>
             <table class="table">
                 <tr>
@@ -184,17 +224,18 @@
     <div class="buttons">
         @if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
             @Html.ActionLink(Constants.UIString.ButtonText.EDIT_REQUEST, "Edit", "Request", new {id = Model.requestID}, new {
-                @class = "btn btn-info edit-button"
+                @class = "btn btn-custom edit-button"
             })
-        } 
+        }
+
 
         @Html.ActionLink(Constants.UIString.ButtonText.EXPORT_REQUEST, "Export", "Request", new {id = Model.requestID}, new {
-            @class = "btn btn-info export-button"
+            @class = "btn btn-custom export-button"
         }) 
     
         @if (User.IsInRole(Constants.Roles.ADMINISTRATOR) && (new RequestLockController()).isLocked(Model.requestID)) {
             @Html.ActionLink(Constants.UIString.ButtonText.UNLOCK_REQUEST, "Unlock", "Request", new {id = Model.requestID}, new {
-                @class = "btn btn-info unlock-button"
+                @class = "btn btn-custom unlock-button"
             })
         }
     </div>

@@ -8,7 +8,7 @@ using SasquatchCAIRS.Models;
 namespace SasquatchCAIRS.Controllers {
     public class HomeController : Controller {
         [Authorize]
-        public ActionResult Index() {
+        public ActionResult Index(Constants.URLStatus status = Constants.URLStatus.None) {
             var db = new CAIRSDataContext();
             RequestLockController rlc = new RequestLockController();
             var keywords = new Dictionary<long, List<string>>();
@@ -22,14 +22,14 @@ namespace SasquatchCAIRS.Controllers {
             IQueryable<Request> requests;
 
             // Create request list based on roles
-            if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
+            if (User.IsInRole(Constants.Roles.ADMINISTRATOR)) {
+                requests = db.Requests.Select(r => r);
+            } else if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
                 requests = db.Requests.Select(r => r).Where(
                     r =>
                     (Constants.RequestStatus) r.RequestStatus !=
                     Constants.RequestStatus.Invalid);
                 //.Where(r => !rlc.isLocked(r.RequestID)); TODO: Fix this
-            } else if (User.IsInRole(Constants.Roles.ADMINISTRATOR)) {
-                requests = db.Requests.Select(r => r);
             } else {
                 requests = db.Requests.Select(r => r).Where(
                     r =>
@@ -63,6 +63,35 @@ namespace SasquatchCAIRS.Controllers {
 
             ViewBag.Requests = requests;
             ViewBag.Keywords = keywords;
+            if (status == Constants.URLStatus.Expired) {
+                ViewBag.Status = 
+                    "Your session has expired due to inactivity. All unsaved changes have been lost.";
+                ViewBag.StatusColor = "danger";
+            } else if (status == Constants.URLStatus.Unlocked) {
+                ViewBag.Status =
+                    "The request has now been unlocked and is available for editing by all users.";
+                ViewBag.StatusColor = "success";
+            } else if (status == Constants.URLStatus.Deleted) {
+                ViewBag.Status =
+                    "The request has been marked as invalid and cannot be seen by non-Administrators.";
+                ViewBag.StatusColor = "success";
+            } else if (status == Constants.URLStatus.AccessingLocked) {
+                ViewBag.Status =
+                    "The request is locked and cannot be edited.";
+                ViewBag.StatusColor = "danger";
+            } else if (status == Constants.URLStatus.LockedToOtherUser) {
+                ViewBag.Status =
+                    "The request is not locked to you and cannot be edited.";
+                ViewBag.StatusColor = "danger";
+            } else if (status == Constants.URLStatus.SuccessfulEdit) {
+                ViewBag.Status =
+                    "The request has been successfully edited.";
+                ViewBag.StatusColor = "success";
+            } else if (status == Constants.URLStatus.NoRequestEditorRole) {
+                ViewBag.Status =
+                    "You no longer have permissions to create or edit requests.";
+                ViewBag.StatusColor = "danger";
+            }
 
             return View();
         }

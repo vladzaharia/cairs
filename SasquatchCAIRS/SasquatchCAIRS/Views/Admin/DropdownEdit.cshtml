@@ -1,0 +1,18 @@
+﻿@model SasquatchCAIRS.Models.ServiceSystem.DropdownEntry
+
+@using SasquatchCAIRS.Models
+@{
+    ViewBag.Title = Constants.UIString.TitleText.EDIT_DROPDOWN;
+    ViewBag.Page = "admin";
+    ViewBag.Action = "Edit";
+}
+
+@Html.Partial("_AdminNavPartial", new ViewDataDictionary {{"active", "dropdowns"}})
+
+<h2>@Constants.UIString.TitleText.ADMIN - @Constants.UIString.TitleText.EDIT @Constants.getDropdownString(ViewBag.Table)</h2>
+
+@if (Model != null) {
+    Html.RenderPartial("_DropdownForm");
+} else {
+    <div class="message palette-danger-dark">Could not load Dropdown Entry Information!</div>
+}

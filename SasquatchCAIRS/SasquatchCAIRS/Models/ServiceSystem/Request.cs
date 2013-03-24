@@ -110,10 +110,10 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         public DateTime? timeClosed { get; set; }
 
         [Display(Name = "Region")]
-        public byte? regionID { get; set; }
+        public int? regionID { get; set; }
 
         [Display(Name = "Requestor Type")]
-        public byte? requestorTypeID { get; set; }
+        public int? requestorTypeID { get; set; }
 
         public List<QuestionResponseContent> questionResponseList {
             get {
@@ -189,10 +189,10 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         public string specialNotes { get; set; }
 
         [Display(Name = "Question Type")]
-        public byte? questionTypeID { get; set; }
+        public int? questionTypeID { get; set; }
 
         [Display(Name = "Tumour Group")]
-        public byte? tumourGroupID { get; set; }
+        public int? tumourGroupID { get; set; }
 
         [Display(Name = "Severity")]
         public Constants.Severity? severity { get; set; }

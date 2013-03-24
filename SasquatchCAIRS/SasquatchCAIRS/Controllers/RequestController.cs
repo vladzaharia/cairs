@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Web.Security;
 using SasquatchCAIRS.Controllers.Security;
 ﻿using SasquatchCAIRS.Controllers.ServiceSystem;
 ﻿using SasquatchCAIRS.Helper;
@@ -10,6 +11,9 @@ using SasquatchCAIRS.Models.ServiceSystem;
 
 namespace SasquatchCAIRS.Controllers
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
     public class RequestController : Controller
     {
         //
@@ -23,10 +27,10 @@ namespace SasquatchCAIRS.Controllers
             };
 
             ViewBag.RequestorTypes = new SelectList(
-                dc.getActiveEntries(Constants.DropdownTable.RequestorType),
+                dc.getEntries(Constants.DropdownTable.RequestorType),
                 "id", "text");
             ViewBag.Regions = new SelectList(
-                dc.getActiveEntries(Constants.DropdownTable.Region),
+                dc.getEntries(Constants.DropdownTable.Region),
                 "id", "text");
 
             ViewBag.GenderOptions = new SelectList(Constants.genderOptions);
@@ -40,11 +44,19 @@ namespace SasquatchCAIRS.Controllers
         [HttpPost]
         [Authorize(Roles = "RequestEditor")]
         public ActionResult Create(RequestContent reqContent) {
-            bool valid = true;
+            RequestManagementController rmc = new RequestManagementController();
 
-            if (!ModelState.IsValid) {
+            bool valid = ModelState.IsValid;
+
+            if (reqContent.parentRequestID != null &&
+                !rmc.requestExists((long) reqContent.parentRequestID)) {
+
+                ModelState.AddModelError("NonexistentParentRequest",
+                    "Parent Request ID must correspond to an existing request.");
                 valid = false;
-            } else if (Request.Form["mark_as_complete"] != null) {
+            }
+            
+            if (Request.Form["mark_as_complete"] != null) {
                 foreach (var qrContent in reqContent.questionResponseList) {
                     if (String.IsNullOrEmpty(qrContent.question) ||
                         String.IsNullOrEmpty(qrContent.response) || 
@@ -79,10 +91,10 @@ namespace SasquatchCAIRS.Controllers
                 DropdownController dc = new DropdownController();
 
                 ViewBag.RequestorTypes = new SelectList(
-                    dc.getActiveEntries(Constants.DropdownTable.RequestorType),
+                    dc.getEntries(Constants.DropdownTable.RequestorType),
                     "id", "text");
                 ViewBag.Regions = new SelectList(
-                    dc.getActiveEntries(Constants.DropdownTable.Region),
+                    dc.getEntries(Constants.DropdownTable.Region),
                     "id", "text");
 
                 ViewBag.GenderOptions = new SelectList(Constants.genderOptions);
@@ -99,7 +111,6 @@ namespace SasquatchCAIRS.Controllers
                 }
             }
 
-            RequestManagementController rmc = new RequestManagementController();
             rmc.create(reqContent);
 
             // TODO: Audit log
@@ -113,21 +124,34 @@ namespace SasquatchCAIRS.Controllers
 
         [Authorize(Roles = "RequestEditor")]
         public ActionResult Edit(long id) {
+            RequestLockController rlc = new RequestLockController();
+            UserController uc = new UserController();
+            UserProfile up = uc.getUserProfile(User.Identity.Name);
+
+            RequestLock rl = rlc.getRequestLock(id);
+            if (rl == null) {
+                rlc.addLock(id, up.UserId);
+            } else if (rl.UserID != up.UserId) {
+                // Locked to someone else, redirect
+                RedirectToAction("Index", "Home", new {
+                    status = Constants.URLStatus.AccessingLocked
+                });
+            }
+
             var dc = new DropdownController();
             var rmc = new RequestManagementController();
 
             var reqContent = rmc.getRequestDetails(id);
 
             ViewBag.RequestorTypes = new SelectList(
-                dc.getActiveEntries(Constants.DropdownTable.RequestorType),
+                dc.getEntries(Constants.DropdownTable.RequestorType),
                 "id", "text");
             ViewBag.Regions = new SelectList(
-                dc.getActiveEntries(Constants.DropdownTable.Region),
+                dc.getEntries(Constants.DropdownTable.Region),
                 "id", "text");
 
             ViewBag.GenderOptions = new SelectList(Constants.genderOptions);
 
-            // TODO: Lock request
             // TODO: Audit log
 
             return View(reqContent);
@@ -140,17 +164,37 @@ namespace SasquatchCAIRS.Controllers
         [Authorize(Roles = "RequestEditor")]
         public ActionResult Edit(RequestContent reqContent) {
             RequestManagementController rmc = new RequestManagementController();
+            RequestLockController rlc = new RequestLockController();
+            UserController uc = new UserController();
+
+            UserProfile up = uc.getUserProfile(User.Identity.Name);
+
+            RequestLock rl = rlc.getRequestLock(reqContent.requestID);
+            if (rl != null && rl.UserID != up.UserId) {
+                RedirectToAction("Index", "Home", new {
+                    status = Constants.URLStatus.LockedToOtherUser
+                });
+            }
 
             if (Request.Form["delete"] != null) {
                 rmc.invalidate(reqContent.requestID);
-                return Redirect("/Home/Index");
+
+                return RedirectToAction("Index", "Home", new {
+                    status = Constants.URLStatus.Deleted
+                });
             }
 
-            bool valid = true;
+            bool valid = ModelState.IsValid;
 
-            if (!ModelState.IsValid) {
+            if (reqContent.parentRequestID != null &&
+                !rmc.requestExists((long) reqContent.parentRequestID)) {
+
+                ModelState.AddModelError("NonexistentParentRequest",
+                    "Parent Request ID must correspond to an existing request.");
                 valid = false;
-            } else if (Request.Form["mark_as_complete"] != null) {
+            }
+            
+            if (Request.Form["mark_as_complete"] != null) {
                 foreach (var qrContent in reqContent.questionResponseList) {
                     if (String.IsNullOrEmpty(qrContent.question) ||
                         String.IsNullOrEmpty(qrContent.response) ||
@@ -185,10 +229,10 @@ namespace SasquatchCAIRS.Controllers
                 DropdownController dc = new DropdownController();
 
                 ViewBag.RequestorTypes = new SelectList(
-                    dc.getActiveEntries(Constants.DropdownTable.RequestorType),
+                    dc.getEntries(Constants.DropdownTable.RequestorType),
                     "id", "text");
                 ViewBag.Regions = new SelectList(
-                    dc.getActiveEntries(Constants.DropdownTable.Region),
+                    dc.getEntries(Constants.DropdownTable.Region),
                     "id", "text");
 
                 ViewBag.GenderOptions = new SelectList(Constants.genderOptions);
@@ -206,16 +250,28 @@ namespace SasquatchCAIRS.Controllers
             }
 
             rmc.edit(reqContent);
+            rlc.removeLock(reqContent.requestID);
 
             // TODO: Audit log
 
-            // TODO: Redirect to View if user has Viewer role
-            return Redirect("/Home/Index");
+            if (Roles.IsUserInRole(Constants.Roles.VIEWER)) {
+                return RedirectToAction("Details", "Request",
+                    new {id = reqContent.requestID});
+            }
+
+            return RedirectToAction("Index", "Home",
+                new {status = Constants.URLStatus.SuccessfulEdit});
         }
 
         [HttpPost]
-        [Authorize(Roles = "RequestEditor")]
         public ActionResult NewQuestionResponse(String json) {
+            // Don't want to load a partial with a Not Authorized message
+            if (!Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
+                RedirectToAction("Index", "Home", new {
+                    status = Constants.URLStatus.NoRequestEditorRole
+                });
+            }
+
             DropdownController dc = new DropdownController();
             QuestionResponseContent qrContent;
 
@@ -231,10 +287,10 @@ namespace SasquatchCAIRS.Controllers
                 "questionResponseList");
 
             ViewBag.QuestionTypes = new SelectList(
-                dc.getActiveEntries(Constants.DropdownTable.QuestionType),
+                dc.getEntries(Constants.DropdownTable.QuestionType),
                 "id", "text");
             ViewBag.TumourGroups = new SelectList(
-                dc.getActiveEntries(Constants.DropdownTable.TumourGroup),
+                dc.getEntries(Constants.DropdownTable.TumourGroup),
                 "id", "text");
             ViewBag.Severitys = new SelectList(Constants.severityOptions);
             ViewBag.Consequences = new SelectList(Constants.consequenceOptions);
@@ -245,6 +301,13 @@ namespace SasquatchCAIRS.Controllers
         [HttpPost]
         [Authorize(Roles = "RequestEditor")]
         public ActionResult NewReference(string id, string json) {
+            // Don't want to load a partial with a Not Authorized message
+            if (!Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
+                RedirectToAction("Index", "Home", new {
+                    status = Constants.URLStatus.NoRequestEditorRole
+                });
+            }
+
             ReferenceContent refContent;
 
             if (String.IsNullOrEmpty(json)) {
@@ -274,14 +337,14 @@ namespace SasquatchCAIRS.Controllers
             return Json(dc.getMatchingKeywords(id),
                 JsonRequestBehavior.AllowGet);
         }
-        
+
         //
         // GET: /Request/Details/{id}
 
-        [Authorize(Roles = "Viewer")]
+        [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
         public ActionResult Details(long id) {
-            RequestManagementController rmc = 
-                new RequestManagementController();
+            
+            RequestManagementController rmc = new RequestManagementController();
             RequestLockController rlc = new RequestLockController();
             UserController upc = new UserController();
             int timeSpent = 0;
@@ -337,9 +400,49 @@ namespace SasquatchCAIRS.Controllers
                 }
             }
 
-            ViewBag.TimeSpent = timeSpent; 
+            ViewBag.TimeSpent = timeSpent;
+            ViewBag.DataContext = new CAIRSDataContext();
 
             return View(request);
+        }
+
+        //
+        // GET: /Request/Unlock/{id}
+
+        [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
+        public ActionResult Unlock(long id) {
+            CAIRSDataContext db = new CAIRSDataContext();
+
+            var locks = db.RequestLocks.Where(rl => rl.RequestID == id);
+
+            foreach (RequestLock lck in locks) {
+                db.RequestLocks.DeleteOnSubmit(lck);
+            }
+
+            db.SubmitChanges();
+
+            return RedirectToAction("Index", "Home", new {
+                status = Constants.URLStatus.Unlocked
+            });
+        }
+
+        //
+        // GET: /Request/Delete/{id}
+
+        [Authorize(Roles = Constants.Roles.REQUEST_EDITOR)]
+        public ActionResult Delete(long id) {
+            CAIRSDataContext db = new CAIRSDataContext();
+
+            var request = db.Requests.FirstOrDefault(r => r.RequestID == id);
+
+            if (request != null) {
+                request.RequestStatus = (byte) Constants.RequestStatus.Invalid;
+                db.SubmitChanges();
+            }
+
+            return RedirectToAction("Index", "Home", new {
+                status = Constants.URLStatus.Deleted
+            });
         }
     }
 }

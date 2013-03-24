@@ -21,7 +21,7 @@ namespace SasquatchCAIRS.Filters {
             // Add Profile Information to ViewBag for header
             dynamic viewBag = filterContext.Controller.ViewBag;
             UserController profileController = new UserController();
-            viewBag.Profile = profileController.getUserProfile(filterContext.HttpContext.User.Identity.Name);
+            viewBag.Profile = profileController.loginAndGetUserProfile(filterContext.HttpContext.User.Identity.Name);
         }
 
         private class SimpleMembershipInitializer {

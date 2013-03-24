@@ -580,5 +580,19 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                 // TODO: Do something
             }
         }
+
+        /// <summary>
+        /// Checks if a request ID exists in the database.
+        /// </summary>
+        /// <param name="requestId">Unique ID for a request.</param>
+        /// <returns>True if a request exists with the specified ID,
+        /// false otherwise.</returns>
+        public Boolean requestExists(long requestId) {
+            int exists = (from reqs in _db.Requests
+                          where reqs.RequestID == requestId
+                          select reqs).Count();
+
+            return (exists == 1);
+        }
     }
 }

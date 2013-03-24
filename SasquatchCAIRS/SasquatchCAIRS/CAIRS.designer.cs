@@ -36,12 +36,21 @@ namespace SasquatchCAIRS
     partial void InsertKeyword(Keyword instance);
     partial void UpdateKeyword(Keyword instance);
     partial void DeleteKeyword(Keyword instance);
+    partial void InsertQuestionType(QuestionType instance);
+    partial void UpdateQuestionType(QuestionType instance);
+    partial void DeleteQuestionType(QuestionType instance);
     partial void InsertRegion(Region instance);
     partial void UpdateRegion(Region instance);
     partial void DeleteRegion(Region instance);
     partial void InsertRequestorType(RequestorType instance);
     partial void UpdateRequestorType(RequestorType instance);
     partial void DeleteRequestorType(RequestorType instance);
+    partial void InsertTumourGroup(TumourGroup instance);
+    partial void UpdateTumourGroup(TumourGroup instance);
+    partial void DeleteTumourGroup(TumourGroup instance);
+    partial void InsertUserGroup(UserGroup instance);
+    partial void UpdateUserGroup(UserGroup instance);
+    partial void DeleteUserGroup(UserGroup instance);
     partial void InsertQuestionResponse(QuestionResponse instance);
     partial void UpdateQuestionResponse(QuestionResponse instance);
     partial void DeleteQuestionResponse(QuestionResponse instance);
@@ -54,27 +63,15 @@ namespace SasquatchCAIRS
     partial void InsertRequestLock(RequestLock instance);
     partial void UpdateRequestLock(RequestLock instance);
     partial void DeleteRequestLock(RequestLock instance);
-    partial void InsertQuestionType(QuestionType instance);
-    partial void UpdateQuestionType(QuestionType instance);
-    partial void DeleteQuestionType(QuestionType instance);
-    partial void InsertTumourGroup(TumourGroup instance);
-    partial void UpdateTumourGroup(TumourGroup instance);
-    partial void DeleteTumourGroup(TumourGroup instance);
-    partial void InsertKeywordQuestion(KeywordQuestion instance);
-    partial void UpdateKeywordQuestion(KeywordQuestion instance);
-    partial void DeleteKeywordQuestion(KeywordQuestion instance);
-    partial void InsertUserInfo(UserInfo instance);
-    partial void UpdateUserInfo(UserInfo instance);
-    partial void DeleteUserInfo(UserInfo instance);
-    partial void InsertUserGroup(UserGroup instance);
-    partial void UpdateUserGroup(UserGroup instance);
-    partial void DeleteUserGroup(UserGroup instance);
-    partial void InsertUserGroups(UserGroups instance);
-    partial void UpdateUserGroups(UserGroups instance);
-    partial void DeleteUserGroups(UserGroups instance);
     partial void InsertUserProfile(UserProfile instance);
     partial void UpdateUserProfile(UserProfile instance);
     partial void DeleteUserProfile(UserProfile instance);
+    partial void InsertUserGroups(UserGroups instance);
+    partial void UpdateUserGroups(UserGroups instance);
+    partial void DeleteUserGroups(UserGroups instance);
+    partial void InsertKeywordQuestion(KeywordQuestion instance);
+    partial void UpdateKeywordQuestion(KeywordQuestion instance);
+    partial void DeleteKeywordQuestion(KeywordQuestion instance);
     #endregion
 		
 		public CAIRSDataContext() : 
@@ -123,6 +120,14 @@ namespace SasquatchCAIRS
 			}
 		}
 		
+		public System.Data.Linq.Table<QuestionType> QuestionTypes
+		{
+			get
+			{
+				return this.GetTable<QuestionType>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Region> Regions
 		{
 			get
@@ -136,6 +141,22 @@ namespace SasquatchCAIRS
 			get
 			{
 				return this.GetTable<RequestorType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TumourGroup> TumourGroups
+		{
+			get
+			{
+				return this.GetTable<TumourGroup>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UserGroup> UserGroups
+		{
+			get
+			{
+				return this.GetTable<UserGroup>();
 			}
 		}
 		
@@ -171,43 +192,11 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		public System.Data.Linq.Table<QuestionType> QuestionTypes
+		public System.Data.Linq.Table<UserProfile> UserProfiles
 		{
 			get
 			{
-				return this.GetTable<QuestionType>();
-			}
-		}
-		
-		public System.Data.Linq.Table<TumourGroup> TumourGroups
-		{
-			get
-			{
-				return this.GetTable<TumourGroup>();
-			}
-		}
-		
-		public System.Data.Linq.Table<KeywordQuestion> KeywordQuestions
-		{
-			get
-			{
-				return this.GetTable<KeywordQuestion>();
-			}
-		}
-		
-		public System.Data.Linq.Table<UserInfo> UserInfos
-		{
-			get
-			{
-				return this.GetTable<UserInfo>();
-			}
-		}
-		
-		public System.Data.Linq.Table<UserGroup> UserGroups
-		{
-			get
-			{
-				return this.GetTable<UserGroup>();
+				return this.GetTable<UserProfile>();
 			}
 		}
 		
@@ -219,11 +208,11 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		public System.Data.Linq.Table<UserProfile> UserProfiles
+		public System.Data.Linq.Table<KeywordQuestion> KeywordQuestions
 		{
 			get
 			{
-				return this.GetTable<UserProfile>();
+				return this.GetTable<KeywordQuestion>();
 			}
 		}
 	}
@@ -571,13 +560,175 @@ namespace SasquatchCAIRS
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.QuestionType")]
+	public partial class QuestionType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _QuestionTypeID;
+		
+		private string _Value;
+		
+		private string _Code;
+		
+		private bool _Active;
+		
+		private EntitySet<QuestionResponse> _QuestionResponses;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnQuestionTypeIDChanging(int value);
+    partial void OnQuestionTypeIDChanged();
+    partial void OnValueChanging(string value);
+    partial void OnValueChanged();
+    partial void OnCodeChanging(string value);
+    partial void OnCodeChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    #endregion
+		
+		public QuestionType()
+		{
+			this._QuestionResponses = new EntitySet<QuestionResponse>(new Action<QuestionResponse>(this.attach_QuestionResponses), new Action<QuestionResponse>(this.detach_QuestionResponses));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionTypeID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int QuestionTypeID
+		{
+			get
+			{
+				return this._QuestionTypeID;
+			}
+			set
+			{
+				if ((this._QuestionTypeID != value))
+				{
+					this.OnQuestionTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._QuestionTypeID = value;
+					this.SendPropertyChanged("QuestionTypeID");
+					this.OnQuestionTypeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
+		public string Value
+		{
+			get
+			{
+				return this._Value;
+			}
+			set
+			{
+				if ((this._Value != value))
+				{
+					this.OnValueChanging(value);
+					this.SendPropertyChanging();
+					this._Value = value;
+					this.SendPropertyChanged("Value");
+					this.OnValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
+		public string Code
+		{
+			get
+			{
+				return this._Code;
+			}
+			set
+			{
+				if ((this._Code != value))
+				{
+					this.OnCodeChanging(value);
+					this.SendPropertyChanging();
+					this._Code = value;
+					this.SendPropertyChanged("Code");
+					this.OnCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionType_QuestionResponse", Storage="_QuestionResponses", ThisKey="QuestionTypeID", OtherKey="QuestionTypeID")]
+		public EntitySet<QuestionResponse> QuestionResponses
+		{
+			get
+			{
+				return this._QuestionResponses;
+			}
+			set
+			{
+				this._QuestionResponses.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_QuestionResponses(QuestionResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.QuestionType = this;
+		}
+		
+		private void detach_QuestionResponses(QuestionResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.QuestionType = null;
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Region")]
 	public partial class Region : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private byte _RegionID;
+		private int _RegionID;
 		
 		private string _Value;
 		
@@ -591,7 +742,7 @@ namespace SasquatchCAIRS
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnRegionIDChanging(byte value);
+    partial void OnRegionIDChanging(int value);
     partial void OnRegionIDChanged();
     partial void OnValueChanging(string value);
     partial void OnValueChanged();
@@ -607,8 +758,8 @@ namespace SasquatchCAIRS
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegionID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public byte RegionID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegionID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int RegionID
 		{
 			get
 			{
@@ -739,7 +890,7 @@ namespace SasquatchCAIRS
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private byte _RequestorTypeID;
+		private int _RequestorTypeID;
 		
 		private string _Value;
 		
@@ -753,7 +904,7 @@ namespace SasquatchCAIRS
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnRequestorTypeIDChanging(byte value);
+    partial void OnRequestorTypeIDChanging(int value);
     partial void OnRequestorTypeIDChanged();
     partial void OnValueChanging(string value);
     partial void OnValueChanged();
@@ -769,8 +920,8 @@ namespace SasquatchCAIRS
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorTypeID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public byte RequestorTypeID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorTypeID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int RequestorTypeID
 		{
 			get
 			{
@@ -895,6 +1046,330 @@ namespace SasquatchCAIRS
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TumourGroup")]
+	public partial class TumourGroup : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TumourGroupID;
+		
+		private string _Value;
+		
+		private string _Code;
+		
+		private bool _Active;
+		
+		private EntitySet<QuestionResponse> _QuestionResponses;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTumourGroupIDChanging(int value);
+    partial void OnTumourGroupIDChanged();
+    partial void OnValueChanging(string value);
+    partial void OnValueChanged();
+    partial void OnCodeChanging(string value);
+    partial void OnCodeChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    #endregion
+		
+		public TumourGroup()
+		{
+			this._QuestionResponses = new EntitySet<QuestionResponse>(new Action<QuestionResponse>(this.attach_QuestionResponses), new Action<QuestionResponse>(this.detach_QuestionResponses));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TumourGroupID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int TumourGroupID
+		{
+			get
+			{
+				return this._TumourGroupID;
+			}
+			set
+			{
+				if ((this._TumourGroupID != value))
+				{
+					this.OnTumourGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._TumourGroupID = value;
+					this.SendPropertyChanged("TumourGroupID");
+					this.OnTumourGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
+		public string Value
+		{
+			get
+			{
+				return this._Value;
+			}
+			set
+			{
+				if ((this._Value != value))
+				{
+					this.OnValueChanging(value);
+					this.SendPropertyChanging();
+					this._Value = value;
+					this.SendPropertyChanged("Value");
+					this.OnValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
+		public string Code
+		{
+			get
+			{
+				return this._Code;
+			}
+			set
+			{
+				if ((this._Code != value))
+				{
+					this.OnCodeChanging(value);
+					this.SendPropertyChanging();
+					this._Code = value;
+					this.SendPropertyChanged("Code");
+					this.OnCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TumourGroup_QuestionResponse", Storage="_QuestionResponses", ThisKey="TumourGroupID", OtherKey="TumourGroupID")]
+		public EntitySet<QuestionResponse> QuestionResponses
+		{
+			get
+			{
+				return this._QuestionResponses;
+			}
+			set
+			{
+				this._QuestionResponses.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_QuestionResponses(QuestionResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.TumourGroup = this;
+		}
+		
+		private void detach_QuestionResponses(QuestionResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.TumourGroup = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserGroup")]
+	public partial class UserGroup : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _GroupID;
+		
+		private string _Value;
+		
+		private string _Code;
+		
+		private bool _Active;
+		
+		private EntitySet<UserGroups> _UserGroups;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnGroupIDChanging(int value);
+    partial void OnGroupIDChanged();
+    partial void OnValueChanging(string value);
+    partial void OnValueChanged();
+    partial void OnCodeChanging(string value);
+    partial void OnCodeChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    #endregion
+		
+		public UserGroup()
+		{
+			this._UserGroups = new EntitySet<UserGroups>(new Action<UserGroups>(this.attach_UserGroups), new Action<UserGroups>(this.detach_UserGroups));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int GroupID
+		{
+			get
+			{
+				return this._GroupID;
+			}
+			set
+			{
+				if ((this._GroupID != value))
+				{
+					this.OnGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._GroupID = value;
+					this.SendPropertyChanged("GroupID");
+					this.OnGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
+		public string Value
+		{
+			get
+			{
+				return this._Value;
+			}
+			set
+			{
+				if ((this._Value != value))
+				{
+					this.OnValueChanging(value);
+					this.SendPropertyChanging();
+					this._Value = value;
+					this.SendPropertyChanged("Value");
+					this.OnValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
+		public string Code
+		{
+			get
+			{
+				return this._Code;
+			}
+			set
+			{
+				if ((this._Code != value))
+				{
+					this.OnCodeChanging(value);
+					this.SendPropertyChanging();
+					this._Code = value;
+					this.SendPropertyChanged("Code");
+					this.OnCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserGroup_UserGroups", Storage="_UserGroups", ThisKey="GroupID", OtherKey="GroupID")]
+		public EntitySet<UserGroups> UserGroups
+		{
+			get
+			{
+				return this._UserGroups;
+			}
+			set
+			{
+				this._UserGroups.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_UserGroups(UserGroups entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserGroup = this;
+		}
+		
+		private void detach_UserGroups(UserGroups entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserGroup = null;
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.QuestionResponse")]
 	public partial class QuestionResponse : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -913,9 +1388,9 @@ namespace SasquatchCAIRS
 		
 		private string _SpecialNotes;
 		
-		private System.Nullable<byte> _QuestionTypeID;
+		private System.Nullable<int> _QuestionTypeID;
 		
-		private System.Nullable<byte> _TumourGroupID;
+		private System.Nullable<int> _TumourGroupID;
 		
 		private System.Nullable<byte> _Severity;
 		
@@ -925,11 +1400,11 @@ namespace SasquatchCAIRS
 		
 		private EntitySet<KeywordQuestion> _KeywordQuestions;
 		
-		private EntityRef<Request> _Request;
-		
 		private EntityRef<QuestionType> _QuestionType;
 		
 		private EntityRef<TumourGroup> _TumourGroup;
+		
+		private EntityRef<Request> _Request;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -947,9 +1422,9 @@ namespace SasquatchCAIRS
     partial void OnTimeSpentChanged();
     partial void OnSpecialNotesChanging(string value);
     partial void OnSpecialNotesChanged();
-    partial void OnQuestionTypeIDChanging(System.Nullable<byte> value);
+    partial void OnQuestionTypeIDChanging(System.Nullable<int> value);
     partial void OnQuestionTypeIDChanged();
-    partial void OnTumourGroupIDChanging(System.Nullable<byte> value);
+    partial void OnTumourGroupIDChanging(System.Nullable<int> value);
     partial void OnTumourGroupIDChanged();
     partial void OnSeverityChanging(System.Nullable<byte> value);
     partial void OnSeverityChanged();
@@ -961,9 +1436,9 @@ namespace SasquatchCAIRS
 		{
 			this._References = new EntitySet<Reference>(new Action<Reference>(this.attach_References), new Action<Reference>(this.detach_References));
 			this._KeywordQuestions = new EntitySet<KeywordQuestion>(new Action<KeywordQuestion>(this.attach_KeywordQuestions), new Action<KeywordQuestion>(this.detach_KeywordQuestions));
-			this._Request = default(EntityRef<Request>);
 			this._QuestionType = default(EntityRef<QuestionType>);
 			this._TumourGroup = default(EntityRef<TumourGroup>);
+			this._Request = default(EntityRef<Request>);
 			OnCreated();
 		}
 		
@@ -1091,8 +1566,8 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionTypeID", DbType="TinyInt")]
-		public System.Nullable<byte> QuestionTypeID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionTypeID", DbType="Int")]
+		public System.Nullable<int> QuestionTypeID
 		{
 			get
 			{
@@ -1115,8 +1590,8 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TumourGroupID", DbType="TinyInt")]
-		public System.Nullable<byte> TumourGroupID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TumourGroupID", DbType="Int")]
+		public System.Nullable<int> TumourGroupID
 		{
 			get
 			{
@@ -1205,40 +1680,6 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_QuestionResponse", Storage="_Request", ThisKey="RequestID", OtherKey="RequestID", IsForeignKey=true)]
-		public Request Request
-		{
-			get
-			{
-				return this._Request.Entity;
-			}
-			set
-			{
-				Request previousValue = this._Request.Entity;
-				if (((previousValue != value) 
-							|| (this._Request.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Request.Entity = null;
-						previousValue.QuestionResponses.Remove(this);
-					}
-					this._Request.Entity = value;
-					if ((value != null))
-					{
-						value.QuestionResponses.Add(this);
-						this._RequestID = value.RequestID;
-					}
-					else
-					{
-						this._RequestID = default(long);
-					}
-					this.SendPropertyChanged("Request");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionType_QuestionResponse", Storage="_QuestionType", ThisKey="QuestionTypeID", OtherKey="QuestionTypeID", IsForeignKey=true)]
 		public QuestionType QuestionType
 		{
@@ -1266,7 +1707,7 @@ namespace SasquatchCAIRS
 					}
 					else
 					{
-						this._QuestionTypeID = default(Nullable<byte>);
+						this._QuestionTypeID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("QuestionType");
 				}
@@ -1300,9 +1741,43 @@ namespace SasquatchCAIRS
 					}
 					else
 					{
-						this._TumourGroupID = default(Nullable<byte>);
+						this._TumourGroupID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("TumourGroup");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_QuestionResponse", Storage="_Request", ThisKey="RequestID", OtherKey="RequestID", IsForeignKey=true)]
+		public Request Request
+		{
+			get
+			{
+				return this._Request.Entity;
+			}
+			set
+			{
+				Request previousValue = this._Request.Entity;
+				if (((previousValue != value) 
+							|| (this._Request.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Request.Entity = null;
+						previousValue.QuestionResponses.Remove(this);
+					}
+					this._Request.Entity = value;
+					if ((value != null))
+					{
+						value.QuestionResponses.Add(this);
+						this._RequestID = value.RequestID;
+					}
+					else
+					{
+						this._RequestID = default(long);
+					}
+					this.SendPropertyChanged("Request");
 				}
 			}
 		}
@@ -1388,9 +1863,9 @@ namespace SasquatchCAIRS
 		
 		private System.Nullable<System.DateTime> _TimeClosed;
 		
-		private System.Nullable<byte> _RegionID;
+		private System.Nullable<int> _RegionID;
 		
-		private System.Nullable<byte> _RequestorTypeID;
+		private System.Nullable<int> _RequestorTypeID;
 		
 		private EntitySet<QuestionResponse> _QuestionResponses;
 		
@@ -1440,9 +1915,9 @@ namespace SasquatchCAIRS
     partial void OnTimeOpenedChanged();
     partial void OnTimeClosedChanging(System.Nullable<System.DateTime> value);
     partial void OnTimeClosedChanged();
-    partial void OnRegionIDChanging(System.Nullable<byte> value);
+    partial void OnRegionIDChanging(System.Nullable<int> value);
     partial void OnRegionIDChanged();
-    partial void OnRequestorTypeIDChanging(System.Nullable<byte> value);
+    partial void OnRequestorTypeIDChanging(System.Nullable<int> value);
     partial void OnRequestorTypeIDChanged();
     #endregion
 		
@@ -1762,8 +2237,8 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegionID", DbType="TinyInt")]
-		public System.Nullable<byte> RegionID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegionID", DbType="Int")]
+		public System.Nullable<int> RegionID
 		{
 			get
 			{
@@ -1786,8 +2261,8 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorTypeID", DbType="TinyInt")]
-		public System.Nullable<byte> RequestorTypeID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorTypeID", DbType="Int")]
+		public System.Nullable<int> RequestorTypeID
 		{
 			get
 			{
@@ -1889,7 +2364,7 @@ namespace SasquatchCAIRS
 					}
 					else
 					{
-						this._RegionID = default(Nullable<byte>);
+						this._RegionID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Region");
 				}
@@ -1957,7 +2432,7 @@ namespace SasquatchCAIRS
 					}
 					else
 					{
-						this._RequestorTypeID = default(Nullable<byte>);
+						this._RequestorTypeID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("RequestorType");
 				}
@@ -2049,7 +2524,7 @@ namespace SasquatchCAIRS
 		
 		private EntityRef<Request> _Request;
 		
-		private EntityRef<UserInfo> _UserInfo;
+		private EntityRef<UserProfile> _UserProfile;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2068,7 +2543,7 @@ namespace SasquatchCAIRS
 		public AuditLog()
 		{
 			this._Request = default(EntityRef<Request>);
-			this._UserInfo = default(EntityRef<UserInfo>);
+			this._UserProfile = default(EntityRef<UserProfile>);
 			OnCreated();
 		}
 		
@@ -2107,7 +2582,7 @@ namespace SasquatchCAIRS
 			{
 				if ((this._UserID != value))
 				{
-					if (this._UserInfo.HasLoadedOrAssignedValue)
+					if (this._UserProfile.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
@@ -2194,36 +2669,36 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserInfo_AuditLog", Storage="_UserInfo", ThisKey="UserID", OtherKey="UserID", IsForeignKey=true)]
-		public UserInfo UserInfo
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_AuditLog", Storage="_UserProfile", ThisKey="UserID", OtherKey="UserId", IsForeignKey=true)]
+		public UserProfile UserProfile
 		{
 			get
 			{
-				return this._UserInfo.Entity;
+				return this._UserProfile.Entity;
 			}
 			set
 			{
-				UserInfo previousValue = this._UserInfo.Entity;
+				UserProfile previousValue = this._UserProfile.Entity;
 				if (((previousValue != value) 
-							|| (this._UserInfo.HasLoadedOrAssignedValue == false)))
+							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._UserInfo.Entity = null;
+						this._UserProfile.Entity = null;
 						previousValue.AuditLogs.Remove(this);
 					}
-					this._UserInfo.Entity = value;
+					this._UserProfile.Entity = value;
 					if ((value != null))
 					{
 						value.AuditLogs.Add(this);
-						this._UserID = value.UserID;
+						this._UserID = value.UserId;
 					}
 					else
 					{
 						this._UserID = default(int);
 					}
-					this.SendPropertyChanged("UserInfo");
+					this.SendPropertyChanged("UserProfile");
 				}
 			}
 		}
@@ -2263,7 +2738,7 @@ namespace SasquatchCAIRS
 		
 		private EntityRef<Request> _Request;
 		
-		private EntityRef<UserInfo> _UserInfo;
+		private EntityRef<UserProfile> _UserProfile;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2280,7 +2755,7 @@ namespace SasquatchCAIRS
 		public RequestLock()
 		{
 			this._Request = default(EntityRef<Request>);
-			this._UserInfo = default(EntityRef<UserInfo>);
+			this._UserProfile = default(EntityRef<UserProfile>);
 			OnCreated();
 		}
 		
@@ -2319,7 +2794,7 @@ namespace SasquatchCAIRS
 			{
 				if ((this._UserID != value))
 				{
-					if (this._UserInfo.HasLoadedOrAssignedValue)
+					if (this._UserProfile.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
@@ -2386,36 +2861,36 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserInfo_RequestLock", Storage="_UserInfo", ThisKey="UserID", OtherKey="UserID", IsForeignKey=true)]
-		public UserInfo UserInfo
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_RequestLock", Storage="_UserProfile", ThisKey="UserID", OtherKey="UserId", IsForeignKey=true)]
+		public UserProfile UserProfile
 		{
 			get
 			{
-				return this._UserInfo.Entity;
+				return this._UserProfile.Entity;
 			}
 			set
 			{
-				UserInfo previousValue = this._UserInfo.Entity;
+				UserProfile previousValue = this._UserProfile.Entity;
 				if (((previousValue != value) 
-							|| (this._UserInfo.HasLoadedOrAssignedValue == false)))
+							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._UserInfo.Entity = null;
+						this._UserProfile.Entity = null;
 						previousValue.RequestLocks.Remove(this);
 					}
-					this._UserInfo.Entity = value;
+					this._UserProfile.Entity = value;
 					if ((value != null))
 					{
 						value.RequestLocks.Add(this);
-						this._UserID = value.UserID;
+						this._UserID = value.UserId;
 					}
 					else
 					{
 						this._UserID = default(int);
 					}
-					this.SendPropertyChanged("UserInfo");
+					this.SendPropertyChanged("UserProfile");
 				}
 			}
 		}
@@ -2441,132 +2916,188 @@ namespace SasquatchCAIRS
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.QuestionType")]
-	public partial class QuestionType : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserProfile")]
+	public partial class UserProfile : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private byte _QuestionTypeID;
+		private int _UserId;
 		
-		private string _Value;
+		private string _UserName;
 		
-		private string _Code;
+		private string _UserFullName;
 		
-		private bool _Active;
+		private string _UserEmail;
 		
-		private EntitySet<QuestionResponse> _QuestionResponses;
+		private bool _UserStatus;
+		
+		private EntitySet<AuditLog> _AuditLogs;
+		
+		private EntitySet<RequestLock> _RequestLocks;
+		
+		private EntitySet<UserGroups> _UserGroups;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnQuestionTypeIDChanging(byte value);
-    partial void OnQuestionTypeIDChanged();
-    partial void OnValueChanging(string value);
-    partial void OnValueChanged();
-    partial void OnCodeChanging(string value);
-    partial void OnCodeChanged();
-    partial void OnActiveChanging(bool value);
-    partial void OnActiveChanged();
+    partial void OnUserIdChanging(int value);
+    partial void OnUserIdChanged();
+    partial void OnUserNameChanging(string value);
+    partial void OnUserNameChanged();
+    partial void OnUserFullNameChanging(string value);
+    partial void OnUserFullNameChanged();
+    partial void OnUserEmailChanging(string value);
+    partial void OnUserEmailChanged();
+    partial void OnUserStatusChanging(bool value);
+    partial void OnUserStatusChanged();
     #endregion
 		
-		public QuestionType()
+		public UserProfile()
 		{
-			this._QuestionResponses = new EntitySet<QuestionResponse>(new Action<QuestionResponse>(this.attach_QuestionResponses), new Action<QuestionResponse>(this.detach_QuestionResponses));
+			this._AuditLogs = new EntitySet<AuditLog>(new Action<AuditLog>(this.attach_AuditLogs), new Action<AuditLog>(this.detach_AuditLogs));
+			this._RequestLocks = new EntitySet<RequestLock>(new Action<RequestLock>(this.attach_RequestLocks), new Action<RequestLock>(this.detach_RequestLocks));
+			this._UserGroups = new EntitySet<UserGroups>(new Action<UserGroups>(this.attach_UserGroups), new Action<UserGroups>(this.detach_UserGroups));
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionTypeID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public byte QuestionTypeID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int UserId
 		{
 			get
 			{
-				return this._QuestionTypeID;
+				return this._UserId;
 			}
 			set
 			{
-				if ((this._QuestionTypeID != value))
+				if ((this._UserId != value))
 				{
-					this.OnQuestionTypeIDChanging(value);
+					this.OnUserIdChanging(value);
 					this.SendPropertyChanging();
-					this._QuestionTypeID = value;
-					this.SendPropertyChanged("QuestionTypeID");
-					this.OnQuestionTypeIDChanged();
+					this._UserId = value;
+					this.SendPropertyChanged("UserId");
+					this.OnUserIdChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
-		public string Value
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(56) NOT NULL", CanBeNull=false)]
+		public string UserName
 		{
 			get
 			{
-				return this._Value;
+				return this._UserName;
 			}
 			set
 			{
-				if ((this._Value != value))
+				if ((this._UserName != value))
 				{
-					this.OnValueChanging(value);
+					this.OnUserNameChanging(value);
 					this.SendPropertyChanging();
-					this._Value = value;
-					this.SendPropertyChanged("Value");
-					this.OnValueChanged();
+					this._UserName = value;
+					this.SendPropertyChanged("UserName");
+					this.OnUserNameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
-		public string Code
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserFullName", DbType="NVarChar(MAX)")]
+		public string UserFullName
 		{
 			get
 			{
-				return this._Code;
+				return this._UserFullName;
 			}
 			set
 			{
-				if ((this._Code != value))
+				if ((this._UserFullName != value))
 				{
-					this.OnCodeChanging(value);
+					this.OnUserFullNameChanging(value);
 					this.SendPropertyChanging();
-					this._Code = value;
-					this.SendPropertyChanged("Code");
-					this.OnCodeChanged();
+					this._UserFullName = value;
+					this.SendPropertyChanged("UserFullName");
+					this.OnUserFullNameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
-		public bool Active
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserEmail", DbType="NVarChar(MAX)")]
+		public string UserEmail
 		{
 			get
 			{
-				return this._Active;
+				return this._UserEmail;
 			}
 			set
 			{
-				if ((this._Active != value))
+				if ((this._UserEmail != value))
 				{
-					this.OnActiveChanging(value);
+					this.OnUserEmailChanging(value);
 					this.SendPropertyChanging();
-					this._Active = value;
-					this.SendPropertyChanged("Active");
-					this.OnActiveChanged();
+					this._UserEmail = value;
+					this.SendPropertyChanged("UserEmail");
+					this.OnUserEmailChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionType_QuestionResponse", Storage="_QuestionResponses", ThisKey="QuestionTypeID", OtherKey="QuestionTypeID")]
-		public EntitySet<QuestionResponse> QuestionResponses
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserStatus", DbType="Bit NOT NULL")]
+		public bool UserStatus
 		{
 			get
 			{
-				return this._QuestionResponses;
+				return this._UserStatus;
 			}
 			set
 			{
-				this._QuestionResponses.Assign(value);
+				if ((this._UserStatus != value))
+				{
+					this.OnUserStatusChanging(value);
+					this.SendPropertyChanging();
+					this._UserStatus = value;
+					this.SendPropertyChanged("UserStatus");
+					this.OnUserStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_AuditLog", Storage="_AuditLogs", ThisKey="UserId", OtherKey="UserID")]
+		public EntitySet<AuditLog> AuditLogs
+		{
+			get
+			{
+				return this._AuditLogs;
+			}
+			set
+			{
+				this._AuditLogs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_RequestLock", Storage="_RequestLocks", ThisKey="UserId", OtherKey="UserID")]
+		public EntitySet<RequestLock> RequestLocks
+		{
+			get
+			{
+				return this._RequestLocks;
+			}
+			set
+			{
+				this._RequestLocks.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserGroups", Storage="_UserGroups", ThisKey="UserId", OtherKey="UserID")]
+		public EntitySet<UserGroups> UserGroups
+		{
+			get
+			{
+				return this._UserGroups;
+			}
+			set
+			{
+				this._UserGroups.Assign(value);
 			}
 		}
 		
@@ -2590,145 +3121,187 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		private void attach_QuestionResponses(QuestionResponse entity)
+		private void attach_AuditLogs(AuditLog entity)
 		{
 			this.SendPropertyChanging();
-			entity.QuestionType = this;
+			entity.UserProfile = this;
 		}
 		
-		private void detach_QuestionResponses(QuestionResponse entity)
+		private void detach_AuditLogs(AuditLog entity)
 		{
 			this.SendPropertyChanging();
-			entity.QuestionType = null;
+			entity.UserProfile = null;
+		}
+		
+		private void attach_RequestLocks(RequestLock entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = this;
+		}
+		
+		private void detach_RequestLocks(RequestLock entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = null;
+		}
+		
+		private void attach_UserGroups(UserGroups entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = this;
+		}
+		
+		private void detach_UserGroups(UserGroups entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = null;
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TumourGroup")]
-	public partial class TumourGroup : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserGroups")]
+	public partial class UserGroups : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private byte _TumourGroupID;
+		private int _GroupID;
 		
-		private string _Value;
+		private int _UserID;
 		
-		private string _Code;
+		private EntityRef<UserGroup> _UserGroup;
 		
-		private bool _Active;
-		
-		private EntitySet<QuestionResponse> _QuestionResponses;
+		private EntityRef<UserProfile> _UserProfile;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnTumourGroupIDChanging(byte value);
-    partial void OnTumourGroupIDChanged();
-    partial void OnValueChanging(string value);
-    partial void OnValueChanged();
-    partial void OnCodeChanging(string value);
-    partial void OnCodeChanged();
-    partial void OnActiveChanging(bool value);
-    partial void OnActiveChanged();
+    partial void OnGroupIDChanging(int value);
+    partial void OnGroupIDChanged();
+    partial void OnUserIDChanging(int value);
+    partial void OnUserIDChanged();
     #endregion
 		
-		public TumourGroup()
+		public UserGroups()
 		{
-			this._QuestionResponses = new EntitySet<QuestionResponse>(new Action<QuestionResponse>(this.attach_QuestionResponses), new Action<QuestionResponse>(this.detach_QuestionResponses));
+			this._UserGroup = default(EntityRef<UserGroup>);
+			this._UserProfile = default(EntityRef<UserProfile>);
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TumourGroupID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public byte TumourGroupID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int GroupID
 		{
 			get
 			{
-				return this._TumourGroupID;
+				return this._GroupID;
 			}
 			set
 			{
-				if ((this._TumourGroupID != value))
+				if ((this._GroupID != value))
 				{
-					this.OnTumourGroupIDChanging(value);
+					if (this._UserGroup.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGroupIDChanging(value);
 					this.SendPropertyChanging();
-					this._TumourGroupID = value;
-					this.SendPropertyChanged("TumourGroupID");
-					this.OnTumourGroupIDChanged();
+					this._GroupID = value;
+					this.SendPropertyChanged("GroupID");
+					this.OnGroupIDChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
-		public string Value
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UserID
 		{
 			get
 			{
-				return this._Value;
+				return this._UserID;
 			}
 			set
 			{
-				if ((this._Value != value))
+				if ((this._UserID != value))
 				{
-					this.OnValueChanging(value);
+					if (this._UserProfile.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserIDChanging(value);
 					this.SendPropertyChanging();
-					this._Value = value;
-					this.SendPropertyChanged("Value");
-					this.OnValueChanged();
+					this._UserID = value;
+					this.SendPropertyChanged("UserID");
+					this.OnUserIDChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
-		public string Code
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserGroup_UserGroups", Storage="_UserGroup", ThisKey="GroupID", OtherKey="GroupID", IsForeignKey=true)]
+		public UserGroup UserGroup
 		{
 			get
 			{
-				return this._Code;
+				return this._UserGroup.Entity;
 			}
 			set
 			{
-				if ((this._Code != value))
+				UserGroup previousValue = this._UserGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._UserGroup.HasLoadedOrAssignedValue == false)))
 				{
-					this.OnCodeChanging(value);
 					this.SendPropertyChanging();
-					this._Code = value;
-					this.SendPropertyChanged("Code");
-					this.OnCodeChanged();
+					if ((previousValue != null))
+					{
+						this._UserGroup.Entity = null;
+						previousValue.UserGroups.Remove(this);
+					}
+					this._UserGroup.Entity = value;
+					if ((value != null))
+					{
+						value.UserGroups.Add(this);
+						this._GroupID = value.GroupID;
+					}
+					else
+					{
+						this._GroupID = default(int);
+					}
+					this.SendPropertyChanged("UserGroup");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
-		public bool Active
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserGroups", Storage="_UserProfile", ThisKey="UserID", OtherKey="UserId", IsForeignKey=true)]
+		public UserProfile UserProfile
 		{
 			get
 			{
-				return this._Active;
+				return this._UserProfile.Entity;
 			}
 			set
 			{
-				if ((this._Active != value))
+				UserProfile previousValue = this._UserProfile.Entity;
+				if (((previousValue != value) 
+							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
 				{
-					this.OnActiveChanging(value);
 					this.SendPropertyChanging();
-					this._Active = value;
-					this.SendPropertyChanged("Active");
-					this.OnActiveChanged();
+					if ((previousValue != null))
+					{
+						this._UserProfile.Entity = null;
+						previousValue.UserGroups.Remove(this);
+					}
+					this._UserProfile.Entity = value;
+					if ((value != null))
+					{
+						value.UserGroups.Add(this);
+						this._UserID = value.UserId;
+					}
+					else
+					{
+						this._UserID = default(int);
+					}
+					this.SendPropertyChanged("UserProfile");
 				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TumourGroup_QuestionResponse", Storage="_QuestionResponses", ThisKey="TumourGroupID", OtherKey="TumourGroupID")]
-		public EntitySet<QuestionResponse> QuestionResponses
-		{
-			get
-			{
-				return this._QuestionResponses;
-			}
-			set
-			{
-				this._QuestionResponses.Assign(value);
 			}
 		}
 		
@@ -2750,18 +3323,6 @@ namespace SasquatchCAIRS
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_QuestionResponses(QuestionResponse entity)
-		{
-			this.SendPropertyChanging();
-			entity.TumourGroup = this;
-		}
-		
-		private void detach_QuestionResponses(QuestionResponse entity)
-		{
-			this.SendPropertyChanging();
-			entity.TumourGroup = null;
 		}
 	}
 	
@@ -2960,712 +3521,6 @@ namespace SasquatchCAIRS
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserInfo")]
-	public partial class UserInfo : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _UserID;
-		
-		private string _UserName;
-		
-		private string _UserEmail;
-		
-		private bool _UserStatus;
-		
-		private EntitySet<AuditLog> _AuditLogs;
-		
-		private EntitySet<RequestLock> _RequestLocks;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnUserIDChanging(int value);
-    partial void OnUserIDChanged();
-    partial void OnUserNameChanging(string value);
-    partial void OnUserNameChanged();
-    partial void OnUserEmailChanging(string value);
-    partial void OnUserEmailChanged();
-    partial void OnUserStatusChanging(bool value);
-    partial void OnUserStatusChanged();
-    #endregion
-		
-		public UserInfo()
-		{
-			this._AuditLogs = new EntitySet<AuditLog>(new Action<AuditLog>(this.attach_AuditLogs), new Action<AuditLog>(this.detach_AuditLogs));
-			this._RequestLocks = new EntitySet<RequestLock>(new Action<RequestLock>(this.attach_RequestLocks), new Action<RequestLock>(this.detach_RequestLocks));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int UserID
-		{
-			get
-			{
-				return this._UserID;
-			}
-			set
-			{
-				if ((this._UserID != value))
-				{
-					this.OnUserIDChanging(value);
-					this.SendPropertyChanging();
-					this._UserID = value;
-					this.SendPropertyChanged("UserID");
-					this.OnUserIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="Char(20) NOT NULL", CanBeNull=false)]
-		public string UserName
-		{
-			get
-			{
-				return this._UserName;
-			}
-			set
-			{
-				if ((this._UserName != value))
-				{
-					this.OnUserNameChanging(value);
-					this.SendPropertyChanging();
-					this._UserName = value;
-					this.SendPropertyChanged("UserName");
-					this.OnUserNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserEmail", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
-		public string UserEmail
-		{
-			get
-			{
-				return this._UserEmail;
-			}
-			set
-			{
-				if ((this._UserEmail != value))
-				{
-					this.OnUserEmailChanging(value);
-					this.SendPropertyChanging();
-					this._UserEmail = value;
-					this.SendPropertyChanged("UserEmail");
-					this.OnUserEmailChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserStatus", DbType="Bit NOT NULL")]
-		public bool UserStatus
-		{
-			get
-			{
-				return this._UserStatus;
-			}
-			set
-			{
-				if ((this._UserStatus != value))
-				{
-					this.OnUserStatusChanging(value);
-					this.SendPropertyChanging();
-					this._UserStatus = value;
-					this.SendPropertyChanged("UserStatus");
-					this.OnUserStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserInfo_AuditLog", Storage="_AuditLogs", ThisKey="UserID", OtherKey="UserID")]
-		public EntitySet<AuditLog> AuditLogs
-		{
-			get
-			{
-				return this._AuditLogs;
-			}
-			set
-			{
-				this._AuditLogs.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserInfo_RequestLock", Storage="_RequestLocks", ThisKey="UserID", OtherKey="UserID")]
-		public EntitySet<RequestLock> RequestLocks
-		{
-			get
-			{
-				return this._RequestLocks;
-			}
-			set
-			{
-				this._RequestLocks.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_AuditLogs(AuditLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserInfo = this;
-		}
-		
-		private void detach_AuditLogs(AuditLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserInfo = null;
-		}
-		
-		private void attach_RequestLocks(RequestLock entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserInfo = this;
-		}
-		
-		private void detach_RequestLocks(RequestLock entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserInfo = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserGroup")]
-	public partial class UserGroup : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private byte _GroupID;
-		
-		private string _Value;
-		
-		private string _Code;
-		
-		private bool _Active;
-		
-		private EntitySet<UserGroups> _UserGroups;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnGroupIDChanging(byte value);
-    partial void OnGroupIDChanged();
-    partial void OnValueChanging(string value);
-    partial void OnValueChanged();
-    partial void OnCodeChanging(string value);
-    partial void OnCodeChanged();
-    partial void OnActiveChanging(bool value);
-    partial void OnActiveChanged();
-    #endregion
-		
-		public UserGroup()
-		{
-			this._UserGroups = new EntitySet<UserGroups>(new Action<UserGroups>(this.attach_UserGroups), new Action<UserGroups>(this.detach_UserGroups));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", AutoSync=AutoSync.OnInsert, DbType="TinyInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public byte GroupID
-		{
-			get
-			{
-				return this._GroupID;
-			}
-			set
-			{
-				if ((this._GroupID != value))
-				{
-					this.OnGroupIDChanging(value);
-					this.SendPropertyChanging();
-					this._GroupID = value;
-					this.SendPropertyChanged("GroupID");
-					this.OnGroupIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
-		public string Value
-		{
-			get
-			{
-				return this._Value;
-			}
-			set
-			{
-				if ((this._Value != value))
-				{
-					this.OnValueChanging(value);
-					this.SendPropertyChanging();
-					this._Value = value;
-					this.SendPropertyChanged("Value");
-					this.OnValueChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
-		public string Code
-		{
-			get
-			{
-				return this._Code;
-			}
-			set
-			{
-				if ((this._Code != value))
-				{
-					this.OnCodeChanging(value);
-					this.SendPropertyChanging();
-					this._Code = value;
-					this.SendPropertyChanged("Code");
-					this.OnCodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
-		public bool Active
-		{
-			get
-			{
-				return this._Active;
-			}
-			set
-			{
-				if ((this._Active != value))
-				{
-					this.OnActiveChanging(value);
-					this.SendPropertyChanging();
-					this._Active = value;
-					this.SendPropertyChanged("Active");
-					this.OnActiveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserGroup_UserGroups", Storage="_UserGroups", ThisKey="GroupID", OtherKey="GroupID")]
-		public EntitySet<UserGroups> UserGroups
-		{
-			get
-			{
-				return this._UserGroups;
-			}
-			set
-			{
-				this._UserGroups.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_UserGroups(UserGroups entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserGroup = this;
-		}
-		
-		private void detach_UserGroups(UserGroups entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserGroup = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserGroups")]
-	public partial class UserGroups : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private byte _GroupID;
-		
-		private int _UserID;
-		
-		private EntityRef<UserGroup> _UserGroup;
-		
-		private EntityRef<UserProfile> _UserProfile;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnGroupIDChanging(byte value);
-    partial void OnGroupIDChanged();
-    partial void OnUserIDChanging(int value);
-    partial void OnUserIDChanged();
-    #endregion
-		
-		public UserGroups()
-		{
-			this._UserGroup = default(EntityRef<UserGroup>);
-			this._UserProfile = default(EntityRef<UserProfile>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupID", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
-		public byte GroupID
-		{
-			get
-			{
-				return this._GroupID;
-			}
-			set
-			{
-				if ((this._GroupID != value))
-				{
-					if (this._UserGroup.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnGroupIDChanging(value);
-					this.SendPropertyChanging();
-					this._GroupID = value;
-					this.SendPropertyChanged("GroupID");
-					this.OnGroupIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int UserID
-		{
-			get
-			{
-				return this._UserID;
-			}
-			set
-			{
-				if ((this._UserID != value))
-				{
-					if (this._UserProfile.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnUserIDChanging(value);
-					this.SendPropertyChanging();
-					this._UserID = value;
-					this.SendPropertyChanged("UserID");
-					this.OnUserIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserGroup_UserGroups", Storage="_UserGroup", ThisKey="GroupID", OtherKey="GroupID", IsForeignKey=true)]
-		public UserGroup UserGroup
-		{
-			get
-			{
-				return this._UserGroup.Entity;
-			}
-			set
-			{
-				UserGroup previousValue = this._UserGroup.Entity;
-				if (((previousValue != value) 
-							|| (this._UserGroup.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._UserGroup.Entity = null;
-						previousValue.UserGroups.Remove(this);
-					}
-					this._UserGroup.Entity = value;
-					if ((value != null))
-					{
-						value.UserGroups.Add(this);
-						this._GroupID = value.GroupID;
-					}
-					else
-					{
-						this._GroupID = default(byte);
-					}
-					this.SendPropertyChanged("UserGroup");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserGroups", Storage="_UserProfile", ThisKey="UserID", OtherKey="UserId", IsForeignKey=true)]
-		public UserProfile UserProfile
-		{
-			get
-			{
-				return this._UserProfile.Entity;
-			}
-			set
-			{
-				UserProfile previousValue = this._UserProfile.Entity;
-				if (((previousValue != value) 
-							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._UserProfile.Entity = null;
-						previousValue.UserGroups.Remove(this);
-					}
-					this._UserProfile.Entity = value;
-					if ((value != null))
-					{
-						value.UserGroups.Add(this);
-						this._UserID = value.UserId;
-					}
-					else
-					{
-						this._UserID = default(int);
-					}
-					this.SendPropertyChanged("UserProfile");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserProfile")]
-	public partial class UserProfile : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _UserId;
-		
-		private string _UserName;
-		
-		private string _UserFullName;
-		
-		private string _UserEmail;
-		
-		private bool _UserStatus;
-		
-		private EntitySet<UserGroups> _UserGroups;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnUserIdChanging(int value);
-    partial void OnUserIdChanged();
-    partial void OnUserNameChanging(string value);
-    partial void OnUserNameChanged();
-    partial void OnUserFullNameChanging(string value);
-    partial void OnUserFullNameChanged();
-    partial void OnUserEmailChanging(string value);
-    partial void OnUserEmailChanged();
-    partial void OnUserStatusChanging(bool value);
-    partial void OnUserStatusChanged();
-    #endregion
-		
-		public UserProfile()
-		{
-			this._UserGroups = new EntitySet<UserGroups>(new Action<UserGroups>(this.attach_UserGroups), new Action<UserGroups>(this.detach_UserGroups));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int UserId
-		{
-			get
-			{
-				return this._UserId;
-			}
-			set
-			{
-				if ((this._UserId != value))
-				{
-					this.OnUserIdChanging(value);
-					this.SendPropertyChanging();
-					this._UserId = value;
-					this.SendPropertyChanged("UserId");
-					this.OnUserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(56) NOT NULL", CanBeNull=false)]
-		public string UserName
-		{
-			get
-			{
-				return this._UserName;
-			}
-			set
-			{
-				if ((this._UserName != value))
-				{
-					this.OnUserNameChanging(value);
-					this.SendPropertyChanging();
-					this._UserName = value;
-					this.SendPropertyChanged("UserName");
-					this.OnUserNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserFullName", DbType="NVarChar(MAX)")]
-		public string UserFullName
-		{
-			get
-			{
-				return this._UserFullName;
-			}
-			set
-			{
-				if ((this._UserFullName != value))
-				{
-					this.OnUserFullNameChanging(value);
-					this.SendPropertyChanging();
-					this._UserFullName = value;
-					this.SendPropertyChanged("UserFullName");
-					this.OnUserFullNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserEmail", DbType="NVarChar(MAX)")]
-		public string UserEmail
-		{
-			get
-			{
-				return this._UserEmail;
-			}
-			set
-			{
-				if ((this._UserEmail != value))
-				{
-					this.OnUserEmailChanging(value);
-					this.SendPropertyChanging();
-					this._UserEmail = value;
-					this.SendPropertyChanged("UserEmail");
-					this.OnUserEmailChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserStatus", DbType="Bit NOT NULL")]
-		public bool UserStatus
-		{
-			get
-			{
-				return this._UserStatus;
-			}
-			set
-			{
-				if ((this._UserStatus != value))
-				{
-					this.OnUserStatusChanging(value);
-					this.SendPropertyChanging();
-					this._UserStatus = value;
-					this.SendPropertyChanged("UserStatus");
-					this.OnUserStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserGroups", Storage="_UserGroups", ThisKey="UserId", OtherKey="UserID")]
-		public EntitySet<UserGroups> UserGroups
-		{
-			get
-			{
-				return this._UserGroups;
-			}
-			set
-			{
-				this._UserGroups.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_UserGroups(UserGroups entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserProfile = this;
-		}
-		
-		private void detach_UserGroups(UserGroups entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserProfile = null;
 		}
 	}
 }
