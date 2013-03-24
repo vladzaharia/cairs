@@ -127,7 +127,6 @@
                     }
                     @item.value
                 </label>
-                <br/>
             }
         </div>
 
@@ -151,7 +150,6 @@
                     }
                     @item.value
                 </label>
-                <br/>
             }
         </div>
 
@@ -162,19 +160,16 @@
 
         <div>
         @foreach (var severity in Enum.GetValues(typeof(Constants.Severity))) {
-            <label class="checkboxlist">
-                @if (!String.IsNullOrEmpty(Model.severity) && Model.severity.Contains(@severity.ToString())) {
-                    <label class="checkbox" for="severity-@severity">
-                        <input type="checkbox" value="@severity" id="severity-@severity" name="severity" checked="checked">
-                        @severity
-                    </label>
-                } else {
-                    <label class="checkbox" for="severity-@severity">
-                        <input type="checkbox" value="@severity" id="severity-@severity" name="severity">
-                        @severity
-                    </label>
-                }
-            </label>
+                <label class="checkbox inline">
+                    @if (!String.IsNullOrEmpty(Model.consequence) && 
+                         Model.consequence.Contains(@severity.ToString())) {
+                        <input type="checkbox" name="consequence" value="@severity" checked/>
+                    } else
+                    {
+                        <input type="checkbox" name="consequence" value="@severity" />  
+                    }
+                    @severity
+                </label>
             }
         </div>
 
@@ -187,7 +182,6 @@
             @foreach (var consequence in Enum.GetValues(
                 typeof(Constants.Consequence))) {
                 <label class="checkbox inline">
-                    
                     @if (!String.IsNullOrEmpty(Model.consequence) && 
                          Model.consequence.Contains(@consequence.ToString())) {
                         <input type="checkbox" name="consequence" value="@consequence" checked/>
@@ -207,30 +201,3 @@
 
     </fieldset>
 }
-
-    
-<script type="text/javascript">
-    // TODO validate that there is at LEAST one value filled in
-    $('#advanced-search-form').submit(function() {
-        var name1 = $('input[name="name1"]', this);
-        if (name1.value().length == 0) {
-            return false;
-        }
-    });
-
-    @*$(function() {
-        $('#search-submit-button').click(function (e) {
-            $("#warning_modal_text").text("@Constants.UIString.Response.EMPTY_QUERY");
-            e.preventDefault();
-            var validateFields = $('name="keywords"', this);
-            //invalidFields = []; // store of empty fields
-            //for (i = 0; i < validateFields.length; i++) {var input = $('#' +validateFields[i]); 
-            if (validateFields.length == 0) {
-                $("#warning_modal_text").text("@Constants.UIString.Response.EMPTY_QUERY");
-                return false;
-            }
-            return true;
-        });
-    }); *@
-    
-</script>
