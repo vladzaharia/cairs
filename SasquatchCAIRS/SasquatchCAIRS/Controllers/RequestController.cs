@@ -8,12 +8,14 @@ using SasquatchCAIRS.Models.ServiceSystem;
 
 namespace SasquatchCAIRS.Controllers {
     public class RequestController : Controller {
+        private CAIRSDataContext _db = new CAIRSDataContext();
+
         //
         // GET: /Request/Details/{id}
 
-        [Authorize(Roles = "Viewer")]
+        [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
         public ActionResult Details(long id) {
-            var db = new CAIRSDataContext();
+            
             RequestManagementController rmc = new RequestManagementController();
             RequestLockController rlc = new RequestLockController();
             UserController upc = new UserController();
@@ -70,9 +72,45 @@ namespace SasquatchCAIRS.Controllers {
                 }
             }
 
-            ViewBag.TimeSpent = timeSpent; 
+            ViewBag.TimeSpent = timeSpent;
+            ViewBag.DataContext = _db;
 
             return View(request);
+        }
+
+        //
+        // GET: /Request/Unlock/{id}
+
+        [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
+        public ActionResult Unlock(long id) {
+            var locks = _db.RequestLocks.Where(rl => rl.RequestID == id);
+
+            foreach (RequestLock lck in locks) {
+                _db.RequestLocks.DeleteOnSubmit(lck);
+            }
+
+            _db.SubmitChanges();
+
+            return RedirectToAction("Index", "Home", new {
+                status = Constants.URLStatus.Unlocked
+            });
+        }
+
+        //
+        // GET: /Request/Delete/{id}
+
+        [Authorize(Roles = Constants.Roles.REQUEST_EDITOR)]
+        public ActionResult Delete(long id) {
+            var request = _db.Requests.FirstOrDefault(r => r.RequestID == id);
+
+            if (request != null) {
+                request.RequestStatus = (byte) Constants.RequestStatus.Invalid;
+                _db.SubmitChanges();
+            }
+
+            return RedirectToAction("Index", "Home", new {
+                status = Constants.URLStatus.Deleted
+            });
         }
     }
 }

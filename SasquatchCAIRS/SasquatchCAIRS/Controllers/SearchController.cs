@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Security;
 using SasquatchCAIRS.Controllers.ServiceSystem;
 using SasquatchCAIRS.Models.SearchSystem;
 using SasquatchCAIRS.Models;
 
 namespace SasquatchCAIRS.Controllers {
+    /// <summary>
+    /// Controller responsible for executing searches and returing the relevant requests
+    /// </summary>
     public class SearchController : Controller {
 
         private DropdownController _dropdownController =
@@ -26,6 +30,14 @@ namespace SasquatchCAIRS.Controllers {
             SearchCriteria sc = new SearchCriteria();
             sc.keywordString = keywords;
             Session["criteria"] = sc;
+
+            long requestId;
+            if (long.TryParse(keywords, out requestId)) {
+                return RedirectToAction("Details", "Request", new {
+                    id = requestId
+                });
+            }
+
             List<Request> list = searchCriteriaQuery(sc);
             fillUpKeywordDict(list);
             ViewBag.ResultSetSize = list.Count;
@@ -42,12 +54,7 @@ namespace SasquatchCAIRS.Controllers {
             SearchCriteria criteria = new SearchCriteria();
             Session["criteria"] = null;
 
-            ViewBag.TumorGroups =
-                _dropdownController.getActiveEntries(
-                    Constants.DropdownTable.TumourGroup).OrderBy(tg => tg.value);
-            ViewBag.QuestionType =
-                _dropdownController.getActiveEntries(
-                    Constants.DropdownTable.QuestionType).OrderBy(qt => qt.value);
+            setDropdownViewbags();
 
             return View(criteria);
         }
@@ -69,6 +76,7 @@ namespace SasquatchCAIRS.Controllers {
             if (DateTime.TryParse(form["completionTime"], out temp)) {
                 criteria.completionTime = temp;
             }
+            criteria.keywordString = form["keywords"];
             criteria.requestStatus = form["status"];
             criteria.severity = form["severity"];
             criteria.consequence = form["consequence"];
@@ -78,6 +86,12 @@ namespace SasquatchCAIRS.Controllers {
             criteria.requestorLastName = form["requestorLast"];
             criteria.patientFirstName = form["patientFirst"];
             criteria.patientLastName = form["patientLast"];
+            if (isEmptySearchCriteria(criteria)) {
+                ViewBag.emptyForm = true;
+                setDropdownViewbags();
+                return View("Advanced", criteria);
+            }
+
             Session["criteria"] = criteria;
 
 
@@ -95,26 +109,47 @@ namespace SasquatchCAIRS.Controllers {
         [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Modify() {
 
-            ViewBag.TumorGroups =
-                _dropdownController.getActiveEntries(
-                    Constants.DropdownTable.TumourGroup).OrderBy(tg => tg.value);
-            ViewBag.QuestionType =
-                _dropdownController.getActiveEntries(
-                    Constants.DropdownTable.QuestionType).OrderBy(qt => qt.value);
+            setDropdownViewbags();
 
             SearchCriteria criteria = (SearchCriteria) Session["criteria"];
             return View("Advanced", criteria);
         }
 
+        private bool isEmptySearchCriteria(SearchCriteria sc) {
+            if (!String.IsNullOrEmpty(sc.keywordString) || !String.IsNullOrEmpty(sc.consequence) ||
+                !String.IsNullOrEmpty(sc.patientFirstName) || !String.IsNullOrEmpty(sc.patientLastName)
+                || !String.IsNullOrEmpty(sc.questionType) || !String.IsNullOrEmpty(sc.requestStatus)
+                || !String.IsNullOrEmpty(sc.requestorFirstName) || !String.IsNullOrEmpty(sc.requestorLastName)
+                || !String.IsNullOrEmpty(sc.severity) || !String.IsNullOrEmpty(sc.tumorGroup)) {
+                return false;
+            }
+            if (sc.startTime.CompareTo(new DateTime()) != 0 || sc.completionTime.CompareTo(new DateTime()) != 0) {
+                return false;
+            }
+            return true;
+        }
+
+        private void setDropdownViewbags() {
+            ViewBag.TumorGroups =
+                _dropdownController.getEntries(
+                Constants.DropdownTable.TumourGroup).OrderBy(tg => tg.value);
+            ViewBag.QuestionType =
+                _dropdownController.getEntries(
+                    Constants.DropdownTable.QuestionType).OrderBy(qt => qt.value);
+        }
+        /// <summary>
+        /// Clean up managed and unmanaged resources
+        /// </summary>
+        /// <param name="disposing">Scenario to operate under</param>
         /// <summary>
         /// Converts an input String into a list of Int, used for Question Type ID and Tumour Group ID
         /// </summary>
         /// <param name="input">Input String</param>
         /// <param name="delimiters">Delimiter inside string</param>
         /// <returns>Corresponding List of Integers</returns>
-        private List<int> stringToIntList(string input, string delimiters) {
+        private List<int> typeIDStringtoList(string input, string delimiters) {
             string[] arr = input.Split(delimiters.ToCharArray());
-            return arr.Select(int.Parse).ToList();
+            return arr.Select(s => int.Parse(s)).ToList();
         }
 
         /// <summary>
@@ -123,7 +158,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="input">Input string</param>
         /// <param name="delimiters">Delimiter inside the string</param>
         /// <returns>Corresponding List of Strings</returns>
-        private List<String> stringToStringList(string input, string delimiters) {
+        private List<String> keywordsToList(string input, string delimiters) {
             String[] stringArr = input.Split(delimiters.ToCharArray());
             return stringArr.Select(s => s.Trim()).ToList();
         }
@@ -151,21 +186,12 @@ namespace SasquatchCAIRS.Controllers {
             foreach (Request request in requests) {
                 List<string> kw =
                     (from kws in _db.Keywords
-                     join kqs in _db.KeywordQuestions 
+                     join kqs in _db.KeywordQuestions
                          on kws.KeywordID equals kqs.KeywordID
                      where kqs.RequestID == request.RequestID
                      select kws.KeywordValue)
                         .ToList();
                 keywords.Add(request.RequestID, kw);
-
-                //IQueryable<KeywordQuestion> keywordQuestions =
-                //    from keywordQuestion in _db.KeywordQuestions
-                //    where keywordQuestion.RequestID == request.RequestID
-                //    select keywordQuestion;
-                //keywords.Add(request.RequestID, (from keyword in _db.Keywords
-                //                                    join keywordQuestion in keywordQuestions
-                //                                    on keyword.KeywordID equals keywordQuestion.KeywordID
-                //                                    select keyword.KeywordValue).Distinct().ToList());
             }
             ViewBag.keywordDict = keywords;
         }
@@ -216,6 +242,14 @@ namespace SasquatchCAIRS.Controllers {
                     requests.Where(r => r.TimeClosed != null && (criteria.completionTime.CompareTo(r.TimeClosed) <= 0));
             }
 
+            // Set Criteria based on Users Role(s)
+            if (Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) {
+            } else if (String.IsNullOrEmpty(criteria.requestStatus) && Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
+                criteria.requestStatus = Enum.GetName(typeof(Constants.RequestStatus), Constants.RequestStatus.Completed)
+                    + "," + Enum.GetName(typeof(Constants.RequestStatus), Constants.RequestStatus.Open);
+            } else if (String.IsNullOrEmpty(criteria.requestStatus) && Roles.IsUserInRole(Constants.Roles.VIEWER)) {
+                criteria.requestStatus = Enum.GetName(typeof(Constants.RequestStatus), Constants.RequestStatus.Completed);
+            }
             // Filter on request status
             if (!String.IsNullOrEmpty(criteria.requestStatus)) {
                 requests =
@@ -243,7 +277,7 @@ namespace SasquatchCAIRS.Controllers {
                 questionResponses =
                     questionResponses.Where(
                         qr =>
-                        stringToIntList(criteria.tumorGroup, ",")
+                        typeIDStringtoList(criteria.tumorGroup, ",")
                             .Contains(qr.TumourGroup.TumourGroupID));
             }
 
@@ -252,7 +286,7 @@ namespace SasquatchCAIRS.Controllers {
                 questionResponses =
                     questionResponses.Where(
                         qr =>
-                        stringToIntList(criteria.questionType, ",")
+                        typeIDStringtoList(criteria.questionType, ",")
                             .Contains(qr.QuestionType.QuestionTypeID));
             }
 
@@ -263,7 +297,7 @@ namespace SasquatchCAIRS.Controllers {
                 // First we grab the keywords
                 IQueryable<Keyword> keywords = (from k in _db.Keywords
                                                 where
-                                                    stringToStringList(criteria.keywordString, ",")
+                                                    keywordsToList(criteria.keywordString, ",")
                                                     .Contains(k.KeywordValue)
                                                 select k);
 
@@ -288,4 +322,4 @@ namespace SasquatchCAIRS.Controllers {
         }
 
     }
-}   
+}
