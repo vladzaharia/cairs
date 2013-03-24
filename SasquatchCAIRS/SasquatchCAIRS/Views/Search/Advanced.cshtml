@@ -8,9 +8,13 @@
 
 <h2>@Constants.UIString.TitleText.ADVANCED_SEARCH</h2>
 
+@if (@ViewBag.emptyForm != null) {
+    <div class="message palette-danger-dark">@Constants.UIString.Response.EMPTY_QUERY</div>
+}
+
 @using (Html.BeginForm("Results", "Search", FormMethod.Post,
     new {
-        @class = "form advanced-search-div"
+        @class = "form advanced-search-form"
     })) {
     @Html.ValidationSummary(true)
 
@@ -30,7 +34,7 @@
         </div>
 
         <div>
-            @if (!Model.startTime.ToString(Constants.DATE_FORMAT)
+            @if (Model.startTime != null && !Model.startTime.ToString(Constants.DATE_FORMAT)
                        .Equals(Constants.EMPTY_DATE)) {
                 <input class="input-medium" name="startTime" id="startTime" type="date" 
                        value="@Model.startTime.ToString(Constants.DATE_FORMAT)" />    
@@ -86,9 +90,9 @@
 
         <div>
             <input type="text" class="input-medium" name="requestorFirst" 
-                   placeholder="First Name" value="@Model.requestorFirstName">
+                   placeholder="@Constants.UIString.FieldLabel.CALLER_FNAME" value="@Model.requestorFirstName">
             <input type="text" class="input-medium" name="requestorLast" 
-                   placeholder="Last Name" value="@Model.requestorLastName">
+                   placeholder="@Constants.UIString.FieldLabel.CALLER_LNAME" value="@Model.requestorLastName">
         </div>
 
         <div>
@@ -98,9 +102,9 @@
 
         <div>
             <input type="text" class="input-medium" name="patientFirst"
-                   placeholder="First Name" value="@Model.patientFirstName">
+                   placeholder="@Constants.UIString.FieldLabel.PATIENT_FNAME" value="@Model.patientFirstName">
             <input type="text" class="input-medium" name="patientLast" 
-                   placeholder="Last Name" value="@Model.patientLastName">
+                   placeholder="@Constants.UIString.FieldLabel.PATIENT_FNAME" value="@Model.patientLastName">
         </div>
 
         <div>
@@ -123,7 +127,6 @@
                     }
                     @item.value
                 </label>
-                <br/>
             }
         </div>
 
@@ -147,7 +150,6 @@
                     }
                     @item.value
                 </label>
-                <br/>
             }
         </div>
 
@@ -158,19 +160,16 @@
 
         <div>
         @foreach (var severity in Enum.GetValues(typeof(Constants.Severity))) {
-            <label class="checkboxlist">
-                @if (!String.IsNullOrEmpty(Model.severity) && Model.severity.Contains(@severity.ToString())) {
-                    <label class="checkbox" for="severity-@severity">
-                        <input type="checkbox" value="@severity" id="severity-@severity" name="severity" checked="checked">
-                        @severity
-                    </label>
-                } else {
-                    <label class="checkbox" for="severity-@severity">
-                        <input type="checkbox" value="@severity" id="severity-@severity" name="severity">
-                        @severity
-                    </label>
-                }
-            </label>
+                <label class="checkbox inline">
+                    @if (!String.IsNullOrEmpty(Model.consequence) && 
+                         Model.consequence.Contains(@severity.ToString())) {
+                        <input type="checkbox" name="consequence" value="@severity" checked/>
+                    } else
+                    {
+                        <input type="checkbox" name="consequence" value="@severity" />  
+                    }
+                    @severity
+                </label>
             }
         </div>
 
@@ -183,7 +182,6 @@
             @foreach (var consequence in Enum.GetValues(
                 typeof(Constants.Consequence))) {
                 <label class="checkbox inline">
-                    
                     @if (!String.IsNullOrEmpty(Model.consequence) && 
                          Model.consequence.Contains(@consequence.ToString())) {
                         <input type="checkbox" name="consequence" value="@consequence" checked/>
@@ -196,35 +194,10 @@
             }
         </div>
 
-        <p>
+        <div>
             <br />
-            <input class="btn" type="submit" value="@Constants.UIString.ButtonText.SEARCH" />
-
+            <input class="btn " type="submit" id="search-submit-button" value="@Constants.UIString.ButtonText.SEARCH" />
+        </div>
 
     </fieldset>
 }
-
-    
-<script type="text/javascript">
-    // TODO validate that there is at LEAST one value filled in
-
-    $('.advanced-search-div').submit(function() {
-
-        var validateFields = ['keywords']; // fields to validate
-        //invalidFields = []; // store of empty fields
-        for (i = 0; i < validateFields.length; i++) {
-            
-            var input = $('#' +validateFields[i]); 
-        if (input.val() == '') {
-            alert("empty fields");
-            return false;
-        }
-            
-    }
-    return true;
-    })
-            
-        
-  
-          
-</script>
