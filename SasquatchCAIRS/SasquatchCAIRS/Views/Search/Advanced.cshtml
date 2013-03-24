@@ -8,9 +8,13 @@
 
 <h2>@Constants.UIString.TitleText.ADVANCED_SEARCH</h2>
 
+@if (@ViewBag.emptyForm != null) {
+    <div class="message palette-danger-dark">@Constants.UIString.Response.EMPTY_QUERY</div>
+}
+
 @using (Html.BeginForm("Results", "Search", FormMethod.Post,
     new {
-        @class = "form advanced-search-div"
+        @class = "form advanced-search-form"
     })) {
     @Html.ValidationSummary(true)
 
@@ -30,7 +34,7 @@
         </div>
 
         <div>
-            @if (!Model.startTime.ToString(Constants.DATE_FORMAT)
+            @if (Model.startTime != null && !Model.startTime.ToString(Constants.DATE_FORMAT)
                        .Equals(Constants.EMPTY_DATE)) {
                 <input class="input-medium" name="startTime" id="startTime" type="date" 
                        value="@Model.startTime.ToString(Constants.DATE_FORMAT)" />    
@@ -196,10 +200,10 @@
             }
         </div>
 
-        <p>
+        <div>
             <br />
-            <input class="btn" type="submit" value="@Constants.UIString.ButtonText.SEARCH" />
-
+            <input class="btn " type="submit" id="search-submit-button" value="@Constants.UIString.ButtonText.SEARCH" />
+        </div>
 
     </fieldset>
 }
@@ -207,24 +211,26 @@
     
 <script type="text/javascript">
     // TODO validate that there is at LEAST one value filled in
-
-    $('.advanced-search-div').submit(function() {
-
-        var validateFields = ['keywords']; // fields to validate
-        //invalidFields = []; // store of empty fields
-        for (i = 0; i < validateFields.length; i++) {
-            
-            var input = $('#' +validateFields[i]); 
-        if (input.val() == '') {
-            alert("empty fields");
+    $('#advanced-search-form').submit(function() {
+        var name1 = $('input[name="name1"]', this);
+        if (name1.value().length == 0) {
             return false;
         }
-            
-    }
-    return true;
-    })
-            
-        
-  
-          
+    });
+
+    @*$(function() {
+        $('#search-submit-button').click(function (e) {
+            $("#warning_modal_text").text("@Constants.UIString.Response.EMPTY_QUERY");
+            e.preventDefault();
+            var validateFields = $('name="keywords"', this);
+            //invalidFields = []; // store of empty fields
+            //for (i = 0; i < validateFields.length; i++) {var input = $('#' +validateFields[i]); 
+            if (validateFields.length == 0) {
+                $("#warning_modal_text").text("@Constants.UIString.Response.EMPTY_QUERY");
+                return false;
+            }
+            return true;
+        });
+    }); *@
+    
 </script>
