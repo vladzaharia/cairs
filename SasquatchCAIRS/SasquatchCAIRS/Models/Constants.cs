@@ -170,10 +170,13 @@ namespace SasquatchCAIRS.Models {
                 public const string USER_EMAIL = "Email Address";
 
                 // Report Information
-                public const string USER_CRITERIA = "User ID Criteria";
+                public const string USER_CRITERIA = "Username Criteria";
                 public const string REQUEST_CRITERIA = "Request ID Criteria";
                 public const string SEARCH_CRITERIA = "Select Search Criteria";
                 public const string START_DATE = "Start Date";
+                public const string CRITERIA_TYPE = "audit criteria type";
+                public const string AUDIT_CRITERIA = "Select Audit Criteria";
+
                 // Dropdowns
                 public const string DROPDOWN_CODE = "Code";
                 public const string DROPDOWN_VALUE = "Value";
@@ -417,6 +420,11 @@ namespace SasquatchCAIRS.Models {
             RequestModification = 3,
             RequestView = 4
 
+        }
+
+        public enum AuditCriteriaType {
+            user = 0,
+            request = 1
         }
     }
 }

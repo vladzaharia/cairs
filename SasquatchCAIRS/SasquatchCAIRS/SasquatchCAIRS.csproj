@@ -193,6 +193,7 @@
     <Compile Include="Models\Exceptions.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Controllers\ServiceSystem\DropdownController.cs" />
+    <Compile Include="Models\ServiceSystem\AuditCriteria.cs" />
     <Compile Include="Models\ServiceSystem\DropdownEntry.cs" />
     <Compile Include="Models\ServiceSystem\ReportDictionaryKeys.cs" />
     <Compile Include="Models\ServiceSystem\Request.cs" />
@@ -402,7 +403,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Account\_ViewUserInfo.cshtml" />
     <Content Include="Views\Account\Auth.cshtml" />
-    <Content Include="Views\Admin\Audit.cshtml" />
     <Content Include="Views\Admin\GenerateAudit.cshtml" />
     <Content Include="Views\Request\Details.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -417,6 +417,7 @@
     <Content Include="Views\Admin\_DropdownForm.cshtml" />
     <Content Include="Views\ServiceSystem\GenaratingReport.cshtml" />
     <Content Include="Views\ServiceSystem\Reports.cshtml" />
+    <Content Include="Views\Admin\Audit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -37,7 +37,7 @@ namespace SasquatchCAIRS.Controllers {
         ///     Create an audit report with all AuditLog entries for a specified request ID.
         /// </summary>
         /// <param name="auditRequests">The request to track activitiy for</param>
-        public void createReportForRequest(List<Request> auditRequests) {
+        public bool createReportForRequest(List<Request> auditRequests) {
 
             // Create a blank list of DataTables, each DataTable will correspond to user ID
             List<DataTable> xlsExports = new List<DataTable>();
@@ -71,6 +71,19 @@ namespace SasquatchCAIRS.Controllers {
                 xlsExports.Add(xlsTable);
             }
 
+            // check if data in report, if not return false
+            bool reportData = false;
+
+            foreach (DataTable dt in xlsExports) {
+                if (dt.Rows.Count > 0) {
+                    reportData = true;
+                }
+            }
+
+            if (reportData == false) {
+                return false;
+            }
+            
             // Call XLSExporter
             DateTime markDate = new DateTime(2010, 01, 01, 00, 00, 00, 00);
             TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
@@ -81,6 +94,8 @@ namespace SasquatchCAIRS.Controllers {
             ExcelExportController eeController = new ExcelExportController();
 
             eeController.exportDataTable(Constants.ReportType.AuditLog, xlsExports, fromPath, toPath);
+
+            return true;
         }
 
         /// <summary>
@@ -89,7 +104,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="userIDs">The user ID to track activitiy for</param>
         /// <param name="startDate"> The start of the specified date range</param>
         /// <param name="endDate">The end of the specified date range</param>
-        public void createReportForUser(IEnumerable<long> userIDs, DateTime startDate,
+        public bool createReportForUser(IEnumerable<long> userIDs, DateTime startDate,
                                         DateTime endDate) {
             
             // Create a blank list of DataTables, each DataTable will correspond to user ID
@@ -122,6 +137,19 @@ namespace SasquatchCAIRS.Controllers {
                // add DataTable for this ID to xlsExports
                xlsExports.Add(xlsTable);
            }
+
+           // check if data in report, if not return false
+           bool reportData = false;
+
+           foreach (DataTable dt in xlsExports) {
+               if (dt.Rows.Count > 0) {
+                   reportData = true;
+               }
+           }
+
+            if (reportData == false) {
+                return false;
+            }
             
             // Call XLSExporter with table(s)
             // TODO: determine file paths to be passed.
@@ -134,6 +162,8 @@ namespace SasquatchCAIRS.Controllers {
             ExcelExportController eeController = new ExcelExportController();
             
             eeController.exportDataTable(Constants.ReportType.AuditLog, xlsExports, fromPath, toPath);
+
+            return true;
         }
     }
 }
