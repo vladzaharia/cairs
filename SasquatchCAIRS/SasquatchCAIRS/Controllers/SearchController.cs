@@ -69,6 +69,9 @@ namespace SasquatchCAIRS.Controllers {
         [HttpPost]
         [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Results(SearchCriteria criteria, FormCollection form) {
+            if (criteria == null) {
+                return RedirectToAction("Advanced","Search");
+            }
             DateTime temp;
             if (DateTime.TryParse(form["startTime"], out temp)) {
                 criteria.startTime = temp;
@@ -113,6 +116,9 @@ namespace SasquatchCAIRS.Controllers {
             SearchCriteria criteria = (SearchCriteria) Session["criteria"];
             return View("Advanced", criteria);
         }
+
+
+
         /// <summary>
         /// Clean up managed and unmanaged resources
         /// </summary>
