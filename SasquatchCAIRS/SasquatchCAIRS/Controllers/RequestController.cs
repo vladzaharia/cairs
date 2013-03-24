@@ -132,8 +132,6 @@ namespace SasquatchCAIRS.Controllers {
             IEnumerable<string> output = wec.requestToStrings(request);
             wec.generateDocument(output, templatePath, filePath, id);
 
-            ViewBag.export = "This Request should be exported to a .docx file shortly!";
-
             return View("Details", new RequestContent(request));
         }
     }

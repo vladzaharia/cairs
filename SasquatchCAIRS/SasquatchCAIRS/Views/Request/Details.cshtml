@@ -8,12 +8,6 @@
 @if (Model != null) {
     <h2>@Constants.UIString.TitleText.VIEW_REQUEST - @Constants.UIString.TitleText.REQUEST_NUM@Model.requestID</h2>
     
-    if (ViewBag.export != null) {
-        <div class="message palette-success-dark">
-            This Request should be exported to a .docx file shortly!
-        </div>
-    }
-    
     <h4>Request Information</h4>
     <table class="table information-table">
         <tr>
