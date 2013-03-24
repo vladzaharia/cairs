@@ -64,7 +64,7 @@ namespace SasquatchCAIRS.Models.SearchSystem {
             set;
         }
 
-        [DataType(dataType: DataType.Text)]
+        [DataType(DataType.Text)]
         public String severity {
             get;
             set;

@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -109,6 +109,9 @@ namespace SasquatchCAIRS.Models {
             // String Responses
             public static class Response {
                 public const string NO_RESULTS = "No results were found.";
+
+                public const string EMPTY_QUERY =
+                    "You have not specified any search criteria.";
             }
             
 
