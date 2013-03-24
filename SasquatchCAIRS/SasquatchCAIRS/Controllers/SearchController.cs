@@ -205,7 +205,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <summary>
         /// Get Requests in Database based on SearchCriteria
         /// </summary>
-        /// <param name="criteria">Search criteria that users inputs</param>
+        /// <param name="criteria">Search criteria that user inputs</param>
         /// <returns>List of Requests that match the input </returns>
         private List<Request> searchCriteriaQuery(SearchCriteria criteria) {
             IQueryable<Request> requests = _db.Requests;
