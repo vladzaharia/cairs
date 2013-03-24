@@ -116,16 +116,19 @@ namespace SasquatchCAIRS.Controllers {
             SearchCriteria criteria = (SearchCriteria) Session["criteria"];
             return View("Advanced", criteria);
         }
-
+        /// <summary>
+        /// Clean up managed and unmanaged resources
+        /// </summary>
+        /// <param name="disposing">Scenario to operate under</param>
         /// <summary>
         /// Converts an input String into a list of Int, used for Question Type ID and Tumour Group ID
         /// </summary>
         /// <param name="input">Input String</param>
         /// <param name="delimiters">Delimiter inside string</param>
         /// <returns>Corresponding List of Integers</returns>
-        private List<int> stringToIntList(string input, string delimiters) {
+        private List<int> typeIDStringtoList(string input, string delimiters) {
             string[] arr = input.Split(delimiters.ToCharArray());
-            return arr.Select(int.Parse).ToList();
+            return arr.Select(s => int.Parse(s)).ToList();
         }
 
         /// <summary>
@@ -134,7 +137,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="input">Input string</param>
         /// <param name="delimiters">Delimiter inside the string</param>
         /// <returns>Corresponding List of Strings</returns>
-        private List<String> stringToStringList(string input, string delimiters) {
+        private List<String> keywordsToList(string input, string delimiters) {
             String[] stringArr = input.Split(delimiters.ToCharArray());
             return stringArr.Select(s => s.Trim()).ToList();
         }
@@ -253,7 +256,7 @@ namespace SasquatchCAIRS.Controllers {
                 questionResponses =
                     questionResponses.Where(
                         qr =>
-                        stringToIntList(criteria.tumorGroup, ",")
+                        typeIDStringtoList(criteria.tumorGroup, ",")
                             .Contains(qr.TumourGroup.TumourGroupID));
             }
 
@@ -262,7 +265,7 @@ namespace SasquatchCAIRS.Controllers {
                 questionResponses =
                     questionResponses.Where(
                         qr =>
-                        stringToIntList(criteria.questionType, ",")
+                        typeIDStringtoList(criteria.questionType, ",")
                             .Contains(qr.QuestionType.QuestionTypeID));
             }
 
@@ -273,7 +276,7 @@ namespace SasquatchCAIRS.Controllers {
                 // First we grab the keywords
                 IQueryable<Keyword> keywords = (from k in _db.Keywords
                                                 where
-                                                    stringToStringList(criteria.keywordString, ",")
+                                                    keywordsToList(criteria.keywordString, ",")
                                                     .Contains(k.KeywordValue)
                                                 select k);
 
