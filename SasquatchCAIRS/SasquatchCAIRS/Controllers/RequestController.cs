@@ -75,6 +75,10 @@ namespace SasquatchCAIRS.Controllers {
             ViewBag.TimeSpent = timeSpent;
             ViewBag.DataContext = _db;
 
+            // add AuditLog entry for viewing
+            AuditLogManagementController almc = new AuditLogManagementController();
+            almc.addEntry(id, upc.getUserProfile(User.Identity.Name).UserId, Constants.AuditType.RequestView);
+
             return View(request);
         }
 

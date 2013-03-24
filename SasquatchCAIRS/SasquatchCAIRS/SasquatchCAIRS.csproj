@@ -32,12 +32,14 @@
     <DocumentationFile>bin\SasquatchCAIRS.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
+    <ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime, Version=3.3.1.7705, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -192,6 +194,7 @@
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Controllers\ServiceSystem\DropdownController.cs" />
     <Compile Include="Models\ServiceSystem\DropdownEntry.cs" />
+    <Compile Include="Models\ServiceSystem\ReportDictionaryKeys.cs" />
     <Compile Include="Models\ServiceSystem\Request.cs" />
     <Compile Include="Controllers\ServiceSystem\RequestManagementController.cs" />
     <Compile Include="Controllers\ServiceSystem\ServiceManager.cs" />
@@ -337,6 +340,7 @@
     <Content Include="Content\fonts\FontAwesome.otf" />
     <Content Include="AuditLogTemplate.xlsx" />
     <None Include="Properties\PublishProfiles\Michelle.pubxml" />
+    <Content Include="ReportTemplate.xlsx" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\flat-ui\application.js" />
     <Content Include="Scripts\flat-ui\bootstrap-tooltip.js" />

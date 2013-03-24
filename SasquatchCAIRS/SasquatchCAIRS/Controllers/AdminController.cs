@@ -9,7 +9,7 @@ using SasquatchCAIRS.Models;
 using SasquatchCAIRS.Models.ServiceSystem;
 
 namespace SasquatchCAIRS.Controllers {
-    [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
+   // [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
     public class AdminController : Controller {
         private CAIRSDataContext _db = new CAIRSDataContext();
         private DropdownController _dc = new DropdownController();
@@ -180,8 +180,6 @@ namespace SasquatchCAIRS.Controllers {
                     // create list of long IDs
                     List<long> auditRequestsLong = auditRequestsString.Select(ID => Convert.ToInt64(ID)).ToList();
 
-                    // convert string -> long
-
                     // Create blank list of Requests
                     List<Request> auditRequests = new List<Request>();
 
@@ -192,7 +190,7 @@ namespace SasquatchCAIRS.Controllers {
                              where r.RequestID == requestID
                              select r).ToList();
                     }
-
+                 
                     // call createReportForRequest for all requests
                     AuditLogManagementController almController =
                        new AuditLogManagementController();

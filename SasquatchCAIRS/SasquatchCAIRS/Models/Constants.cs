@@ -229,6 +229,37 @@ namespace SasquatchCAIRS.Models {
             
         }
 
+        // For Report Generation
+        public enum Month {
+            January = 1,
+            Feburary = 2,
+            March = 3,
+            April = 4,
+            May = 5,
+            June = 6,
+            July = 7,
+            August = 8,
+            September = 9,
+            October = 10,
+            November = 11,
+            December = 12
+        }
+
+        public enum DataType {
+            AvgTimePerRequest = 0,
+            AvgTimeToComplete = 1,
+            TotalNumOfRequests = 2,
+            TotalTimeSpent = 3
+        }
+
+        public enum StratifyOption {
+            None = 0,
+            Region = 1,
+            CallerType = 2,
+            TumorGroup = 3
+        }
+
+
         public enum CellDataType {
             Number = 0,
             Text = 1

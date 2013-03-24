@@ -4,10 +4,11 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
 using SasquatchCAIRS.Models;
 
 namespace SasquatchCAIRS.Controllers {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
     public class AuditLogManagementController : Controller {
         private CAIRSDataContext _db = new CAIRSDataContext();
   
@@ -36,7 +37,7 @@ namespace SasquatchCAIRS.Controllers {
         ///     Create an audit report with all AuditLog entries for a specified request ID.
         /// </summary>
         /// <param name="auditRequests">The request to track activitiy for</param>
-        public void createReportForRequest(IEnumerable<Request> auditRequests) {
+        public void createReportForRequest(List<Request> auditRequests) {
 
             // Create a blank list of DataTables, each DataTable will correspond to user ID
             List<DataTable> xlsExports = new List<DataTable>();
@@ -68,7 +69,15 @@ namespace SasquatchCAIRS.Controllers {
             }
 
             // Call XLSExporter
-            //ExcelExportController.ExportAuditLogTable(xlsExport, exportFilePath);
+            DateTime markDate = new DateTime(2010, 01, 01, 00, 00, 00, 00);
+            TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
+            string fromPath = Path.Combine(HttpRuntime.AppDomainAppPath,
+                                           "AuditLogTemplate.xlsx");
+            string toPath = Path.Combine(HttpRuntime.AppDomainAppPath, "AuditLogTemplate" + dateStamp.TotalSeconds.ToString() + ".xlsx");
+
+            ExcelExportController eeController = new ExcelExportController();
+
+            eeController.exportDataTable(Constants.ReportType.AuditLog, xlsExports, fromPath, toPath);
         }
 
         /// <summary>
