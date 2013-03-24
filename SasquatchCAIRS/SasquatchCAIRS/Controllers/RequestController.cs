@@ -425,8 +425,6 @@ namespace SasquatchCAIRS.Controllers
         public ActionResult Unlock(long id) {
             RequestLockController rlc = new RequestLockController();
 
-            var locks = db.RequestLocks.Where(rl => rl.RequestID == id);
-
             rlc.removeLock(id);
 
             return RedirectToAction("Index", "Home", new {
@@ -440,8 +438,6 @@ namespace SasquatchCAIRS.Controllers
         [Authorize(Roles = Constants.Roles.REQUEST_EDITOR)]
         public ActionResult Delete(long id) {
             RequestManagementController rmc = new RequestManagementController();
-
-            var request = db.Requests.FirstOrDefault(r => r.RequestID == id);
 
             rmc.invalidate(id);
 
