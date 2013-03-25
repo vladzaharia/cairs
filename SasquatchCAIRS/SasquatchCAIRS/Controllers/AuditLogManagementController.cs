@@ -115,7 +115,7 @@ namespace SasquatchCAIRS.Controllers {
 
             ExcelExportController eeController = new ExcelExportController();
 
-            eeController.exportDataTable(Constants.ReportType.AuditLog, xlsExports, fromPath, toPath);
+            //eeController.exportDataTable(Constants.ReportType.AuditLog, xlsExports, fromPath, toPath);
 
             return true;
         }
@@ -183,7 +183,7 @@ namespace SasquatchCAIRS.Controllers {
             
             ExcelExportController eeController = new ExcelExportController();
             
-            eeController.exportDataTable(Constants.ReportType.AuditLog, xlsExports, fromPath, toPath);
+            //eeController.exportDataTable(Constants.ReportType.AuditLog, xlsExports, fromPath, toPath);
 
             return true;
         }
