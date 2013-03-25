@@ -382,6 +382,7 @@ namespace SasquatchCAIRS.Controllers
             RequestManagementController rmc = new RequestManagementController();
             RequestLockController rlc = new RequestLockController();
             UserController upc = new UserController();
+            CAIRSDataContext db = new CAIRSDataContext();
             int timeSpent = 0;
 
             // Set up the Request Object
@@ -437,6 +438,32 @@ namespace SasquatchCAIRS.Controllers
 
             ViewBag.TimeSpent = timeSpent;
             ViewBag.DataContext = new CAIRSDataContext();
+
+            // Created By
+            AuditLog auditLog = (from al in db.AuditLogs
+                                 where
+                                     (int) al.AuditType ==
+                                     (int) Constants.AuditType.RequestCreation &&
+                                     al.RequestID == request.requestID
+                                 select al).FirstOrDefault();
+            if (auditLog != null && auditLog.UserProfile != null) {
+                ViewBag.CreatedBy = auditLog.UserProfile.UserName;
+            } else {
+                ViewBag.CreatedBy = "";
+            }
+
+            // Closed By
+            auditLog = (from al in db.AuditLogs
+                        where
+                            (int) al.AuditType ==
+                            (int) Constants.AuditType.RequestCompletion &&
+                            al.RequestID == request.requestID
+                        select al).FirstOrDefault();
+            if (auditLog != null && auditLog.UserProfile != null) {
+                ViewBag.CompletedBy = auditLog.UserProfile.UserName;
+            } else {
+                ViewBag.CompletedBy = "";
+            }
 
             // add AuditLog entry for viewing
             AuditLogManagementController almc = new AuditLogManagementController();
