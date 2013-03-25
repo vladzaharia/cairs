@@ -1,0 +1,217 @@
+﻿    @using SasquatchCAIRS.Helper
+@using SasquatchCAIRS.Models
+
+@model SasquatchCAIRS.Models.ServiceSystem.QuestionResponseContent
+
+@{
+    Layout = null;
+}
+
+<div id="qr-@(ViewBag.Guid)">
+    @using (Html.BeginCollectionItemFromIndex("questionResponseList", (String) ViewBag.Guid)) {
+
+        if (Model.requestID != -1) {
+            @:@Html.HiddenFor(model => model.requestID)
+        }
+
+        if (Model.questionResponseID != -1) {
+            @:@Html.HiddenFor(model => model.questionResponseID)
+        }
+        
+        <table class="table unbordered-table">
+            <tr>
+                <td class="tbl-label">
+                    @Html.LabelFor(model => model.question)
+                </td>
+                <td class="tbl-nopad">
+                    @Html.TextAreaFor(model => model.question)
+                </td>
+            </tr>
+            <tr>
+                <td class="tbl-label">
+                    @Html.LabelFor(model => model.response)
+                </td>
+                <td class="tbl-nopad">
+                    @Html.TextAreaFor(model => model.response)
+                </td>
+            </tr>
+            <tr>
+                <td class="tbl-label">
+                    @Html.LabelFor(model => model.specialNotes)
+                </td>
+                <td class="tbl-nopad">
+                    @Html.TextAreaFor(model => model.specialNotes)
+                </td>
+            </tr>
+        </table>
+        <table class="table unbordered-table">
+            <tr>
+                <td class="tbl-label">
+                    @Html.LabelFor(model => model.questionTypeID)
+                </td>
+                <td class="tbl-content-4">
+                    @Html.DropDownListFor(model => model.questionTypeID,
+                                          (SelectList) ViewBag.QuestionTypes, "",
+                                          new {@class="span4"})
+                </td>
+                <td class="tbl-label">
+                    @Html.LabelFor(model => model.tumourGroupID)
+                </td>
+                <td class="tbl-content-4">
+                    @Html.DropDownListFor(model => model.tumourGroupID,
+                                          (SelectList) ViewBag.TumourGroups, "",
+                                          new {@class="span4"})
+                </td>
+            </tr>
+            <tr>
+                <td class="tbl-label">
+                    @Html.LabelFor(model => model.timeSpent)
+                </td>
+                <td class="tbl-content-4">
+                    <div class="input-append">
+                        @Html.TextBoxFor(model => model.timeSpent)
+                        <span class="add-on textbox-add-on">min</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="tbl-label">
+                    @Html.LabelFor(model => model.severity)
+                </td>
+                <td class="tbl-content-4">
+                    <div class="input-append">
+                        @Html.DropDownListFor(model => model.severity,
+                            (SelectList) ViewBag.Severitys, "",
+                            new {@class="span4"})
+                    </div>
+                </td>
+                <td class="tbl-label">
+                    @Html.LabelFor(model => model.consequence)
+                </td>
+                <td class="tbl-content-4">
+                    <div class="input-append">
+                        @Html.DropDownListFor(model => model.consequence,
+                            (SelectList) ViewBag.Consequences, "",
+                            new {@class="span4"})
+                    </div>
+                </td>
+            </tr>
+        </table>
+        
+        @Html.LabelFor(model => model.referenceList, new { @class="ref-label" })
+        <table class="table unbordered-table" id="qr-references-@(ViewBag.Guid)">
+        </table>
+
+        <a href="#" class="btn btn-success btn-small add-ref" id="qr-references-add-@(ViewBag.Guid)">
+            <i class="icon-plus button-icon"></i> @Constants.UIString.ButtonText.ADD_REFERENCE
+        </a>
+        
+        <table class="table unbordered-table">
+            <tr>
+                <td class="tbl-label">@Html.LabelFor(model => model.keywords)</td>
+                <td>
+                    <input id="qr-keywords-@(ViewBag.Guid)" type="text"
+                           data-provide="typeahead" autocomplSete="off" class="span10" />
+                    <div id="qr-keyword-list-@(ViewBag.Guid)"></div>
+                </td>
+            </tr>
+        </table>
+        
+        <a href="#" data-toggle="modal" class="btn btn-danger btn-small del-question" id="qr-delete-@(ViewBag.Guid)">
+            <i class="icon-remove button-icon"></i> @Constants.UIString.ButtonText.DELETE_QUESTION
+        </a>
+    }
+    <hr />
+
+    <script type="text/javascript">
+        $(function () {
+            // Flat UI styling
+            $("#questionResponseList_@(ViewBag.Guid)__questionTypeID").dropkick();
+            $("#questionResponseList_@(ViewBag.Guid)__tumourGroupID").dropkick();
+            $("#questionResponseList_@(ViewBag.Guid)__severity").dropkick();
+            $("#questionResponseList_@(ViewBag.Guid)__consequence").dropkick();
+
+            CKEDITOR.replace("questionResponseList_@(ViewBag.Guid)__question",
+                {
+                    toolbar: 'Basic'
+                });
+            CKEDITOR.replace("questionResponseList_@(ViewBag.Guid)__response",
+                {
+                    toolbar: 'Basic'
+                });
+            CKEDITOR.replace("questionResponseList_@(ViewBag.Guid)__specialNotes",
+                {
+                    toolbar: 'Basic'
+                });
+
+            $("#qr-references-add-@(ViewBag.Guid)").click(function (e) {
+                e.preventDefault();
+
+                $.post("@Url.Action("NewReference", "Request")", {'id': '@(ViewBag.Guid)'}, function (r) {
+                    $("#qr-references-@(ViewBag.Guid)").append(r);
+                    $("#qr-references-@(ViewBag.Guid) .del-ref")
+                        .attr("disabled", false)
+                        .attr("href", "#warning_modal")
+                        .addClass("btn-danger")
+                        .removeClass("btn-disabled");
+                });
+            });
+            
+            $("#qr-delete-@(ViewBag.Guid)").click(function (e) {
+                e.preventDefault();
+
+                $("#warning_modal_text").text("@Constants.UIString.Messages.DELETE_QUESTION_WARNING");
+                $("#warning_modal_yes_btn").unbind().click(function () {
+                    return deleteQuestion("@(ViewBag.Guid)");
+                });
+            });
+
+            $("#qr-keywords-@(ViewBag.Guid)").typeahead({
+                source: function (query, process) {
+                    var last = query.split(/\s*[,;]\s*/).pop();
+
+                    $.post("@Url.Action("GetMatchingKeywords", "Request")/" + last, function (data) {
+                        process(data);
+                    });
+                },
+                updater: function (item) {
+                    var terms = this.query.split(/\s*[,;]\s*/);
+                    terms.pop();
+                    terms.push(item);
+                    terms.push("");
+
+                    return terms.join(", ");
+                },
+                matcher: function (item) {
+                    return (this.query).split(/\s*[,;]\s*/).pop().length > 0;
+                },
+                highlighter: function (item) {
+                    var query = this.query.split(/\s*[,;]\s*/).pop().replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
+                    return item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+                        return '<strong>' + match + '</strong>';
+                    });
+                }
+            }).change(function () {
+                $("#qr-keyword-list-@(ViewBag.Guid)").empty();
+
+                var terms = $(this).val().split(/\s*[,;]\s*/);
+                if (terms[terms.length - 1] == "") {
+                    terms.pop();
+                }
+
+                for (var i = 0; i < terms.length; i++) {
+                    $("#qr-keyword-list-@(ViewBag.Guid)").append(
+                        '<input type="hidden" id="questionResponseList_@(ViewBag.Guid)__keywords_' + i + '"' +
+                            'name="questionResponseList[@(ViewBag.Guid)].keywords[' + i + ']"' +
+                            'value="' + terms[i] + '">');
+                }
+            });
+            
+            // Set keywords
+            @if (Model.keywords.Count > 0) {
+                @:$("#qr-keywords-@(ViewBag.Guid)").val("@string.Join(", ", Model.keywords.ToArray())");
+            }
+        });
+    </script>
+</div>
+
