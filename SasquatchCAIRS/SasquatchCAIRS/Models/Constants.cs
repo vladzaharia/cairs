@@ -80,13 +80,16 @@
             DropdownTable.UserGroup
         };
 
+        public const string EMPTY_DATE = "0001-01-01";
+        public const string DATE_FORMAT = "yyyy-MM-dd";
+
         public static class DataTypeStrings {
             public static string DATA_TYPE = "Data Type";
             public static string AVG_TIME = "Avg Time Per Request/Question";
             public static string AVG_TIME_TO_COMPLETE = "Avg Time To Complete";
-        // Date Format & Default
-        public const string EMPTY_DATE = "0001-01-01";
-        public const string DATE_FORMAT = "yyyy-MM-dd";
+            // Date Format & Default
+            public const string EMPTY_DATE = "0001-01-01";
+            public const string DATE_FORMAT = "yyyy-MM-dd";
 
             public static string TOTAL_NUM = "Total Number";
             public static string TOTAL_TIME_SPENT = "Total Time Spent";
@@ -98,7 +101,7 @@
             public static string STRATIFY_BY = "stratifyBy";
 
         }
-        
+
         public static class Roles {
             public const string VIEWER = "Viewer";
             public const string REQUEST_EDITOR = "RequestEditor";
@@ -114,7 +117,7 @@
                 public const string EMPTY_QUERY =
                     "You have not specified any search criteria.";
             }
-            
+
 
             // Labels used for fields
             public static class FieldLabel {
@@ -248,7 +251,7 @@
                     "Are you sure you would like to delete this question?";
                 public const string NO_CONTACT_WARNING =
                     "Are you sure you would like to mark this request as complete without requestor contact information?";
-            }            
+            }
         }
 
         // For Report Generation
@@ -432,8 +435,7 @@
             }
         }
 
-        public enum AuditType
-        {
+        public enum AuditType {
             RequestCreation = 0,
             RequestCompletion = 1,
             RequestDeletion = 2,
