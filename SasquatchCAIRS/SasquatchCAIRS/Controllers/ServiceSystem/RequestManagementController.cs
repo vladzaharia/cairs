@@ -110,7 +110,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// </summary>
         /// <param name="reqContent">RequestContent containing
         /// QuestionResponseContents, ReferenceContents and Keywords</param>
-        public void create(RequestContent reqContent) {
+        public long create(RequestContent reqContent) {
             using (TransactionScope trans = new TransactionScope()) {
                 // Insert new Request entity
                 Request req = createRequestEntity(reqContent);
@@ -165,6 +165,8 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                 }
 
                 trans.Complete();
+
+                return req.RequestID;
             }
         }
 

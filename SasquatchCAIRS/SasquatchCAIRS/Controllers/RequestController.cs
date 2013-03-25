@@ -111,7 +111,7 @@ namespace SasquatchCAIRS.Controllers
                 }
             }
 
-            rmc.create(reqContent);
+            long reqId = rmc.create(reqContent);
 
             // TODO: Audit log
 
@@ -119,7 +119,7 @@ namespace SasquatchCAIRS.Controllers
             if (Roles.IsUserInRole(Constants.Roles.VIEWER)) {
                 return RedirectToAction("Details", "Request",
                     new {
-                        id = reqContent.requestID
+                        id = reqId
                     });
             }
 
