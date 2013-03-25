@@ -325,7 +325,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="AuditLogTemplate.xlsx" />
     <None Include="Properties\PublishProfiles\DevHanna.pubxml" />
-    <Content Include="ReportTemplate.xlsx" />
     <Content Include="Content\fonts\Flat-UI-Icons-16.eot" />
     <Content Include="Content\fonts\Flat-UI-Icons-16.ttf" />
     <Content Include="Content\fonts\Flat-UI-Icons-16.woff" />
@@ -339,6 +338,7 @@
     <Content Include="Content\fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\fonts\fontawesome-webfont.eot" />
     <Content Include="Content\fonts\FontAwesome.otf" />
+    <Content Include="ReportTemplate.xlsx" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\datepicker.js" />
     <Content Include="Scripts\flat-ui\application.js" />

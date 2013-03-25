@@ -29,7 +29,7 @@ namespace SasquatchCAIRS.Controllers
 
             string copiedPath = Path.Combine(HttpRuntime.AppDomainAppPath, "Report" + dateStamp.TotalSeconds.ToString() + ".xlsx");
             
-            List<DataTable> dataTables = new List<DataTable>();
+            Dictionary<string, DataTable> dataTableDictionary = new Dictionary<string, DataTable>();
 
             List<string> dataTypeStrings = form[Constants.ReportFormStrings.DATATYPE].Split(',').ToList();
             List<Constants.DataType> dataTypes =
@@ -48,6 +48,7 @@ namespace SasquatchCAIRS.Controllers
 
             ReportController rg = new ReportController();
             ExcelExportController eec = new ExcelExportController();
+            Dictionary<string, DataTable> temp;
 
             switch (form[Constants.ReportFormStrings.REPORT_OPTION]) {
                 case "Monthly":
@@ -55,9 +56,13 @@ namespace SasquatchCAIRS.Controllers
                         Convert.ToDateTime(form["fromdatePicker"]);
                     DateTime endDate = Convert.ToDateTime(form["todatePicker"]);
                     foreach (Constants.StratifyOption stratifyOption in stratifyOptions) {
-                        dataTables.AddRange(rg.generateMonthlyReport(startDate, endDate.AddMonths(1),
-                                                          dataTypes,
-                                                          stratifyOption));
+                        temp = rg.generateMonthlyReport(startDate,
+                                                        endDate.AddMonths(1),
+                                                        dataTypes,
+                                                        stratifyOption);
+                        foreach (KeyValuePair<string, DataTable> keyValuePair in temp) {
+                            dataTableDictionary.Add(keyValuePair.Key, keyValuePair.Value);
+                        }
                     }
                     break;
                 case "MonthPerYear":
@@ -67,24 +72,30 @@ namespace SasquatchCAIRS.Controllers
                     int startYear = Convert.ToInt32(form["MPYStartYear"]);
                     int endYear = Convert.ToInt32(form["MPYEndYear"]);
                     foreach (Constants.StratifyOption stratifyOption in stratifyOptions) {
-                        dataTables.AddRange(rg.generateMonthPerYearReport((int) month,
-                                                               startYear,
-                                                               endYear,
-                                                               dataTypes,
-                                                               stratifyOption));
+                        temp = rg.generateMonthPerYearReport((int) month,
+                                                             startYear,
+                                                             endYear,
+                                                             dataTypes,
+                                                             stratifyOption);
+                        foreach (KeyValuePair<string, DataTable> keyValuePair in temp) {
+                            dataTableDictionary.Add(keyValuePair.Key, keyValuePair.Value);
+                        }
                     }
                     break;
                 case "FiscalYear":
                     int start = Convert.ToInt32(form["FYStartYear"]);
                     int end = Convert.ToInt32(form["FYEndYear"]);
                     foreach (Constants.StratifyOption stratifyOption in stratifyOptions) {
-                        dataTables.AddRange(rg.generateYearlyReport(start, end, dataTypes,
-                                                         stratifyOption));
+                        temp = rg.generateYearlyReport(start, end, dataTypes,
+                                                        stratifyOption);
+                        foreach (KeyValuePair<string, DataTable> keyValuePair in temp) {
+                            dataTableDictionary.Add(keyValuePair.Key, keyValuePair.Value);
+                        }
                     }
                     break;
             }
-            
-            eec.exportDataTable(Constants.ReportType.Report,dataTables, templatePath,copiedPath);
+
+            eec.exportDataTable(Constants.ReportType.Report, dataTableDictionary, templatePath, copiedPath);
 
             return View();
         }

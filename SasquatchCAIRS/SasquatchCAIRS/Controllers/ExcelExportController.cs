@@ -21,19 +21,18 @@ namespace SasquatchCAIRS.Controllers {
         ///     using correct template and the data given
         /// </summary>
         /// <param name="reportType">Either Report or AuditLog from constants</param>
-        /// <param name="tableList">
-        ///     list of the tables to be exported. for either type,
-        ///     the number of tables in the list must not exceed 15
-        /// </param>
+        /// <param name="tableDictionary">
+        /// dictionary of the tables to be exported. for either type,
+        ///     the number of tables in the list must not exceed 15</param>
         /// <param name="templatePath">template file path</param>
         /// <param name="workingCopyPath">working copy path</param>
         public void exportDataTable(Constants.ReportType reportType,
-                                    List<DataTable> tableList,
+                                    Dictionary<string, DataTable> tableDictionary,
                                     string templatePath, string workingCopyPath) {
             //Instead of creating a new excel file, let's use the template and make a copy to work with.
             System.IO.File.Copy(templatePath, workingCopyPath, true);
 
-            if (tableList.Count > 0) {
+            if (tableDictionary.Count > 0) {
                 //populate the data into the spreadsheet
                 using (SpreadsheetDocument spreadsheet =
                     SpreadsheetDocument.Open(workingCopyPath, true)) {
@@ -42,74 +41,85 @@ namespace SasquatchCAIRS.Controllers {
                     IEnumerable<WorksheetPart> sheets =
                         //workbook.Descendants<WorksheetPart>();
                         workbook.GetPartsOfType<WorksheetPart>();
-                    IEnumerator<WorksheetPart> enumerator =
-                        sheets.GetEnumerator();
-                    bool movedNext = enumerator.MoveNext();
 
                     DataTable table;
                     SheetData data;
                     string sheetName;
                     WorksheetPart worksheetPart;
 
-                    int i = 0;
-                    while (i < tableList.Count() && movedNext && (i + 1) < 15) {
-                        table = tableList[i];
-                        sheetName = "Sheet" + (i + 1).ToString();
-                        worksheetPart = getWorksheetPart(workbook, sheetName);
+                    int i = 1;
+                    foreach ( KeyValuePair<string, DataTable> keyValue in tableDictionary ) {
+                        if (i < 16) {
+                            table = keyValue.Value;
+                            sheetName = "Sheet" + (i).ToString();
+                            worksheetPart = getWorksheetPart(workbook, sheetName);
 
-                        data =
-                            worksheetPart.Worksheet.GetFirstChild<SheetData>();
+                            //Merge Cells for title
+                            string endColumnIndex =
+                                    getColumnName(table.Columns.Count);
+                            MergeTwoCells(worksheetPart.Worksheet, "A1", endColumnIndex + "1");
 
-                        //add column names to the first row
-                        var header = new Row();
-                        header.RowIndex = (UInt32) 1;
+                            data =
+                                worksheetPart.Worksheet.GetFirstChild<SheetData>();
 
-                        foreach (DataColumn column in table.Columns) {
-                            Cell headerCell = createTextCell(
-                                table.Columns.IndexOf(column) + 1,
-                                1,
-                                column.ColumnName);
+                            //creates title
+                            var titleRow = new Row();
+                            titleRow.RowIndex = (UInt32) 1;
 
-                            header.AppendChild(headerCell);
-                        }
-                        data.AppendChild(header);
+                            Cell titleCell = createTextCell(1, 1, keyValue.Key);
+                            titleRow.AppendChild(titleCell);
+                            data.AppendChild(titleRow);
 
-                        //loop through each data row
-                        DataRow contentRow;
-                        for (int j = 0; j < table.Rows.Count; j++) {
-                            contentRow = table.Rows[j];
-                            switch (reportType) {
-                                case Constants.ReportType.Report:
-                                    data.AppendChild(
-                                        createContentRow(
-                                            Constants.CellDataType.Number,
-                                            contentRow, j + 2));
-                                    break;
-                                default:
-                                    data.AppendChild(
-                                        createContentRow(
-                                            Constants.CellDataType.Text,
-                                            contentRow, j + 2));
-                                    break;
+                            //add column names to the first row
+                            var header = new Row();
+                            header.RowIndex = (UInt32) Constants.reportHeaderRow;
+
+                            foreach (DataColumn column in table.Columns) {
+                                Cell headerCell = createTextCell(
+                                    table.Columns.IndexOf(column) + 1,
+                                    Constants.reportHeaderRow,
+                                    column.ColumnName);
+
+                                header.AppendChild(headerCell);
                             }
-                        }
+                            data.AppendChild(header);
 
-                        if (reportType == Constants.ReportType.Report) {
-                            DrawingsPart drawingsPart =
-                                worksheetPart.GetPartsOfType<DrawingsPart>()
-                                             .FirstOrDefault();
-                            if (drawingsPart != null) {
-                                ChartPart chartPart =
-                                    drawingsPart.GetPartsOfType<ChartPart>()
-                                                .FirstOrDefault();
-                                fixChartData(chartPart, table.Rows.Count,
-                                             table.Columns.Count);
+                            //loop through each data row
+                            DataRow contentRow;
+                            for (int j = 0; j < table.Rows.Count; j++) {
+                                contentRow = table.Rows[j];
+                                switch (reportType) {
+                                    case Constants.ReportType.Report:
+                                        data.AppendChild(
+                                            createContentRow(
+                                                Constants.CellDataType.Number,
+                                                contentRow, j + Constants.dataStartRow));
+                                        break;
+                                    default:
+                                        data.AppendChild(
+                                            createContentRow(
+                                                Constants.CellDataType.Text,
+                                                contentRow, j + Constants.dataStartRow));
+                                        break;
+                                }
                             }
-                        }
 
-                        //Move to the next worksheetPart.
-                        movedNext = enumerator.MoveNext();
-                        i++;
+                            if (reportType == Constants.ReportType.Report) {
+                                DrawingsPart drawingsPart =
+                                    worksheetPart.GetPartsOfType<DrawingsPart>()
+                                                 .FirstOrDefault();
+                                if (drawingsPart != null) {
+                                    ChartPart chartPart =
+                                        drawingsPart.GetPartsOfType<ChartPart>()
+                                                    .FirstOrDefault();
+                                    fixChartData(chartPart, table.Rows.Count,
+                                                 table.Columns.Count);
+                                }
+                            }
+
+                            //incerement i to get the nextsheet
+                            i++;
+                        }
                     }
 
                     //TODO(optional) delete unnecessary pages 
@@ -173,8 +183,8 @@ namespace SasquatchCAIRS.Controllers {
                     Formula formula in
                         chartPart.ChartSpace.Descendants<Formula>()) {
                     if (formula.Text.Contains("$D")) {
-                        formula.Text = formula.Text.Replace("D",
-                                                            getColumnName(
+                        formula.Text = formula.Text.Replace("$D",
+                                                            "$"+getColumnName(
                                                                 totalColCount));
                     }
                 }
@@ -206,10 +216,10 @@ namespace SasquatchCAIRS.Controllers {
                                     .Descendants
                                     <Formula>()
                             ) {
-                            if (formula.Text.Contains("$2")) {
-                                formula.Text = formula.Text.Replace("2",
-                                                                    (numOfInitBarChartSeries +
-                                                                     i + 1)
+                            if (formula.Text.Contains("$"+Constants.dataStartRow.ToString())) {
+                                formula.Text = formula.Text.Replace("$" + Constants.dataStartRow.ToString(),
+                                                                    "$"+(numOfInitBarChartSeries +
+                                                                     i + Constants.reportHeaderRow)
                                                                         .ToString
                                                                         ());
                             }
@@ -224,6 +234,10 @@ namespace SasquatchCAIRS.Controllers {
                         barChart.InsertAfter(barChartSeriesToBeAdded, refChild);
                         refChild = barChartSeriesToBeAdded;
                     }
+                }
+
+                if (totalRowCount == 1) {
+                    barChart.RemoveChild(descendants[1]);
                 }
 
                 chartPart.ChartSpace.Save();
@@ -332,6 +346,48 @@ namespace SasquatchCAIRS.Controllers {
                 row.AppendChild(dataCell);
             }
             return row;
+        }
+
+        private static void MergeTwoCells(Worksheet worksheet, string cell1Name, string cell2Name) {
+            if (worksheet == null || string.IsNullOrEmpty(cell1Name) || string.IsNullOrEmpty(cell2Name)) {
+                return;
+            }
+
+            MergeCells mergeCells;
+            if (worksheet.Elements<MergeCells>().Any()) {
+                mergeCells = worksheet.Elements<MergeCells>().First();
+            } else {
+                mergeCells = new MergeCells();
+
+                // Insert a MergeCells object into the specified position.
+                if (worksheet.Elements<CustomSheetView>().Any()) {
+                    worksheet.InsertAfter(mergeCells, worksheet.Elements<CustomSheetView>().First());
+                } else if (worksheet.Elements<DataConsolidate>().Any()) {
+                    worksheet.InsertAfter(mergeCells, worksheet.Elements<DataConsolidate>().First());
+                } else if (worksheet.Elements<SortState>().Any()) {
+                    worksheet.InsertAfter(mergeCells, worksheet.Elements<SortState>().First());
+                } else if (worksheet.Elements<AutoFilter>().Any()) {
+                    worksheet.InsertAfter(mergeCells, worksheet.Elements<AutoFilter>().First());
+                } else if (worksheet.Elements<Scenarios>().Any()) {
+                    worksheet.InsertAfter(mergeCells, worksheet.Elements<Scenarios>().First());
+                } else if (worksheet.Elements<ProtectedRanges>().Any()) {
+                    worksheet.InsertAfter(mergeCells, worksheet.Elements<ProtectedRanges>().First());
+                } else if (worksheet.Elements<SheetProtection>().Any()) {
+                    worksheet.InsertAfter(mergeCells, worksheet.Elements<SheetProtection>().First());
+                } else if (worksheet.Elements<SheetCalculationProperties>().Any()) {
+                    worksheet.InsertAfter(mergeCells, worksheet.Elements<SheetCalculationProperties>().First());
+                } else {
+                    worksheet.InsertAfter(mergeCells, worksheet.Elements<SheetData>().First());
+                }
+            }
+
+            // Create the merged cell and append it to the MergeCells collection.
+            MergeCell mergeCell = new MergeCell() {
+                Reference = new StringValue(cell1Name + ":" + cell2Name)
+            };
+            mergeCells.Append(mergeCell);
+
+            worksheet.Save();
         }
 
         #endregion
