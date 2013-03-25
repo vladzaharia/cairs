@@ -413,6 +413,7 @@
     <Content Include="Views\Admin\DropdownEdit.cshtml" />
     <Content Include="Views\Admin\DropdownCreate.cshtml" />
     <Content Include="Views\Admin\_DropdownForm.cshtml" />
+    <Content Include="Views\ServiceSystem\NoDataView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

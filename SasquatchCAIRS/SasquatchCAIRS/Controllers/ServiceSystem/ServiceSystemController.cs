@@ -15,14 +15,24 @@ namespace SasquatchCAIRS.Controllers
     {
         //
         // GET: /ServiceSystem/Reports
-        //[Authorize (Roles = "ReportGenerator")]
+        [Authorize (Roles = "ReportGenerator")]
         public ActionResult Reports()
         {
             return View();
         }
 
+        [Authorize(Roles = "ReportGenerator")]
+        public ActionResult NoDataView() {
+            return View();
+        }
+
+        [Authorize(Roles = "ReportGenerator")]
         public ViewResult GeneratingReport(FormCollection form) {
-            //string path = Server.MapPath("~/Report.xlsx").ToString();
+
+            ReportController rg = new ReportController();
+            ExcelExportController eec = new ExcelExportController();
+
+
             string templatePath = Path.Combine(HttpRuntime.AppDomainAppPath, "ReportTemplate.xlsx");
             DateTime markDate = new DateTime(2010,01,01, 00, 00, 00, 00);
             TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
@@ -46,8 +56,6 @@ namespace SasquatchCAIRS.Controllers
                     Enum.Parse(typeof (Constants.StratifyOption), stratify))
                                      .ToList();
 
-            ReportController rg = new ReportController();
-            ExcelExportController eec = new ExcelExportController();
             Dictionary<string, DataTable> temp;
 
             switch (form[Constants.ReportFormStrings.REPORT_OPTION]) {
@@ -55,6 +63,9 @@ namespace SasquatchCAIRS.Controllers
                     DateTime startDate =
                         Convert.ToDateTime(form["fromdatePicker"]);
                     DateTime endDate = Convert.ToDateTime(form["todatePicker"]);
+                    if (rg.checkForDataForMonth(startDate, endDate)) {
+                        return View("NoDataView");
+                    }
                     foreach (Constants.StratifyOption stratifyOption in stratifyOptions) {
                         temp = rg.generateMonthlyReport(startDate,
                                                         endDate.AddMonths(1),
@@ -71,6 +82,9 @@ namespace SasquatchCAIRS.Controllers
                         Enum.Parse(typeof(Constants.Month), form["MPYMonth"]);
                     int startYear = Convert.ToInt32(form["MPYStartYear"]);
                     int endYear = Convert.ToInt32(form["MPYEndYear"]);
+                    if (rg.checkForDataForMPY((int)month, startYear, endYear)) {
+                        return View("NoDataView");
+                    }
                     foreach (Constants.StratifyOption stratifyOption in stratifyOptions) {
                         temp = rg.generateMonthPerYearReport((int) month,
                                                              startYear,
@@ -85,6 +99,9 @@ namespace SasquatchCAIRS.Controllers
                 case "FiscalYear":
                     int start = Convert.ToInt32(form["FYStartYear"]);
                     int end = Convert.ToInt32(form["FYEndYear"]);
+                    if (rg.checkForDataForFY(start, end)) {
+                        return View("NoDataView");
+                    }
                     foreach (Constants.StratifyOption stratifyOption in stratifyOptions) {
                         temp = rg.generateYearlyReport(start, end, dataTypes,
                                                         stratifyOption);
