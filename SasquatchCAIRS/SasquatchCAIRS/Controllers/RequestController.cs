@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -476,7 +477,8 @@ namespace SasquatchCAIRS.Controllers
         // GET: /Request/Export/{id}
         public ActionResult Export(long id) {
             WordExportController wec = new WordExportController();
-            Request request = _db.Requests.FirstOrDefault(r => r.RequestID == id);
+            CAIRSDataContext db = new CAIRSDataContext();
+            Request request = db.Requests.FirstOrDefault(r => r.RequestID == id);
 
             DateTime markDate = new DateTime(2010, 01, 01, 00, 00, 00, 00);
             TimeSpan dateStamp = DateTime.Now.Subtract(markDate);

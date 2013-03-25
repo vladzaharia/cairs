@@ -169,7 +169,7 @@ footer {
     padding-bottom: 0px;
     padding-top: 20px;
     position: relative;
-    top: -45px;
+    top: -40px;
 }
 
 #login ul { margin: 0; }
@@ -870,6 +870,10 @@ footer.timout { height: 60px; }
 
 .input-546 {
     width: 546px;
+}
+
+.button-icon {
+    margin-right: 3px;
 }
 
 /********************

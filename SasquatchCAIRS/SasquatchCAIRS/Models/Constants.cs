@@ -1,4 +1,6 @@
-﻿namespace SasquatchCAIRS.Models {
+﻿using System.Collections.Generic;
+
+namespace SasquatchCAIRS.Models {
     public static class Constants {
         public enum Gender {
             Female = 0,
@@ -287,7 +289,7 @@
                 public const string NEW_SEARCH = "New Search";
                 public const string SEARCH = "Search!";
                 public const string EDIT_USER = "Edit User";
-                public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
+                public const string EDIT_DROPDOWN = "Save Changes";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
                 public const string USERS = "Users";
                 public const string LOOKUP = "Lookup Fields";

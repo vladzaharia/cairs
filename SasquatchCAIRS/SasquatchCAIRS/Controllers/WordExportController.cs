@@ -226,7 +226,7 @@ namespace SasquatchCAIRS.Controllers {
                 foreach (string s in input) {
                     Paragraph paragraph = body.AppendChild(new Paragraph());
                     Run run = paragraph.AppendChild(new Run());
-                    if (Constants.Export.EXPORT_HEADERS.Contains(s)) {
+                    if (Constants.Export.EXPORT_HEADERS. Contains(s)) {
                         RunProperties runProperties = new RunProperties();
                         runProperties.AppendChild<Bold>(new Bold());
                         run.AppendChild<RunProperties>(runProperties);

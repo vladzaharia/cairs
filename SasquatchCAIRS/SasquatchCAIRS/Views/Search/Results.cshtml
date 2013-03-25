@@ -8,16 +8,13 @@
 <h2>@Constants.UIString.TitleText.RESULTS</h2>
 
 <div class="buttons add-button">
-    @LinkExtensions.ActionLink(Html, Constants.UIString.ButtonText.MODIFY_SEARCH, "Modify", new {
-    controller = "Search"
-}, new {
-    @class = "btn btn-custom"
-})
-    @LinkExtensions.ActionLink(Html, Constants.UIString.ButtonText.NEW_SEARCH, "Advanced", new {
-    controller = "Search"
-}, new {
-    @class = "btn btn-custom"
-})
+    <a href="@Url.Action("Modify")" class="btn btn-custom">
+        <i class="icon-edit button-icon"></i> @Constants.UIString.ButtonText.MODIFY_SEARCH
+    </a>
+    
+    <a href="@Url.Action("Advanced")" class="btn btn-custom">
+        <i class="icon-plus button-icon"></i> @Constants.UIString.ButtonText.NEW_SEARCH
+    </a>
 </div>
 
 For keywords: @ViewBag.keywords

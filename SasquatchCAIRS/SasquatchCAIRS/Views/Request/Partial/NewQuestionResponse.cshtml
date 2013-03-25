@@ -1,4 +1,4 @@
-﻿@using SasquatchCAIRS.Helper
+﻿    @using SasquatchCAIRS.Helper
 @using SasquatchCAIRS.Models
 
 @model SasquatchCAIRS.Models.ServiceSystem.QuestionResponseContent
@@ -103,8 +103,7 @@
         </table>
 
         <a href="#" class="btn btn-success btn-small add-ref" id="qr-references-add-@(ViewBag.Guid)">
-            <i class="icon-plus"></i>
-            &nbsp;@Constants.UIString.ButtonText.ADD_REFERENCE
+            <i class="icon-plus button-icon"></i> @Constants.UIString.ButtonText.ADD_REFERENCE
         </a>
         
         <table class="table unbordered-table">
@@ -112,15 +111,14 @@
                 <td class="tbl-label">@Html.LabelFor(model => model.keywords)</td>
                 <td>
                     <input id="qr-keywords-@(ViewBag.Guid)" type="text"
-                           data-provide="typeahead" autocomplete="off" class="span10" />
+                           data-provide="typeahead" autocomplSete="off" class="span10" />
                     <div id="qr-keyword-list-@(ViewBag.Guid)"></div>
                 </td>
             </tr>
         </table>
         
         <a href="#" data-toggle="modal" class="btn btn-danger btn-small del-question" id="qr-delete-@(ViewBag.Guid)">
-            <i class="icon-remove"></i>
-            &nbsp;@Constants.UIString.ButtonText.DELETE_QUESTION
+            <i class="icon-remove button-icon"></i> @Constants.UIString.ButtonText.DELETE_QUESTION
         </a>
     }
     <hr />
