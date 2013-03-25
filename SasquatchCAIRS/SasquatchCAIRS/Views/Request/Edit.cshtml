@@ -70,8 +70,7 @@
     <div id="qrContainer"></div>
     <br />
     <a href="#" class="btn btn-success btn-small add-q" id="qr-add">
-        <i class="icon-plus"></i>
-        &nbsp;@Constants.UIString.ButtonText.ADD_QUESTION
+        <i class="icon-plus button-icon"></i> @Constants.UIString.ButtonText.ADD_QUESTION
     </a>
     
     <h3>Properties</h3>
@@ -83,11 +82,17 @@
     </table>
 
     <div class="buttons">
-        <input type="submit" name="delete" value="@Constants.UIString.ButtonText.DELETE_REQUEST" class="btn btn-danger"/>
-        <input type="submit" name="save_draft" value="@Constants.UIString.ButtonText.SAVE_DRAFT" class="btn btn-custom"/>
-        <input type="submit" name="mark_as_complete"
-               value="@Constants.UIString.ButtonText.MARK_COMPLETE" class="btn btn-custom"
-               id="mark_as_complete"/>
+        <button type="submit" name="delete" class="btn btn-custom">
+            <i class="icon-remove button-icon"></i> @Constants.UIString.ButtonText.DELETE_REQUEST
+        </button>
+        <button type="submit" name="save_draft" class="btn btn-custom">
+            <i class="icon-save button-icon"></i> @Constants.UIString.ButtonText.SAVE_DRAFT
+        </button>
+        <button type="submit" name="mark_as_complete"
+                class="btn btn-custom"
+                id="mark_as_complete">
+            <i class="icon-check button-icon"></i> @Constants.UIString.ButtonText.MARK_COMPLETE
+        </button>
     </div>
 }
 
@@ -99,8 +104,8 @@
         <p id="warning_modal_text"></p>
     </div>
     <div class="modal-footer">
-        <a href="#" class="btn btn-primary" id="warning_modal_yes_btn">Yes</a>
-        <a href="#" class="btn btn-danger" onclick="return hideModal();">No</a>
+        <a href="#" class="btn btn-primary" id="warning_modal_yes_btn"><i class="icon-ok button-icon"></i> Yes</a>
+        <a href="#" class="btn btn-danger" onclick="return hideModal();"><i class="icon-remove button-icon"></i> No</a>
     </div>
 </div>
 
