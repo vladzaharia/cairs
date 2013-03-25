@@ -12,134 +12,134 @@
     })) {
     @Html.ValidationSummary(true)
 
-    //if(User.IsInRole("ReportGenerator")) {
-    <fieldset>
-        <legend>Generate Report</legend>
+    if(User.IsInRole("ReportGenerator")) {
+       <fieldset>
+           <legend>Generate Report</legend>
 
-        <div>
-            <div class="alert alert-error" id="reportOptionAlert">
-                <strong>Oh snap!</strong>
-            </div>
-            <div>
-                <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="Monthly">
-                Month Range
-                <br>
-                <span>from 
-                    @Html.TextBox("fromdatePicker", @DateTime.Now.ToString("MM/yyyy"), new { 
-                        @id = "fromdatepicker", data_date_viewMode = "Months"
-                    })
-                    to
-                    @Html.TextBox("todatePicker", @DateTime.Now.ToString("MM/yyyy"), new { 
-                        @id = "todatepicker"
-                    })
+           <div>
+               <div class="alert alert-error" id="reportOptionAlert">
+                   <strong>Oh snap!</strong>
+               </div>
+               <div>
+                   <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="Monthly">
+                   Month Range
+                   <br>
+                   <span>from 
+                       @Html.TextBox("fromdatePicker", @DateTime.Now.ToString("MM/yyyy"), new { 
+                           @id = "fromdatepicker", data_date_viewMode = "Months"
+                       })
+                       to
+                       @Html.TextBox("todatePicker", @DateTime.Now.ToString("MM/yyyy"), new { 
+                           @id = "todatepicker"
+                       })
                     
-                </span>
-            </div>
-            <div class="alert alert-error" id="alert">
-                <strong>Oh snap!</strong>
-            </div>
-            <div class="alert alert-block" id="alertError">
-                <strong>Oh snap!</strong>
-            </div>
+                   </span>
+               </div>
+               <div class="alert alert-error" id="alert">
+                   <strong>Oh snap!</strong>
+               </div>
+               <div class="alert alert-block" id="alertError">
+                   <strong>Oh snap!</strong>
+               </div>
 
-            <div>
-                <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="MonthPerYear">
-                Month by Year<br>
-                             <select name="MPYMonth" id="MPYMonth">
-                                 @foreach (var month in Enum.GetNames(typeof(Constants.Month))) {
-                                     <option value="@month">@month</option>
-                                 }
-                             </select>
-                             from 
-                             <select name="MPYStartYear" id="MPYStartYear">
-                                 @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
-                                     <option value="@i">@i</option>
-                                 }
-                             </select>
-                             to                                                                  
-                             <select name="MPYEndYear" id="MPYEndYear">
-                                 @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
-                                     <option value="@i">@i</option>
-                                 }
-                             </select>
+               <div>
+                   <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="MonthPerYear">
+                   Month by Year<br>
+                                <select name="MPYMonth" id="MPYMonth">
+                                    @foreach (var month in Enum.GetNames(typeof(Constants.Month))) {
+                                        <option value="@month">@month</option>
+                                    }
+                                </select>
+                                from 
+                                <select name="MPYStartYear" id="MPYStartYear">
+                                    @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
+                                        <option value="@i">@i</option>
+                                    }
+                                </select>
+                                to                                                                  
+                                <select name="MPYEndYear" id="MPYEndYear">
+                                    @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
+                                        <option value="@i">@i</option>
+                                    }
+                                </select>
 
-            </div>
-            <div class="alert alert-error" id="alert2">
-                <strong>Oh snap!</strong>
-            </div>
+               </div>
+               <div class="alert alert-error" id="alert2">
+                   <strong>Oh snap!</strong>
+               </div>
 
-            <div>
-                <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="FiscalYear">
-                Reporting Year Range<br>
-                                    from 
-                                    <select name="FYStartYear" id="FYStartYear">
-                                        @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
-                                            <option value="@i">@i - @(i+1)</option>
-                                        }
-                                    </select>
-                                    to                
-                                    <select name="FYEndYear" id="FYEndYear">
-                                        @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
-                                            <option value="@i">@i - @(i+1)</option>
-                                        }
-                                    </select>
-            </div>
-            <div class="alert alert-error" id="alert3">
-                <strong>Oh snap!</strong>
-            </div>
+               <div>
+                   <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="FiscalYear">
+                   Reporting Year Range<br>
+                                       from 
+                                       <select name="FYStartYear" id="FYStartYear">
+                                           @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
+                                               <option value="@i">@i - @(i+1)</option>
+                                           }
+                                       </select>
+                                       to                
+                                       <select name="FYEndYear" id="FYEndYear">
+                                           @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
+                                               <option value="@i">@i - @(i+1)</option>
+                                           }
+                                       </select>
+               </div>
+               <div class="alert alert-error" id="alert3">
+                   <strong>Oh snap!</strong>
+               </div>
 
 
-        </div>
-        <div>
-            <br />
-            @Html.Label("Include:")
-        </div>
-        <div class="alert alert-error" id="dataTypeAlert">
-            <strong>Oh snap!</strong>
-        </div>
-        <div>
-            <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.AvgTimePerRequest">
-            Average time spent per request (per question for "Tumour Group" stratification)<br>
-            <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.AvgTimeToComplete">
-            Average time from start to completion per request (per questions for "Tumour Group" stratification)
-            <br>
-            <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.TotalNumOfRequests">
-            Total requests (total questions for "Tumour Group" stratification) per month/year
-            <br>
-            <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.TotalTimeSpent">
-            Total time spent per month/year
-            <br>
-        </div>
+           </div>
+           <div>
+               <br />
+               @Html.Label("Include:")
+           </div>
+           <div class="alert alert-error" id="dataTypeAlert">
+               <strong>Oh snap!</strong>
+           </div>
+           <div>
+               <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.AvgTimePerRequest">
+               Average time spent per request (per question for "Tumour Group" stratification)<br>
+                                                                                              <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.AvgTimeToComplete">
+                                                                                              Average time from start to completion per request (per questions for "Tumour Group" stratification)
+                                                                                              <br>
+                                                                                              <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.TotalNumOfRequests">
+                                                                                              Total requests (total questions for "Tumour Group" stratification) per month/year
+                                                                                              <br>
+                                                                                              <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.TotalTimeSpent">
+                                                                                              Total time spent per month/year
+                                                                                              <br>
+           </div>
         
 
-        <div>
-            <br />
-            @Html.Label("Stratify by:")
-        </div>
-        <div class="alert alert-error" id="stratifyAlert">
-            <strong>Oh snap!</strong>
-        </div>
-        <div>
-            <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.None">
-            None <br>
-            <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.Region">
-            Geographic Region
-            <br>
-            <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.CallerType">
-            Caller Type
-            <br>
-            <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.TumorGroup">
-            Tumor Group
-            <br>  
-        </div>
+           <div>
+               <br />
+               @Html.Label("Stratify by:")
+           </div>
+           <div class="alert alert-error" id="stratifyAlert">
+               <strong>Oh snap!</strong>
+           </div>
+           <div>
+               <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.None">
+               None <br>
+                    <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.Region">
+                    Geographic Region
+                    <br>
+                    <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.CallerType">
+                    Caller Type
+                    <br>
+                    <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.TumorGroup">
+                    Tumor Group
+                    <br>  
+           </div>
         
 
-        <p>
-            <br />
-            <input class="btn" id="submitBtn" type="submit" value="Generate Report" />
-        </p>
-    </fieldset>
-    //}
+           <p>
+               <br />
+               <input class="btn" id="submitBtn" type="submit" value="Generate Report" />
+           </p>
+       </fieldset>
+    }
     
     <style>
         #reportOptionAlert{display: none;}

@@ -12,6 +12,29 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
     {
         private CAIRSDataContext _db = new CAIRSDataContext();
 
+        public bool checkForDataForMonth(DateTime start, DateTime end) {
+            List<Request> requests = (from reqs in _db.Requests
+                                  where
+                                      reqs.TimeOpened > start &&
+                                      reqs.TimeOpened <= end
+                                  select reqs).ToList();
+            return !requests.Any();
+        }
+
+        public bool checkForDataForMPY(int month, int startYear, int endYear) {
+            List<Request> requests = (from reqs in _db.Requests
+                                      where reqs.TimeOpened.Year >= startYear && reqs.TimeOpened.Year <= endYear && reqs.TimeOpened.Month == month
+                                      select reqs).ToList();
+            return !requests.Any();
+        }
+
+        public bool checkForDataForFY(int startYear, int endYear) {
+            List<Request> requests = (from reqs in _db.Requests
+                                      where reqs.TimeOpened.Year >= startYear && reqs.TimeOpened.Year <= endYear
+                                      select reqs).ToList();
+            return !requests.Any();
+        }
+
         /// <summary>
         /// creates list of dataTables for monthly report, to be exported based on the month and criteria specified
         /// </summary>
