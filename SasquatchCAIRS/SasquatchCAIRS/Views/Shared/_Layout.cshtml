@@ -18,6 +18,9 @@
             @Styles.Render("~/Content/fontawesome-ie7")
         <![endif]-->
         @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/ckeditor")
+        @Styles.Render("~/Content/datepicker")
+        @Scripts.Render("~/bundles/datepicker")
     </head>
     <body>
         <header>
@@ -32,7 +35,6 @@
             <div class="menu-wrapper">
                 <div class="menu-wrapper content-wrapper">
                     @Html.Partial("_NavPartial")
-
                     <div class="position-right search-div">
                         @if (User.IsInRole("Viewer")) {
                             @Html.Partial("_SearchPartial")

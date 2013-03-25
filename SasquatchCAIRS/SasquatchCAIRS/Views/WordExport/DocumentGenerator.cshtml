@@ -1,0 +1,20 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+}
+
+<h2>title</h2>
+@using (Html.BeginForm("Export", "WordExport", FormMethod.Post,
+                       new {@class = "form document-generator"}))
+{
+    <div>
+        <textarea name="body">Test Footage</textarea>
+    </div>
+    <div>
+        <input type="number" name="reqid"/>
+    </div>
+    <div>
+        <input type="submit"/>
+    </div>
+}

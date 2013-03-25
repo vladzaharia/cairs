@@ -23,6 +23,9 @@ a {
 a:link, a:visited,
 a:active, a:hover { color: #333; }
 
+    a:hover {
+        background-color: #c7d1d6;
+    }
 a.btn {
     color: white;
     text-decoration: none;
@@ -155,6 +158,9 @@ footer {
     font-size: .85em;
     margin: 0 0 10px;
     text-align: right;
+    position: relative;
+    top: -5px;
+    margin: 0px;
 }
 
 #login a { color: #FFFFFF; }
@@ -172,6 +178,76 @@ footer {
     display: inline;
     list-style: none;
 }
+
+
+/* search
+----------------------------------------------------------*/
+div.scroll
+{
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #CCCCCC;
+    width:300px;
+    height:150px;
+    overflow-y:scroll;
+    padding: 4px;
+}
+
+label.checkboxlist {
+    font-size: 14px;    
+}
+
+input.internalcheckbox {
+    position: relative;
+    top: -3px;
+}
+
+
+fieldset.results {
+    padding-top: 10px;
+}
+
+
+.adv-search-top {
+}
+
+.adv-search-bottom {
+}
+
+#search {
+    display: block;
+    font-size: .85em;
+    margin: 0 0 10px;
+    text-align: right;
+    color: #FFFFFF;
+    height: 35px;
+}
+
+    #search a {
+        color: #FFFFFF;
+        margin-left: 10px;
+        margin-right: 3px;
+        padding: 2px 3px;
+        text-decoration: none;
+    }
+
+    #search a.username {
+        background: none;
+        margin: 0;
+        padding: 0;
+        text-decoration: underline;
+    }
+
+    #search ul {
+        margin: 0;
+    }
+
+    #search li {
+        display: inline;
+        list-style: none;
+    }
 
 
 /* menu
@@ -220,7 +296,11 @@ ul#menu li a:hover {
     height: 18px;
 }
 
-.dk_options a { height: 20px; }
+.dk_options a { min-height: 20px; }
+
+.span4 .dk_options {
+    width: 300px;
+}
 
 .dk_toggle:hover, .dk_toggle:focus, .dk_focus .dk_toggle { background-color: #2B85CC; }
 
@@ -530,6 +610,10 @@ td.clickable { cursor: pointer; }
     width: 15%;
 }
 
+.table .tbl-nobold {
+    font-weight: normal;
+}
+
 .table .tbl-field {
     width: 30%
 }
@@ -544,13 +628,37 @@ td.clickable { cursor: pointer; }
 
 .table .tbl-content-6 { width: 18%; }
 
+.table .tbl-content-560 { width: 560px; }
+
 .table .tbl-top { border-width: 0; }
+
+.table .tbl-nopad td { padding: 0; }
+
+.add-ref {
+    position: relative;
+    top: -20px;
+    left: 8px;
+}
+
+.del-ref {
+    height: 22px;
+    width: 14px;
+    font-size: 15pt;
+    padding-top: 7px;
+    padding-left: 10px;
+    margin-top: 2px;
+}
+
+.add-q {
+    position: relative;
+    top: -19px;
+}
 
 .unbordered-table { width: 100%; }
 
 .unbordered-table td { border-width: 0; }
 
-.table .focal { font-size: 125%; }
+.focal { font-size: 125%; }
 
 .unbordered-table .tbl-border { border-width: 1px; }
 
@@ -734,6 +842,35 @@ footer.timout { height: 60px; }
 
 .valign-middle td.tbl-label { padding-top: 18px; }
 
+.input-append input:focus {
+    z-index: 0;
+}
+
+.input-append input {
+    width: 175px;
+}
+
+.input-append input:focus + .add-on,
+.input-append input:focus {
+    border-color: #3498db;
+}
+
+.input-append .add-on {
+    height: 27px;
+    margin-top: 0;
+    position: relative;
+    left: -6px;
+    border: 0;
+    padding-top: 10px;
+}
+
+.ref-label {
+    font-size: 100%;
+}
+
+.input-546 {
+    width: 546px;
+}
 
 /********************
 *   Mobile Styles   *
@@ -892,5 +1029,11 @@ footer.timout { height: 60px; }
         text-align: center;
     }
 
-    footer p { margin: 0; }
+    footer p {
+            margin: 0;
+    }
+}
+
+.textbox-add-on {
+    margin-top: 5px;
 }

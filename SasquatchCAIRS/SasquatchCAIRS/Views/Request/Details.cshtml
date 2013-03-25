@@ -11,18 +11,20 @@
     <table class="table information-table">
         <tr>
             <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.CREATED_BY</td>
-            <td class="tbl-content-4 tbl-top">@* TODO: Created By *@</td>
+            <td class="tbl-content-4 tbl-top">@ViewBag.CreatedBy</td>
 
             <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.START_TIME</td>
             <td class="tbl-content-4 tbl-top">@Model.timeOpened</td>
         </tr>
-        <tr>
-            <td class="tbl-label">@Constants.UIString.FieldLabel.COMPLETED_BY</td>
-            <td class="tbl-content-4">@* TODO: Completed By *@</td>
+        @if (Model.timeClosed != null) {
+            <tr>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.COMPLETED_BY</td>
+                <td class="tbl-content-4">@ViewBag.CompletedBy</td>
 
-            <td class="tbl-label">@Constants.UIString.FieldLabel.COMPLETED_TIME</td>
-            <td class="tbl-content-4">@Model.timeClosed</td>
-        </tr>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.COMPLETED_TIME</td>
+                <td class="tbl-content-4">@Model.timeClosed</td>
+            </tr>
+        }
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.STATUS</td>
             <td class="tbl-content-4">@Constants.getStatusString(Model.requestStatus)</td>
@@ -182,9 +184,7 @@
                         <td class="focal">@Constants.UIString.FieldLabel.KEYWORDS</td>
                     </tr>
                     <tr>
-                        <td>@foreach (KeywordContent kw in qr.keywords) {
-                                <span>@kw.keywordStr </span>
-                            }</td>
+                        <td>@foreach(String kw in qr.keywords) { <span>@kw </span> }</td>
                     </tr>
                 </table>
             </div>
@@ -226,7 +226,7 @@
     <div class="buttons">
         @if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
             @Html.ActionLink(Constants.UIString.ButtonText.EDIT_REQUEST, "Edit", "Request", new {id = Model.requestID}, new {
-                @class = "btn btn-custom edit-button"
+                @class = "btn btn-warning edit-button"
             })
         }
 

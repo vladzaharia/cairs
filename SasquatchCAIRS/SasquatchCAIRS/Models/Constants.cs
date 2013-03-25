@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace SasquatchCAIRS.Models {
+﻿namespace SasquatchCAIRS.Models {
     public static class Constants {
         public enum Gender {
-            None = -1,
             Female = 0,
-            Male = 2,
-            Other = 3
+            Male = 1,
+            Other = 2
         }
+
+        public readonly static Gender[] genderOptions = {
+            Gender.Female, Gender.Male, Gender.Other
+        };
 
         public enum RequestStatus {
             Open = 0,
@@ -20,25 +17,56 @@ namespace SasquatchCAIRS.Models {
         }
 
         public enum Severity {
-            None = -1,
             Major = 0,
             Moderate = 1,
             Minor = 2
         }
 
+        public static readonly Severity[] severityOptions = {
+            Severity.Major, Severity.Moderate, Severity.Minor
+        };
+
         public enum Consequence {
-            None = -1,
             Certain = 0,
             Probable = 1,
             Possible = 2,
             Unlikely = 3
         }
 
+        public static readonly Consequence[] consequenceOptions = {
+            Consequence.Certain,
+            Consequence.Probable,
+            Consequence.Probable,
+            Consequence.Unlikely
+        };
+
         public enum ReferenceType {
             URL = 0,
             File = 1,
             Text = 2
         }
+
+        public static readonly ReferenceType[] referenceTypeOptions = {
+            ReferenceType.URL, ReferenceType.File, ReferenceType.Text
+        };
+
+        public const int reportHeaderRow = 4;
+        public const int dataStartRow = reportHeaderRow + 1;
+
+        public static readonly string[] DATATABLE_TITLES = new string[13] {
+            "General Report", "Avg Timer Per Request Stratified by Geographical Region", 
+            "Avg Time To Complete Stratified by Geographical Region",
+            "Total Number of Requests Stratified by Geographical Region", 
+            "Total Time Spend Stratified by Geographical Region",
+            "Avg Timer Per Request Stratified by Caller Type", 
+            "Avg Time To Complete Stratified by Caller Type",
+            "Total Number of Requests Stratified by Caller Type", 
+            "Total Time Spend Stratified by Caller Type",
+            "Avg Timer Per Request Stratified by Tumour Group", 
+            "Avg Time To Complete Stratified by Tumour Group",
+            "Total Number of Requests Stratified by Tumour Group", 
+            "Total Time Spend Stratified by Tumour Group"
+        };
 
         public enum DropdownTable {
             Keyword,
@@ -53,7 +81,12 @@ namespace SasquatchCAIRS.Models {
             None = 0,
             Expired = 1,
             Unlocked = 2,
-            Deleted = 3
+            Deleted = 3,
+            AccessingLocked = 4,
+            LockedToOtherUser = 5,
+            SuccessfulEdit = 6,
+            NoRequestEditorRole = 7,
+            SuccessfulCreate = 8
         }
 
         public static readonly DropdownTable[] DROPDOWN_TABLES = new DropdownTable[6] {
@@ -65,6 +98,10 @@ namespace SasquatchCAIRS.Models {
             DropdownTable.UserGroup
         };
 
+        public const string EMPTY_DATE = "0001-01-01";
+        public const string DATE_FORMAT = "yyyy-MM-dd";
+
+
         public static class DataTypeStrings {
             public static string DATA_TYPE = "Data Type";
             public static string AVG_TIME = "Avg Time Per Request/Question";
@@ -73,41 +110,12 @@ namespace SasquatchCAIRS.Models {
             public static string TOTAL_TIME_SPENT = "Total Time Spent";
         }
 
+
         public static class ReportFormStrings {
             public static string REPORT_OPTION = "reportOption";
             public static string DATATYPE = "dataType";
             public static string STRATIFY_BY = "stratifyBy";
-
         }
-
-        public const string KEYWORD_TBL_ID_ATTR = "KeywordID";
-        public const string KEYWORD_TBL_KEYWORD_ATTR = "Keyword";
-        public const string KEYWORD_TBL_ACTIVE_ATTR = "Active";
-
-        public const string QUESTIONTYPE_TBL_ID_ATTR = "QuestionTypeID";
-        public const string QUESTIONTYPE_TBL_VALUE_ATTR = "Value";
-        public const string QUESTIONTYPE_TBL_CODE_ATTR = "Code";
-        public const string QUESTIONTYPE_TBL_ACTIVE_ATTR = "Active";
-
-        public const string REGION_TBL_ID_ATTR = "RegionID";
-        public const string REGION_TBL_VALUE_ATTR = "Value";
-        public const string REGION_TBL_CODE_ATTR = "Code";
-        public const string REGION_TBL_ACTIVE_ATTR = "Active";
-
-        public const string REQUESTORTYPE_TBL_ID_ATTR = "RequestorTypeID";
-        public const string REQUESTORTYPE_TBL_VALUE_ATTR = "Value";
-        public const string REQUESTORTYPE_TBL_CODE_ATTR = "Code";
-        public const string REQUESTORTYPE_TBL_ACTIVE_ATTR = "Active";
-
-        public const string TUMOURGROUP_TBL_ID_ATTR = "TumourGroupID";
-        public const string TUMOURGROUP_TBL_VALUE_ATTR = "Value";
-        public const string TUMOURGROUP_TBL_CODE_ATTR = "Code";
-        public const string TUMOURGROUP_TBL_ACTIVE_ATTR = "Active";
-
-        public const string USERGROUP_TBL_ID_ATTR = "GroupID";
-        public const string USERGROUP_TBL_VALUE_ATTR = "Value";
-        public const string USERGROUP_TBL_CODE_ATTR = "Code";
-        public const string USERGROUP_TBL_ACTIVE_ATTR = "Active";
 
         public static class Roles {
             public const string VIEWER = "Viewer";
@@ -117,6 +125,15 @@ namespace SasquatchCAIRS.Models {
         }
 
         public static class UIString {
+            // String Responses
+            public static class Response {
+                public const string NO_RESULTS = "No results were found.";
+
+                public const string EMPTY_QUERY =
+                    "You have not specified any search criteria.";
+            }
+
+
             // Labels used for fields
             public static class FieldLabel {
                 // Request Information
@@ -146,6 +163,10 @@ namespace SasquatchCAIRS.Models {
                 public const string PATIENT_GENDER = "Gender";
                 public const string PATIENT_AGE = "Age";
 
+                // Search Information
+                public const string PATIENT_NAME_LABEL = "Patient Name";
+                public const string CALLER_NAME_LABEL = "Caller Name";
+
                 // Question Information
                 public const string QUESTION = "Question";
                 public const string RESPONSE = "Response";
@@ -162,6 +183,7 @@ namespace SasquatchCAIRS.Models {
 
                 // General
                 public const string FULL_NAME = "Full Name";
+                public const string QUICK_SEARCH = "Quick Search";
 
                 // User
                 public const string USERNAME = "Username";
@@ -196,6 +218,12 @@ namespace SasquatchCAIRS.Models {
                 public const string SAVE_DRAFT = "Save Draft";
                 public const string MARK_COMPLETE = "Mark as Complete";
                 public const string DELETE_REQUEST = "Delete Request";
+                public const string ADD_QUESTION = "Add Question";
+                public const string DELETE_QUESTION = "Delete Question";
+                public const string ADD_REFERENCE = "Add Reference";
+                public const string MODIFY_SEARCH = "Modify Search";
+                public const string NEW_SEARCH = "New Search";
+                public const string SEARCH = "Search!";
                 public const string EDIT_USER = "Edit User";
                 public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
@@ -217,7 +245,9 @@ namespace SasquatchCAIRS.Models {
                 public const string DROPDOWN_LISTS = "Dropdown Lists";
                 public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
+                public const string ADVANCED_SEARCH = "Advanced Search";
                 public const string AUDIT_LOG = "Generate Audit Report";
+                public const string RESULTS = "Results";
                 public const string CREATE_REQUEST = "Create Request";
                 public const string REPORTS = "Reports";
                 public const string CREATE = "Create";
@@ -229,7 +259,14 @@ namespace SasquatchCAIRS.Models {
                 public const string DISABLED = "Disabled";
             }
 
-            
+            public static class Messages {
+                public const string DELETE_REFERENCE_WARNING =
+                    "Are you sure you would like to delete this reference?";
+                public const string DELETE_QUESTION_WARNING =
+                    "Are you sure you would like to delete this question?";
+                public const string NO_CONTACT_WARNING =
+                    "Are you sure you would like to mark this request as complete without requestor contact information?";
+            }
         }
 
         // For Report Generation
@@ -381,7 +418,8 @@ namespace SasquatchCAIRS.Models {
         /// <param name="severity">Severity as Constants.Severity</param>
         /// <param name="consequence">Consequence as Constants.Consequence</param>
         /// <returns>A string representing the impact score.</returns>
-        public static string getImpactScore(Severity? severity, Consequence? consequence) {
+        public static string getImpactScore(Severity? severity,
+                                            Consequence? consequence) {
             switch (consequence) {
                 case Consequence.Certain:
                 case Consequence.Probable:
@@ -412,8 +450,7 @@ namespace SasquatchCAIRS.Models {
             }
         }
 
-        public enum AuditType
-        {
+        public enum AuditType {
             RequestCreation = 0,
             RequestCompletion = 1,
             RequestDeletion = 2,

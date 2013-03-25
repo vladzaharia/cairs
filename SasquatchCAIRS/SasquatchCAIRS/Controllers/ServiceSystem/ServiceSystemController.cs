@@ -21,24 +21,24 @@ namespace SasquatchCAIRS.Controllers
             return View();
         }
 
-        public ViewResult GenaratingReport(FormCollection form) {
+        public ViewResult GeneratingReport(FormCollection form) {
             //string path = Server.MapPath("~/Report.xlsx").ToString();
-            string templatePath = Server.MapPath("~/ReportTemplate.xlsx");
+            string templatePath = Path.Combine(HttpRuntime.AppDomainAppPath, "ReportTemplate.xlsx");
             DateTime markDate = new DateTime(2010,01,01, 00, 00, 00, 00);
             TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
 
-            string copiedPath = Server.MapPath("~/Report"+dateStamp.TotalSeconds.ToString()+".xlsx");
-            ViewBag.form = templatePath;
-            List<DataTable> dataTables = new List<DataTable>();
+            string copiedPath = Path.Combine(HttpRuntime.AppDomainAppPath, "Report" + dateStamp.TotalSeconds.ToString() + ".xlsx");
+            
+            Dictionary<string, DataTable> dataTableDictionary = new Dictionary<string, DataTable>();
 
-            List<string> dataTypeStrings = form["dataType"].Split(',').ToList();
+            List<string> dataTypeStrings = form[Constants.ReportFormStrings.DATATYPE].Split(',').ToList();
             List<Constants.DataType> dataTypes =
                 dataTypeStrings.Select(
                     dType =>
                     (Constants.DataType)
                     Enum.Parse(typeof (Constants.DataType), dType)).ToList();
 
-            List<string> stratifyOptionStrings = form["stratigyBy"].Split(',').ToList();
+            List<string> stratifyOptionStrings = form[Constants.ReportFormStrings.STRATIFY_BY].Split(',').ToList();
             List<Constants.StratifyOption> stratifyOptions =
                 stratifyOptionStrings.Select(
                     stratify =>
@@ -46,22 +46,23 @@ namespace SasquatchCAIRS.Controllers
                     Enum.Parse(typeof (Constants.StratifyOption), stratify))
                                      .ToList();
 
-            //Constants.StratifyOption stratifyOption =
-            //    (Constants.StratifyOption)
-            //    Enum.Parse(typeof(Constants.StratifyOption), form["stratigyBy"]);
-
             ReportController rg = new ReportController();
             ExcelExportController eec = new ExcelExportController();
+            Dictionary<string, DataTable> temp;
 
-            switch (form["reportOption"]) {
+            switch (form[Constants.ReportFormStrings.REPORT_OPTION]) {
                 case "Monthly":
                     DateTime startDate =
                         Convert.ToDateTime(form["fromdatePicker"]);
                     DateTime endDate = Convert.ToDateTime(form["todatePicker"]);
                     foreach (Constants.StratifyOption stratifyOption in stratifyOptions) {
-                        dataTables.AddRange(rg.generateMonthlyReport(startDate, endDate,
-                                                          dataTypes,
-                                                          stratifyOption));
+                        temp = rg.generateMonthlyReport(startDate,
+                                                        endDate.AddMonths(1),
+                                                        dataTypes,
+                                                        stratifyOption);
+                        foreach (KeyValuePair<string, DataTable> keyValuePair in temp) {
+                            dataTableDictionary.Add(keyValuePair.Key, keyValuePair.Value);
+                        }
                     }
                     break;
                 case "MonthPerYear":
@@ -71,24 +72,30 @@ namespace SasquatchCAIRS.Controllers
                     int startYear = Convert.ToInt32(form["MPYStartYear"]);
                     int endYear = Convert.ToInt32(form["MPYEndYear"]);
                     foreach (Constants.StratifyOption stratifyOption in stratifyOptions) {
-                        dataTables.AddRange(rg.generateMonthPerYearReport((int) month,
-                                                               startYear,
-                                                               endYear,
-                                                               dataTypes,
-                                                               stratifyOption));
+                        temp = rg.generateMonthPerYearReport((int) month,
+                                                             startYear,
+                                                             endYear,
+                                                             dataTypes,
+                                                             stratifyOption);
+                        foreach (KeyValuePair<string, DataTable> keyValuePair in temp) {
+                            dataTableDictionary.Add(keyValuePair.Key, keyValuePair.Value);
+                        }
                     }
                     break;
                 case "FiscalYear":
                     int start = Convert.ToInt32(form["FYStartYear"]);
                     int end = Convert.ToInt32(form["FYEndYear"]);
                     foreach (Constants.StratifyOption stratifyOption in stratifyOptions) {
-                        dataTables.AddRange(rg.generateYearlyReport(start, end, dataTypes,
-                                                         stratifyOption));
+                        temp = rg.generateYearlyReport(start, end, dataTypes,
+                                                        stratifyOption);
+                        foreach (KeyValuePair<string, DataTable> keyValuePair in temp) {
+                            dataTableDictionary.Add(keyValuePair.Key, keyValuePair.Value);
+                        }
                     }
                     break;
             }
-            
-            eec.exportDataTable(Constants.ReportType.Report,dataTables, templatePath,copiedPath);
+
+            eec.exportDataTable(Constants.ReportType.Report, dataTableDictionary, templatePath, copiedPath);
 
             return View();
         }

@@ -5,19 +5,11 @@ using SasquatchCAIRS.Models;
 using SasquatchCAIRS.Models.ServiceSystem;
 
 namespace SasquatchCAIRS.Controllers.ServiceSystem {
+    /// <summary>
+    /// TODO
+    /// </summary>
     public sealed class DropdownController {
-        private static readonly DropdownController _instance =
-            new DropdownController();
         private CAIRSDataContext _db = new CAIRSDataContext();
-
-        public DropdownController() {
-        }
-
-        public static DropdownController instance {
-            get {
-                return _instance;
-            }
-        }
 
         /// <summary>
         /// Get all active dropdown entries from a specific table.
@@ -28,7 +20,6 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         public List<DropdownEntry> getEntries(Constants.DropdownTable table, bool activeOnly = true) {
             List<DropdownEntry> list = new List<DropdownEntry>();
             
-
             switch (table) {
                 case Constants.DropdownTable.Keyword:
                     List<Keyword> keywords = activeOnly ? _db.Keywords.Where(kw => kw.Active).ToList() : _db.Keywords.ToList();
@@ -346,5 +337,21 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
 
             _db.SubmitChanges();
         }
+
+        /// <summary>
+        /// Returns a list of active keywords from the database which the
+        /// current term is a substring of.
+        /// </summary>
+        /// <param name="term">String to match keywords against.</param>
+        /// <returns>List of matching keywords.</returns>
+        public List<String> getMatchingKeywords(String term) {
+            List<String> list = (from kws in _db.Keywords
+                                 where
+                                     kws.KeywordValue.ToLower()
+                                        .Contains(term.ToLower()) && kws.Active
+                                 select kws.KeywordValue).ToList();
+
+            return list;
+        } 
     }
 }
