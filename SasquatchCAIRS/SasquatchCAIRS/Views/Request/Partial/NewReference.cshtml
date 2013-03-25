@@ -24,15 +24,15 @@
             @:@Html.HiddenFor(model => model.referenceID);
         }
         
-        <td>
+        <td class="tbl-label tbl-nobold">
             @Html.DropDownListFor(model => model.referenceType,
                                   (SelectList) @ViewBag.ReferenceTypes,
-                                          new {@class="span3"})
+                                          new {@class="span4"})
         
         </td>
-        <td>
-            @Html.TextBoxFor(model => model.referenceString)
-            <input type="file" id="@(ViewBag.HtmlIdPrefix)referenceFilepath"/>
+        <td class="tbl-content-560">
+            @Html.TextBoxFor(model => model.referenceString, new { @class="input-546" })
+            <input type="file" id="@(ViewBag.HtmlIdPrefix)referenceFilepath" class="input-546" />
         </td>
         <td>
             <a href="#warning_modal" data-toggle="modal" 
@@ -45,7 +45,17 @@
 
 <script type="text/javascript">
     $(function () {
-        $("#@(ViewBag.HtmlIdPrefix)referenceType").dropkick();
+        $("#@(ViewBag.HtmlIdPrefix)referenceType").dropkick({
+            change: function(value) {
+                if (value == "@Constants.ReferenceType.File.ToString()") {
+                    $("#@(ViewBag.HtmlIdPrefix)referenceString").hide();
+                    $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").show();
+                } else {
+                    $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").hide();
+                    $("#@(ViewBag.HtmlIdPrefix)referenceString").show();
+                }
+            }
+        });
 
         $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").hide();
 
@@ -53,15 +63,7 @@
             $("#@(ViewBag.HtmlIdPrefix)referenceString").val($(this).val());
         });
         
-        $("#@(ViewBag.HtmlIdPrefix)referenceType").change(function() {
-            if ($(this).val() == "@Constants.ReferenceType.File.ToString()") {
-                $("#@(ViewBag.HtmlIdPrefix)referenceString").hide();
-                $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").show();
-            } else {
-                $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").hide();
-                $("#@(ViewBag.HtmlIdPrefix)referenceString").show();
-            }
-        });
+        $("#@(ViewBag.HtmlIdPrefix)referenceType").change();
 
         $("#@(ViewBag.HtmlIdPrefix)remove").click(function(e) {
             e.preventDefault();

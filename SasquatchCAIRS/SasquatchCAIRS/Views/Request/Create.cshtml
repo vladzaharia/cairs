@@ -5,6 +5,7 @@
 
 @{
     ViewBag.Title = "Add New Request";
+    ViewBag.Page = "create";
 }
 
 <h2>Add New Request</h2>
@@ -15,76 +16,74 @@
     @Html.HiddenFor(model => model.timeOpened)
     
     <h3>Caller Information</h3>
-    <table>
+    <table class="table unbordered-table">
         <tr>
             <td class="tbl-label">@Html.LabelFor(model => model.requestorFirstName)</td>
-            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorFirstName)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorFirstName, new { @class = "span4" })</td>
             <td class="tbl-label">@Html.LabelFor(model => model.requestorLastName)</td>
-            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorLastName)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorLastName, new { @class = "span4" })</td>
         </tr>
         <tr>
             <td class="tbl-label">@Html.LabelFor(model => model.requestorEmail)</td>
-            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorEmail)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorEmail, new { @class = "span4" })</td>
         </tr>
         <tr>
             <td class="tbl-label">@Html.LabelFor(model => model.requestorPhoneNum)</td>
-            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorPhoneNum)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorPhoneNum, new { @class = "span4" })</td>
             <td class="tbl-label">@Html.LabelFor(model => model.requestorPhoneExt)</td>
-            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorPhoneExt)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorPhoneExt, new { @class = "span4" })</td>
         </tr>
         <tr>
             <td class="tbl-label">@Html.LabelFor(model => model.requestorTypeID)</td>
             <td class="tbl-content-4">@Html.DropDownListFor(model => model.requestorTypeID,
-                    (SelectList) ViewBag.RequestorTypes, "", new {@class="span3"})</td>
+                    (SelectList) ViewBag.RequestorTypes, "", new {@class="span4"})</td>
             <td class="tbl-label">@Html.LabelFor(model => model.regionID)</td>
             <td class="tbl-content-4">@Html.DropDownListFor(model => model.regionID,
-                    (SelectList) ViewBag.Regions, "", new {@class="span3"})</td>
+                    (SelectList) ViewBag.Regions, "", new {@class="span4"})</td>
         </tr>
     </table>
     
     <h3>Patient Information</h3>
-    <table>
+    <table class="table unbordered-table">
         <tr>
             <td class="tbl-label">@Html.LabelFor(model => model.patientFName)</td>
-            <td class="tbl-content-4">@Html.TextBoxFor(model => model.patientFName)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.patientFName, new { @class = "span4" })</td>
             <td class="tbl-label">@Html.LabelFor(model => model.patientLName)</td>
-            <td class="tbl-content-4">@Html.TextBoxFor(model => model.patientLName)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.patientLName, new { @class = "span4" })</td>
         </tr>
         <tr>
             <td class="tbl-label">@Html.LabelFor(model => model.patientGender)</td>
             <td class="tbl-content-4">@Html.DropDownListFor(model => model.patientGender,
-                    (SelectList) ViewBag.GenderOptions, "", new {@class="span3"})</td>
+                    (SelectList) ViewBag.GenderOptions, "", new {@class="span4"})</td>
             <td class="tbl-label">@Html.LabelFor(model => model.patientAge)</td>
-            <td class="tbl-content-4">@Html.TextBoxFor(model => model.patientAge)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.patientAge, new { @class = "span4" })</td>
         </tr>
         <tr>
             <td class="tbl-label">@Html.LabelFor(model => model.patientAgencyID)</td>
-            <td class="tbl-content-4">@Html.TextBoxFor(model => model.patientAgencyID)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.patientAgencyID, new { @class = "span4" })</td>
         </tr>
     </table>
 
     <h3>Questions</h3>
     <div id="qrContainer"></div>
     <br />
-    <a href="#" class="btn btn-success btn-small" id="qr-add">
+    <a href="#" class="btn btn-success btn-small add-q" id="qr-add">
         <i class="icon-plus"></i>
         &nbsp;@Constants.UIString.ButtonText.ADD_QUESTION
     </a>
     
     <h3>Properties</h3>
-    <table>
+    <table class="table unbordered-table">
         <tr>
             <td class="tbl-label">@Html.LabelFor(model => model.parentRequestID)</td>
-            <td class="tbl-content-4">@Html.TextBoxFor(model => model.parentRequestID)</td>
+            <td>@Html.TextBoxFor(model => model.parentRequestID, new { @class = "span4" })</td>
         </tr>
     </table>
     
-    <br />
-    <br />
-    <div>
-        <input type="submit" name="save_draft" value="@Constants.UIString.ButtonText.SAVE_DRAFT" class="btn btn-primary"/>
+    <div class="buttons">
+        <input type="submit" name="save_draft" value="@Constants.UIString.ButtonText.SAVE_DRAFT" class="btn btn-custom"/>
         <input type="submit" name="mark_as_complete"
-               value="@Constants.UIString.ButtonText.MARK_COMPLETE" class="btn btn-primary"
+               value="@Constants.UIString.ButtonText.MARK_COMPLETE" class="btn btn-custom"
                id="mark_as_complete"/>
     </div>
 }
@@ -97,7 +96,7 @@
         <p id="warning_modal_text"></p>
     </div>
     <div class="modal-footer">
-        <a href="#" class="btn btn-primary" id="warning_modal_yes_btn">Yes</a>
+        <a href="#" class="btn btn-success" id="warning_modal_yes_btn">Yes</a>
         <a href="#" class="btn btn-danger" onclick="return hideModal();">No</a>
     </div>
 </div>
@@ -152,9 +151,15 @@
 
             var delBtns = $("#qrContainer .del-question");
             if (delBtns.length <= 1) {
-                delBtns.attr("disabled", true).attr("href", "#");
+                delBtns.attr("disabled", true)
+                    .attr("href", "#")
+                    .removeClass("btn-danger")
+                    .addClass("btn-disabled");
             } else {
-                delBtns.attr("disabled", false).attr("href", "#warning_modal");
+                delBtns.attr("disabled", false)
+                    .attr("href", "#warning_modal")
+                    .removeClass("btn-disabled")
+                    .addClass("btn-danger");
             }
 
             var qrGuid = $("#qrContainer > div:last input[type=hidden]:first").val();
@@ -162,8 +167,11 @@
             if (!json || 0 === json.length) {
                 $.post("@Url.Action("NewReference", "Request")/", { 'id': qrGuid }, function(r) {
                     $("#qr-references-" + qrGuid).append(r);
-                    $(".del-ref").attr("disabled", true);
-                    $(".del-ref").attr("href", "#");
+                    $(".del-ref")
+                        .attr("disabled", true)
+                        .attr("href", "#")
+                        .removeClass("btn-danger")
+                        .addClass("btn-disabled");
                 });
             } else {
                 var jsonObject = (new Function("return " + json))();
@@ -171,8 +179,12 @@
                 for (var i = 0; i < refListJson.length; i++) {
                     $.post("@Url.Action("NewReference", "Request")/", { 'id': qrGuid, 'json': JSON.stringify(refListJson[i]) }, function(r) {
                         $("#qr-references-" + qrGuid).append(r);
-                        $(".del-ref").attr("disabled", true);
-                        $(".del-ref").attr("href", "#");
+                        $(".del-ref")
+                            .attr("disabled", true)
+                            .attr("href", "#")
+                            .removeClass("btn-danger")
+                            .addClass("btn-disabled");
+                        
                     });
                 }
             }
@@ -184,7 +196,11 @@
 
         var qrs = $("#qrContainer > div");
         if (qrs.length <= 1) {
-            $(qrs[0]).find(".del-question").attr("disabled", true).attr("href", "#");
+            $(qrs[0]).find(".del-question")
+                .attr("disabled", true)
+                .attr("href", "#")
+                .removeClass("btn-danger")
+                .addClass("btn-disabled");
         }
 
         return hideModal();
@@ -195,7 +211,11 @@
 
         var refRows = $("#qr-references-" + id + " tr");
         if (refRows.length <= 1) {
-            $(refRows[0]).find(".del-ref").attr("disabled", true).attr("href", "#");
+            $(refRows[0]).find(".del-ref")
+                .attr("disabled", true)
+                .attr("href", "#")
+                .removeClass("btn-danger")
+                .addClass("btn-disabled");
         }
 
         return hideModal();
