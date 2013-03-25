@@ -64,14 +64,14 @@ namespace SasquatchCAIRS {
             // Custom Report Routes
             routes.MapRoute(
                 name: "Report",
-                url: "Report/Generate",
+                url: "Report",
                 defaults: new {
                     controller = "ServiceSystem",
                     action = "Reports"
                 });
             routes.MapRoute(
                 name: "ReportDownload",
-                url: "Report/Download",
+                url: "Report/Generate",
                 defaults: new {
                     controller = "ServiceSystem",
                     action = "GeneratingReport"
