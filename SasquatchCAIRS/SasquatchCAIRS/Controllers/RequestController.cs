@@ -111,7 +111,7 @@ namespace SasquatchCAIRS.Controllers
                 }
             }
 
-            rmc.create(reqContent);
+            long reqId = rmc.create(reqContent);
 
             UserController uc = new UserController();
             UserProfile up = uc.getUserProfile(User.Identity.Name);
@@ -131,7 +131,7 @@ namespace SasquatchCAIRS.Controllers
             if (Roles.IsUserInRole(Constants.Roles.VIEWER)) {
                 return RedirectToAction("Details", "Request",
                     new {
-                        id = reqContent.requestID
+                        id = reqId
                     });
             }
 
