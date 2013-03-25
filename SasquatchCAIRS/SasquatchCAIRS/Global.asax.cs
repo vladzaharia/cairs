@@ -24,5 +24,18 @@ namespace SasquatchCAIRS
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
         }
+
+        protected void Session_Start(object sender, EventArgs e) {}
+
+        protected void Session_End(object sender, EventArgs e) {
+            var db = new CAIRSDataContext();
+
+            List<RequestLock> locks =
+                db.RequestLocks.Where(
+                    l => l.StartTime.AddMinutes(30) > DateTime.Now).ToList();
+
+            db.RequestLocks.DeleteAllOnSubmit(locks);
+            db.SubmitChanges();
+        }
     }
 }

@@ -1,0 +1,76 @@
+﻿@using SasquatchCAIRS
+@using SasquatchCAIRS.Models
+@using SasquatchCAIRS.Models.ServiceSystem
+@model SasquatchCAIRS.Models.ServiceSystem.AuditCriteria
+
+@{
+    ViewBag.Title = "Audit";
+}
+
+@Html.Partial("_AdminNavPartial", new ViewDataDictionary{ { "active", "audit" } })
+
+<h2>@Constants.UIString.TitleText.ADMIN - @Constants.UIString.TitleText.AUDIT_LOG</h2>
+
+@if (ViewBag.FailMessage != null) {
+    <div class="message palette-danger-dark">
+        @ViewBag.FailMessage
+    </div>
+}
+
+@if (ViewBag.SuccessMessage != null) {
+    <div class="message palette-success-dark">
+        @ViewBag.SuccessMessage
+    </div>
+}
+
+@using (Html.BeginForm("Audit", "Admin", FormMethod.Post, new {@class = "form"})) {
+        <table class="table unbordered-table valign-middle">
+                <tr>
+                    <td class="tbl-label">@Constants.UIString.FieldLabel.AUDIT_CRITERIA</td>
+                <td class="tbl-field">@Html.RadioButtonFor(model => model.criteriaType, "uCriteria") Username Criteria</td>
+                    <td class="tbl-field">@Html.RadioButtonFor(model => model.criteriaType, "rCriteria")Request ID Criteria</td>
+                    <td>@Html.ValidationMessageFor(m => m.criteriaType)</td>
+                </tr>
+            <tr>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.USER_CRITERIA</td>
+            </tr>
+            <tr>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.USERNAME</td>
+                <td class="tbl-field">@Html.TextBoxFor(m => m.userName, new { @class = "span3" })</td>
+                <td>@Html.ValidationMessageFor(m => m.userName)</td>
+            </tr>
+            <tr>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.START_DATE</td>
+                <td class="tbl-field">@Html.TextBoxFor(m => m.startDate, new { @class = "span3" })</td>
+                <td>@Html.ValidationMessageFor(m => m.startDate)</td>
+            </tr>
+            <tr>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.END_DATE</td>
+                <td class="tbl-field">@Html.TextBoxFor(m => m.endDate, new { @class = "span3" })</td>
+                <td>@Html.ValidationMessageFor(m => m.endDate)</td>
+            </tr>
+            <tr>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.REQUEST_CRITERIA</td>
+            </tr>
+            <tr>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.REQUEST_ID</td>
+                <td class="tbl-field">@Html.TextBoxFor(m => m.requestID, new { @class = "span3" })</td>
+                <td>@Html.ValidationMessageFor(m => m.requestID)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input class="btn btn-custom" type="submit" value="@Constants.UIString.ButtonText.GEN_AUDIT"></td>
+            </tr>
+        </table>
+    }
+    
+    @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#endDate').datepicker();
+        $('#startDate').datepicker();
+    });
+</script>
