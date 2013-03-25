@@ -225,20 +225,19 @@
 
     <div class="buttons">
         @if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
-            @Html.ActionLink(Constants.UIString.ButtonText.EDIT_REQUEST, "Edit", "Request", new {id = Model.requestID}, new {
-                @class = "btn btn-warning edit-button"
-            })
+            <a href="@Url.Action("Edit", "Request", new {id = Model.requestID})" class="btn btn-custom">
+                <i class="icon-edit"></i> @Constants.UIString.ButtonText.EDIT_REQUEST
+            </a>
         }
 
-
-        @Html.ActionLink(Constants.UIString.ButtonText.EXPORT_REQUEST, "Export", "Request", new {id = Model.requestID}, new {
-            @class = "btn btn-custom export-button"
-        }) 
+        <a href="@Url.Action("Export", "Request", new {id = Model.requestID})" class="btn btn-custom">
+                <i class="icon-share"></i> @Constants.UIString.ButtonText.EXPORT_REQUEST
+        </a>
     
         @if (User.IsInRole(Constants.Roles.ADMINISTRATOR) && (new RequestLockController()).isLocked(Model.requestID)) {
-            @Html.ActionLink(Constants.UIString.ButtonText.UNLOCK_REQUEST, "Unlock", "Request", new {id = Model.requestID}, new {
-                @class = "btn btn-custom unlock-button"
-            })
+            <a href="@Url.Action("Unlock", "Request", new {id = Model.requestID})" class="btn btn-custom">
+                <i class="icon-unlock"></i> @Constants.UIString.ButtonText.UNLOCK_REQUEST
+        </a>
         }
     </div>
 }
