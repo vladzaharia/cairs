@@ -122,7 +122,10 @@ namespace SasquatchCAIRS.Controllers {
                         }
                     }
 
-                    //TODO(optional) delete unnecessary pages 
+                    for (int j = i; j < 16; j++) {
+                        sheetName = "Sheet" + (j).ToString();
+                        deleteAWorkSheet(workbook, sheetName);
+                    }
                 }
             }
 
@@ -348,6 +351,12 @@ namespace SasquatchCAIRS.Controllers {
             return row;
         }
 
+        /// <summary>
+        /// merges the cell with the given range in the given worksheet
+        /// </summary>
+        /// <param name="worksheet">worksheet the mergecell belongs to</param>
+        /// <param name="cell1Name">start range of the merge cell</param>
+        /// <param name="cell2Name">end range of the merge cell</param>
         private static void MergeTwoCells(Worksheet worksheet, string cell1Name, string cell2Name) {
             if (worksheet == null || string.IsNullOrEmpty(cell1Name) || string.IsNullOrEmpty(cell2Name)) {
                 return;
@@ -388,6 +397,64 @@ namespace SasquatchCAIRS.Controllers {
             mergeCells.Append(mergeCell);
 
             worksheet.Save();
+        }
+
+        /// <summary>
+        /// deletes a sheet given the workbook the sheet is in and the sheetname;
+        /// </summary>
+        /// <param name="wbPart">workbook the sheet is part of</param>
+        /// <param name="sheetToDelete">the name of the sheet to be deleted</param>
+        private void deleteAWorkSheet(WorkbookPart wbPart, string sheetToDelete) {
+            string Sheetid = "";
+
+            // Get the pivot Table Parts
+            IEnumerable<PivotTableCacheDefinitionPart> pvtTableCacheParts = wbPart.PivotTableCacheDefinitionParts;
+            Dictionary<PivotTableCacheDefinitionPart, string> pvtTableCacheDefinationPart = new Dictionary<PivotTableCacheDefinitionPart, string>();
+            foreach (PivotTableCacheDefinitionPart Item in pvtTableCacheParts) {
+                PivotCacheDefinition pvtCacheDef = Item.PivotCacheDefinition;
+                //Check if this CacheSource is linked to SheetToDelete
+                var pvtCahce = pvtCacheDef.Descendants<CacheSource>().Where(s => s.WorksheetSource.Sheet == sheetToDelete);
+                if (pvtCahce.Count() > 0) {
+                    pvtTableCacheDefinationPart.Add(Item, Item.ToString());
+                }
+            }
+            foreach (var Item in pvtTableCacheDefinationPart) {
+                wbPart.DeletePart(Item.Key);
+            }
+            //Get the SheetToDelete from workbook.xml
+            Sheet theSheet = wbPart.Workbook.Descendants<Sheet>().Where(s => s.Name == sheetToDelete).FirstOrDefault();
+            if (theSheet == null) {
+                // The specified sheet doesn't exist.
+            }
+            //Store the SheetID for the reference
+            Sheetid = theSheet.SheetId;
+
+            // Remove the sheet reference from the workbook.
+            WorksheetPart worksheetPart = (WorksheetPart) (wbPart.GetPartById(theSheet.Id));
+            theSheet.Remove();
+
+            // Delete the worksheet part.
+            wbPart.DeletePart(worksheetPart);
+
+            //Get the DefinedNames
+            var definedNames = wbPart.Workbook.Descendants<DefinedNames>().FirstOrDefault();
+            if (definedNames != null) {
+                List<DefinedName> defNamesToDelete = new List<DefinedName>();
+
+                foreach (DefinedName Item in definedNames) {
+                    // This condition checks to delete only those names which are part of Sheet in question
+                    if (Item.Text.Contains(sheetToDelete + "!"))
+                        defNamesToDelete.Add(Item);
+                }
+
+                foreach (DefinedName Item in defNamesToDelete) {
+                    Item.Remove();
+                }
+
+            }
+
+            // Save the workbook.
+            wbPart.Workbook.Save();
         }
 
         #endregion

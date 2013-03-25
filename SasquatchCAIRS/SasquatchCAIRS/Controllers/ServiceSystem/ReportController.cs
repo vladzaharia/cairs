@@ -12,6 +12,12 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
     {
         private CAIRSDataContext _db = new CAIRSDataContext();
 
+        /// <summary>
+        /// checks if any data exists for the given period
+        /// </summary>
+        /// <param name="start">start date stamp</param>
+        /// <param name="end">end date stamp</param>
+        /// <returns></returns>
         public bool checkForDataForMonth(DateTime start, DateTime end) {
             List<Request> requests = (from reqs in _db.Requests
                                   where
@@ -21,14 +27,27 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             return !requests.Any();
         }
 
-        public bool checkForDataForMPY(int month, int startYear, int endYear) {
+        /// <summary>
+        /// checks if any data exists for the given period
+        /// </summary>
+        /// <param name="month">month user selected</param>
+        /// <param name="startYear">start year selected by user</param>
+        /// <param name="endYear">end year selected by user</param>
+        /// <returns></returns>
+        public bool checkForDataForMpy(int month, int startYear, int endYear) {
             List<Request> requests = (from reqs in _db.Requests
                                       where reqs.TimeOpened.Year >= startYear && reqs.TimeOpened.Year <= endYear && reqs.TimeOpened.Month == month
                                       select reqs).ToList();
             return !requests.Any();
         }
 
-        public bool checkForDataForFY(int startYear, int endYear) {
+        /// <summary>
+        /// checks if any data exists for the given period
+        /// </summary>
+        /// <param name="startYear">start year selected by user</param>
+        /// <param name="endYear">end year selected by user</param>
+        /// <returns></returns>
+        public bool checkForDataForFy(int startYear, int endYear) {
             List<Request> requests = (from reqs in _db.Requests
                                       where reqs.TimeOpened.Year >= startYear && reqs.TimeOpened.Year <= endYear
                                       select reqs).ToList();
@@ -635,7 +654,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             Dictionary<int, string> idToName = getTypeNames(stratifyBy);
 
 
-            foreach (var keyValuePair in dictionary) {
+            foreach (var keyValuePair in dictionary.OrderByDescending(x => x.Key).Reverse()) {
                 //adds a row for each stratify groups in the table
                 DataRow newRow = dt.NewRow();
 
@@ -723,7 +742,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             Dictionary<int, string> idToName = getTypeNames(stratifyBy);
 
 
-            foreach (var keyValuePair in dictionary) {
+            foreach (var keyValuePair in dictionary.OrderByDescending(x => x.Key).Reverse()) {
                 //adds a row for each stratify groups in the table
                 DataRow newRow = dt.NewRow();
 
@@ -805,7 +824,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             Dictionary<int, string> idToName = getTypeNames(stratifyBy);
 
             //adds a row for each startify groups with proper data filled in
-            foreach (var keyValuePair in dictionary) {
+            foreach (var keyValuePair in dictionary.OrderByDescending(x => x.Key).Reverse()) {
                 DataRow newRow = dt.NewRow();
 
                 //if the key is null then it should create a row for 'No group assigned' requests
@@ -882,7 +901,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             Dictionary<int, string> idToName = getTypeNames(stratifyBy);
 
             //adds a row for each startify groups with perper data filled in
-            foreach (var keyValuePair in dictionary) {
+            foreach (var keyValuePair in dictionary.OrderByDescending(x=>x.Key).Reverse()) {
                 DataRow newRow = dt.NewRow();
 
                 //if the key is null then it should create a row for 'No group assigned' requests
@@ -961,7 +980,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             Dictionary<int, string> idToName = getTypeNames(stratifyBy);
 
 
-            foreach (var keyValuePair in dictionary) {
+            foreach (var keyValuePair in dictionary.OrderByDescending(x => x.Key).Reverse()) {
                 //adds a row for each stratify groups in the table
                 DataRow newRow = dt.NewRow();
 
@@ -1041,7 +1060,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             Dictionary<int, string> idToName = getTypeNames(stratifyBy);
 
 
-            foreach (var keyValuePair in dictionary) {
+            foreach (var keyValuePair in dictionary.OrderByDescending(x => x.Key).Reverse()) {
                 //adds a row for each stratify groups in the table
                 DataRow newRow = dt.NewRow();
 
