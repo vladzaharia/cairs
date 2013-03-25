@@ -74,18 +74,18 @@ namespace SasquatchCAIRS.Models {
         public static int dataStartRow = reportHeaderRow + 1;
 
         public static readonly string[] DATATABLE_TITLES = new string[13] {
-            "General Report", "Avg Timer Per Request Stratified by Geographical Region", 
+            "General Report", "Avg Time Per Request Stratified by Geographical Region", 
             "Avg Time To Complete Stratified by Geographical Region",
             "Total Number of Requests Stratified by Geographical Region", 
-            "Total Time Spend Stratified by Geographical Region",
-            "Avg Timer Per Request Stratified by Caller Type", 
+            "Total Time Spent Stratified by Geographical Region",
+            "Avg Time Per Request Stratified by Caller Type", 
             "Avg Time To Complete Stratified by Caller Type",
             "Total Number of Requests Stratified by Caller Type", 
-            "Total Time Spend Stratified by Caller Type",
-            "Avg Timer Per Request Stratified by Tumour Group", 
+            "Total Time Spent Stratified by Caller Type",
+            "Avg Time Per Question Stratified by Tumour Group", 
             "Avg Time To Complete Stratified by Tumour Group",
-            "Total Number of Requests Stratified by Tumour Group", 
-            "Total Time Spend Stratified by Tumour Group"
+            "Total Number of Questions Stratified by Tumour Group", 
+            "Total Time Spent Stratified by Tumour Group"
         };
 
         public enum DropdownTable {
