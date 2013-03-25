@@ -350,10 +350,10 @@ namespace SasquatchCAIRS.Models {
         }
 
         public enum DataType {
-            AvgTimePerRequest = 0,
-            AvgTimeToComplete = 1,
-            TotalNumOfRequests = 2,
-            TotalTimeSpent = 3
+            AvgTimePerRequest = 1,
+            AvgTimeToComplete = 2,
+            TotalNumOfRequests = 3,
+            TotalTimeSpent = 4
         }
 
         public enum StratifyOption {
