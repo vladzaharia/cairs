@@ -18,12 +18,12 @@
             @:@Html.HiddenFor(model => model.questionResponseID)
         }
         
-        <table>
+        <table class="table unbordered-table">
             <tr>
                 <td class="tbl-label">
                     @Html.LabelFor(model => model.question)
                 </td>
-                <td class="tbl-content-4">
+                <td class="tbl-nopad">
                     @Html.TextAreaFor(model => model.question)
                 </td>
             </tr>
@@ -31,7 +31,7 @@
                 <td class="tbl-label">
                     @Html.LabelFor(model => model.response)
                 </td>
-                <td class="tbl-content-4">
+                <td class="tbl-nopad">
                     @Html.TextAreaFor(model => model.response)
                 </td>
             </tr>
@@ -39,12 +39,12 @@
                 <td class="tbl-label">
                     @Html.LabelFor(model => model.specialNotes)
                 </td>
-                <td class="tbl-content-4">
+                <td class="tbl-nopad">
                     @Html.TextAreaFor(model => model.specialNotes)
                 </td>
             </tr>
         </table>
-        <table>
+        <table class="table unbordered-table">
             <tr>
                 <td class="tbl-label">
                     @Html.LabelFor(model => model.questionTypeID)
@@ -52,7 +52,7 @@
                 <td class="tbl-content-4">
                     @Html.DropDownListFor(model => model.questionTypeID,
                                           (SelectList) ViewBag.QuestionTypes, "",
-                                          new {@class="span3"})
+                                          new {@class="span4"})
                 </td>
                 <td class="tbl-label">
                     @Html.LabelFor(model => model.tumourGroupID)
@@ -60,7 +60,7 @@
                 <td class="tbl-content-4">
                     @Html.DropDownListFor(model => model.tumourGroupID,
                                           (SelectList) ViewBag.TumourGroups, "",
-                                          new {@class="span3"})
+                                          new {@class="span4"})
                 </td>
             </tr>
             <tr>
@@ -82,7 +82,7 @@
                     <div class="input-append">
                         @Html.DropDownListFor(model => model.severity,
                             (SelectList) ViewBag.Severitys, "",
-                            new {@class="span3"})
+                            new {@class="span4"})
                     </div>
                 </td>
                 <td class="tbl-label">
@@ -92,27 +92,27 @@
                     <div class="input-append">
                         @Html.DropDownListFor(model => model.consequence,
                             (SelectList) ViewBag.Consequences, "",
-                            new {@class="span3"})
+                            new {@class="span4"})
                     </div>
                 </td>
             </tr>
         </table>
         
-        @Html.LabelFor(model => model.referenceList)
-        <table id="qr-references-@(ViewBag.Guid)">
+        @Html.LabelFor(model => model.referenceList, new { @class="ref-label" })
+        <table class="table unbordered-table" id="qr-references-@(ViewBag.Guid)">
         </table>
 
-        <a href="#" class="btn btn-success btn-small" id="qr-references-add-@(ViewBag.Guid)">
+        <a href="#" class="btn btn-success btn-small add-ref" id="qr-references-add-@(ViewBag.Guid)">
             <i class="icon-plus"></i>
             &nbsp;@Constants.UIString.ButtonText.ADD_REFERENCE
         </a>
         
-        <table>
+        <table class="table unbordered-table">
             <tr>
                 <td class="tbl-label">@Html.LabelFor(model => model.keywords)</td>
-                <td class="tbl-content-4">
+                <td>
                     <input id="qr-keywords-@(ViewBag.Guid)" type="text"
-                           data-provide="typeahead" autocomplete="off"/>
+                           data-provide="typeahead" autocomplete="off" class="span10" />
                     <div id="qr-keyword-list-@(ViewBag.Guid)"></div>
                 </td>
             </tr>
@@ -151,8 +151,11 @@
 
                 $.post("@Url.Action("NewReference", "Request")", {'id': '@(ViewBag.Guid)'}, function (r) {
                     $("#qr-references-@(ViewBag.Guid)").append(r);
-                    $("#qr-references-@(ViewBag.Guid) .del-ref").attr("disabled", false);
-                    $("#qr-references-@(ViewBag.Guid) .del-ref").attr("href", "#warning_modal");
+                    $("#qr-references-@(ViewBag.Guid) .del-ref")
+                        .attr("disabled", false)
+                        .attr("href", "#warning_modal")
+                        .addClass("btn-danger")
+                        .removeClass("btn-disabled");
                 });
             });
             

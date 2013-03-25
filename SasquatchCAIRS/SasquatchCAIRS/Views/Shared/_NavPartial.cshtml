@@ -12,7 +12,7 @@
                 @class = "btn menu-button btn-custom first"
             })</li>
         }
-        @if (ViewBag.Page == "add-request") {
+        @if (ViewBag.Page == "create") {
             if (User.IsInRole("RequestEditor")) {
                 <li>@Html.ActionLink(Constants.UIString.TitleText.CREATE_REQUEST, "Create", "Request", new {}, new {
                         @class = "btn menu-button btn-custom active"

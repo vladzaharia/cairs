@@ -7,7 +7,7 @@
 <h2>@Constants.UIString.TitleText.DASHBOARD</h2>
 @if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
     @Html.ActionLink(Constants.UIString.ButtonText.CREATE_REQUEST, "Create", "Request", new {}, new {
-        @class = "btn btn-custom dashboard add-button"
+        @class = "btn btn-success dashboard add-button"
     })
 }
 
