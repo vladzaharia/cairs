@@ -24,6 +24,9 @@ namespace SasquatchCAIRS {
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include("~/Content/bootstrap*"));
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include("~/Scripts/bootstrap*"));
 
+            // Bootstrap Datepicker
+            bundles.Add(new StyleBundle("~/Content/datepicker").Include("~/Content/datepicker*"));
+            bundles.Add(new ScriptBundle("~/bundles/datepicker").Include("~/Scripts/datepicker*"));
             // Flat-UI
             bundles.Add(new StyleBundle("~/Content/flat-ui").Include("~/Content/flat-ui.css"));
             bundles.Add(new ScriptBundle("~/bundles/flat-ui").Include("~/Scripts/flat-ui/*.js"));
