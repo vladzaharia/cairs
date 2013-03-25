@@ -62,13 +62,13 @@ namespace SasquatchCAIRS.Controllers
                 case "Monthly":
                     DateTime startDate =
                         Convert.ToDateTime(form["fromdatePicker"]);
-                    DateTime endDate = Convert.ToDateTime(form["todatePicker"]);
+                    DateTime endDate = Convert.ToDateTime(form["todatePicker"]).AddMonths(1);
                     if (rg.checkForDataForMonth(startDate, endDate)) {
                         return View("NoDataView");
                     }
                     foreach (Constants.StratifyOption stratifyOption in stratifyOptions) {
                         temp = rg.generateMonthlyReport(startDate,
-                                                        endDate.AddMonths(1),
+                                                        endDate,
                                                         dataTypes,
                                                         stratifyOption);
                         foreach (KeyValuePair<string, DataTable> keyValuePair in temp) {
@@ -82,7 +82,7 @@ namespace SasquatchCAIRS.Controllers
                         Enum.Parse(typeof(Constants.Month), form["MPYMonth"]);
                     int startYear = Convert.ToInt32(form["MPYStartYear"]);
                     int endYear = Convert.ToInt32(form["MPYEndYear"]);
-                    if (rg.checkForDataForMPY((int)month, startYear, endYear)) {
+                    if (rg.checkForDataForMpy((int)month, startYear, endYear)) {
                         return View("NoDataView");
                     }
                     foreach (Constants.StratifyOption stratifyOption in stratifyOptions) {
@@ -99,7 +99,7 @@ namespace SasquatchCAIRS.Controllers
                 case "FiscalYear":
                     int start = Convert.ToInt32(form["FYStartYear"]);
                     int end = Convert.ToInt32(form["FYEndYear"]);
-                    if (rg.checkForDataForFY(start, end)) {
+                    if (rg.checkForDataForFy(start, end)) {
                         return View("NoDataView");
                     }
                     foreach (Constants.StratifyOption stratifyOption in stratifyOptions) {
