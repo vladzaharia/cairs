@@ -49,6 +49,53 @@
         public static readonly ReferenceType[] referenceTypeOptions = {
             ReferenceType.URL, ReferenceType.File, ReferenceType.Text
         };
+        // For Report Generation
+        public enum Month {
+            January = 1,
+            Feburary = 2,
+            March = 3,
+            April = 4,
+            May = 5,
+            June = 6,
+            July = 7,
+            August = 8,
+            September = 9,
+            October = 10,
+            November = 11,
+            December = 12
+        }
+
+        public enum DataType {
+            AvgTimePerRequest = 1,
+            AvgTimeToComplete = 2,
+            TotalNumOfRequests = 3,
+            TotalTimeSpent = 4
+        }
+
+        public enum StratifyOption {
+            None = 0,
+            Region = 1,
+            CallerType = 2,
+            TumorGroup = 3
+        }
+
+        public static int reportHeaderRow = 4;
+        public static int dataStartRow = reportHeaderRow + 1;
+
+        public static readonly string[] DATATABLE_TITLES = new string[13] {
+            "General Report", "Avg Timer Per Request Stratified by Geographical Region", 
+            "Avg Time To Complete Stratified by Geographical Region",
+            "Total Number of Requests Stratified by Geographical Region", 
+            "Total Time Spend Stratified by Geographical Region",
+            "Avg Timer Per Request Stratified by Caller Type", 
+            "Avg Time To Complete Stratified by Caller Type",
+            "Total Number of Requests Stratified by Caller Type", 
+            "Total Time Spend Stratified by Caller Type",
+            "Avg Timer Per Request Stratified by Tumour Group", 
+            "Avg Time To Complete Stratified by Tumour Group",
+            "Total Number of Requests Stratified by Tumour Group", 
+            "Total Time Spend Stratified by Tumour Group"
+        };
 
         public enum DropdownTable {
             Keyword,
@@ -83,17 +130,35 @@
         public const string EMPTY_DATE = "0001-01-01";
         public const string DATE_FORMAT = "yyyy-MM-dd";
 
+
         public static class DataTypeStrings {
             public static string DATA_TYPE = "Data Type";
             public static string AVG_TIME = "Avg Time Per Request/Question";
             public static string AVG_TIME_TO_COMPLETE = "Avg Time To Complete";
-            // Date Format & Default
-            public const string EMPTY_DATE = "0001-01-01";
-            public const string DATE_FORMAT = "yyyy-MM-dd";
-
             public static string TOTAL_NUM = "Total Number";
             public static string TOTAL_TIME_SPENT = "Total Time Spent";
         }
+
+        public static class ReportFormStrings {
+            public static string REPORT_OPTION = "reportOption";
+            public static string DATATYPE = "dataType";
+            public static string STRATIFY_BY = "stratifyBy";
+
+        }
+
+     
+
+        public enum CellDataType {
+            Number = 0,
+            Text = 1
+        }
+
+        public enum ReportType {
+            Report = 0,
+            AuditLog = 1
+        }
+
+
 
         public static class ReportFormStrings {
             public static string REPORT_OPTION = "reportOption";
