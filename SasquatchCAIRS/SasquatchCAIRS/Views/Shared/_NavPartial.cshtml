@@ -12,7 +12,7 @@
                 @class = "btn menu-button btn-custom first"
             })</li>
         }
-        @if (ViewBag.Page == "add-request") {
+        @if (ViewBag.Page == "create") {
             if (User.IsInRole("RequestEditor")) {
                 <li>@Html.ActionLink(Constants.UIString.TitleText.CREATE_REQUEST, "Create", "Request", new {}, new {
                         @class = "btn menu-button btn-custom active"
@@ -26,7 +26,7 @@
             }
         }
         
-        @if (ViewBag.Page == "reports") {
+        @if (ViewBag.Page == "report") {
             if (User.IsInRole("ReportGenerator")) {
                  <li>@Html.ActionLink(Constants.UIString.TitleText.REPORTS, "Reports", "ServiceSystem", new {}, new {
                          @class = "btn menu-button btn-custom active"

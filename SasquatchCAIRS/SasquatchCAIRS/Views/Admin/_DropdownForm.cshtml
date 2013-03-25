@@ -27,7 +27,15 @@
             </tr>
             <tr>
                 <td></td>
-                <td><input class="btn btn-custom" type="submit" value="@if (ViewBag.Action == "Edit") {@Constants.UIString.ButtonText.EDIT_DROPDOWN} else {@Constants.UIString.ButtonText.CREATE_DROPDOWN}" /></td>
+                <td>
+                    <button class="btn btn-custom" type="submit">
+                        @if (ViewBag.Action == "Edit") {
+                            <i class="icon-save button-icon"></i> @Constants.UIString.ButtonText.EDIT_DROPDOWN
+                        } else {
+                            <i class="icon-check button-icon"></i> @Constants.UIString.ButtonText.CREATE_DROPDOWN
+                        }
+                    </button>
+                </td>
             </tr>
         </table>
     }
