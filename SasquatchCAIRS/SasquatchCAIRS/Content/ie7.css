@@ -37,3 +37,7 @@ ul#menu li {
 .dashboard.add-button {
     top: 10px;
 }
+
+.scroll-box {
+    position: relative;
+}

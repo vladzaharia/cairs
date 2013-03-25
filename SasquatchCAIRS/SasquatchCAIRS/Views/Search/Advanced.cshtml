@@ -112,7 +112,7 @@
             @Html.Label(Constants.UIString.FieldLabel.TUMOUR_GROUP)
         </div>
 
-        <div class="scroll">
+        <div class="scroll scroll-box">
             @foreach (DropdownEntry item in @ViewBag.TumorGroups) {
                 <label class="checkboxlist">
                     @if (!String.IsNullOrEmpty(Model.tumorGroup) &&
@@ -135,7 +135,7 @@
             @Html.Label(Constants.UIString.FieldLabel.QUESTION_TYPE)
         </div>
 
-        <div class="scroll">
+        <div class="scroll scroll-box">
             @foreach (DropdownEntry item in @ViewBag.QuestionType) {
                 <label class="checkboxlist">
                     @if (!String.IsNullOrEmpty(Model.questionType) && 
