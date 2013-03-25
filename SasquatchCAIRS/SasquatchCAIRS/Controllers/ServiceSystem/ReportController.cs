@@ -44,7 +44,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                     Dictionary<int, Dictionary<MonthYearPair, List<Request>>> regionAndYear =
                         regionDictionary.ToDictionary(keyValuePair => keyValuePair.Key,
                                                       keyValuePair =>
-                                                      keyValuePair.Value.GroupBy(r => new MonthYearPair(r.TimeOpened.Year, r.TimeOpened.Month))
+                                                      keyValuePair.Value.GroupBy(r => new MonthYearPair(r.TimeOpened))
                                                                   .Select(grp => grp)
                                                                   .ToDictionary(grp => grp.Key, grp => grp.ToList()));
 
@@ -142,7 +142,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                     //create column for each month
                     int totalNumOfMonths = endDate.Month +
                                            (endDate.Year - startDate.Year) * 12 -
-                                           startDate.Month + 1;
+                                           startDate.Month;
                     MonthYearPair startMonthYearPair = new MonthYearPair(startDate.Month, startDate.Year);
                     for (int i = 0; i < totalNumOfMonths; i++) {
                         DataColumn monthColumn = new DataColumn(startMonthYearPair.ToString(), typeof(Int64)) {
@@ -924,7 +924,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             //create column for each month
             int totalNumOfMonths = endTime.Month +
                                    (endTime.Year - startTime.Year)*12 -
-                                   startTime.Month + 1;
+                                   startTime.Month;
             MonthYearPair startMonthYearPair = new MonthYearPair(startTime.Month, startTime.Year);
             for (int i = 0; i < totalNumOfMonths; i++) {
                 DataColumn monthColumn = new DataColumn(startMonthYearPair.ToString(), typeof(Int64)) {
@@ -1004,7 +1004,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             //create column for each month
             int totalNumOfMonths = endTime.Month +
                                    (endTime.Year - startTime.Year) * 12 -
-                                   startTime.Month + 1;
+                                   startTime.Month;
             MonthYearPair startMonthYearPair = new MonthYearPair(startTime.Month, startTime.Year);
             for (int i = 0; i < totalNumOfMonths; i++) {
                 DataColumn monthColumn = new DataColumn(startMonthYearPair.ToString(), typeof(Int64)) {
