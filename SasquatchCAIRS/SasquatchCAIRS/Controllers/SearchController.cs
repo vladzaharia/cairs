@@ -33,6 +33,7 @@ namespace SasquatchCAIRS.Controllers {
 
             long requestId;
             if (long.TryParse(keywords, out requestId)) {
+                
                 return RedirectToAction("Details", "Request", new {
                     id = requestId
                 });
@@ -278,6 +279,16 @@ namespace SasquatchCAIRS.Controllers {
                             .Contains((int) qr.Severity));
             }
 
+            // Filter on QR's Consequence
+            if (!String.IsNullOrEmpty(criteria.consequence))
+            {
+                questionResponses =
+                    questionResponses.Where(
+                        qr =>
+                        enumToIDs(criteria.consequence, typeof(Constants.Consequence))
+                            .Contains((int)qr.Consequence));
+            }
+
             // Filter on QR's Tumor Group
             if (!String.IsNullOrEmpty(criteria.tumorGroup)) {
                 questionResponses =
@@ -324,7 +335,8 @@ namespace SasquatchCAIRS.Controllers {
             return (from r in requests
                     join qr in questionResponses
                     on r.RequestID equals qr.RequestID
-                    select r).Distinct().ToList();
+
+                    select r).Distinct().OrderByDescending(r => r.RequestID).ToList();
         }
 
     }
