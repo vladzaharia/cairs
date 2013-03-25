@@ -152,7 +152,7 @@ namespace SasquatchCAIRS.Controllers {
 
             if (String.Equals(model.criteriaType, "uCriteria") && String.IsNullOrEmpty(model.userName)) {
                 ModelState.AddModelError("userName",
-                                         "Please enter username(s) to audit!");
+                                         "Please enter username to audit!");
             }
 
             if (String.Equals(model.criteriaType, "uCriteria") && model.startDate.Equals(null)) {
@@ -187,16 +187,25 @@ namespace SasquatchCAIRS.Controllers {
             if (model.criteriaType != null &&
                 model.criteriaType.Equals("uCriteria")) {
                 
-                // parse comma delimited IDs entered
-                string[] auditUsers =
-                    model.userName.Split(',')
-                                    .Select(sValue => sValue.Trim())
-                                    .ToArray();
+                // format ID entered
+                string auditUser =
+                    model.userName.Trim().ToLower();
 
-                // find long user ID that matches given username
+                // check if user is in the database
+                bool idFound = (from u in _db.UserProfiles
+                                 where auditUser == u.UserName.ToLower()
+                                 select u.UserName.ToLower()).ToList().Contains(auditUser);
+
+                if (!idFound)
+                {
+                    ModelState.AddModelError("userName",
+                                         "User does not exist.");
+
+                    return View(model);
+                }
 
                 List<long> auditIDs = (from u in _db.UserProfiles
-                                       where auditUsers.Contains(u.UserName)
+                                       where auditUser == u.UserName.ToLower()
                                        select Convert.ToInt64(u.UserId)).ToList();
 
                 // call createReportForUser for all users
@@ -242,6 +251,13 @@ namespace SasquatchCAIRS.Controllers {
                                             .Select(sValue => sValue.Trim()).First());
                         long rangeEnd = Convert.ToInt64(rID.Split('-')
                                             .Select(sValue => sValue.Trim()).Last());
+                        if (!(rangeStart < rangeEnd))
+                        {
+                            ModelState.AddModelError("requestID",
+                                        "An invalid request ID range was entered.");
+
+                            return View(model);
+                        }
 
                         while (rangeStart <= rangeEnd) {
                             requestsForAudit.Add(rangeStart);
@@ -253,11 +269,40 @@ namespace SasquatchCAIRS.Controllers {
                     }
                 }
 
-                //// create list of long IDs
-                //List<long> auditRequestsLong =
-                //    auditRequestsString.Select(ID => Convert.ToInt64(ID))
-                //                       .ToList();
+                // create completed list of long IDs
+                requestsForAudit =
+                    auditRequestsString.Select(ID => Convert.ToInt64(ID))
+                                       .ToList();
 
+                // find valid requests in database
+                IEnumerable<long> requestsFound = (from req in _db.Requests
+                                            where requestsForAudit.Contains(req.RequestID)
+                                            select req.RequestID).ToList();
+
+                // compare requestsForAudit with requestsFound
+                String invalidIDs = null;
+                bool idMissing = false;
+                
+                foreach (long ID in requestsForAudit) {
+                    if (!requestsFound.Contains(ID)) {
+                        invalidIDs = invalidIDs + " " + ID.ToString();
+                        idMissing = true;
+                    } 
+                }
+
+                
+                // if not all requests existed, return error
+                if (idMissing) {
+                    List<string> errorIDs = (invalidIDs.Split(' ')).ToList();
+                     
+
+                    ModelState.AddModelError("requestID",
+                                        "Request(s)" + String.Join(" ,", errorIDs) + " do not exist.");
+
+                    return View(model);
+                }
+                
+                // grab Requests for all request IDs
                 List<Request> auditRequests = (from req in _db.Requests
                                     where requestsForAudit.Contains(req.RequestID)
                                     select req).ToList();
