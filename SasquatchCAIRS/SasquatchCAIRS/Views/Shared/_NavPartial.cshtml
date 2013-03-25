@@ -28,13 +28,13 @@
         
         @if (ViewBag.Page == "reports") {
             if (User.IsInRole("ReportGenerator")) {
-                 <li>@Html.ActionLink(Constants.UIString.TitleText.REPORTS, "Contact", "Home", new {}, new {
+                 <li>@Html.ActionLink(Constants.UIString.TitleText.REPORTS, "Reports", "ServiceSystem", new {}, new {
                          @class = "btn menu-button btn-custom active"
                      })</li>
              }
         } else {
             if (User.IsInRole("ReportGenerator")) {
-                 <li>@Html.ActionLink(Constants.UIString.TitleText.REPORTS, "Contact", "Home", new {}, new {
+                 <li>@Html.ActionLink(Constants.UIString.TitleText.REPORTS, "Reports", "ServiceSystem", new {}, new {
                          @class = "btn menu-button btn-custom"
                      })</li>
              }
