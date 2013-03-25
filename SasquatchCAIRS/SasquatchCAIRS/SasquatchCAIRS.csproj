@@ -187,6 +187,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServiceSystem\ReportController.cs" />
     <Compile Include="Controllers\ServiceSystem\ServiceSystemController.cs" />
+    <Compile Include="Controllers\WordExportController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Models\SearchSystem\SearchCriteria.cs" />
     <Compile Include="Global.asax.cs">
@@ -689,6 +690,8 @@
     <Content Include="AuditLogTemplate.xlsx" />
     <None Include="Properties\PublishProfiles\Michelle.pubxml" />
     <Content Include="ReportTemplate.xlsx" />
+    <Content Include="ReportTemplate.docx" />
+    <None Include="Properties\PublishProfiles\Sasquatch.pubxml" />
     <Content Include="Scripts\flat-ui\application.js" />
     <Content Include="Scripts\flat-ui\bootstrap-tooltip.js" />
     <Content Include="Scripts\flat-ui\custom_checkbox_and_radio.js" />
