@@ -288,7 +288,7 @@ namespace SasquatchCAIRS.Models {
                 public const string MODIFY_SEARCH = "Modify Search";
                 public const string NEW_SEARCH = "New Search";
                 public const string SEARCH = "Search!";
-                public const string EDIT_USER = "Edit User";
+                public const string EDIT_USER = "Save Changes";
                 public const string EDIT_DROPDOWN = "Save Changes";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
                 public const string USERS = "Users";

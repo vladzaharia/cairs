@@ -16,7 +16,7 @@
 }
 
 <div class="adv-search-div">
-    @if (ViewBag.Page == "report") {
+    @if (ViewBag.Page == "advanced-search") {
         @Html.ActionLink("Advanced Search", "Advanced", "Search", new {}, new {@class = "btn menu-button btn-custom active"})
     } else {
         @Html.ActionLink("Advanced Search", "Advanced", "Search", new {}, new {@class = "btn menu-button btn-custom"})
