@@ -387,6 +387,10 @@ namespace SasquatchCAIRS.Controllers
 
             // Set up the Request Object
             RequestContent request = rmc.getRequestDetails(id);
+            if (request == null) {
+                return View((object) null);
+            }
+
             ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST 
                 + " - " 
                 + Constants.UIString.TitleText.REQUEST_NUM 
