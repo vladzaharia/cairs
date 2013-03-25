@@ -9,7 +9,7 @@ using System.Web.Security;
 
 namespace SasquatchCAIRS.Controllers {
     /// <summary>
-    /// Controller responsible for executing searches and returing the relevant requests
+    /// Controller responsible for executing searches and returning the corresponding requests
     /// </summary>
     public class SearchController : Controller {
 
@@ -18,7 +18,7 @@ namespace SasquatchCAIRS.Controllers {
         private CAIRSDataContext _db = new CAIRSDataContext();
 
         /// <summary>
-        /// Given a comma delimited string of keywords returns all requests with one or more of those keywords
+        /// Given a comma delimited string of keywords returns all requests tbat contain one or more of these keywords
         /// </summary>
         /// <param name="keywords">String of comma delimited keywords</param>
         /// <returns></returns>
@@ -60,10 +60,10 @@ namespace SasquatchCAIRS.Controllers {
         }
 
         /// <summary>
-        /// Given a SearchCriteria object and the Adv. Search Form it preforms 
+        /// Given a SearchCriteria object and the Advanced Search Form it performs 
         /// a search based upon that criteria and displays the results
         /// </summary>
-        /// <param name="criteria">The SearchCriteria object that hold the filtering data</param>
+        /// <param name="criteria">The SearchCriteria object that holds the filtering data</param>
         /// <param name="form">The Form on the Advanced Search page and all it's data</param>
         /// <returns></returns>
         [HttpPost]
