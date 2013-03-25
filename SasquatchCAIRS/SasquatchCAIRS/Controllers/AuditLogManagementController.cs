@@ -34,6 +34,28 @@ namespace SasquatchCAIRS.Controllers {
         }
 
         /// <summary>
+        ///     Add entry to audit log table when an AuditType action is performed on a request.
+        /// </summary>
+        /// <param name="requestId">The ID of the Request</param>
+        /// <param name="userId">The ID of the User</param>
+        /// <param name="type">The type of audit action</param>
+        /// <param name="dateTime"></param>
+        public void addEntry(long requestId, int userId,
+                             Constants.AuditType type, DateTime dateTime) {
+            // Create a new entry in the log, using the Request ID, user ID, and action provided.
+            // Set to the current datetime
+            _db.AuditLogs.InsertOnSubmit(new AuditLog {
+                RequestID = requestId,
+                UserID = userId,
+                AuditType = (byte) type,
+                AuditDate = dateTime
+            });
+
+            // Submit to DB.
+            _db.SubmitChanges();
+        }
+
+        /// <summary>
         ///     Create an audit report with all AuditLog entries for a specified request ID.
         /// </summary>
         /// <param name="auditRequests">The request to track activitiy for</param>

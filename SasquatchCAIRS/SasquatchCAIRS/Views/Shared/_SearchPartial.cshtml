@@ -1,11 +1,12 @@
-﻿@using (Html.BeginForm("Search", "Home", FormMethod.Post,
+﻿
+@using (Html.BeginForm("Search", "Search", FormMethod.Post,
                        new {
                            @class = "form search-form"
                        })) {
     <div class="input-append quick-search-div">
         @Html.TextBox("keywords", "",
                       new {
-                          @class = "span2 search-query",
+                          @class = "span2 search-query noEnterSubmit",
                           @dp = "Quick Search"
                       })
         <button class="btn btn-custom menu-button search-button" type="submit">
@@ -15,5 +16,22 @@
 }
 
 <div class="adv-search-div">
-    @Html.ActionLink("Advanced Search", "Advanced", "Home", new {}, new{ @class = "btn menu-button btn-custom" })
+    @Html.ActionLink("Advanced Search", "Advanced", "Search", new {}, new{ @class = "btn menu-button btn-custom" })
 </div>
+
+
+<script type="text/javascript">
+
+    $(function () {
+        $('.quick-search-div :submit').click(function (e) {
+            if ($('.search-query').val().length == 0 || $('.search-query').val() == "Quick Search") {
+                    e.preventDefault();
+                }
+            });
+        });
+    
+    $('.noEnterSubmit').keypress(function(e){
+        if (e.which == 13 && ($(this).val().length == 0 || $(this).val() == "Quick Search"))
+            return false;
+    });
+</script>
