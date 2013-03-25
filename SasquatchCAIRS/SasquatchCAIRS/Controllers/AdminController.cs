@@ -9,7 +9,7 @@ using SasquatchCAIRS.Models;
 using SasquatchCAIRS.Models.ServiceSystem;
 
 namespace SasquatchCAIRS.Controllers {
-    [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
+   // [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
     public class AdminController : Controller {
         private CAIRSDataContext _db = new CAIRSDataContext();
         private DropdownController _dc = new DropdownController();
@@ -128,6 +128,163 @@ namespace SasquatchCAIRS.Controllers {
             return RedirectToAction("Users", new {success = true});
         }
 
+#endregion
+
+        #region Audit
+
+        //
+        // GET: /Admin/Audit
+
+        public ActionResult Audit() {
+            return View();
+        }
+
+        //
+        // POST: /Admin/Audit
+
+        [HttpPost]
+        public ActionResult Audit(AuditCriteria model, FormCollection form) {
+
+            // Blank Value Sanity Checks
+            if (String.IsNullOrEmpty(model.criteriaType)) {
+                ModelState.AddModelError("criteriaType",
+                                         "Please select a search criteria!");
+            }
+
+            if (String.Equals(model.criteriaType, "uCriteria") && String.IsNullOrEmpty(model.userName)) {
+                ModelState.AddModelError("userName",
+                                         "Please enter username(s) to audit!");
+            }
+
+            if (String.Equals(model.criteriaType, "uCriteria") && model.startDate.Equals(null)) {
+                ModelState.AddModelError("startDate",
+                                         "Please select a start date for the audit!");
+            }
+
+            if (String.Equals(model.criteriaType, "uCriteria") && model.endDate.Equals(null)) {
+                ModelState.AddModelError("endDate",
+                                         "Please select an end date for the audit!");
+            }
+
+            if (String.Equals(model.criteriaType, "uCriteria") && model.startDate > model.endDate) {
+                ModelState.AddModelError("startDate",
+                                         "Start date must be prior to end date.");
+            }
+
+
+            if (String.Equals(model.criteriaType, "rCriteria") && String.IsNullOrEmpty(model.requestID)){
+                    ModelState.AddModelError("requestID",
+                                             "Please enter request ID(s) to audit!");
+                }
+
+            if (!ModelState.IsValid) {
+                return View(model);
+            }
+
+            // If it passes this point, everything is valid.
+            // So clearly, the server fails now.
+
+            // check if user selected search by User ID
+            if (model.criteriaType != null &&
+                model.criteriaType.Equals("uCriteria")) {
+                
+                // parse comma delimited IDs entered
+                string[] auditUsers =
+                    model.userName.Split(',')
+                                    .Select(sValue => sValue.Trim())
+                                    .ToArray();
+
+                // find long user ID that matches given username
+
+                List<long> auditIDs = (from u in _db.UserProfiles
+                                       where auditUsers.Contains(u.UserName)
+                                       select Convert.ToInt64(u.UserId)).ToList();
+
+                // call createReportForUser for all users
+                DateTime start = Convert.ToDateTime(model.startDate);
+                DateTime end = Convert.ToDateTime(model.endDate);
+
+                AuditLogManagementController almController =
+                    new AuditLogManagementController();
+                
+                // true if report has data, false if not                
+                if (almController.createReportForUser(auditIDs,
+                                                  start,
+                                                  end) == false){
+                    ViewBag.FailMessage = ("There is no data in this audit report!");
+
+                    return View(model);
+                }
+
+                // now that report has been generated, clear page
+
+                ViewBag.SuccessMessage = ("Audit report successfully created!");
+                
+                return View(model);
+            }
+
+            // check if user selected search by Request ID
+            if (model.criteriaType != null &&
+                model.criteriaType.Equals("rCriteria")) {
+
+                // parse comma delimited IDs entered
+                string[] auditRequestsString =
+                    model.requestID.Split(',')
+                                      .Select(sValue => sValue.Trim())
+                                      .ToArray();
+
+
+                // create list of long request IDs that will be audited (deal with ranges)
+                List<long> requestsForAudit = new List<long>();
+
+                foreach (string rID in auditRequestsString) {
+                    if (rID.Contains("-")) {
+                        long rangeStart = Convert.ToInt64(rID.Split('-')
+                                            .Select(sValue => sValue.Trim()).First());
+                        long rangeEnd = Convert.ToInt64(rID.Split('-')
+                                            .Select(sValue => sValue.Trim()).Last());
+
+                        while (rangeStart <= rangeEnd) {
+                            requestsForAudit.Add(rangeStart);
+                            rangeStart++;
+                        }
+
+                    } else {
+                        requestsForAudit.Add(Convert.ToInt64(rID));
+                    }
+                }
+
+                //// create list of long IDs
+                //List<long> auditRequestsLong =
+                //    auditRequestsString.Select(ID => Convert.ToInt64(ID))
+                //                       .ToList();
+
+                List<Request> auditRequests = (from req in _db.Requests
+                                    where requestsForAudit.Contains(req.RequestID)
+                                    select req).ToList();
+                                          
+
+                // call createReportForRequest for all requests
+                AuditLogManagementController almController =
+                    new AuditLogManagementController();
+
+                // true if report has data, false if not                
+                if (almController.createReportForRequest(auditRequests) == false) {
+                    ViewBag.FailMessage = ("There is no data in this audit report!");
+
+                    return View(model);
+                }
+
+                // now that report has been generated, clear page
+
+                ViewBag.SuccessMessage = ("Audit report successfully created!");
+
+                return View(model);
+
+            }
+            return View(model);
+        }
+
         #endregion
 
         #region Dropdowns
@@ -214,6 +371,7 @@ namespace SasquatchCAIRS.Controllers {
                     success = true
                 });
             }
+
             var slis = new List<SelectListItem> {
                 new SelectListItem {
                     Text = Constants.UIString.GeneralText.ACTIVE,
