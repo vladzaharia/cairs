@@ -61,6 +61,9 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="auditRequests">The request to track activitiy for</param>
         public bool createReportForRequest(List<Request> auditRequests) {
 
+            // Create a new Dictionary, each entry will be an XLS sheet
+            Dictionary<string, DataTable> tableExport = new Dictionary<string, DataTable>();
+            
             // Create a blank list of DataTables, each DataTable will correspond to user ID
             List<DataTable> xlsExports = new List<DataTable>();
 
@@ -73,8 +76,10 @@ namespace SasquatchCAIRS.Controllers {
                      select r).ToList();
 
                 // Create DataTable with requestLogs to send to XLSExporter
+                string sheetName = "Audit Log for Request " + request.RequestID;
+                
                 var xlsTable =
-                    new DataTable("Audit Log for Request " + request.RequestID);
+                    new DataTable(sheetName);
 
                 // Create required columns
                 xlsTable.Columns.Add("User Action", typeof(string));
@@ -90,6 +95,7 @@ namespace SasquatchCAIRS.Controllers {
                         ));
 
                 // add DataTable to xlsExports
+                tableExport.Add(sheetName, xlsTable);
                 xlsExports.Add(xlsTable);
             }
 
@@ -115,7 +121,7 @@ namespace SasquatchCAIRS.Controllers {
 
             ExcelExportController eeController = new ExcelExportController();
 
-            eeController.exportDataTable(Constants.ReportType.AuditLog, xlsExports, fromPath, toPath);
+            eeController.exportDataTable(Constants.ReportType.AuditLog, tableExport, fromPath, toPath);
 
             return true;
         }
@@ -129,20 +135,26 @@ namespace SasquatchCAIRS.Controllers {
         public bool createReportForUser(IEnumerable<long> userIDs, DateTime startDate,
                                         DateTime endDate) {
             
-            // Create a blank list of DataTables, each DataTable will correspond to user ID
-            List<DataTable> xlsExports = new List<DataTable> ();
-            
+            // Create Dictionary to exports, each DataTable will correspond to user ID
+            Dictionary<string, DataTable> tableExport = new Dictionary<string, DataTable>();
+            List<DataTable> xlsExports = new List<DataTable>();
+
             // Create blank list of AuditLogs and fill with all AuditLogs for each user ID
            foreach (long userID in userIDs) {
                
                var requestLogs = (_db.AuditLogs.Where(r => r.UserID == userID && r.AuditDate.Date >= startDate.Date && r.AuditDate.Date <= endDate.Date)).ToList();
 
                // Create DataTable with requestLogs to send to XLSExporter
+               string userName = (from u in _db.UserProfiles
+                                  where userID == u.UserId
+                                  select u.UserName).First();
+               string sheetName = "Audit Log for User " + userName +
+                                  " Between "
+                                  + startDate.Date.ToLongDateString() + " and " +
+                                  endDate.Date.ToLongDateString();
+               
                var xlsTable =
-                   new DataTable("Audit Log for User " + userID.ToString() +
-                                 "Between "
-                                 + startDate.Date.ToLongDateString() + "and " +
-                                 endDate.Date.ToLongDateString());
+                   new DataTable(sheetName);
 
                // Create required columns
                xlsTable.Columns.Add("User Action", typeof(string));
@@ -157,6 +169,7 @@ namespace SasquatchCAIRS.Controllers {
                        a.RequestID.ToString(), a.AuditDate));
 
                // add DataTable for this ID to xlsExports
+              tableExport.Add(sheetName, xlsTable);
                xlsExports.Add(xlsTable);
            }
 
@@ -174,7 +187,6 @@ namespace SasquatchCAIRS.Controllers {
             }
             
             // Call XLSExporter with table(s)
-            // TODO: determine file paths to be passed.
             DateTime markDate = new DateTime(2010, 01, 01, 00, 00, 00, 00);
             TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
             string fromPath = Path.Combine(HttpRuntime.AppDomainAppPath,
@@ -183,7 +195,7 @@ namespace SasquatchCAIRS.Controllers {
             
             ExcelExportController eeController = new ExcelExportController();
             
-            eeController.exportDataTable(Constants.ReportType.AuditLog, xlsExports, fromPath, toPath);
+            eeController.exportDataTable(Constants.ReportType.AuditLog, tableExport, fromPath, toPath);
 
             return true;
         }

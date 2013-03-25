@@ -201,7 +201,6 @@
     <Compile Include="Models\ServiceSystem\ReportDictionaryKeys.cs" />
     <Compile Include="Models\ServiceSystem\Request.cs" />
     <Compile Include="Controllers\ServiceSystem\RequestManagementController.cs" />
-    <Compile Include="Controllers\ServiceSystem\ServiceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CAIRS.designer.cs">
       <AutoGen>True</AutoGen>
@@ -772,9 +771,9 @@
     <Content Include="Views\Admin\DropdownEdit.cshtml" />
     <Content Include="Views\Admin\DropdownCreate.cshtml" />
     <Content Include="Views\Admin\_DropdownForm.cshtml" />
-    <Content Include="Views\ServiceSystem\GenaratingReport.cshtml" />
     <Content Include="Views\ServiceSystem\Reports.cshtml" />
     <Content Include="Views\Admin\Audit.cshtml" />
+    <Content Include="Views\ServiceSystem\GeneratingReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -801,7 +800,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>15744</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
