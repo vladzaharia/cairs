@@ -27,6 +27,27 @@
         <div>
             <input class="input-medium" name="keywords" id="keywords" type="text"/>
         </div>
+        
+        <div>
+            <br/>
+            @Html.Label(Constants.UIString.FieldLabel.SEARCH_FILTER)
+        </div>
+
+        <div>
+            @foreach (var searchFilter in Enum.GetValues(
+                typeof(Constants.SearchFilter))) {
+                <label class="checkbox inline">
+                    @if (!String.IsNullOrEmpty(Model.searchFilter) && 
+                         Model.searchFilter.Contains(@searchFilter.ToString())) {
+                        <input type="checkbox" name="consequence" value="@searchFilter" checked/>
+                    } else
+                    {
+                        <input type="checkbox" name="consequence" value="@searchFilter" />  
+                    }
+                    @searchFilter
+                </label>
+            }
+        </div>
 
         <div>
             <br />
