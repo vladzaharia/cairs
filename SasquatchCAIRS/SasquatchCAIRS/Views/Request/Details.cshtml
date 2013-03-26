@@ -225,7 +225,7 @@
     </table>
 
     <div class="buttons">
-        @if (User.IsInRole(Constants.Roles.REQUEST_EDITOR)) {
+        @if (User.IsInRole(Constants.Roles.REQUEST_EDITOR) && (!ViewBag.IsLocked || ViewBag.IsLockedToMe)) {
             <a href="@Url.Action("Edit", "Request", new {id = Model.requestID})" class="btn btn-custom">
                 <i class="icon-edit button-icon"></i> @Constants.UIString.ButtonText.EDIT_REQUEST
             </a>
@@ -235,7 +235,7 @@
                 <i class="icon-share button-icon"></i> @Constants.UIString.ButtonText.EXPORT_REQUEST
         </a>
     
-        @if (User.IsInRole(Constants.Roles.ADMINISTRATOR) && (new RequestLockController()).isLocked(Model.requestID)) {
+        @if ((User.IsInRole(Constants.Roles.ADMINISTRATOR) && ViewBag.IsLocked) || ViewBag.IsLockedToMe) {
             <a href="@Url.Action("Unlock", "Request", new {id = Model.requestID})" class="btn btn-custom">
                 <i class="icon-unlock button-icon"></i> @Constants.UIString.ButtonText.UNLOCK_REQUEST
         </a>

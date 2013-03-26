@@ -429,15 +429,14 @@ namespace SasquatchCAIRS.Controllers
                     ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST
                                     + " - "
                                     + Constants.UIString.TitleText.ERROR;
-                }
 
+                    return View(request);
+                }
             }
 
             // Set up Time Spent (Question-Dependent)
-            if (request != null) {
-                foreach (QuestionResponseContent qr in request.questionResponseList) {
-                    timeSpent += qr.timeSpent.GetValueOrDefault(0);
-                }
+            foreach (QuestionResponseContent qr in request.questionResponseList) {
+                timeSpent += qr.timeSpent.GetValueOrDefault(0);
             }
 
             ViewBag.TimeSpent = timeSpent;
@@ -472,6 +471,16 @@ namespace SasquatchCAIRS.Controllers
             // add AuditLog entry for viewing
             AuditLogManagementController almc = new AuditLogManagementController();
             almc.addEntry(id, upc.getUserProfile(User.Identity.Name).UserId, Constants.AuditType.RequestView);
+
+            ViewBag.IsLocked = rlc.isLocked(id);
+
+            if (ViewBag.IsLocked) {
+                ViewBag.IsLockedToMe = rlc.getRequestLock(id).UserID ==
+                                       upc.getUserProfile(User.Identity.Name)
+                                          .UserId;
+            } else {
+                ViewBag.IsLockedToMe = false;
+            }
 
             return View(request);
         }
