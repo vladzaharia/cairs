@@ -69,9 +69,21 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
 
             qr.RequestID = content.requestID;
             qr.Question = HttpUtility.HtmlEncode(content.question);
+            if (qr.Question != null) {
+                qr.Question = qr.Question.Replace("&#39;", "'");
+            }
+
             qr.Response = HttpUtility.HtmlEncode(content.response);
+            if (qr.Response != null) {
+                qr.Response = qr.Response.Replace("&#39;", "'");
+            }
+
             qr.TimeSpent = content.timeSpent;
             qr.SpecialNotes = HttpUtility.HtmlEncode(content.specialNotes);
+            if (qr.SpecialNotes != null) {
+                qr.SpecialNotes = qr.SpecialNotes.Replace("&#39;", "'");
+            }
+
             qr.QuestionTypeID = content.questionTypeID;
             qr.TumourGroupID = content.tumourGroupID;
             qr.Severity = (byte?) content.severity;
