@@ -220,8 +220,7 @@ namespace SasquatchCAIRS.Controllers
                 rmc.invalidate(reqContent.requestID);
 
                 almc.addEntry(reqContent.requestID, up.UserId,
-                    Constants.AuditType.RequestDeletion,
-                    reqContent.timeOpened);
+                    Constants.AuditType.RequestDeletion);
 
                 return RedirectToAction("Index", "Home", new {
                     status = Constants.URLStatus.Deleted
@@ -310,8 +309,7 @@ namespace SasquatchCAIRS.Controllers
             rlc.removeLock(reqContent.requestID);
 
             almc.addEntry(reqContent.requestID, up.UserId,
-                Constants.AuditType.RequestModification,
-                reqContent.timeOpened);
+                Constants.AuditType.RequestModification);
 
             if (reqContent.requestStatus == Constants.RequestStatus.Completed &&
                 reqContent.timeClosed != null) {
