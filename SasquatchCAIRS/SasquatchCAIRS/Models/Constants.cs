@@ -243,7 +243,7 @@ namespace SasquatchCAIRS.Models {
                 // Search Information
                 public const string PATIENT_NAME_LABEL = "Patient Name";
                 public const string CALLER_NAME_LABEL = "Caller Name";
-                public const string SEARCH_FILTER = "Search Filter";
+                public const string SEARCH_FILTER = "Search Keywords By";
 
                 // Question Information
                 public const string QUESTION = "Question";
