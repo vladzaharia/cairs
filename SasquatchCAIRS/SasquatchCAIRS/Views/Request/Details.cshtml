@@ -95,24 +95,28 @@
         </tr>
     </table>
 
+    int i = 0;
     foreach (QuestionResponseContent qr in Model.questionResponseList) {
         <h4>Question Information</h4>
 
         <table class="table unbordered-table no-margin">
             <tr>
-                <td class="focal">@qr.question</td>
+                <td class="focal" colspan="6">@Constants.UIString.FieldLabel.QUESTION</td>
             </tr>
             <tr>
-                <td>@qr.response</td>
+                <td colspan="6" id="question_@(i)">@qr.question</td>
             </tr>
-        </table>
-
-        <table class="table unbordered-table no-margin">
+            <tr>
+                <td class="focal" colspan="6">@Constants.UIString.FieldLabel.RESPONSE</td>
+            </tr>
+            <tr>
+                <td colspan="6" id="response_@(i)">@qr.response</td>
+            </tr>
             <tr>
                 <td class="focal" colspan="6">@Constants.UIString.FieldLabel.SPECIAL_NOTES</td>
             </tr>
             <tr>
-                <td colspan="6">@qr.specialNotes</td>
+                <td colspan="6" id="specialNotes_@(i)">@qr.specialNotes</td>
             </tr>
             
             <tr>
@@ -214,6 +218,8 @@
                 }
             </table>
         </div>
+
+        i++;
     }
 
     <h4>Properties</h4>
@@ -247,3 +253,15 @@
     <h2>@Constants.UIString.TitleText.VIEW_REQUEST - @Constants.UIString.TitleText.ERROR</h2>
     <p>Cannot open request. You may not have the appropriate permissions to access this request.</p>
 }
+
+<script type="text/javascript">
+    $(function() {
+        @if (Model != null && Model.questionResponseList != null) {
+            for (int i = 0; i < Model.questionResponseList.Count(); i++) {
+                @:$("#question_@(i)").html($("<div/>").html("@(HttpUtility.HtmlDecode(Model.questionResponseList[i].question))").text());
+                @:$("#response_@(i)").html($("<div/>").html("@(HttpUtility.HtmlDecode(Model.questionResponseList[i].response))").text());
+                @:$("#specialNotes_@(i)").html($("<div/>").html("@(HttpUtility.HtmlDecode(Model.questionResponseList[i].specialNotes))").text());
+            }
+         }
+    })
+</script>

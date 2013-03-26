@@ -78,9 +78,9 @@ namespace SasquatchCAIRS.Controllers {
                 ViewBag.Status =
                     "The request is locked and cannot be edited.";
                 ViewBag.StatusColor = "danger";
-            } else if (status == Constants.URLStatus.LockedToOtherUser) {
+            } else if (status == Constants.URLStatus.NotLockedToYou) {
                 ViewBag.Status =
-                    "The request is not locked to you and cannot be edited.";
+                    "The request is not locked and cannot be edited.";
                 ViewBag.StatusColor = "danger";
             } else if (status == Constants.URLStatus.SuccessfulEdit) {
                 ViewBag.Status =
