@@ -103,6 +103,7 @@ namespace SasquatchCAIRS.Controllers
                 return View(reqContent);
             }
 
+            // Encode HTML in question responses
             // Replace null references with empty string
             foreach (var qrContent in reqContent.questionResponseList) {
                 foreach (var refContent in qrContent.referenceList.Where(
@@ -156,7 +157,7 @@ namespace SasquatchCAIRS.Controllers
                 rlc.addLock(id, up.UserId);
             } else if (rl.UserID != up.UserId) {
                 // Locked to someone else, redirect
-                RedirectToAction("Index", "Home", new {
+                return RedirectToAction("Index", "Home", new {
                     status = Constants.URLStatus.AccessingLocked
                 });
             }
@@ -192,9 +193,13 @@ namespace SasquatchCAIRS.Controllers
             UserProfile up = uc.getUserProfile(User.Identity.Name);
 
             RequestLock rl = rlc.getRequestLock(reqContent.requestID);
-            if (rl != null && rl.UserID != up.UserId) {
-                RedirectToAction("Index", "Home", new {
-                    status = Constants.URLStatus.LockedToOtherUser
+            if (rl == null) {
+                return RedirectToAction("Index", "Home", new {
+                    status = Constants.URLStatus.NotLockedToYou
+                });
+            } else if (rl.UserID != up.UserId) {
+                return RedirectToAction("Index", "Home", new {
+                    status = Constants.URLStatus.AccessingLocked
                 });
             }
 
@@ -302,7 +307,7 @@ namespace SasquatchCAIRS.Controllers
         public ActionResult NewQuestionResponse(String json) {
             // Don't want to load a partial with a Not Authorized message
             if (!Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
-                RedirectToAction("Index", "Home", new {
+                return RedirectToAction("Index", "Home", new {
                     status = Constants.URLStatus.NoRequestEditorRole
                 });
             }
@@ -338,7 +343,7 @@ namespace SasquatchCAIRS.Controllers
         public ActionResult NewReference(string id, string json) {
             // Don't want to load a partial with a Not Authorized message
             if (!Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
-                RedirectToAction("Index", "Home", new {
+                return RedirectToAction("Index", "Home", new {
                     status = Constants.URLStatus.NoRequestEditorRole
                 });
             }

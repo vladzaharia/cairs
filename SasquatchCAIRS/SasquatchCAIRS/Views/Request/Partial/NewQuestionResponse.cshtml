@@ -133,16 +133,42 @@
 
             CKEDITOR.replace("questionResponseList_@(ViewBag.Guid)__question",
                 {
-                    toolbar: 'Basic'
+                    toolbar: 'Basic',
+                    enterMode : CKEDITOR.ENTER_BR,
+                    on: {
+                        instanceReady: function (e) {
+                            var question = $("<div/>").html(
+                                "@(HttpUtility.HtmlDecode(Model.question))").text();
+                            e.editor.setData(question);
+                        }
+                    }
                 });
+
             CKEDITOR.replace("questionResponseList_@(ViewBag.Guid)__response",
                 {
-                    toolbar: 'Basic'
+                    toolbar: 'Basic',
+                    enterMode: CKEDITOR.ENTER_BR,
+                    on: {
+                        instanceReady: function (e) {
+                            var question = $("<div/>").html(
+                                "@(HttpUtility.HtmlDecode(Model.response))").text();
+                            e.editor.setData(question);
+                        }
+                    }
                 });
             CKEDITOR.replace("questionResponseList_@(ViewBag.Guid)__specialNotes",
                 {
-                    toolbar: 'Basic'
+                    toolbar: 'Basic',
+                    enterMode: CKEDITOR.ENTER_BR,
+                    on: {
+                        instanceReady: function (e) {
+                            var question = $("<div/>").html(
+                                "@(HttpUtility.HtmlDecode(Model.specialNotes))").text();
+                            e.editor.setData(question);
+                        }
+                    }
                 });
+            
 
             $("#qr-references-add-@(ViewBag.Guid)").click(function (e) {
                 e.preventDefault();
