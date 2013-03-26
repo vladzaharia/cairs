@@ -65,7 +65,7 @@
             Unlocked = 2,
             Deleted = 3,
             AccessingLocked = 4,
-            LockedToOtherUser = 5,
+            NotLockedToYou = 5,
             SuccessfulEdit = 6,
             NoRequestEditorRole = 7,
             SuccessfulCreate = 8

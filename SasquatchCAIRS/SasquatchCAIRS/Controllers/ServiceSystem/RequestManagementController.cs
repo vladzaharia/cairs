@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
+using System.Web;
 using SasquatchCAIRS.Models;
 using SasquatchCAIRS.Models.ServiceSystem;
 
@@ -67,10 +68,10 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
             }
 
             qr.RequestID = content.requestID;
-            qr.Question = content.question;
-            qr.Response = content.response;
+            qr.Question = HttpUtility.HtmlEncode(content.question);
+            qr.Response = HttpUtility.HtmlEncode(content.response);
             qr.TimeSpent = content.timeSpent;
-            qr.SpecialNotes = content.specialNotes;
+            qr.SpecialNotes = HttpUtility.HtmlEncode(content.specialNotes);
             qr.QuestionTypeID = content.questionTypeID;
             qr.TumourGroupID = content.tumourGroupID;
             qr.Severity = (byte?) content.severity;
@@ -312,6 +313,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                     // those already in the database
                     foreach (QuestionResponseContent qrContent in
                              reqContent.questionResponseList) {
+                        qrContent.requestID = reqContent.requestID;
                         
                         if (currQrIds.Remove(qrContent.questionResponseID)) {
                             // QuestionResponse already exists in the database
@@ -366,6 +368,10 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                             // Check all References for the QuestionResponse
                             foreach (ReferenceContent refContent in
                                      qrContent.referenceList) {
+                                refContent.requestID = req.RequestID;
+                                refContent.questionResponseID =
+                                    qr.QuestionResponseID;
+
                                 Reference r = 
                                     createReferenceEntity(refContent);
 
@@ -416,6 +422,10 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                             // Add all References for the QuestionResponse
                             foreach (ReferenceContent refContent in
                                      qrContent.referenceList) {
+                                refContent.requestID = req.RequestID;
+                                refContent.questionResponseID =
+                                    qr.QuestionResponseID;
+
                                 Reference r =
                                     createReferenceEntity(refContent);
 
