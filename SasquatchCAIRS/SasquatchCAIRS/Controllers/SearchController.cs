@@ -324,11 +324,13 @@ namespace SasquatchCAIRS.Controllers {
                     _db.KeywordQuestions;
 
                 switch (criteria.searchFilter) {
-                        /*case "All":
+                        // TODO : fix 'all' and 'none' cases
+                        case "All":
                         keywordQuestions = (from kqs in _db.KeywordQuestions
                                             from k in keywords
                                             where k.KeywordID == kqs.KeywordID
-                                            select kqs);*/
+                                            select kqs);
+                        break;
                     case "Any":
                         keywordQuestions = (from kqs in _db.KeywordQuestions
                                             from k in keywords
