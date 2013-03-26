@@ -189,7 +189,7 @@
                         <td class="focal">@Constants.UIString.FieldLabel.KEYWORDS</td>
                     </tr>
                     <tr>
-                        <td>@foreach(String kw in qr.keywords) { <span>@kw </span> }</td>
+                        <td>@String.Join(", ", qr.keywords)</td>
                     </tr>
                 </table>
             </div>
