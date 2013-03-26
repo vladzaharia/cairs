@@ -105,6 +105,19 @@ namespace SasquatchCAIRS.Controllers
             // Encode HTML in question responses
             // Replace null references with empty string
             foreach (var qrContent in reqContent.questionResponseList) {
+                if (!String.IsNullOrEmpty(qrContent.question)) {
+                    qrContent.question =
+                        removeNewLinesAndTabs(qrContent.question);
+                }
+                if (!String.IsNullOrEmpty(qrContent.response)) {
+                    qrContent.response =
+                        removeNewLinesAndTabs(qrContent.response);
+                }
+                if (!String.IsNullOrEmpty(qrContent.specialNotes)) {
+                    qrContent.specialNotes =
+                        removeNewLinesAndTabs(qrContent.specialNotes);
+                }
+
                 foreach (var refContent in qrContent.referenceList.Where(
                     refContent => refContent.referenceString == null)) {
 
@@ -257,6 +270,19 @@ namespace SasquatchCAIRS.Controllers
 
             // Replace null references with empty string
             foreach (var qrContent in reqContent.questionResponseList) {
+                if (!String.IsNullOrEmpty(qrContent.question)) {
+                    qrContent.question =
+                        removeNewLinesAndTabs(qrContent.question);
+                }
+                if (!String.IsNullOrEmpty(qrContent.response)) {
+                    qrContent.response =
+                        removeNewLinesAndTabs(qrContent.response);
+                }
+                if (!String.IsNullOrEmpty(qrContent.specialNotes)) {
+                    qrContent.specialNotes =
+                        removeNewLinesAndTabs(qrContent.specialNotes);
+                }
+
                 foreach (var refContent in qrContent.referenceList.Where(
                     refContent => refContent.referenceString == null)) {
 
@@ -458,6 +484,14 @@ namespace SasquatchCAIRS.Controllers
             return RedirectToAction("Index", "Home", new {
                 status = Constants.URLStatus.Deleted
             });
+        }
+
+        private String removeNewLinesAndTabs(String s) {
+            s = s.Replace("\n", String.Empty);
+            s = s.Replace("\r", String.Empty);
+            s = s.Replace("\t", String.Empty);
+
+            return s;
         }
     }
 }
