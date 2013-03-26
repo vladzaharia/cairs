@@ -182,8 +182,8 @@
         <div>
         @foreach (var severity in Enum.GetValues(typeof(Constants.Severity))) {
                 <label class="checkbox inline">
-                    @if (!String.IsNullOrEmpty(Model.consequence) && 
-                         Model.consequence.Contains(@severity.ToString())) {
+                    @if (!String.IsNullOrEmpty(Model.severity) && 
+                         Model.severity.Contains(@severity.ToString())) {
                         <input type="checkbox" name="severity" value="@severity" checked/>
                     } else
                     {
