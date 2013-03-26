@@ -42,6 +42,19 @@ namespace SasquatchCAIRS.Models {
             Consequence.Unlikely
         };
 
+        public enum SearchFilter
+        {
+            All = 0,
+            Any = 1,
+            None = 2,
+        }
+
+        public static readonly SearchFilter[] searchFilterOptions = {
+            SearchFilter.All, 
+            SearchFilter.Any, 
+            SearchFilter.None, 
+        };
+
         public enum ReferenceType {
             URL = 0,
             File = 1,
@@ -230,6 +243,7 @@ namespace SasquatchCAIRS.Models {
                 // Search Information
                 public const string PATIENT_NAME_LABEL = "Patient Name";
                 public const string CALLER_NAME_LABEL = "Caller Name";
+                public const string SEARCH_FILTER = "Search Filter";
 
                 // Question Information
                 public const string QUESTION = "Question";

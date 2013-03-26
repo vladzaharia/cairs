@@ -88,6 +88,7 @@ namespace SasquatchCAIRS.Controllers {
             criteria.requestorLastName = form["requestorLast"];
             criteria.patientFirstName = form["patientFirst"];
             criteria.patientLastName = form["patientLast"];
+            criteria.searchFilter = form["searchFilter"];
 
             if (isEmptySearchCriteria(criteria)) {
                 ViewBag.emptyForm = true;
