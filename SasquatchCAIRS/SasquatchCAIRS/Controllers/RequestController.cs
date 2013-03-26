@@ -118,13 +118,13 @@ namespace SasquatchCAIRS.Controllers
             UserController uc = new UserController();
             UserProfile up = uc.getUserProfile(User.Identity.Name);
             AuditLogManagementController almc = new AuditLogManagementController();
-            almc.addEntry(reqContent.requestID, up.UserId,
+            almc.addEntry(reqId, up.UserId,
                 Constants.AuditType.RequestCreation,
                 reqContent.timeOpened);
 
             if (reqContent.requestStatus == Constants.RequestStatus.Completed &&
                 reqContent.timeClosed != null) {
-                almc.addEntry(reqContent.requestID, up.UserId,
+                almc.addEntry(reqId, up.UserId,
                     Constants.AuditType.RequestCompletion,
                     (DateTime) reqContent.timeClosed);
             }
@@ -455,7 +455,7 @@ namespace SasquatchCAIRS.Controllers
                                      al.RequestID == request.requestID
                                  select al).FirstOrDefault();
             if (auditLog != null && auditLog.UserProfile != null) {
-                ViewBag.CreatedBy = auditLog.UserProfile.UserName;
+                ViewBag.CreatedBy = auditLog.UserProfile.UserFullName;
             } else {
                 ViewBag.CreatedBy = "";
             }
@@ -468,7 +468,7 @@ namespace SasquatchCAIRS.Controllers
                             al.RequestID == request.requestID
                         select al).FirstOrDefault();
             if (auditLog != null && auditLog.UserProfile != null) {
-                ViewBag.CompletedBy = auditLog.UserProfile.UserName;
+                ViewBag.CompletedBy = auditLog.UserProfile.UserFullName;
             } else {
                 ViewBag.CompletedBy = "";
             }
