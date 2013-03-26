@@ -128,7 +128,7 @@ namespace SasquatchCAIRS.Controllers {
                 || !String.IsNullOrEmpty(sc.patientFirstName) || !String.IsNullOrEmpty(sc.patientLastName)
                 || !String.IsNullOrEmpty(sc.questionType) || !String.IsNullOrEmpty(sc.requestStatus)
                 || !String.IsNullOrEmpty(sc.requestorFirstName) || !String.IsNullOrEmpty(sc.requestorLastName)
-                || !String.IsNullOrEmpty(sc.severity) || !String.IsNullOrEmpty(sc.tumorGroup)
+                || !String.IsNullOrEmpty(sc.severity) || !String.IsNullOrEmpty(sc.tumorGroup) || !String.IsNullOrEmpty(sc.searchFilter)
                 || sc.startTime.CompareTo(new DateTime()) != 0 || sc.completionTime.CompareTo(new DateTime()) != 0) {
                 return false;
             }
@@ -321,10 +321,33 @@ namespace SasquatchCAIRS.Controllers {
 
                 // Then we select the Keyword Question pairs with the same keywords
                 IQueryable<KeywordQuestion> keywordQuestions =
-                     (from kqs in _db.KeywordQuestions
-                      from k in keywords
-                      where k.KeywordID == kqs.KeywordID
-                      select kqs);
+                    _db.KeywordQuestions;
+
+                switch (criteria.searchFilter) {
+                        /*case "All":
+                        keywordQuestions = (from kqs in _db.KeywordQuestions
+                                            from k in keywords
+                                            where k.KeywordID == kqs.KeywordID
+                                            select kqs);*/
+                    case "Any":
+                        keywordQuestions = (from kqs in _db.KeywordQuestions
+                                            from k in keywords
+                                            where k.KeywordID == kqs.KeywordID
+                                            select kqs);
+                        break;
+                    case "None":
+                        keywordQuestions = (from kqs in _db.KeywordQuestions
+                                            from k in keywords
+                                            where k.KeywordID != kqs.KeywordID
+                                            select kqs);
+                        break;
+                    case null: 
+                        keywordQuestions = (from kqs in _db.KeywordQuestions
+                                            from k in keywords
+                                            where k.KeywordID == kqs.KeywordID
+                                            select kqs);
+                        break;
+                }
 
                 // Then we intersect Keywords with QuestionResponses through the use of a join
                 questionResponses = from key in keywordQuestions

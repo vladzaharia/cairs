@@ -39,10 +39,10 @@
                 <label class="checkbox inline">
                     @if (!String.IsNullOrEmpty(Model.searchFilter) && 
                          Model.searchFilter.Contains(@searchFilter.ToString())) {
-                        <input type="checkbox" name="consequence" value="@searchFilter" checked/>
+                        <input type="checkbox" name="searchFilter" value="@searchFilter" checked/>
                     } else
                     {
-                        <input type="checkbox" name="consequence" value="@searchFilter" />  
+                        <input type="checkbox" name="searchFilter" value="@searchFilter" />  
                     }
                     @searchFilter
                 </label>
@@ -184,10 +184,10 @@
                 <label class="checkbox inline">
                     @if (!String.IsNullOrEmpty(Model.consequence) && 
                          Model.consequence.Contains(@severity.ToString())) {
-                        <input type="checkbox" name="consequence" value="@severity" checked/>
+                        <input type="checkbox" name="severity" value="@severity" checked/>
                     } else
                     {
-                        <input type="checkbox" name="consequence" value="@severity" />  
+                        <input type="checkbox" name="severity" value="@severity" />  
                     }
                     @severity
                 </label>
