@@ -71,9 +71,8 @@ namespace SasquatchCAIRS.Controllers {
 
                 // Create blank list of AuditLogs and fill with all AuditLogs for the given request ID
                 List<AuditLog> requestLogs =
-                    (from r in _db.AuditLogs
-                     where r.RequestID == request.RequestID
-                     select r).ToList();
+                    _db.AuditLogs.Where(r => r.RequestID == request.RequestID)
+                    .OrderBy(ars => ars.AuditDate).ToList();
 
                 // Create DataTable with requestLogs to send to XLSExporter
                 string sheetName = "Audit Log for Request " + request.RequestID;
@@ -142,7 +141,11 @@ namespace SasquatchCAIRS.Controllers {
             // Create blank list of AuditLogs and fill with all AuditLogs for each user ID
            foreach (long userID in userIDs) {
                
-               var requestLogs = (_db.AuditLogs.Where(r => r.UserID == userID && r.AuditDate.Date >= startDate.Date && r.AuditDate.Date <= endDate.Date)).ToList();
+               var requestLogs = _db.AuditLogs.Where(r => r.UserID == userID && 
+                   r.AuditDate.Date >= startDate.Date && 
+                   r.AuditDate.Date <= endDate.Date)
+                   .OrderBy(ars => ars.AuditDate)
+                   .ToList();
 
                // Create DataTable with requestLogs to send to XLSExporter
                string userName = (from u in _db.UserProfiles
