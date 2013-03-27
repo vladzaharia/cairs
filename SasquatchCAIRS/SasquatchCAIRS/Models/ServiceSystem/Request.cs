@@ -1,221 +1,119 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace SasquatchCAIRS.Models.ServiceSystem {
-
     public class RequestContent {
-        private long _requestID = -1;
-        private long? _parentRequestID = null;
-
-        private string _requestorFName = null;
-        private string _requestorLName = null;
-        private string _requestorPhoneNum = null;
-        private string _requestorPhoneExt = null;
-        private string _requestorEmail = null;
-
-        private string _patientFName = null;
-        private string _patientLName = null;
-        private Constants.Gender _patientGender = Constants.Gender.None;
-        private string _patientAgencyID = null;
-        private byte? _patientAge = null;
-
-        private Constants.RequestStatus _requestStatus =
-            Constants.RequestStatus.Open;
-        private DateTime _timeOpened = new DateTime();
-        private DateTime? _timeClosed = null;
-
-        private int? _regionID = null;
-        private int? _requestorTypeID = null;
-
         private List<QuestionResponseContent> _questionResponseList
             = new List<QuestionResponseContent>();
-        private List<Reference> _referenceList = new List<Reference>();
 
         public RequestContent(Request req) {
-            _requestID = req.RequestID;
-            _parentRequestID = req.ParentRequestID;
+            requestID = req.RequestID;
+            parentRequestID = req.ParentRequestID;
 
-            _requestorFName = req.RequestorFName;
-            _requestorLName = req.RequestorLName;
-            _requestorPhoneNum = req.RequestorPhone;
-            _requestorPhoneExt = req.RequestorPhoneExt;
-            _requestorEmail = req.RequestorEmail;
+            requestorFirstName = req.RequestorFName;
+            requestorLastName = req.RequestorLName;
+            requestorPhoneNum = req.RequestorPhone;
+            requestorPhoneExt = req.RequestorPhoneExt;
+            requestorEmail = req.RequestorEmail;
 
-            _patientFName = req.PatientFName;
-            _patientLName = req.PatientLName;
+            patientFName = req.PatientFName;
+            patientLName = req.PatientLName;
 
             if (req.PatientGender != null) {
-                _patientGender = (Constants.Gender) req.PatientGender;
+                patientGender = (Constants.Gender) req.PatientGender;
+            } else {
+                patientGender = null;
             }
 
-            _patientAgencyID = req.PatientAgencyID;
-            _patientAge = req.PatientAge;
+            patientAgencyID = req.PatientAgencyID;
+            patientAge = req.PatientAge;
 
-            _requestStatus = (Constants.RequestStatus) req.RequestStatus;
-            _timeOpened = req.TimeOpened;
-            _timeClosed = req.TimeClosed;
+            requestStatus = (Constants.RequestStatus) req.RequestStatus;
+            timeOpened = req.TimeOpened;
+            timeClosed = req.TimeClosed;
 
-            _regionID = req.RegionID;
-            _requestorTypeID = req.RequestorTypeID;
+            regionID = req.RegionID;
+            requestorTypeID = req.RequestorTypeID;
         }
 
-        public RequestContent() {}
-
-        public long requestID {
-            get {
-                return _requestID;
-            }
-            set {
-                _requestID = value;
-            }
+        public RequestContent() {
+            requestorTypeID = null;
+            regionID = null;
+            timeClosed = null;
+            timeOpened = new DateTime(1753, 1, 1);
+            requestStatus = Constants.RequestStatus.Open;
+            patientAge = null;
+            patientAgencyID = null;
+            patientGender = null;
+            patientLName = null;
+            patientFName = null;
+            requestID = -1;
+            parentRequestID = null;
+            requestorEmail = null;
+            requestorPhoneExt = null;
+            requestorPhoneNum = null;
+            requestorLastName = null;
+            requestorFirstName = null;
         }
 
-        public long? parentRequestID {
-            get {
-                return _parentRequestID;
-            }
-            set {
-                _parentRequestID = value;
-            }
-        }
+        [Display(Name = "Request ID")]
+        public long requestID { get; set; }
 
-        public string requestorFirstName {
-            get {
-                return _requestorFName;
-            }
-            set {
-                _requestorFName = value;
-            }
-        }
+        [Display(Name = "Parent Request ID")]
+        public long? parentRequestID { get; set; }
 
-        public string requestorLastName {
-            get {
-                return _requestorLName;
-            }
-            set {
-                _requestorLName = value;
-            }
-        }
+        [Display(Name = "First Name"), StringLength(64)]
+        public string requestorFirstName { get; set; }
+        
+        [Display(Name = "Last Name"), StringLength(64)]
+        public string requestorLastName { get; set; }
 
-        public string requestorPhoneNum {
-            get {
-                return _requestorPhoneNum;
-            }
-            set {
-                _requestorPhoneNum = value;
-            }
-        }
+        [Display(Name = "Phone Number")]
+        [DataType(DataType.PhoneNumber)]
+        public string requestorPhoneNum { get; set; }
 
-        public string requestorPhoneExt {
-            get {
-                return _requestorPhoneExt;
-            }
-            set {
-                _requestorPhoneExt = value;
-            }
-        }
+        [Display(Name = "Phone Ext"), StringLength(15)]
+        public string requestorPhoneExt { get; set; }
 
-        public string requestorEmail {
-            get {
-                return _requestorEmail;
-            }
-            set {
-                _requestorEmail = value;
-            }
-        }
+        [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
+        public string requestorEmail { get; set; }
 
-        public string patientFName {
-            get {
-                return _patientFName;
-            }
-            set {
-                _patientFName = value;
-            }
-        }
+        [Display(Name = "First Name"), StringLength(64)]
+        public string patientFName { get; set; }
 
-        public string patientLName {
-            get {
-                return _patientLName;
-            }
-            set {
-                _patientLName = value;
-            }
-        }
+        [Display(Name = "Last Name"), StringLength(64)]
+        public string patientLName { get; set; }
 
-        public Constants.Gender patientGender {
-            get {
-                return _patientGender;
-            }
-            set {
-                _patientGender = value;
-            }
-        }
+        [Display(Name = "Gender")]
+        public Constants.Gender? patientGender { get; set; }
 
-        public string patientAgencyID {
-            get {
-                return _patientAgencyID;
-            }
-            set {
-                _patientAgencyID = value;
-            }
-        }
+        [Display(Name = "Agency ID")]
+        [StringLength(15)]
+        public string patientAgencyID { get; set; }
 
-        public byte? patientAge {
-            get {
-                return _patientAge;
-            }
-            set {
-                _patientAge = value;
-            }
-        }
+        [Display(Name = "Patient Age")]
+        [Range(0, 255)]
+        public byte? patientAge { get; set; }
 
-        public Constants.RequestStatus requestStatus {
-            get {
-                return _requestStatus;
-            }
-            set {
-                _requestStatus = value;
-            }
-        }
+        [Display(Name = "Status")]
+        public Constants.RequestStatus requestStatus { get; set; }
 
-        public DateTime timeOpened {
-            get {
-                return _timeOpened;
-            }
-            set {
-                _timeOpened = value;
-            }
-        }
+        [Display(Name = "Time Opened")]
+        [DataType(DataType.DateTime)]
+        public DateTime timeOpened { get; set; }
 
-        public DateTime? timeClosed {
-            get {
-                return _timeClosed;
-            }
-            set {
-                _timeClosed = value;
-            }
-        }
+        [Display(Name = "Time Closed")]
+        [DataType(DataType.DateTime)]
+        public DateTime? timeClosed { get; set; }
 
-        public int? regionID {
-            get {
-                return _regionID;
-            }
-            set {
-                _regionID = value;
-            }
-        }
+        [Display(Name = "Region")]
+        public int? regionID { get; set; }
 
-        public int? requestorTypeID {
-            get {
-                return _requestorTypeID;
-            }
-            set {
-                _requestorTypeID = value;
-            }
-        }
+        [Display(Name = "Requestor Type")]
+        public int? requestorTypeID { get; set; }
 
         public List<QuestionResponseContent> questionResponseList {
             get {
@@ -234,174 +132,98 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
                 }
             }
         }
+
+        public readonly QuestionResponseContent qrContent = null;
     }
 
     public class QuestionResponseContent : IComparable {
-        private long _requestID = -1;
-        private long _questionResponseID = -1;
-
-        private string _question = null;
-        private string _response = null;
-        private short? _timeSpent = null;
-        private string _specialNotes = null;
-        private int? _questionTypeID = null;
-        private int? _tumourGroupID = null;
-
-        private Constants.Severity _severity = Constants.Severity.None;
-        private Constants.Consequence _consequence =
-            Constants.Consequence.None;
-
-        private List<ReferenceContent> _referenceList =
-            new List<ReferenceContent>();
-
-        private List<KeywordContent> _keywords = new List<KeywordContent>();
-
         public QuestionResponseContent(QuestionResponse qr) {
-            _requestID = qr.RequestID;
-            _questionResponseID = qr.QuestionResponseID;
+            referenceList = new List<ReferenceContent>();
+            keywords = new List<String>();
+            requestID = qr.RequestID;
+            questionResponseID = qr.QuestionResponseID;
 
-            _question = qr.Question;
-            _response = qr.Response;
-            _timeSpent = qr.TimeSpent;
-            _specialNotes = qr.SpecialNotes;
-            _questionTypeID = qr.QuestionTypeID;
-            _tumourGroupID = qr.TumourGroupID;
+            question = qr.Question;
+            response = qr.Response;
+            timeSpent = qr.TimeSpent;
+            specialNotes = qr.SpecialNotes;
+            questionTypeID = qr.QuestionTypeID;
+            tumourGroupID = qr.TumourGroupID;
 
-            if (qr.Severity != null) {
-                _severity = (Constants.Severity) qr.Severity;
-            }
-
-            if (qr.Consequence != null) {
-                _consequence = (Constants.Consequence) qr.Consequence;
-            }
+            severity = (Constants.Severity?) qr.Severity;
+            consequence = (Constants.Consequence?) qr.Consequence;
         }
 
-        public QuestionResponseContent() {}
-
-        public long requestID {
-            get {
-                return _requestID;
-            }
-            set {
-                _requestID = value;
-            }
+        public QuestionResponseContent() {
+            consequence = null;
+            severity = null;
+            referenceList = new List<ReferenceContent>();
+            keywords = new List<String>();
+            tumourGroupID = null;
+            questionTypeID = null;
+            timeSpent = null;
+            specialNotes = null;
+            response = null;
+            question = null;
+            questionResponseID = -1;
+            requestID = -1;
         }
 
-        public long questionResponseID {
-            get {
-                return _questionResponseID;
-            }
-            set {
-                _questionResponseID = value;
-            }
-        }
+        public long requestID { get; set; }
 
-        public string question {
-            get {
-                return _question;
-            }
-            set {
-                _question = value;
-            }
-        }
+        public long questionResponseID { get; set; }
 
-        public string response {
-            get {
-                return _response;
-            }
-            set {
-                _response = value;
-            }
-        }
+        [Display(Name = "Question")]
+        [StringLength(1024)]
+        public string question { get; set; }
 
-        public short? timeSpent {
-            get {
-                return _timeSpent;
-            }
-            set {
-                _timeSpent = value;
-            }
-        }
+        [Display(Name = "Response")]
+        public string response { get; set; }
 
-        public string specialNotes {
-            get {
-                return _specialNotes;
-            }
-            set {
-                _specialNotes = value;
-            }
-        }
+        [Display(Name = "Time Spent")]
+        [Range(0, 32767)]
+        public short? timeSpent { get; set; }
 
-        public int? questionTypeID {
-            get {
-                return _questionTypeID;
-            }
-            set {
-                _questionTypeID = value;
-            }
-        }
+        [Display(Name = "Special Notes")]
+        [StringLength(1024)]
+        public string specialNotes { get; set; }
 
-        public int? tumourGroupID {
-            get {
-                return _tumourGroupID;
-            }
-            set {
-                _tumourGroupID = value;
-            }
-        }
+        [Display(Name = "Question Type")]
+        public int? questionTypeID { get; set; }
 
-        public Constants.Severity severity {
-            get {
-                return _severity;
-            }
-            set {
-                _severity = value;
-            }
-        }
+        [Display(Name = "Tumour Group")]
+        public int? tumourGroupID { get; set; }
 
-        public Constants.Consequence consequence {
-            get {
-                return _consequence;
-            }
-            set {
-                _consequence = value;
-            }
-        }
+        [Display(Name = "Severity")]
+        public Constants.Severity? severity { get; set; }
 
-        public List<ReferenceContent> referenceList {
-            get {
-                return _referenceList;
-            }
-        }
+        [Display(Name = "Probability of Consequence")]
+        public Constants.Consequence? consequence { get; set; }
+
+        [Display(Name = "References")]
+        public List<ReferenceContent> referenceList { get; set; }
 
         public void addReference(ReferenceContent newRef) {
-            _referenceList.Add(newRef);
+            referenceList.Add(newRef);
         }
 
         public void removeReference(long referenceID) {
-            foreach (ReferenceContent r in _referenceList) {
+            foreach (ReferenceContent r in referenceList) {
                 if (r.referenceID == referenceID) {
-                    _referenceList.Remove(r);
+                    referenceList.Remove(r);
                 }
             }
         }
 
-        public List<KeywordContent> keywords {
-            get {
-                return _keywords;
-            }
+        [Display(Name = "Keywords")]
+        public List<String> keywords { get; set; }
+
+        public void addKeyword(String newKeyword) {
+            keywords.Add(newKeyword);
         }
 
-        public void addKeyword(KeywordContent newKeyword) {
-            _keywords.Add(newKeyword);
-        }
-
-        public void removeKeyword(int keywordId) {
-            foreach (KeywordContent kw in _keywords) {
-                if (kw.keywordId == keywordId) {
-                    _keywords.Remove(kw);
-                }
-            }
+        public void removeKeyword(string keyword) {
+             keywords.Remove(keyword);
         }
 
         /// <summary>
@@ -439,99 +261,32 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
     }
 
     public class ReferenceContent {
-        private long _requestID;
-        private long _questionResponseID;
-        private long _referenceID;
-
-        private Constants.ReferenceType _referenceType =
-            Constants.ReferenceType.Text;
-        private string _referenceString = "";
-
         public ReferenceContent(Reference r) {
-            _requestID = r.RequestID;
-            _questionResponseID = r.QuestionResponseID;
-            _referenceID = r.ReferenceID;
+            requestID = r.RequestID;
+            questionResponseID = r.QuestionResponseID;
+            referenceID = r.ReferenceID;
 
-            _referenceType = (Constants.ReferenceType) r.ReferenceType;
-            _referenceString = r.ReferenceString;
+            referenceType = (Constants.ReferenceType) r.ReferenceType;
+            referenceString = r.ReferenceString;
         }
 
-        public ReferenceContent() {}
+        public ReferenceContent() {
+            referenceString = "";
+            referenceType = Constants.ReferenceType.Text;
 
-        public long requestID {
-            get {
-                return _requestID;
-            }
-            set {
-                _requestID = value;
-            }
+            requestID = -1;
+            questionResponseID = -1;
+            referenceID = -1;
         }
 
-        public long questionResponseID {
-            get {
-                return _questionResponseID;
-            }
-            set {
-                _questionResponseID = value;
-            }
-        }
+        public long requestID { get; set; }
 
-        public long referenceID {
-            get {
-                return _referenceID;
-            }
-            set {
-                _referenceID = value;
-            }
-        }
+        public long questionResponseID { get; set; }
 
-        public Constants.ReferenceType referenceType {
-            get {
-                return _referenceType;
-            }
-            set {
-                _referenceType = value;
-            }
-        }
+        public long referenceID { get; set; }
 
-        public string referenceString {
-            get {
-                return _referenceString;
-            }
-            set {
-                _referenceString = value;
-            }
-        }
-    }
+        public Constants.ReferenceType referenceType { get; set; }
 
-    public class KeywordContent {
-        private int _keywordID = -1;
-        private string _keywordStr = null;
-
-        public KeywordContent(Keyword kw) {
-            _keywordID = kw.KeywordID;
-            _keywordStr = kw.KeywordValue;
-        }
-
-        public KeywordContent() {
-        }
-
-        public int keywordId {
-            get {
-                return _keywordID;
-            }
-            set {
-                _keywordID = value;
-            }
-        }
-
-        public string keywordStr {
-            get {
-                return _keywordStr;
-            }
-            set {
-                _keywordStr = value;
-            }
-        }
+        public string referenceString { get; set; }
     }
 }

@@ -63,15 +63,6 @@
       <Association Name="UserGroup_UserGroups" Member="UserGroups" ThisKey="GroupID" OtherKey="GroupID" Type="UserGroups" />
     </Type>
   </Table>
-  <Table Name="dbo.KeywordQuestion" Member="KeywordQuestions">
-    <Type Name="KeywordQuestion">
-      <Column Name="KeywordID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RequestID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Column Name="QuestionResponseID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Association Name="Keyword_KeywordQuestion" Member="Keyword" ThisKey="KeywordID" OtherKey="KeywordID" Type="Keyword" IsForeignKey="true" />
-      <Association Name="QuestionResponse_KeywordQuestion" Member="QuestionResponse" ThisKey="QuestionResponseID,RequestID" OtherKey="QuestionResponseID,RequestID" Type="QuestionResponse" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.QuestionResponse" Member="QuestionResponses">
     <Type Name="QuestionResponse">
       <Column Name="QuestionResponseID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -112,21 +103,11 @@
       <Column Name="RequestorTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Request_QuestionResponse" Member="QuestionResponses" ThisKey="RequestID" OtherKey="RequestID" Type="QuestionResponse" />
       <Association Name="Request_Request" Member="Requests" ThisKey="RequestID" OtherKey="ParentRequestID" Type="Request" />
-      <Association Name="Request_AuditLog" Member="AuditLogs" ThisKey="RequestID" OtherKey="RequestID" Type="AuditLog" />
       <Association Name="Request_RequestLock" Member="RequestLocks" ThisKey="RequestID" OtherKey="RequestID" Type="RequestLock" />
+      <Association Name="Request_AuditLog" Member="AuditLogs" ThisKey="RequestID" OtherKey="RequestID" Type="AuditLog" />
       <Association Name="Region_Request" Member="Region" ThisKey="RegionID" OtherKey="RegionID" Type="Region" IsForeignKey="true" />
       <Association Name="Request_Request" Member="Request1" ThisKey="ParentRequestID" OtherKey="RequestID" Type="Request" IsForeignKey="true" />
       <Association Name="RequestorType_Request" Member="RequestorType" ThisKey="RequestorTypeID" OtherKey="RequestorTypeID" Type="RequestorType" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.AuditLog" Member="AuditLogs">
-    <Type Name="AuditLog">
-      <Column Name="RequestID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="AuditType" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="AuditDate" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Association Name="Request_AuditLog" Member="Request" ThisKey="RequestID" OtherKey="RequestID" Type="Request" IsForeignKey="true" />
-      <Association Name="UserProfile_AuditLog" Member="UserProfile" ThisKey="UserID" OtherKey="UserId" Type="UserProfile" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.RequestLock" Member="RequestLocks">
@@ -145,9 +126,9 @@
       <Column Name="UserFullName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="UserEmail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="UserStatus" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="UserProfile_AuditLog" Member="AuditLogs" ThisKey="UserId" OtherKey="UserID" Type="AuditLog" />
       <Association Name="UserProfile_RequestLock" Member="RequestLocks" ThisKey="UserId" OtherKey="UserID" Type="RequestLock" />
       <Association Name="UserProfile_UserGroups" Member="UserGroups" ThisKey="UserId" OtherKey="UserID" Type="UserGroups" />
+      <Association Name="UserProfile_AuditLog" Member="AuditLogs" ThisKey="UserId" OtherKey="UserID" Type="AuditLog" />
     </Type>
   </Table>
   <Table Name="dbo.UserGroups" Member="UserGroups1">
@@ -156,6 +137,25 @@
       <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Association Name="UserGroup_UserGroups" Member="UserGroup" ThisKey="GroupID" OtherKey="GroupID" Type="UserGroup" IsForeignKey="true" />
       <Association Name="UserProfile_UserGroups" Member="UserProfile" ThisKey="UserID" OtherKey="UserId" Type="UserProfile" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.KeywordQuestion" Member="KeywordQuestions">
+    <Type Name="KeywordQuestion">
+      <Column Name="KeywordID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RequestID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="QuestionResponseID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Keyword_KeywordQuestion" Member="Keyword" ThisKey="KeywordID" OtherKey="KeywordID" Type="Keyword" IsForeignKey="true" />
+      <Association Name="QuestionResponse_KeywordQuestion" Member="QuestionResponse" ThisKey="QuestionResponseID,RequestID" OtherKey="QuestionResponseID,RequestID" Type="QuestionResponse" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AuditLog" Member="AuditLogs">
+    <Type Name="AuditLog">
+      <Column Name="RequestID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AuditType" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AuditDate" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="UserProfile_AuditLog" Member="UserProfile" ThisKey="UserID" OtherKey="UserId" Type="UserProfile" IsForeignKey="true" />
+      <Association Name="Request_AuditLog" Member="Request" ThisKey="RequestID" OtherKey="RequestID" Type="Request" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>
