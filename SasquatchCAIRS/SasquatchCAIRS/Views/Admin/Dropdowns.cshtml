@@ -14,10 +14,11 @@
 
 <div class="add-button dropdown">
     @foreach (Constants.DropdownTable dt in Model.Keys) {
-        @Html.ActionLink(Constants.UIString.ButtonText.CREATE + " " + @Constants.getDropdownString(dt), "DropdownCreate", "Admin", new { table = dt }, new {
-            @class = "btn btn-custom dropdown-create-button",
-            @id = "button-" + dt
-        })
+        <a href="@Url.Action("DropdownCreate", "Admin", new { table = dt })" 
+            id="button-@dt" 
+            class="btn btn-custom">
+            <i class="icon-plus button-icon"></i> @Constants.UIString.ButtonText.CREATE @Constants.getDropdownString(dt)
+        </a>
     }
 </div>
 

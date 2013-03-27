@@ -1,17 +1,16 @@
-﻿ using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Collections.Generic;
 
 namespace SasquatchCAIRS.Models {
     public static class Constants {
         public enum Gender {
-            None = -1,
             Female = 0,
-            Male = 2,
-            Other = 3
+            Male = 1,
+            Other = 2
         }
+
+        public readonly static Gender[] genderOptions = {
+            Gender.Female, Gender.Male, Gender.Other
+        };
 
         public enum RequestStatus {
             Open = 0,
@@ -20,25 +19,69 @@ namespace SasquatchCAIRS.Models {
         }
 
         public enum Severity {
-            None = -1,
             Major = 0,
             Moderate = 1,
             Minor = 2
         }
 
+        public static readonly Severity[] severityOptions = {
+            Severity.Major, Severity.Moderate, Severity.Minor
+        };
+
         public enum Consequence {
-            None = -1,
             Certain = 0,
             Probable = 1,
             Possible = 2,
             Unlikely = 3
         }
 
+        public static readonly Consequence[] consequenceOptions = {
+            Consequence.Certain,
+            Consequence.Probable,
+            Consequence.Probable,
+            Consequence.Unlikely
+        };
+
+        public enum SearchFilter
+        {
+            All = 0,
+            Any = 1,
+            None = 2,
+        }
+
+        public static readonly SearchFilter[] searchFilterOptions = {
+            SearchFilter.All, 
+            SearchFilter.Any, 
+            SearchFilter.None, 
+        };
+
         public enum ReferenceType {
             URL = 0,
             File = 1,
             Text = 2
         }
+
+        public static readonly ReferenceType[] referenceTypeOptions = {
+            ReferenceType.URL, ReferenceType.File, ReferenceType.Text
+        };
+
+        public const int reportHeaderRow = 4;
+        public const int dataStartRow = reportHeaderRow + 1;
+
+        public static readonly string[] DATATABLE_TITLES = new string[13] {
+            "General Report", "Avg Timer Per Request Stratified by Geographical Region", 
+            "Avg Time To Complete Stratified by Geographical Region",
+            "Total Number of Requests Stratified by Geographical Region", 
+            "Total Time Spend Stratified by Geographical Region",
+            "Avg Timer Per Request Stratified by Caller Type", 
+            "Avg Time To Complete Stratified by Caller Type",
+            "Total Number of Requests Stratified by Caller Type", 
+            "Total Time Spend Stratified by Caller Type",
+            "Avg Timer Per Request Stratified by Tumour Group", 
+            "Avg Time To Complete Stratified by Tumour Group",
+            "Total Number of Requests Stratified by Tumour Group", 
+            "Total Time Spend Stratified by Tumour Group"
+        };
 
         public enum DropdownTable {
             Keyword,
@@ -53,7 +96,12 @@ namespace SasquatchCAIRS.Models {
             None = 0,
             Expired = 1,
             Unlocked = 2,
-            Deleted = 3
+            Deleted = 3,
+            AccessingLocked = 4,
+            LockedToOtherUser = 5,
+            SuccessfulEdit = 6,
+            NoRequestEditorRole = 7,
+            SuccessfulCreate = 8
         }
 
         public static readonly DropdownTable[] DROPDOWN_TABLES = new DropdownTable[6] {
@@ -65,44 +113,92 @@ namespace SasquatchCAIRS.Models {
             DropdownTable.UserGroup
         };
 
-        public const string KEYWORD_TBL_ID_ATTR = "KeywordID";
-        public const string KEYWORD_TBL_KEYWORD_ATTR = "Keyword";
-        public const string KEYWORD_TBL_ACTIVE_ATTR = "Active";
-
-        public const string QUESTIONTYPE_TBL_ID_ATTR = "QuestionTypeID";
-        public const string QUESTIONTYPE_TBL_VALUE_ATTR = "Value";
-        public const string QUESTIONTYPE_TBL_CODE_ATTR = "Code";
-        public const string QUESTIONTYPE_TBL_ACTIVE_ATTR = "Active";
-
-        public const string REGION_TBL_ID_ATTR = "RegionID";
-        public const string REGION_TBL_VALUE_ATTR = "Value";
-        public const string REGION_TBL_CODE_ATTR = "Code";
-        public const string REGION_TBL_ACTIVE_ATTR = "Active";
-
-        public const string REQUESTORTYPE_TBL_ID_ATTR = "RequestorTypeID";
-        public const string REQUESTORTYPE_TBL_VALUE_ATTR = "Value";
-        public const string REQUESTORTYPE_TBL_CODE_ATTR = "Code";
-        public const string REQUESTORTYPE_TBL_ACTIVE_ATTR = "Active";
-
-        public const string TUMOURGROUP_TBL_ID_ATTR = "TumourGroupID";
-        public const string TUMOURGROUP_TBL_VALUE_ATTR = "Value";
-        public const string TUMOURGROUP_TBL_CODE_ATTR = "Code";
-        public const string TUMOURGROUP_TBL_ACTIVE_ATTR = "Active";
-
-        public const string USERGROUP_TBL_ID_ATTR = "GroupID";
-        public const string USERGROUP_TBL_VALUE_ATTR = "Value";
-        public const string USERGROUP_TBL_CODE_ATTR = "Code";
-        public const string USERGROUP_TBL_ACTIVE_ATTR = "Active";
-
-        // Date Format & Default
         public const string EMPTY_DATE = "0001-01-01";
         public const string DATE_FORMAT = "yyyy-MM-dd";
+
+
+        public static class DataTypeStrings {
+            public static string DATA_TYPE = "Data Type";
+            public static string AVG_TIME = "Avg Time Per Request/Question";
+            public static string AVG_TIME_TO_COMPLETE = "Avg Time To Complete";
+            public static string TOTAL_NUM = "Total Number";
+            public static string TOTAL_TIME_SPENT = "Total Time Spent";
+        }
+
+
+        public static class ReportFormStrings {
+            public static string REPORT_OPTION = "reportOption";
+            public static string DATATYPE = "dataType";
+            public static string STRATIFY_BY = "stratifyBy";
+        }
 
         public static class Roles {
             public const string VIEWER = "Viewer";
             public const string REQUEST_EDITOR = "RequestEditor";
             public const string REPORT_GENERATOR = "ReportGenerator";
             public const string ADMINISTRATOR = "Administrator";
+        }
+
+        public static class Export {
+            // File Section
+            public const string REPORT_TEMPLATE_PATH = "~/ReportTemplate.docx";
+            public const string REPORT_TEMP_PATH = "~/Report";
+            public const string WORD_CONTENT_TYPE = "application/vnd.ms-word";
+            public const string WORD_FILE_EXT = ".docx";
+            public const string CONTENT_DISPOSITION = "Content-Disposition";
+            public const string REQUEST_ATTACHMENT = "attachment; filename=Request";
+
+            // Request Information Section
+            public const string REQUEST_INFORMATION = "Request Information: ";
+            public const string REQUEST_ID = "Request ID: ";
+            public const string REQUEST_CREATED_BY = "Created By: ";
+            public const string REQUEST_CLOSED_BY = "Closed By: ";
+            public const string REQUEST_START_TIME = "Start Time: ";
+            public const string REQUEST_COMPLETION_TIME = "Completed Time: ";
+            public const string REQUEST_TIME_SPENT = "Total Time Spent: ";
+            public const string REQUEST_PARENT_ID = "Parent Request ID: ";
+            public const string REQUEST_PROPERTIES = "Request Properties";
+
+            // Requestor Information Section
+            public const string REQUESTOR_INFORMATION = "Requestor Information:";
+            public const string REQUESTOR_NAME = "Requestor Name: ";
+            public const string REQUESTOR_EMAIL = "Requestor's Email: ";
+            public const string REQUESTOR_PHONE = "Requestor's Phone Number: ";
+            public const string REQUESTOR_PHONE_EXT = "Ext: ";
+            public const string REQUESTOR_TYPE = "Requestor Type: ";
+            public const string REQUSTOR_REGION = "Requestor Region: ";
+
+            // Patient Information Section
+            public const string PATIENT_INFORMATION = "Patient Information:";
+            public const string PATIENT_NAME ="Patient Name: ";
+            public const string PATIENT_ID = "Patient ID: ";
+            public const string PATIENT_AGE = "Patient Age: ";
+            public const string PATIENT_GENDER = "Patient Gender: ";
+
+            // Question/Response Information Section
+            public const string QUESTION_INFORATION = "Question Information:";
+            public const string QUESTION_NUMBER = "Question #";
+            public const string QUESTION_RESPONSE = "Response: ";
+            public const string QUESTION_SPECIAL_NOTES = "Special Notes/Followup: ";
+            public const string QUESTION_TYPE = "Question Type: ";
+            public const string QUESTION_TUMOUR_GROUP = "Tumour Group: ";
+            public const string QUESTION_TIME_SPENT = "Time Spent: ";
+            public const string QUESTION_IMPACT_SCORE = "Impact Score: ";
+            public const string QUESTION_KEYWORDS = "Keywords: ";
+            public const string QUESTION_REFERENCES = "References: ";
+
+            // Random
+
+            public const string TIME_UNITS = " min(s)";
+            // Header List
+            public static readonly List<string> EXPORT_HEADERS = new List<string>{
+                REQUEST_INFORMATION,
+                REQUESTOR_INFORMATION,
+                PATIENT_INFORMATION,
+                QUESTION_INFORATION,
+                REQUEST_PROPERTIES
+            }; 
+
         }
 
         public static class UIString {
@@ -113,7 +209,7 @@ namespace SasquatchCAIRS.Models {
                 public const string EMPTY_QUERY =
                     "You have not specified any search criteria.";
             }
-            
+
 
             // Labels used for fields
             public static class FieldLabel {
@@ -147,6 +243,7 @@ namespace SasquatchCAIRS.Models {
                 // Search Information
                 public const string PATIENT_NAME_LABEL = "Patient Name";
                 public const string CALLER_NAME_LABEL = "Caller Name";
+                public const string SEARCH_FILTER = "Search Keywords By";
 
                 // Question Information
                 public const string QUESTION = "Question";
@@ -172,11 +269,22 @@ namespace SasquatchCAIRS.Models {
                 public const string GROUPS = "Groups";
                 public const string USER_EMAIL = "Email Address";
 
+                // Report Information
+                public const string USER_CRITERIA = "Username Criteria";
+                public const string REQUEST_CRITERIA = "Request ID Criteria";
+                public const string SEARCH_CRITERIA = "Select Search Criteria";
+                public const string START_DATE = "Start Date";
+                public const string CRITERIA_TYPE = "audit criteria type";
+                public const string AUDIT_CRITERIA = "Select Audit Criteria";
+
                 // Dropdowns
                 public const string DROPDOWN_CODE = "Code";
                 public const string DROPDOWN_VALUE = "Value";
                 public const string DROPDOWN_KEYWORD = "Keyword";
                 public const string DROPDOWN_STATUS = "Status";
+                public const string END_DATE = "End Date";
+
+
             }
 
             // Text used in Buttons
@@ -188,12 +296,18 @@ namespace SasquatchCAIRS.Models {
                 public const string SAVE_DRAFT = "Save Draft";
                 public const string MARK_COMPLETE = "Mark as Complete";
                 public const string DELETE_REQUEST = "Delete Request";
+                public const string ADD_QUESTION = "Add Question";
+                public const string DELETE_QUESTION = "Delete Question";
+                public const string ADD_REFERENCE = "Add Reference";
                 public const string MODIFY_SEARCH = "Modify Search";
                 public const string NEW_SEARCH = "New Search";
                 public const string SEARCH = "Search!";
                 public const string EDIT_USER = "Edit User";
-                public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
+                public const string EDIT_DROPDOWN = "Save Changes";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
+                public const string USERS = "Users";
+                public const string LOOKUP = "Lookup Fields";
+                public const string GEN_AUDIT = "Generate Audit Report";
                 public const string CREATE = "Create";
             }
 
@@ -210,8 +324,8 @@ namespace SasquatchCAIRS.Models {
                 public const string EDIT_DROPDOWN = "Edit Dropdown Entry";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
                 public const string ADVANCED_SEARCH = "Advanced Search";
+                public const string AUDIT_LOG = "Generate Audit Report";
                 public const string RESULTS = "Results";
-                public const string AUDIT_LOG = "Audit Log";
                 public const string CREATE_REQUEST = "Create Request";
                 public const string REPORTS = "Reports";
                 public const string CREATE = "Create";
@@ -222,6 +336,56 @@ namespace SasquatchCAIRS.Models {
                 public const string ACTIVE = "Active";
                 public const string DISABLED = "Disabled";
             }
+
+            public static class Messages {
+                public const string DELETE_REFERENCE_WARNING =
+                    "Are you sure you would like to delete this reference?";
+                public const string DELETE_QUESTION_WARNING =
+                    "Are you sure you would like to delete this question?";
+                public const string NO_CONTACT_WARNING =
+                    "Are you sure you would like to mark this request as complete without requestor contact information?";
+            }
+        }
+
+        // For Report Generation
+        public enum Month {
+            January = 1,
+            Feburary = 2,
+            March = 3,
+            April = 4,
+            May = 5,
+            June = 6,
+            July = 7,
+            August = 8,
+            September = 9,
+            October = 10,
+            November = 11,
+            December = 12
+        }
+
+        public enum DataType {
+            AvgTimePerRequest = 0,
+            AvgTimeToComplete = 1,
+            TotalNumOfRequests = 2,
+            TotalTimeSpent = 3
+        }
+
+        public enum StratifyOption {
+            None = 0,
+            Region = 1,
+            CallerType = 2,
+            TumorGroup = 3
+        }
+
+
+        public enum CellDataType {
+            Number = 0,
+            Text = 1
+        }
+
+        public enum ReportType {
+            Report = 0,
+            AuditLog = 1
         }
 
         /// <summary>
@@ -332,7 +496,8 @@ namespace SasquatchCAIRS.Models {
         /// <param name="severity">Severity as Constants.Severity</param>
         /// <param name="consequence">Consequence as Constants.Consequence</param>
         /// <returns>A string representing the impact score.</returns>
-        public static string getImpactScore(Severity? severity, Consequence? consequence) {
+        public static string getImpactScore(Severity? severity,
+                                            Consequence? consequence) {
             switch (consequence) {
                 case Consequence.Certain:
                 case Consequence.Probable:
@@ -361,6 +526,20 @@ namespace SasquatchCAIRS.Models {
                 default:
                     return "";
             }
+        }
+
+        public enum AuditType {
+            RequestCreation = 0,
+            RequestCompletion = 1,
+            RequestDeletion = 2,
+            RequestModification = 3,
+            RequestView = 4
+
+        }
+
+        public enum AuditCriteriaType {
+            user = 0,
+            request = 1
         }
     }
 }

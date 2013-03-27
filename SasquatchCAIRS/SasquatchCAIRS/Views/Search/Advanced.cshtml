@@ -27,6 +27,27 @@
         <div>
             <input class="input-medium" name="keywords" id="keywords" type="text"/>
         </div>
+        
+        <div>
+            <br/>
+            @Html.Label(Constants.UIString.FieldLabel.SEARCH_FILTER)
+        </div>
+
+        <div>
+            @foreach (var searchFilter in Enum.GetValues(
+                typeof(Constants.SearchFilter))) {
+                <label class="checkbox inline">
+                    @if (!String.IsNullOrEmpty(Model.searchFilter) && 
+                         Model.searchFilter.Contains(@searchFilter.ToString())) {
+                        <input type="checkbox" name="searchFilter" value="@searchFilter" checked/>
+                    } else
+                    {
+                        <input type="checkbox" name="searchFilter" value="@searchFilter" />  
+                    }
+                    @searchFilter
+                </label>
+            }
+        </div>
 
         <div>
             <br />
@@ -124,7 +145,7 @@
                             <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" />
                         </label>
                     }
-                    @item.value
+                    @item.text
                 </label>
             }
         </div>
@@ -147,7 +168,7 @@
                             <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id"/>
                         </label>
                     }
-                    @item.value
+                    @item.text
                 </label>
             }
         </div>
@@ -160,12 +181,12 @@
         <div>
         @foreach (var severity in Enum.GetValues(typeof(Constants.Severity))) {
                 <label class="checkbox inline">
-                    @if (!String.IsNullOrEmpty(Model.consequence) && 
-                         Model.consequence.Contains(@severity.ToString())) {
-                        <input type="checkbox" name="consequence" value="@severity" checked/>
+                    @if (!String.IsNullOrEmpty(Model.severity) && 
+                         Model.severity.Contains(@severity.ToString())) {
+                        <input type="checkbox" name="severity" value="@severity" checked/>
                     } else
                     {
-                        <input type="checkbox" name="consequence" value="@severity" />  
+                        <input type="checkbox" name="severity" value="@severity" />  
                     }
                     @severity
                 </label>

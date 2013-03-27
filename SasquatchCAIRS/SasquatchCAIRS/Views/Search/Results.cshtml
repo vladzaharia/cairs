@@ -7,17 +7,14 @@
 
 <h2>@Constants.UIString.TitleText.RESULTS</h2>
 
-<div class="btn-group float-right">
-    @LinkExtensions.ActionLink(Html, Constants.UIString.ButtonText.MODIFY_SEARCH, "Modify", new {
-    controller = "Search"
-}, new {
-    @class = "btn btn-info"
-})
-    @LinkExtensions.ActionLink(Html, Constants.UIString.ButtonText.NEW_SEARCH, "Advanced", new {
-    controller = "Search"
-}, new {
-    @class = "btn btn-info"
-})
+<div class="buttons add-button">
+    <a href="@Url.Action("Modify")" class="btn btn-custom">
+        <i class="icon-edit button-icon"></i> @Constants.UIString.ButtonText.MODIFY_SEARCH
+    </a>
+    
+    <a href="@Url.Action("Advanced")" class="btn btn-custom">
+        <i class="icon-plus button-icon"></i> @Constants.UIString.ButtonText.NEW_SEARCH
+    </a>
 </div>
 
 For keywords: @ViewBag.keywords @ViewBag.startIndex
@@ -31,7 +28,7 @@ For keywords: @ViewBag.keywords @ViewBag.startIndex
     <fieldset class="results">
         <legend>@Constants.UIString.TitleText.RESULTS</legend>
         <div>
-            <table class="table table-bordered table-hover">
+            <table class="table table-hover">
                 <tr>
                     <th>
                         @Html.DisplayName(Constants.UIString.FieldLabel.REQUEST_ID)

@@ -75,5 +75,12 @@ namespace SasquatchCAIRS.Models.SearchSystem {
             get;
             set;
         }
+
+        [DataType(DataType.Text)]
+        public String searchFilter {
+            get;
+            set;
+        }
+
     }
 }
