@@ -17,6 +17,10 @@ namespace SasquatchCAIRS.Controllers {
             new DropdownController();
         private CAIRSDataContext _db = new CAIRSDataContext();
 
+        private static List<Request> _results;
+        private static int _startIndex;
+        private const int PAGE_SIZE = 20;
+
         /// <summary>
         /// Given a comma delimited string of keywords returns all requests with one or more of those keywords
         /// </summary>
@@ -38,10 +42,14 @@ namespace SasquatchCAIRS.Controllers {
                 });
             }
 
-            List<Request> list = searchCriteriaQuery(sc);
-            fillUpKeywordDict(list);
-            ViewBag.ResultSetSize = list.Count;
-            return View("Results", list);
+            _startIndex = 0;
+            ViewBag.startIndex = _startIndex;
+
+            _results = searchCriteriaQuery(sc);
+            fillUpKeywordDict(_results);
+            ViewBag.ResultSetSize = _results.Count;
+
+            return View("Results", _results.Take(PAGE_SIZE));
         }
 
 
@@ -96,10 +104,25 @@ namespace SasquatchCAIRS.Controllers {
             Session["criteria"] = criteria;
 
             ViewBag.keywords = criteria.keywordString;
-            List<Request> list = searchCriteriaQuery(criteria);
-            fillUpKeywordDict(list);
-            ViewBag.ResultSetSize = list.Count;
-            return View(list);
+            _results = searchCriteriaQuery(criteria);
+            fillUpKeywordDict(_results);
+            ViewBag.ResultSetSize = _results.Count;
+            return View(_results.Take(PAGE_SIZE));
+        }
+
+        [Authorize(Roles = Constants.Roles.VIEWER)]
+        public ActionResult Update(string id) {
+
+            if (int.Parse(id) > 0) {
+                _startIndex = _startIndex + PAGE_SIZE;
+            } else {
+                _startIndex = _startIndex - PAGE_SIZE;
+            }
+            
+            ViewBag.startIndex = _startIndex;
+            fillUpKeywordDict(_results.Skip(_startIndex).Take(PAGE_SIZE));
+
+            return View("Results", _results.Skip(_startIndex).Take(PAGE_SIZE));
         }
 
         /// <summary>
@@ -110,6 +133,8 @@ namespace SasquatchCAIRS.Controllers {
         public ActionResult Modify() {
 
             setDropdownViewbags();
+            _startIndex = 0;
+            ViewBag.startIndex = _startIndex;
 
             SearchCriteria criteria = (SearchCriteria) Session["criteria"];
             return View("Advanced", criteria);

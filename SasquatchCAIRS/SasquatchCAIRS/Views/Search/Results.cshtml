@@ -20,7 +20,7 @@
 })
 </div>
 
-For keywords: @ViewBag.keywords
+For keywords: @ViewBag.keywords @ViewBag.startIndex
 
 <div>
 </div>
@@ -56,7 +56,6 @@ For keywords: @ViewBag.keywords
                     </th>
                 </tr>
 
-
                 @foreach (var request in Model) {
                     <tr>
                         <td class="clickable" data-id="@request.RequestID">
@@ -74,10 +73,9 @@ For keywords: @ViewBag.keywords
                             @Enum.GetName(typeof(Constants.RequestStatus), @request.RequestStatus)
                         </td>
                         <td class="clickable" data-id="@request.RequestID">
-                            @foreach(string keyword in ViewBag.keywordDict[@request.RequestID])
-                            { <span>@keyword </span> }
+                            @foreach (string keyword in ViewBag.keywordDict[@request.RequestID]) { <span>@keyword </span> }
                         </td>
-                        <td class="clickable" data-id="@request.RequestID">
+                        <td class="clickable" data-id="@request.RequestID"> 
                             @Html.DisplayFor(modelItem => request.TimeOpened)
                         </td>
                         <td class="clickable" data-id="@request.RequestID">
@@ -89,6 +87,10 @@ For keywords: @ViewBag.keywords
         </div>
     </fieldset>
 }
+<div>
+    @Html.ActionLink("Previous Page", "Update", new {id = "-1"})
+    @Html.ActionLink("Next Page", "Update", new {id = "1"})
+</div>
 
 <script type="text/javascript">
     $(function() {
@@ -96,4 +98,6 @@ For keywords: @ViewBag.keywords
             document.location.href = "/Request/Details/" + $(this).attr("data-id");
         });
     })
+    
+
 </script>
