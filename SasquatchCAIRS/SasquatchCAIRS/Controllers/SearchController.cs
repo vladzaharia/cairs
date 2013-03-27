@@ -204,6 +204,8 @@ namespace SasquatchCAIRS.Controllers {
             ViewBag.keywordDict = keywords;
         }
 
+      
+
         /// <summary>
         /// Get Requests in Database based on SearchCriteria
         /// </summary>
@@ -320,37 +322,45 @@ namespace SasquatchCAIRS.Controllers {
                                                 select k);
 
                 // Then we select the Keyword Question pairs with the same keywords
-                IQueryable<KeywordQuestion> keywordQuestions =
-                    _db.KeywordQuestions;
+                /*
+                IQueryable<Keyword> keywords = _db.Keywords;
 
                 switch (criteria.searchFilter) {
                         // TODO : fix 'all' and 'none' cases
                         case "All":
-                        keywordQuestions = (from kqs in _db.KeywordQuestions
-                                            from k in keywords
-                                            where k.KeywordID == kqs.KeywordID
-                                            select kqs);
+                        keywords = (from k in _db.Keywords
+                                            where
+                                                keywordsToList(criteria.keywordString, ",")
+                                                .Contains(k.KeywordValue)
+                                            select k);
                         break;
                     case "Any":
-                        keywordQuestions = (from kqs in _db.KeywordQuestions
-                                            from k in keywords
-                                            where k.KeywordID == kqs.KeywordID
-                                            select kqs);
+                        keywords = (from k in _db.Keywords
+                                            where
+                                                keywordsToList(criteria.keywordString, ",")
+                                                .Contains(k.KeywordValue)
+                                            select k);
                         break;
                     case "None":
-                        keywordQuestions = (from kqs in _db.KeywordQuestions
-                                            from k in keywords
-                                            where k.KeywordID != kqs.KeywordID
-                                            select kqs);
+                        keywords = (from k in _db.Keywords
+                                            where
+                                                !(keywordsToList(criteria.keywordString, ",")
+                                                .Contains(k.KeywordValue))
+                                            select k);
                         break;
-                    case null: 
-                        keywordQuestions = (from kqs in _db.KeywordQuestions
-                                            from k in keywords
-                                            where k.KeywordID == kqs.KeywordID
-                                            select kqs);
+                    case null:
+                        keywords = (from k in _db.Keywords
+                                            where
+                                                keywordsToList(criteria.keywordString, ",")
+                                                .Contains(k.KeywordValue)
+                                            select k);
                         break;
-                }
-
+                }*/
+                IQueryable<KeywordQuestion> keywordQuestions = (from kqs in _db.KeywordQuestions
+                                                                from k in keywords
+                                                                where k.KeywordID == kqs.KeywordID
+                                                                select kqs);
+                    
                 // Then we intersect Keywords with QuestionResponses through the use of a join
                 questionResponses = from key in keywordQuestions
                                     join qr in questionResponses
@@ -358,11 +368,19 @@ namespace SasquatchCAIRS.Controllers {
                                     select qr;
             }
             //Finally we intersect our requests with the question responses and get our results
-            return (from r in requests
-                    join qr in questionResponses
-                    on r.RequestID equals qr.RequestID
+            List<Request> searchResults = (from r in requests
+                                        join qr in questionResponses
+                                            on r.RequestID equals qr.RequestID
 
-                    select r).Distinct().OrderByDescending(r => r.RequestID).ToList();
+                                        select r).Distinct()
+                                                 .OrderByDescending(
+                                                     r => r.RequestID).ToList();
+            if (criteria.searchFilter == "Any")
+                return searchResults.ToList();
+            if (criteria.searchFilter == "None") {
+                return _db.Requests.ToList().Except(searchResults).ToList();
+            }
+            return searchResults;
         }
 
     }
