@@ -117,7 +117,7 @@ namespace SasquatchCAIRS.Controllers {
 
             // Patient Gender
             if (request.PatientGender != null) {
-                list.Add(Constants.Export.PATIENT_GENDER + request.PatientGender);
+                list.Add(Constants.Export.PATIENT_GENDER + Constants.getGenderString((Constants.Gender) request.PatientGender));
             }
 
             // Empty line for readability
@@ -171,6 +171,16 @@ namespace SasquatchCAIRS.Controllers {
                 // Question Impact Score
                 if (questionResponse.Consequence != null && questionResponse.Severity != null) {
                     list.Add(Constants.Export.QUESTION_IMPACT_SCORE + Constants.getImpactScore((Constants.Severity?) questionResponse.Severity, (Constants.Consequence?) questionResponse.Consequence));
+                }
+
+                // Question Severity
+                if (questionResponse.Severity != null) {
+                    list.Add(Constants.Export.QUESTION_SEVERITY + ((Constants.Severity) questionResponse.Severity));
+                }
+
+                // Question Consequence
+                if (questionResponse.Consequence != null) {
+                    list.Add(Constants.Export.QUESTION_CONSEQUENCE + ((Constants.Consequence) questionResponse.Consequence));
                 }
 
                 // Question Keywords

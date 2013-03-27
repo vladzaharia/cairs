@@ -71,8 +71,7 @@ For keywords: @ViewBag.keywords
                             @Enum.GetName(typeof(Constants.RequestStatus), @request.RequestStatus)
                         </td>
                         <td class="clickable" data-id="@request.RequestID">
-                            @foreach(string keyword in ViewBag.keywordDict[@request.RequestID])
-                            { <span>@keyword </span> }
+                            @String.Join(", ", ViewBag.keywordDict[@request.RequestID])
                         </td>
                         <td class="clickable" data-id="@request.RequestID">
                             @Html.DisplayFor(modelItem => request.TimeOpened)
