@@ -261,7 +261,11 @@ namespace SasquatchCAIRS.Controllers {
                         }
 
                         while (rangeStart <= rangeEnd) {
-                            requestsForAudit.Add(rangeStart);
+                            List<long> list = (_db.Requests.Where(req => req.RequestID == rangeStart).Select(req => req.RequestID)).ToList();
+                            if ((list).Any())
+                            {
+                                requestsForAudit.Add(rangeStart);
+                            }
                             rangeStart++;
                         }
 
@@ -270,23 +274,18 @@ namespace SasquatchCAIRS.Controllers {
                     }
                 }
 
-                // create completed list of long IDs
-                requestsForAudit =
-                    auditRequestsString.Select(ID => Convert.ToInt64(ID))
-                                       .ToList();
-
                 // find valid requests in database
                 IEnumerable<long> requestsFound = (from req in _db.Requests
                                             where requestsForAudit.Contains(req.RequestID)
                                             select req.RequestID).ToList();
 
                 // compare requestsForAudit with requestsFound
-                String invalidIDs = null;
+                List<string> invalidIDs = new List<string>();
                 bool idMissing = false;
                 
                 foreach (long ID in requestsForAudit) {
                     if (!requestsFound.Contains(ID)) {
-                        invalidIDs = invalidIDs + " " + ID.ToString();
+                        invalidIDs.Add(ID.ToString());
                         idMissing = true;
                     } 
                 }
@@ -294,13 +293,27 @@ namespace SasquatchCAIRS.Controllers {
                 
                 // if not all requests existed, return error
                 if (idMissing) {
-                    List<string> errorIDs = (invalidIDs.Split(' ')).ToList();
-                     
+                   if (invalidIDs.Count() == 1) {
+                       ModelState.AddModelError("requestID",
+                                                "Request " + invalidIDs.First() +
+                                                " does not exist.");
 
-                    ModelState.AddModelError("requestID",
-                                        "Request(s)" + String.Join(" ,", errorIDs) + " do not exist.");
+                       return View(model);
+                   } else {
+                       string errorMessage = null;
+                       
+                       while (invalidIDs.Count() > 1) {
+                           errorMessage = errorMessage + invalidIDs.First() + ", ";
+                           invalidIDs.RemoveAt(0);
+                       }
 
-                    return View(model);
+                       errorMessage = errorMessage + "and " + invalidIDs.First();
+
+                      ModelState.AddModelError("requestID",
+                                           "Requests " + errorMessage + " do not exist.");
+
+                       return View(model);
+                   }
                 }
                 
                 // grab Requests for all request IDs
