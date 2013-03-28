@@ -528,6 +528,11 @@ namespace SasquatchCAIRS.Controllers
         [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
         public ActionResult Unlock(long id) {
             RequestLockController rlc = new RequestLockController();
+            // add AuditLog entry for lock remove
+            UserController upc = new UserController();
+            AuditLogManagementController almc = new AuditLogManagementController();
+            almc.addEntry(id, upc.getUserProfile(User.Identity.Name).UserId,
+                          Constants.AuditType.RequestUnlock);
 
             rlc.removeLock(id);
 
@@ -572,6 +577,11 @@ namespace SasquatchCAIRS.Controllers
 
             IEnumerable<string> output = wec.requestToStrings(request);
             wec.generateDocument(output, templatePath, filePath, id);
+
+            // add AuditLog entry for exporting
+            UserController upc = new UserController();
+            AuditLogManagementController almc = new AuditLogManagementController();
+            almc.addEntry(id, upc.getUserProfile(User.Identity.Name).UserId, Constants.AuditType.RequestExport);
 
             return View("Details", new RequestContent(request));
         }
