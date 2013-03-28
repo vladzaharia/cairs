@@ -322,50 +322,25 @@ namespace SasquatchCAIRS.Controllers {
                                                 select k);
 
                 // Then we select the Keyword Question pairs with the same keywords
-                /*
-                IQueryable<Keyword> keywords = _db.Keywords;
-
-                switch (criteria.searchFilter) {
-                        // TODO : fix 'all' and 'none' cases
-                        case "All":
-                        keywords = (from k in _db.Keywords
-                                            where
-                                                keywordsToList(criteria.keywordString, ",")
-                                                .Contains(k.KeywordValue)
-                                            select k);
-                        break;
-                    case "Any":
-                        keywords = (from k in _db.Keywords
-                                            where
-                                                keywordsToList(criteria.keywordString, ",")
-                                                .Contains(k.KeywordValue)
-                                            select k);
-                        break;
-                    case "None":
-                        keywords = (from k in _db.Keywords
-                                            where
-                                                !(keywordsToList(criteria.keywordString, ",")
-                                                .Contains(k.KeywordValue))
-                                            select k);
-                        break;
-                    case null:
-                        keywords = (from k in _db.Keywords
-                                            where
-                                                keywordsToList(criteria.keywordString, ",")
-                                                .Contains(k.KeywordValue)
-                                            select k);
-                        break;
-                }*/
                 IQueryable<KeywordQuestion> keywordQuestions = (from kqs in _db.KeywordQuestions
                                                                 from k in keywords
                                                                 where k.KeywordID == kqs.KeywordID
                                                                 select kqs);
-                    
+                
+                    if (criteria.searchFilter == "All") {
+                    long var = keywordQuestions.First().QuestionResponseID;
+                    keywordQuestions = (from key in keywordQuestions
+                                       where key.QuestionResponseID == var
+                                       select key);
+                }
                 // Then we intersect Keywords with QuestionResponses through the use of a join
                 questionResponses = from key in keywordQuestions
                                     join qr in questionResponses
                                     on key.QuestionResponseID equals qr.QuestionResponseID
                                     select qr;
+                
+                
+                
             }
             //Finally we intersect our requests with the question responses and get our results
             List<Request> searchResults = (from r in requests
@@ -376,7 +351,8 @@ namespace SasquatchCAIRS.Controllers {
                                                  .OrderByDescending(
                                                      r => r.RequestID).ToList();
             if (criteria.searchFilter == "Any")
-                return searchResults.ToList();
+                return searchResults;
+            
             if (criteria.searchFilter == "None") {
                 return _db.Requests.ToList().Except(searchResults).ToList();
             }
