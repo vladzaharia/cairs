@@ -521,7 +521,9 @@ namespace SasquatchCAIRS.Models {
             RequestCompletion = 1,
             RequestDeletion = 2,
             RequestModification = 3,
-            RequestView = 4
+            RequestView = 4,
+            RequestExport = 5,
+            RequestUnlock = 6
 
         }
 
