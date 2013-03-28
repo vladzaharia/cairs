@@ -140,7 +140,7 @@
                     toolbar: 'Basic',
                     enterMode : CKEDITOR.ENTER_BR,
                     on: {
-                        instanceReady: function (e) {
+                        instanceReady: function(e) {
                             var question = $("<div/>").html(
                                 "@(HttpUtility.HtmlDecode(Model.question))").text();
                             e.editor.setData(question);
