@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.Security;
 using SasquatchCAIRS.Controllers.Security;
-﻿using SasquatchCAIRS.Controllers.ServiceSystem;
-﻿using SasquatchCAIRS.Helper;
+using SasquatchCAIRS.Controllers.ServiceSystem;
+using SasquatchCAIRS.Helper;
 using SasquatchCAIRS.Models;
 using SasquatchCAIRS.Models.ServiceSystem;
 
@@ -88,6 +89,32 @@ namespace SasquatchCAIRS.Controllers
                 reqContent.requestStatus = Constants.RequestStatus.Completed;
             }
 
+            // Encode HTML in question responses
+            // Replace null references with empty string
+            foreach (var qrContent in reqContent.questionResponseList) {
+                if (!String.IsNullOrEmpty(qrContent.question)) {
+                    qrContent.question = HttpUtility.HtmlEncode(
+                        removeNewLinesAndTabs(qrContent.question))
+                        .Replace("&#39;", "'");
+                }
+                if (!String.IsNullOrEmpty(qrContent.response)) {
+                    qrContent.response = HttpUtility.HtmlEncode(
+                        removeNewLinesAndTabs(qrContent.response))
+                        .Replace("&#39;", "'");
+                }
+                if (!String.IsNullOrEmpty(qrContent.specialNotes)) {
+                    qrContent.specialNotes = HttpUtility.HtmlEncode(
+                        removeNewLinesAndTabs(qrContent.specialNotes))
+                        .Replace("&#39;", "'");
+                }
+
+                foreach (var refContent in qrContent.referenceList.Where(
+                    refContent => refContent.referenceString == null)) {
+
+                    refContent.referenceString = "";
+                }
+            }
+
             if (!valid) {
                 DropdownController dc = new DropdownController();
 
@@ -101,29 +128,6 @@ namespace SasquatchCAIRS.Controllers
                 ViewBag.GenderOptions = new SelectList(Constants.genderOptions);
 
                 return View(reqContent);
-            }
-
-            // Encode HTML in question responses
-            // Replace null references with empty string
-            foreach (var qrContent in reqContent.questionResponseList) {
-                if (!String.IsNullOrEmpty(qrContent.question)) {
-                    qrContent.question =
-                        removeNewLinesAndTabs(qrContent.question);
-                }
-                if (!String.IsNullOrEmpty(qrContent.response)) {
-                    qrContent.response =
-                        removeNewLinesAndTabs(qrContent.response);
-                }
-                if (!String.IsNullOrEmpty(qrContent.specialNotes)) {
-                    qrContent.specialNotes =
-                        removeNewLinesAndTabs(qrContent.specialNotes);
-                }
-
-                foreach (var refContent in qrContent.referenceList.Where(
-                    refContent => refContent.referenceString == null)) {
-
-                    refContent.referenceString = "";
-                }
             }
 
             long reqId = rmc.create(reqContent);
@@ -268,6 +272,32 @@ namespace SasquatchCAIRS.Controllers
                 reqContent.requestStatus = Constants.RequestStatus.Completed;
             }
 
+            // Encode HTML in question responses
+            // Replace null references with empty string
+            foreach (var qrContent in reqContent.questionResponseList) {
+                if (!String.IsNullOrEmpty(qrContent.question)) {
+                    qrContent.question = HttpUtility.HtmlEncode(
+                        removeNewLinesAndTabs(qrContent.question))
+                        .Replace("&#39;", "'");
+                }
+                if (!String.IsNullOrEmpty(qrContent.response)) {
+                    qrContent.response = HttpUtility.HtmlEncode(
+                        removeNewLinesAndTabs(qrContent.response))
+                        .Replace("&#39;", "'");
+                }
+                if (!String.IsNullOrEmpty(qrContent.specialNotes)) {
+                    qrContent.specialNotes = HttpUtility.HtmlEncode(
+                        removeNewLinesAndTabs(qrContent.specialNotes))
+                        .Replace("&#39;", "'");
+                }
+
+                foreach (var refContent in qrContent.referenceList.Where(
+                    refContent => refContent.referenceString == null)) {
+
+                    refContent.referenceString = "";
+                }
+            }
+
             if (!valid) {
                 DropdownController dc = new DropdownController();
 
@@ -281,28 +311,6 @@ namespace SasquatchCAIRS.Controllers
                 ViewBag.GenderOptions = new SelectList(Constants.genderOptions);
 
                 return View(reqContent);
-            }
-
-            // Replace null references with empty string
-            foreach (var qrContent in reqContent.questionResponseList) {
-                if (!String.IsNullOrEmpty(qrContent.question)) {
-                    qrContent.question =
-                        removeNewLinesAndTabs(qrContent.question);
-                }
-                if (!String.IsNullOrEmpty(qrContent.response)) {
-                    qrContent.response =
-                        removeNewLinesAndTabs(qrContent.response);
-                }
-                if (!String.IsNullOrEmpty(qrContent.specialNotes)) {
-                    qrContent.specialNotes =
-                        removeNewLinesAndTabs(qrContent.specialNotes);
-                }
-
-                foreach (var refContent in qrContent.referenceList.Where(
-                    refContent => refContent.referenceString == null)) {
-
-                    refContent.referenceString = "";
-                }
             }
 
             rmc.edit(reqContent);
