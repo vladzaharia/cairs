@@ -27,14 +27,18 @@ namespace SasquatchCAIRS.Controllers {
                 requests = db.Requests.Select(r => r).Where(
                     r =>
                     (Constants.RequestStatus) r.RequestStatus !=
-                    Constants.RequestStatus.Invalid);
-                //.Where(r => !rlc.isLocked(r.RequestID)); TODO: Fix this
+                    Constants.RequestStatus.Invalid).Where(
+                    r => !db.RequestLocks
+                        .Any(rl => rl.RequestID == r.RequestID && 
+                            rl.UserProfile.UserName != User.Identity.Name));
             } else {
                 requests = db.Requests.Select(r => r).Where(
                     r =>
                     (Constants.RequestStatus) r.RequestStatus ==
-                    Constants.RequestStatus.Completed);
-                //.Where(r => !rlc.isLocked(r.RequestID)); TODO: Fix this
+                    Constants.RequestStatus.Completed).Where(
+                    r => !db.RequestLocks
+                        .Any(rl => rl.RequestID == r.RequestID && 
+                            rl.UserProfile.UserName != User.Identity.Name));
             }
 
             requests = requests.OrderBy(r => r.RequestStatus)
