@@ -145,7 +145,6 @@
         });
     });
     
-    
     function addQuestion(json) {
         $.post("@Url.Action("NewQuestionResponse", "Request")", {'json': json}, function (qr) {
             $("#qrContainer").append(qr);
