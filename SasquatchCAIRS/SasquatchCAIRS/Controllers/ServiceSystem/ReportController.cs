@@ -1141,7 +1141,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 }
             }
             
-            return totalTimeSpan.Minutes/reqList.Count;
+            return (int) (totalTimeSpan.TotalMinutes/reqList.Count);
         }
 
         
@@ -1162,7 +1162,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 }
             }
 
-            return totalTimeSpan.Minutes/qrList.Count;
+            return (int) (totalTimeSpan.TotalMinutes/qrList.Count);
         }
 
         /// <summary>
