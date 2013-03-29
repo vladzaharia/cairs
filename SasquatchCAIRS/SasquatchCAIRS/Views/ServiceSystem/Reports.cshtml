@@ -1,4 +1,4 @@
-﻿@using SasquatchCAIRS.Models;
+﻿@using SasquatchCAIRS.Models
 
 @{
     ViewBag.Title = "Generate Reports";
@@ -6,161 +6,251 @@
 }
 <h2>Generate Reports</h2>
 
-@using (Html.BeginForm("GeneratingReport", "ServiceSystem", 
-    new {
-        @class = "form form-report"
-    })) {
+@using (Html.BeginForm("GeneratingReport", "ServiceSystem",
+                       new {
+                           @class = "form form-report"
+                       })) {
     @Html.ValidationSummary(true)
 
-    if(User.IsInRole("ReportGenerator")) {
-       <fieldset>
-           <legend>Generate Report</legend>
+    <div class="message palette-danger-dark" id="reportOptionAlert">
+        Oh snap!
+    </div>
+    <table class="table unbordered-table valign-middle">
+        <tr>
+            <td class="tbl-label">Report Type</td>
+            <td>
+                <label class="radio radio-custom">
+                    <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="Monthly"> 
+                    Month Range
+                </label>
+            </td>
+            <td>
+                <label class="radio radio-custom">
+                    <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="MonthPerYear"> 
+                    Month by Year
+                </label>
+            </td>
+            <td>
+                <label class="radio radio-custom">
+                    <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="FiscalYear"> 
+                    Reporting Year Range
+                </label>
+            </td>
+        </tr>
+    </table>
 
-           <div>
-               <div class="alert alert-error" id="reportOptionAlert">
-                   <strong>Oh snap!</strong>
-               </div>
-               <div>
-                   <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="Monthly">
-                   Month Range
-                   <br>
-                   <span>from 
-                       @Html.TextBox("fromdatePicker", @DateTime.Now.ToString("MM/yyyy"), new { 
-                           @id = "fromdatepicker", data_date_viewMode = "Months"
-                       })
-                       to
-                       @Html.TextBox("todatePicker", @DateTime.Now.ToString("MM/yyyy"), new { 
-                           @id = "todatepicker"
-                       })
-                    
-                   </span>
-               </div>
-               <div class="alert alert-error" id="alert">
-                   <strong>Oh snap!</strong>
-               </div>
-               <div class="alert alert-block" id="alertError">
-                   <strong>Oh snap!</strong>
-               </div>
+    <h4 class="hideable" id="h4-Monthly">Month Range</h4>
 
-               <div>
-                   <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="MonthPerYear">
-                   Month by Year<br>
-                                <select name="MPYMonth" id="MPYMonth">
-                                    @foreach (var month in Enum.GetNames(typeof(Constants.Month))) {
-                                        <option value="@month">@month</option>
-                                    }
-                                </select>
-                                from 
-                                <select name="MPYStartYear" id="MPYStartYear">
-                                    @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
-                                        <option value="@i">@i</option>
-                                    }
-                                </select>
-                                to                                                                  
-                                <select name="MPYEndYear" id="MPYEndYear">
-                                    @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
-                                        <option value="@i">@i</option>
-                                    }
-                                </select>
+    <div class="message palette-danger-dark" id="alert">
+        Oh snap!
+    </div>
+    <div class="message palette-warning-dark" id="alertError">
+        Oh snap!
+    </div>
 
-               </div>
-               <div class="alert alert-error" id="alert2">
-                   <strong>Oh snap!</strong>
-               </div>
+    <table class="table unbordered-table valign-middle hideable" id="Monthly">
+        <tr>
+            <td class="tbl-label">Month Range</td>
+            <td class="tbl-content-247"> 
+                @Html.TextBox("fromdatePicker", @DateTime.Now.ToString("MM/yyyy"), new {
+                    @id = "fromdatepicker",
+                    data_date_viewMode = "Months",
+                    @class = "span3"
+                })
+            </td>
+            <td class="valigned">to</td>
+            <td>
+                @Html.TextBox("todatePicker", @DateTime.Now.ToString("MM/yyyy"), new {
+                    @id = "todatepicker",
+                    @class = "span3"
+                })
+            </td>
+        </tr>
+    </table>
 
-               <div>
-                   <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="FiscalYear">
-                   Reporting Year Range<br>
-                                       from 
-                                       <select name="FYStartYear" id="FYStartYear">
-                                           @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
-                                               <option value="@i">@i - @(i+1)</option>
-                                           }
-                                       </select>
-                                       to                
-                                       <select name="FYEndYear" id="FYEndYear">
-                                           @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
-                                               <option value="@i">@i - @(i+1)</option>
-                                           }
-                                       </select>
-               </div>
-               <div class="alert alert-error" id="alert3">
-                   <strong>Oh snap!</strong>
-               </div>
+    <h4 class="hideable" id="h4-MonthPerYear">Month by Year</h4>
 
+    <div class="message palette-danger-dark" id="alert2">
+        Oh snap!
+    </div>
 
-           </div>
-           <div>
-               <br />
-               @Html.Label("Include:")
-           </div>
-           <div class="alert alert-error" id="dataTypeAlert">
-               <strong>Oh snap!</strong>
-           </div>
-           <div>
-               <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.AvgTimePerRequest">
-               Average time spent per request (per question for "Tumour Group" stratification)<br>
-                                                                                              <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.AvgTimeToComplete">
-                                                                                              Average time from start to completion per request (per questions for "Tumour Group" stratification)
-                                                                                              <br>
-                                                                                              <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.TotalNumOfRequests">
-                                                                                              Total requests (total questions for "Tumour Group" stratification) per month/year
-                                                                                              <br>
-                                                                                              <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" value="@Constants.DataType.TotalTimeSpent">
-                                                                                              Total time spent per month/year
-                                                                                              <br>
-           </div>
+    <table class="table unbordered-table valign-middle hideable" id="MonthPerYear">
+        <tr>
+            <td class="tbl-label">Month</td>
+            <td>
+                <select name="MPYMonth" id="MPYMonth" class="span3">
+                    @foreach (string month in Enum.GetNames(typeof (Constants.Month))) {
+                        <option value="@month">@month</option>
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="tbl-label">Year Range</td>
+            <td class="tbl-content-247">
+                <select name="MPYStartYear" id="MPYStartYear" class="span3">
+                    @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+            </td>
+            <td class="valigned">to</td>
+            <td>
+                <select name="MPYEndYear" id="MPYEndYear" class="span3">
+                    @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <h4 class="hideable" id="h4-FiscalYear">Reporting Year Range</h4>
+
+    <div class="message palette-danger-dark" id="alert3">
+        Oh snap!
+    </div>
+
+    <table class="table unbordered-table valign-middle hideable" id="FiscalYear">
+        <tr>
+            <td class="tbl-label">Year Range</td>
+            <td class="tbl-content-247"> 
+                <select name="FYStartYear" id="FYStartYear" class="span3">
+                    @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
+                        <option value="@i">@i - @(i + 1)</option>
+                    }
+                </select>
+            </td>
+            <td class="valigned">to</td>
+            <td>
+                <select name="FYEndYear" id="FYEndYear" class="span3">
+                    @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 70; i--) {
+                        <option value="@i">@i - @(i + 1)</option>
+                    }
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <h4>Report Options</h4>
+
+    <div class="message palette-danger-dark" id="dataTypeAlert">
+        Oh snap!
+    </div>
+    <div class="message palette-danger-dark" id="stratifyAlert">
+        Oh snap!
+    </div>
+
+    <table class="table unbordered-table valign-middle">
+        <tr>
+            <td class="tbl-label" rowspan="5">Included Data</td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <label class="checkbox radio-custom">
+                    <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" 
+                           value="@Constants.DataType.AvgTimePerRequest">
+                    Average Time Spent per Request
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <label class="checkbox radio-custom">
+                    <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" 
+                           value="@Constants.DataType.AvgTimeToComplete">
+                    Average Time from Start to Completion per Request
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <label class="checkbox radio-custom">
+                    <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" 
+                           value="@Constants.DataType.TotalNumOfRequests">
+                    Total Requests per Month/Year
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <label class="checkbox radio-custom">
+                    <input type="checkbox" name="@Constants.ReportFormStrings.DATATYPE" 
+                           value="@Constants.DataType.TotalTimeSpent">
+                    Total Time Spent per Month/Year
+                </label>
+            </td>
+        </tr>
         
-
-           <div>
-               <br />
-               @Html.Label("Stratify by:")
-           </div>
-           <div class="alert alert-error" id="stratifyAlert">
-               <strong>Oh snap!</strong>
-           </div>
-           <div>
-               <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.None">
-               None <br>
-                    <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.Region">
+        <tr>
+            <td class="tbl-label">
+                Stratification
+            </td>
+            <td class="tbl-content-2125">
+                <label class="checkbox radio-custom">
+                    <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" 
+                           value="@Constants.StratifyOption.None">
+                    None
+                </label>
+            </td>
+            <td class="tbl-content-2125"> 
+                <label class="checkbox radio-custom">
+                    <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" 
+                           value="@Constants.StratifyOption.Region">
                     Geographic Region
-                    <br>
-                    <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.CallerType">
+                </label>
+            </td>
+            <td class="tbl-content-2125">  
+                <label class="checkbox radio-custom">
+                    <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" 
+                           value="@Constants.StratifyOption.CallerType">
                     Caller Type
-                    <br>
-                    <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" value="@Constants.StratifyOption.TumorGroup">
+                </label>
+            </td> 
+            <td class="tbl-content-2125">
+                <label class="checkbox radio-custom">
+                    <input type="checkbox" name="@Constants.ReportFormStrings.STRATIFY_BY" 
+                           value="@Constants.StratifyOption.TumorGroup">
                     Tumor Group
-                    <br>  
-           </div>
+                </label>
+            </td>
+        </tr>
         
+        <tr>
+            <td></td>
+            <td>
+                <button class="btn btn-custom" id="submitBtn" type="submit">
+                    <i class="icon-download-alt button-icon"></i> Generate Report
+                </button>
+            </td>
+        </tr>
+    </table>
 
-           <p>
-               <br />
-               <input class="btn" id="submitBtn" type="submit" value="Generate Report" />
-           </p>
-       </fieldset>
-    }
-    
     <style>
-        #reportOptionAlert{display: none;}
-        #alert { display: none;}
-        #alertError { display: none;}
-        #alert2 { display: none;}
-        #alert3 { display: none;}
-        #dataTypeAlert { display: none;}
-        #stratifyAlert { display: none;}
+        #reportOptionAlert { display: none; }
+
+        #alert { display: none; }
+
+        #alertError { display: none; }
+
+        #alert2 { display: none; }
+
+        #alert3 { display: none; }
+
+        #dataTypeAlert { display: none; }
+
+        #stratifyAlert { display: none; }
     </style>
-    
 }
-    @Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryval")
 
 <script type="text/javascript">
 
     var initCheck = false;
     var startDate = new Date();
     var endDate = new Date();
-    
-    var frompicker = $("#fromdatepicker").datepicker({format:"mm/yyyy", viewMode:"months", minViewMode:"months"}).on("changeDate", function (ev) {
+
+    var frompicker = $("#fromdatepicker").datepicker({ format: "mm/yyyy", viewMode: "months", minViewMode: "months" }).on("changeDate", function(ev) {
         if (ev.date.valueOf() > endDate.valueOf()) {
             initCheck = true;
         } else {
@@ -181,76 +271,78 @@
         }
 
         if (ev.date.valueOf() > new Date()) {
-            $('#alertError').show().find('strong').text('Warning! End date selected is in the future. Might not have valid data values.');
+            $('#alertError').show().text('The end date selected is in the future. Your report might not contain valid values.');
         } else {
             $('#alertError').hide();
         }
         $("#todatepicker").datepicker("hide");
     });
 
-    $("#submitBtn").click(function (e) {
+    $("#submitBtn").click(function(e) {
         var validationCheck = false;
 
         var $start, $end;
 
         var reportOptionNotChecked = true;
-        var reportOPtions = document.getElementsByName('@Constants.ReportFormStrings.REPORT_OPTION'); 
+        var reportOPtions = document.getElementsByName('@Constants.ReportFormStrings.REPORT_OPTION');
         for (var i = 0, j = reportOPtions.length; i < j; i++) {
             switch (reportOPtions[i].value) {
-                case "Monthly":
-                    if (reportOPtions[i].checked) {
-                        reportOptionNotChecked = false;
-                        if (initCheck) {
-                            validationCheck = true;
-                            $('#alert').show().find('strong').text('The end month can not be before the start month.');
-                        } else {
-                            $('#alert').hide();
-                        }
-                    } else { $('#alert3').hide(); }
-                    break;
-                case "MonthPerYear":
-                    $start = $("#MPYStartYear"),
-                    $end = $("#MPYEndYear");
-                    if (reportOPtions[i].checked) {
-                        reportOptionNotChecked = false;
-                        if ($start.val() > $end.val()) {
-                            validationCheck = true;
-                            $('#alert2').show().find('strong').text('The end year can not be before the start year.');
-                        } else {
-                            $('#alert2').hide();
-                        }
+            case "Monthly":
+                if (reportOPtions[i].checked) {
+                    reportOptionNotChecked = false;
+                    if (initCheck) {
+                        validationCheck = true;
+                        $('#alert').show().text('The end month cannot be before the start month.');
+                    } else {
+                        $('#alert').hide();
+                    }
+                } else {
+                    $('#alert3').hide();
+                }
+                break;
+            case "MonthPerYear":
+                $start = $("#MPYStartYear"),
+                $end = $("#MPYEndYear");
+                if (reportOPtions[i].checked) {
+                    reportOptionNotChecked = false;
+                    if ($start.val() > $end.val()) {
+                        validationCheck = true;
+                        $('#alert2').show().text('The end year can not be before the start year.');
                     } else {
                         $('#alert2').hide();
                     }
-                    
-                    break;
-                case "FiscalYear":
-                    $start = $("#FYStartYear"),
-                    $end = $("#FYEndYear");
-                    if (reportOPtions[i].checked) {
-                        reportOptionNotChecked = false;
-                        if ($start.val() > $end.val()) {
-                            validationCheck = true;
-                            $('#alert3').show().find('strong').text('The end range can not begin before the start range.');
-                        } else {
-                            $('#alert3').hide();
-                        }
+                } else {
+                    $('#alert2').hide();
+                }
+
+                break;
+            case "FiscalYear":
+                $start = $("#FYStartYear"),
+                $end = $("#FYEndYear");
+                if (reportOPtions[i].checked) {
+                    reportOptionNotChecked = false;
+                    if ($start.val() > $end.val()) {
+                        validationCheck = true;
+                        $('#alert3').show().text('The end range can not begin before the start range.');
                     } else {
                         $('#alert3').hide();
                     }
-                    
-                    break;
-                default:
-                    break;
+                } else {
+                    $('#alert3').hide();
+                }
+
+                break;
+            default:
+                break;
             }
         }
         if (reportOptionNotChecked) {
             validationCheck = true;
-            $('#reportOptionAlert').show().find('strong').text('You must select a report option.');
+            $('#reportOptionAlert').show().text('You must select a report option.');
         } else {
             $('#reportOptionAlert').hide();
         }
-        
+
 
         var dataTypeNotChecked = true;
         var dataTypes = document.getElementsByName('@Constants.ReportFormStrings.DATATYPE');
@@ -261,11 +353,11 @@
         }
         if (dataTypeNotChecked) {
             validationCheck = true;
-            $('#dataTypeAlert').show().find('strong').text('You must select at least one data type.');
+            $('#dataTypeAlert').show().text('You must select at least one data type.');
         } else {
             $('#dataTypeAlert').hide();
         }
-        
+
 
         var stratifyNotChecked = true;
         var stratifyOptions = document.getElementsByName('@Constants.ReportFormStrings.STRATIFY_BY');
@@ -276,15 +368,31 @@
         }
         if (stratifyNotChecked) {
             validationCheck = true;
-            $('#stratifyAlert').show().find('strong').text('You must select at least one stratify option. Select None if no stratifying is wanted.');
+            $('#stratifyAlert').show().text('You must select at least one stratification option. Select None if no stratification is wanted.');
         } else {
             $('#stratifyAlert').hide();
         }
-        
+
         if (validationCheck == true) {
             e.preventDefault();
         }
     });
 
+
+    $(function () {
+        $(".radio.radio-custom").click(function () {
+            var criteria = $(this).children("input").val(),
+                $table = $("#" + criteria);
+
+            $table.show();
+            $table.siblings("#h4-" + criteria).show();
+            $table.siblings(".hideable").not("#h4-" + criteria).hide();
+            $(".message").hide();
+        });
+
+        $(".hideable").hide();
+        setTimeout(function () {
+            $(".hideable#" + $(".radio.radio-custom.checked input").val()).show()
+        }, 100);
+    });
 </script>
-   

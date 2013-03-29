@@ -69,18 +69,18 @@ namespace SasquatchCAIRS.Models {
         public const int dataStartRow = reportHeaderRow + 1;
 
         public static readonly string[] DATATABLE_TITLES = new string[13] {
-            "General Report", "Avg Timer Per Request Stratified by Geographical Region", 
+            "General Report", "Avg Time Per Request Stratified by Geographical Region", 
             "Avg Time To Complete Stratified by Geographical Region",
             "Total Number of Requests Stratified by Geographical Region", 
-            "Total Time Spend Stratified by Geographical Region",
-            "Avg Timer Per Request Stratified by Caller Type", 
+            "Total Time Spent Stratified by Geographical Region",
+            "Avg Time Per Request Stratified by Caller Type", 
             "Avg Time To Complete Stratified by Caller Type",
             "Total Number of Requests Stratified by Caller Type", 
             "Total Time Spend Stratified by Caller Type",
-            "Avg Timer Per Request Stratified by Tumour Group", 
+            "Avg Time Per Question Stratified by Tumour Group", 
             "Avg Time To Complete Stratified by Tumour Group",
-            "Total Number of Requests Stratified by Tumour Group", 
-            "Total Time Spend Stratified by Tumour Group"
+            "Total Number of Questions Stratified by Tumour Group", 
+            "Total Time Spent Stratified by Tumour Group"
         };
 
         public enum DropdownTable {
@@ -98,7 +98,7 @@ namespace SasquatchCAIRS.Models {
             Unlocked = 2,
             Deleted = 3,
             AccessingLocked = 4,
-            LockedToOtherUser = 5,
+            NotLockedToYou = 5,
             SuccessfulEdit = 6,
             NoRequestEditorRole = 7,
             SuccessfulCreate = 8
@@ -184,6 +184,8 @@ namespace SasquatchCAIRS.Models {
             public const string QUESTION_TUMOUR_GROUP = "Tumour Group: ";
             public const string QUESTION_TIME_SPENT = "Time Spent: ";
             public const string QUESTION_IMPACT_SCORE = "Impact Score: ";
+            public const string QUESTION_SEVERITY = "Severity: ";
+            public const string QUESTION_CONSEQUENCE = "Consequence: ";
             public const string QUESTION_KEYWORDS = "Keywords: ";
             public const string QUESTION_REFERENCES = "References: ";
 
@@ -302,7 +304,7 @@ namespace SasquatchCAIRS.Models {
                 public const string MODIFY_SEARCH = "Modify Search";
                 public const string NEW_SEARCH = "New Search";
                 public const string SEARCH = "Search!";
-                public const string EDIT_USER = "Edit User";
+                public const string EDIT_USER = "Save Changes";
                 public const string EDIT_DROPDOWN = "Save Changes";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
                 public const string USERS = "Users";
@@ -364,10 +366,10 @@ namespace SasquatchCAIRS.Models {
         }
 
         public enum DataType {
-            AvgTimePerRequest = 0,
-            AvgTimeToComplete = 1,
-            TotalNumOfRequests = 2,
-            TotalTimeSpent = 3
+            AvgTimePerRequest = 1,
+            AvgTimeToComplete = 2,
+            TotalNumOfRequests = 3,
+            TotalTimeSpent = 4
         }
 
         public enum StratifyOption {
@@ -438,7 +440,7 @@ namespace SasquatchCAIRS.Models {
                 case Gender.Other:
                     return "Other";
                 default:
-                    return "None";
+                    return "";
             }
         }
 
@@ -533,7 +535,9 @@ namespace SasquatchCAIRS.Models {
             RequestCompletion = 1,
             RequestDeletion = 2,
             RequestModification = 3,
-            RequestView = 4
+            RequestView = 4,
+            RequestExport = 5,
+            RequestUnlock = 6
 
         }
 

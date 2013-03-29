@@ -11,22 +11,20 @@ using System.IO;
 
 namespace SasquatchCAIRS.Controllers
 {
+    [Authorize (Roles = Constants.Roles.REPORT_GENERATOR)]
     public class ServiceSystemController : Controller
     {
         //
         // GET: /ServiceSystem/Reports
-        [Authorize (Roles = "ReportGenerator")]
         public ActionResult Reports()
         {
             return View();
         }
 
-        [Authorize(Roles = "ReportGenerator")]
         public ActionResult NoDataView() {
             return View();
         }
 
-        [Authorize(Roles = "ReportGenerator")]
         public ViewResult GeneratingReport(FormCollection form) {
 
             ReportController rg = new ReportController();

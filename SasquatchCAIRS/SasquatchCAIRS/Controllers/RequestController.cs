@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.Security;
 using SasquatchCAIRS.Controllers.Security;
-﻿using SasquatchCAIRS.Controllers.ServiceSystem;
-﻿using SasquatchCAIRS.Helper;
+using SasquatchCAIRS.Controllers.ServiceSystem;
+using SasquatchCAIRS.Helper;
 using SasquatchCAIRS.Models;
 using SasquatchCAIRS.Models.ServiceSystem;
 
@@ -88,6 +89,32 @@ namespace SasquatchCAIRS.Controllers
                 reqContent.requestStatus = Constants.RequestStatus.Completed;
             }
 
+            // Encode HTML in question responses
+            // Replace null references with empty string
+            foreach (var qrContent in reqContent.questionResponseList) {
+                if (!String.IsNullOrEmpty(qrContent.question)) {
+                    qrContent.question = HttpUtility.HtmlEncode(
+                        removeNewLinesAndTabs(qrContent.question))
+                        .Replace("&#39;", "'");
+                }
+                if (!String.IsNullOrEmpty(qrContent.response)) {
+                    qrContent.response = HttpUtility.HtmlEncode(
+                        removeNewLinesAndTabs(qrContent.response))
+                        .Replace("&#39;", "'");
+                }
+                if (!String.IsNullOrEmpty(qrContent.specialNotes)) {
+                    qrContent.specialNotes = HttpUtility.HtmlEncode(
+                        removeNewLinesAndTabs(qrContent.specialNotes))
+                        .Replace("&#39;", "'");
+                }
+
+                foreach (var refContent in qrContent.referenceList.Where(
+                    refContent => refContent.referenceString == null)) {
+
+                    refContent.referenceString = "";
+                }
+            }
+
             if (!valid) {
                 DropdownController dc = new DropdownController();
 
@@ -103,27 +130,18 @@ namespace SasquatchCAIRS.Controllers
                 return View(reqContent);
             }
 
-            // Replace null references with empty string
-            foreach (var qrContent in reqContent.questionResponseList) {
-                foreach (var refContent in qrContent.referenceList.Where(
-                    refContent => refContent.referenceString == null)) {
-
-                    refContent.referenceString = "";
-                }
-            }
-
             long reqId = rmc.create(reqContent);
 
             UserController uc = new UserController();
             UserProfile up = uc.getUserProfile(User.Identity.Name);
             AuditLogManagementController almc = new AuditLogManagementController();
-            almc.addEntry(reqContent.requestID, up.UserId,
+            almc.addEntry(reqId, up.UserId,
                 Constants.AuditType.RequestCreation,
                 reqContent.timeOpened);
 
             if (reqContent.requestStatus == Constants.RequestStatus.Completed &&
                 reqContent.timeClosed != null) {
-                almc.addEntry(reqContent.requestID, up.UserId,
+                almc.addEntry(reqId, up.UserId,
                     Constants.AuditType.RequestCompletion,
                     (DateTime) reqContent.timeClosed);
             }
@@ -156,7 +174,7 @@ namespace SasquatchCAIRS.Controllers
                 rlc.addLock(id, up.UserId);
             } else if (rl.UserID != up.UserId) {
                 // Locked to someone else, redirect
-                RedirectToAction("Index", "Home", new {
+                return RedirectToAction("Index", "Home", new {
                     status = Constants.URLStatus.AccessingLocked
                 });
             }
@@ -192,9 +210,13 @@ namespace SasquatchCAIRS.Controllers
             UserProfile up = uc.getUserProfile(User.Identity.Name);
 
             RequestLock rl = rlc.getRequestLock(reqContent.requestID);
-            if (rl != null && rl.UserID != up.UserId) {
-                RedirectToAction("Index", "Home", new {
-                    status = Constants.URLStatus.LockedToOtherUser
+            if (rl == null) {
+                return RedirectToAction("Index", "Home", new {
+                    status = Constants.URLStatus.NotLockedToYou
+                });
+            } else if (rl.UserID != up.UserId) {
+                return RedirectToAction("Index", "Home", new {
+                    status = Constants.URLStatus.AccessingLocked
                 });
             }
 
@@ -202,8 +224,7 @@ namespace SasquatchCAIRS.Controllers
                 rmc.invalidate(reqContent.requestID);
 
                 almc.addEntry(reqContent.requestID, up.UserId,
-                    Constants.AuditType.RequestDeletion,
-                    reqContent.timeOpened);
+                    Constants.AuditType.RequestDeletion);
 
                 return RedirectToAction("Index", "Home", new {
                     status = Constants.URLStatus.Deleted
@@ -251,6 +272,32 @@ namespace SasquatchCAIRS.Controllers
                 reqContent.requestStatus = Constants.RequestStatus.Completed;
             }
 
+            // Encode HTML in question responses
+            // Replace null references with empty string
+            foreach (var qrContent in reqContent.questionResponseList) {
+                if (!String.IsNullOrEmpty(qrContent.question)) {
+                    qrContent.question = HttpUtility.HtmlEncode(
+                        removeNewLinesAndTabs(qrContent.question))
+                        .Replace("&#39;", "'");
+                }
+                if (!String.IsNullOrEmpty(qrContent.response)) {
+                    qrContent.response = HttpUtility.HtmlEncode(
+                        removeNewLinesAndTabs(qrContent.response))
+                        .Replace("&#39;", "'");
+                }
+                if (!String.IsNullOrEmpty(qrContent.specialNotes)) {
+                    qrContent.specialNotes = HttpUtility.HtmlEncode(
+                        removeNewLinesAndTabs(qrContent.specialNotes))
+                        .Replace("&#39;", "'");
+                }
+
+                foreach (var refContent in qrContent.referenceList.Where(
+                    refContent => refContent.referenceString == null)) {
+
+                    refContent.referenceString = "";
+                }
+            }
+
             if (!valid) {
                 DropdownController dc = new DropdownController();
 
@@ -266,21 +313,11 @@ namespace SasquatchCAIRS.Controllers
                 return View(reqContent);
             }
 
-            // Replace null references with empty string
-            foreach (var qrContent in reqContent.questionResponseList) {
-                foreach (var refContent in qrContent.referenceList.Where(
-                    refContent => refContent.referenceString == null)) {
-
-                    refContent.referenceString = "";
-                }
-            }
-
             rmc.edit(reqContent);
             rlc.removeLock(reqContent.requestID);
 
             almc.addEntry(reqContent.requestID, up.UserId,
-                Constants.AuditType.RequestModification,
-                reqContent.timeOpened);
+                Constants.AuditType.RequestModification);
 
             if (reqContent.requestStatus == Constants.RequestStatus.Completed &&
                 reqContent.timeClosed != null) {
@@ -302,7 +339,7 @@ namespace SasquatchCAIRS.Controllers
         public ActionResult NewQuestionResponse(String json) {
             // Don't want to load a partial with a Not Authorized message
             if (!Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
-                RedirectToAction("Index", "Home", new {
+                return RedirectToAction("Index", "Home", new {
                     status = Constants.URLStatus.NoRequestEditorRole
                 });
             }
@@ -338,7 +375,7 @@ namespace SasquatchCAIRS.Controllers
         public ActionResult NewReference(string id, string json) {
             // Don't want to load a partial with a Not Authorized message
             if (!Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
-                RedirectToAction("Index", "Home", new {
+                return RedirectToAction("Index", "Home", new {
                     status = Constants.URLStatus.NoRequestEditorRole
                 });
             }
@@ -387,6 +424,10 @@ namespace SasquatchCAIRS.Controllers
 
             // Set up the Request Object
             RequestContent request = rmc.getRequestDetails(id);
+            if (request == null) {
+                return View((object) null);
+            }
+
             ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST 
                 + " - " 
                 + Constants.UIString.TitleText.REQUEST_NUM 
@@ -425,15 +466,14 @@ namespace SasquatchCAIRS.Controllers
                     ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST
                                     + " - "
                                     + Constants.UIString.TitleText.ERROR;
-                }
 
+                    return View(request);
+                }
             }
 
             // Set up Time Spent (Question-Dependent)
-            if (request != null) {
-                foreach (QuestionResponseContent qr in request.questionResponseList) {
-                    timeSpent += qr.timeSpent.GetValueOrDefault(0);
-                }
+            foreach (QuestionResponseContent qr in request.questionResponseList) {
+                timeSpent += qr.timeSpent.GetValueOrDefault(0);
             }
 
             ViewBag.TimeSpent = timeSpent;
@@ -447,7 +487,7 @@ namespace SasquatchCAIRS.Controllers
                                      al.RequestID == request.requestID
                                  select al).FirstOrDefault();
             if (auditLog != null && auditLog.UserProfile != null) {
-                ViewBag.CreatedBy = auditLog.UserProfile.UserName;
+                ViewBag.CreatedBy = auditLog.UserProfile.UserFullName;
             } else {
                 ViewBag.CreatedBy = "";
             }
@@ -460,7 +500,7 @@ namespace SasquatchCAIRS.Controllers
                             al.RequestID == request.requestID
                         select al).FirstOrDefault();
             if (auditLog != null && auditLog.UserProfile != null) {
-                ViewBag.CompletedBy = auditLog.UserProfile.UserName;
+                ViewBag.CompletedBy = auditLog.UserProfile.UserFullName;
             } else {
                 ViewBag.CompletedBy = "";
             }
@@ -468,6 +508,16 @@ namespace SasquatchCAIRS.Controllers
             // add AuditLog entry for viewing
             AuditLogManagementController almc = new AuditLogManagementController();
             almc.addEntry(id, upc.getUserProfile(User.Identity.Name).UserId, Constants.AuditType.RequestView);
+
+            ViewBag.IsLocked = rlc.isLocked(id);
+
+            if (ViewBag.IsLocked) {
+                ViewBag.IsLockedToMe = rlc.getRequestLock(id).UserID ==
+                                       upc.getUserProfile(User.Identity.Name)
+                                          .UserId;
+            } else {
+                ViewBag.IsLockedToMe = false;
+            }
 
             return View(request);
         }
@@ -478,6 +528,11 @@ namespace SasquatchCAIRS.Controllers
         [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
         public ActionResult Unlock(long id) {
             RequestLockController rlc = new RequestLockController();
+            // add AuditLog entry for lock remove
+            UserController upc = new UserController();
+            AuditLogManagementController almc = new AuditLogManagementController();
+            almc.addEntry(id, upc.getUserProfile(User.Identity.Name).UserId,
+                          Constants.AuditType.RequestUnlock);
 
             rlc.removeLock(id);
 
@@ -500,6 +555,14 @@ namespace SasquatchCAIRS.Controllers
             });
         }
 
+        private String removeNewLinesAndTabs(String s) {
+            s = s.Replace("\n", String.Empty);
+            s = s.Replace("\r", String.Empty);
+            s = s.Replace("\t", String.Empty);
+
+            return s;
+        }
+
         //
         // GET: /Request/Export/{id}
         public ActionResult Export(long id) {
@@ -514,6 +577,11 @@ namespace SasquatchCAIRS.Controllers
 
             IEnumerable<string> output = wec.requestToStrings(request);
             wec.generateDocument(output, templatePath, filePath, id);
+
+            // add AuditLog entry for exporting
+            UserController upc = new UserController();
+            AuditLogManagementController almc = new AuditLogManagementController();
+            almc.addEntry(id, upc.getUserProfile(User.Identity.Name).UserId, Constants.AuditType.RequestExport);
 
             return View("Details", new RequestContent(request));
         }

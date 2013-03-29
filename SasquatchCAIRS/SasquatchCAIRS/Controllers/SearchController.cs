@@ -222,7 +222,7 @@ namespace SasquatchCAIRS.Controllers {
                      join kqs in _db.KeywordQuestions
                          on kws.KeywordID equals kqs.KeywordID
                      where kqs.RequestID == request.RequestID
-                     select kws.KeywordValue)
+                     select kws.KeywordValue).Distinct()
                         .ToList();
                 keywords.Add(request.RequestID, kw);
             }

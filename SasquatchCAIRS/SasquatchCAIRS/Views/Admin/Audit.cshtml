@@ -5,6 +5,7 @@
 
 @{
     ViewBag.Title = "Audit";
+    ViewBag.Page = "admin";
 }
 
 @Html.Partial("_AdminNavPartial", new ViewDataDictionary{ { "active", "audit" } })
@@ -24,47 +25,56 @@
 }
 
 @using (Html.BeginForm("Audit", "Admin", FormMethod.Post, new {@class = "form"})) {
-        <table class="table unbordered-table valign-middle">
-                <tr>
-                    <td class="tbl-label">@Constants.UIString.FieldLabel.AUDIT_CRITERIA</td>
-                <td class="tbl-field">@Html.RadioButtonFor(model => model.criteriaType, "uCriteria") Username Criteria</td>
-                    <td class="tbl-field">@Html.RadioButtonFor(model => model.criteriaType, "rCriteria")Request ID Criteria</td>
-                    <td>@Html.ValidationMessageFor(m => m.criteriaType)</td>
-                </tr>
-            <tr>
-                <td class="tbl-label">@Constants.UIString.FieldLabel.USER_CRITERIA</td>
-            </tr>
-            <tr>
-                <td class="tbl-label">@Constants.UIString.FieldLabel.USERNAME</td>
-                <td class="tbl-field">@Html.TextBoxFor(m => m.userName, new { @class = "span3" })</td>
-                <td>@Html.ValidationMessageFor(m => m.userName)</td>
-            </tr>
-            <tr>
-                <td class="tbl-label">@Constants.UIString.FieldLabel.START_DATE</td>
-                <td class="tbl-field">@Html.TextBoxFor(m => m.startDate, new { @class = "span3" })</td>
-                <td>@Html.ValidationMessageFor(m => m.startDate)</td>
-            </tr>
-            <tr>
-                <td class="tbl-label">@Constants.UIString.FieldLabel.END_DATE</td>
-                <td class="tbl-field">@Html.TextBoxFor(m => m.endDate, new { @class = "span3" })</td>
-                <td>@Html.ValidationMessageFor(m => m.endDate)</td>
-            </tr>
-            <tr>
-                <td class="tbl-label">@Constants.UIString.FieldLabel.REQUEST_CRITERIA</td>
-            </tr>
-            <tr>
-                <td class="tbl-label">@Constants.UIString.FieldLabel.REQUEST_ID</td>
-                <td class="tbl-field">@Html.TextBoxFor(m => m.requestID, new { @class = "span3" })</td>
-                <td>@Html.ValidationMessageFor(m => m.requestID)</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input class="btn btn-custom" type="submit" value="@Constants.UIString.ButtonText.GEN_AUDIT"></td>
-            </tr>
-        </table>
+    <table class="table unbordered-table valign-middle">
+        <tr>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.AUDIT_CRITERIA</td>
+            <td class="tbl-field"><label class="radio radio-custom">@Html.RadioButtonFor(model => model.criteriaType, "uCriteria") Username Criteria</label></td>
+            <td class="tbl-field"><label class="radio radio-custom">@Html.RadioButtonFor(model => model.criteriaType, "rCriteria") Request ID Criteria</label></td>
+            <td>@Html.ValidationMessageFor(m => m.criteriaType)</td>
+        </tr>
+    </table>
+
+    <h4 class="hideable" id="h4-uCriteria">@Constants.UIString.FieldLabel.USER_CRITERIA</h4>
+    <table class="table unbordered-table valign-middle hideable" id="uCriteria">
+        <tr>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.USERNAME</td>
+            <td class="tbl-field">@Html.TextBoxFor(m => m.userName, new { @class = "span3" })</td>
+            <td>@Html.ValidationMessageFor(m => m.userName)</td>
+        </tr>
+        <tr>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.START_DATE</td>
+            <td class="tbl-field">@Html.TextBoxFor(m => m.startDate, new { @class = "span3" })</td>
+            <td>@Html.ValidationMessageFor(m => m.startDate)</td>
+        </tr>
+        <tr>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.END_DATE</td>
+            <td class="tbl-field">@Html.TextBoxFor(m => m.endDate, new { @class = "span3" })</td>
+            <td>@Html.ValidationMessageFor(m => m.endDate)</td>
+        </tr>
+    </table>
+
+    <h4 class="hideable" id="h4-rCriteria">@Constants.UIString.FieldLabel.REQUEST_CRITERIA</h4>
+    <table class="table unbordered-table valign-middle hideable" id="rCriteria">
+        <tr>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.REQUEST_ID</td>
+            <td class="tbl-field">@Html.TextBoxFor(m => m.requestID, new { @class = "span3" })</td>
+            <td>@Html.ValidationMessageFor(m => m.requestID)</td>
+        </tr>
+    </table>
+
+    <table class="table unbordered-table valign-middle">
+        <tr>
+            <td class="tbl-label"></td>
+            <td>
+                <button class="btn btn-custom" type="submit">
+                    <i class="icon-download-alt button-icon"></i> @Constants.UIString.ButtonText.GEN_AUDIT
+                </button>
+            </td>
+        </tr>
+    </table>
     }
     
-    @section Scripts {
+@section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
 
@@ -72,5 +82,21 @@
     $(function () {
         $('#endDate').datepicker();
         $('#startDate').datepicker();
+    });
+
+    $(function() {
+        $(".radio-custom").click(function() {
+            var criteria = $(this).children("input").val(),
+                $table = $("#" + criteria);
+            
+            $table.show();
+            $table.siblings("#h4-" + criteria).show();
+            $table.siblings(".hideable").not("#h4-" + criteria).hide();
+        });
+
+        $(".hideable").hide();
+        setTimeout(function() {
+            $(".hideable#" + $(".radio-custom.checked input").val()).show()
+        }, 100);
     });
 </script>
