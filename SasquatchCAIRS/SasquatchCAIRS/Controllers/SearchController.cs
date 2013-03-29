@@ -85,7 +85,7 @@ namespace SasquatchCAIRS.Controllers {
             if (DateTime.TryParse(form["completionTime"], out temp)) {
                 criteria.completionTime = temp;
             }
-            criteria.keywordString = form["keywords"];
+            criteria.keywordString = form["keywordString"];
             criteria.requestStatus = form["status"];
             criteria.severity = form["severity"];
             criteria.consequence = form["consequence"];

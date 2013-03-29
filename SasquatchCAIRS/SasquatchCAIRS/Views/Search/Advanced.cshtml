@@ -22,35 +22,17 @@
     <table class="table unbordered-table valign-middle">
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.KEYWORDS</td>
-            <td colspan="3"><input name="keywords" id="keywords" 
-                                   type="text" class="span9"
-                                   value="@Model.keywordString"/></td>
+            <td colspan="3">
+                <input name="keywordString" id="keywordString" 
+                       type="text" class="span9"
+                       data-provide="typeahead" autocomplete="off"
+                       value="@Model.keywordString"/>
+            </td>
         </tr>
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.START_TIME</td>
             <td>
                 @if (Model.startTime != null && !Model.startTime.ToString(Constants.DATE_FORMAT)
-            @Html.Label(Constants.UIString.FieldLabel.SEARCH_FILTER)
-        </div>
-
-        <div>
-            @foreach (var searchFilter in Enum.GetValues(
-                typeof(Constants.SearchFilter))) {
-                <label class="checkbox inline">
-                    @if (!String.IsNullOrEmpty(Model.searchFilter) && 
-                         Model.searchFilter.Contains(@searchFilter.ToString())) {
-                        <input type="checkbox" name="searchFilter" value="@searchFilter" checked/>
-                    } else
-                    {
-                        <input type="checkbox" name="searchFilter" value="@searchFilter" />  
-                    }
-                    @searchFilter
-                </label>
-            }
-        </div>
-
-        <div>
-            <br />
                                                       .Equals(Constants.EMPTY_DATE)) {
                     <input class="span3" name="startTime" id="startTime" type="text" 
                            value="@Model.startTime.ToString(Constants.DATE_FORMAT)" />    
@@ -223,5 +205,33 @@
     $(function () {
         $('#startTime').datepicker();
         $('#completionTime').datepicker();
+        $('#keywordString').typeahead({
+        source: function (query, process) {
+            var last = query.split(/\s*[,;]\s*/).pop();
+
+            $.post("@Url.Action("GetMatchingKeywords", "Request")/" + last, function (data) {
+                process(data);
+            });
+        },
+    updater: function (item) {
+        var terms = this.query.split(/\s*[,;]\s*/);
+        terms.pop();
+        terms.push(item);
+        terms.push("");
+
+        return terms.join(", ");
+    },
+    matcher: function (item) {
+        return (this.query).split(/\s*[,;]\s*/).pop().length > 0;
+    },
+    highlighter: function (item) {
+        var query = this.query.split(/\s*[,;]\s*/).pop().replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
+        return item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+            return '<strong>' + match + '</strong>';
+        });
+    }
     });
+    });
+    
+    
 </script>
