@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Web;
 using System.Web.Mvc;
 using SasquatchCAIRS.Models;
 using DocumentFormat.OpenXml.Packaging;
@@ -65,18 +68,20 @@ namespace SasquatchCAIRS.Controllers {
 
             // ----- Requestor Information -----
             list.Add(Constants.Export.REQUESTOR_INFORMATION);
+            Boolean requestorInfo = false;
 
             // Requestor Name
-            if (
-                !String.IsNullOrEmpty(request.RequestorFName +
+            if (!String.IsNullOrEmpty(request.RequestorFName +
                                       request.RequestorLName)) {
                 list.Add(Constants.Export.REQUESTOR_NAME + request.RequestorFName + " " +
                          request.RequestorLName);
+                requestorInfo = true;
             }
 
             // Requestor Email
             if (!String.IsNullOrEmpty(request.RequestorEmail)) {
                 list.Add(Constants.Export.REQUESTOR_EMAIL + request.RequestorEmail);
+                requestorInfo = true;
             }
 
             // Requestor Phone
@@ -86,16 +91,23 @@ namespace SasquatchCAIRS.Controllers {
                     phone += Constants.Export.REQUESTOR_PHONE_EXT + request.RequestorPhoneExt;
                 }
                 list.Add(Constants.Export.REQUESTOR_PHONE + phone);
+                requestorInfo = true;
             }
 
             // Requestor Type
             if (request.RequestorType != null) {
                 list.Add(Constants.Export.REQUESTOR_TYPE + request.RequestorType.Value);
+                requestorInfo = true;
             }
 
             // Requestor Region
             if (request.Region != null) {
                 list.Add(Constants.Export.REQUSTOR_REGION + request.Region.Value);
+                requestorInfo = true;
+            }
+
+            if (!requestorInfo) {
+                list.Add("N/A");
             }
 
             // Empty line for readability
@@ -103,21 +115,34 @@ namespace SasquatchCAIRS.Controllers {
 
             // ----- Patient Information -----
             list.Add(Constants.Export.PATIENT_INFORMATION);
+            Boolean patientInfo = false;
 
             // Patient Name
-            list.Add(Constants.Export.PATIENT_NAME + request.PatientFName + " " + request.PatientLName);
+            if (request.PatientFName != null || request.PatientLName != null) {
+                list.Add(Constants.Export.PATIENT_NAME +
+                    request.PatientFName + " " + request.PatientLName);
+            }
+
+            // Patient Agency ID
             if (!String.IsNullOrEmpty(request.PatientAgencyID)) {
                 list.Add(Constants.Export.PATIENT_ID + request.PatientAgencyID);
+                patientInfo = true;
             }
 
             // Patient Age
             if (request.PatientAge != null) {
                 list.Add(Constants.Export.PATIENT_AGE + request.PatientAge);
+                patientInfo = true;
             }
 
             // Patient Gender
             if (request.PatientGender != null) {
                 list.Add(Constants.Export.PATIENT_GENDER + request.PatientGender);
+                patientInfo = true;
+            }
+
+            if (!patientInfo) {
+                list.Add("N/A");
             }
 
             // Empty line for readability
@@ -135,76 +160,112 @@ namespace SasquatchCAIRS.Controllers {
             // Request Counter
             int counter = 1;
             foreach (QuestionResponse questionResponse in qrs) {
-                // Empty line for readability
-                list.Add(" ");
-
                 // Question Number & Question Content
-                list.Add(Constants.Export.QUESTION_NUMBER + (counter++) + ": " + questionResponse.Question);
+                list.Add(Constants.Export.QUESTION_NUMBER + (counter++) + ":<br>"
+                    + HttpUtility.HtmlDecode(questionResponse.Question));
 
                 // Question Response
                 if (!String.IsNullOrEmpty(questionResponse.Response)) {
-                    list.Add(Constants.Export.QUESTION_RESPONSE + questionResponse.Response);
+                    list.Add(Constants.Export.QUESTION_RESPONSE + "<br>" +
+                        HttpUtility.HtmlDecode(questionResponse.Response));
                 }
 
                 // Question Special Notes
                 if (!String.IsNullOrEmpty(questionResponse.SpecialNotes)) {
-                    list.Add(Constants.Export.QUESTION_SPECIAL_NOTES +
-                             questionResponse.SpecialNotes);
+                    list.Add(Constants.Export.QUESTION_SPECIAL_NOTES + "<br>" +
+                        HttpUtility.HtmlDecode(questionResponse.SpecialNotes));
                 }
 
                 // Question Type
                 if (questionResponse.QuestionType != null) {
-                    list.Add(Constants.Export.QUESTION_TYPE + questionResponse.QuestionType.Value);
+                    list.Add(Constants.Export.QUESTION_TYPE +
+                        questionResponse.QuestionType.Value);
                 }
 
-                // Quesiton Tumor Group
+                // Question Tumor Group
                 if (questionResponse.TumourGroup != null) {
-                    list.Add(Constants.Export.QUESTION_TUMOUR_GROUP + questionResponse.TumourGroup.Value);
+                    list.Add(Constants.Export.QUESTION_TUMOUR_GROUP +
+                        questionResponse.TumourGroup.Value);
                 }
 
                 // Question Time Spent
                 if (questionResponse.TimeSpent != null) {
-                    list.Add(Constants.Export.QUESTION_TIME_SPENT + questionResponse.TimeSpent + Constants.Export.TIME_UNITS);
+                    list.Add(Constants.Export.QUESTION_TIME_SPENT +
+                        questionResponse.TimeSpent +
+                        Constants.Export.TIME_UNITS);
                     timeSpent += (int) questionResponse.TimeSpent;
                 }
 
+                // Question Severity
+                if (questionResponse.Severity != null) {
+                    list.Add(Constants.Export.QUESTION_SEVERITY +
+                        questionResponse.Severity);
+                }
+
+                // Question Consequence
+                if (questionResponse.Consequence != null) {
+                    list.Add(Constants.Export.QUESTION_CONSEQUENCE +
+                        questionResponse.Consequence);
+                }
+
                 // Question Impact Score
-                if (questionResponse.Consequence != null && questionResponse.Severity != null) {
-                    list.Add(Constants.Export.QUESTION_IMPACT_SCORE + Constants.getImpactScore((Constants.Severity?) questionResponse.Severity, (Constants.Consequence?) questionResponse.Consequence));
+                if (questionResponse.Consequence != null &&
+                    questionResponse.Severity != null) {
+                    string impactScore = Constants.getImpactScore(
+                        (Constants.Severity?) questionResponse.Severity,
+                        (Constants.Consequence?) questionResponse.Consequence);
+
+                    list.Add(Constants.Export.QUESTION_IMPACT_SCORE +
+                        impactScore);
                 }
 
                 // Question Keywords
-                List<string> keywords = (from kq in _db.KeywordQuestions
-                                         join k in _db.Keywords on kq.KeywordID equals k.KeywordID
-                                         where
-                                             kq.QuestionResponseID ==
-                                             questionResponse.QuestionResponseID
-                                         select k.KeywordValue).ToList();
-                string accumulator = "";
+                List<string> keywords =
+                    (from kq in _db.KeywordQuestions
+                     join k in _db.Keywords on kq.KeywordID equals k.KeywordID
+                     where kq.QuestionResponseID ==
+                               questionResponse.QuestionResponseID
+                     select k.KeywordValue).ToList();
+
                 if (keywords.Count > 0) {
-                    accumulator = keywords.Aggregate(accumulator, (current, keys) => current + (keys + ", "));
-                    accumulator = accumulator.Substring(0, accumulator.Length - 2);
+                    string accumulator = string.Join(", ", keywords.ToList());
                     list.Add(Constants.Export.QUESTION_KEYWORDS + accumulator);
                 }
 
                 // Question References
-                list.Add(Constants.Export.QUESTION_REFERENCES);
-                foreach (Reference r in questionResponse.References) {
-                    list.Add(r.ReferenceString);
+                if (questionResponse.References.Any()) {
+                    list.Add(Constants.Export.QUESTION_REFERENCES);
+                    foreach (Reference r in questionResponse.References) {
+                        string refStr;
+
+                        if (r.ReferenceType ==
+                            (byte) Constants.ReferenceType.URL) {
+                            refStr = "<a href='" + r.ReferenceString + "'>" +
+                                     r.ReferenceString + "</a>";
+                        } else {
+                            refStr = r.ReferenceString;
+                        }
+                        list.Add(refStr);
+                    }
                 }
+
+                // Empty line for readability
+                list.Add(" ");
             }
 
             // Total Time Spent on Request
-            list.Insert(list.IndexOf(Constants.Export.REQUEST_TIME_SPENT), Constants.Export.REQUEST_TIME_SPENT + timeSpent + Constants.Export.TIME_UNITS);
+            list.Insert(list.IndexOf(Constants.Export.REQUEST_TIME_SPENT),
+                Constants.Export.REQUEST_TIME_SPENT + timeSpent + Constants.Export.TIME_UNITS);
             list.RemoveAt(list.IndexOf(Constants.Export.REQUEST_TIME_SPENT));
-
+            
+            list.Add(Constants.Export.REQUEST_PROPERTIES);
             // ----- Properties -----
             if (request.ParentRequestID != null) {
-                // Empty line for readability
-                list.Add(" ");
-                list.Add(Constants.Export.REQUEST_PROPERTIES);
                 // Parent Request ID
-                list.Add(Constants.Export.REQUEST_PARENT_ID + request.ParentRequestID);
+                list.Add(Constants.Export.REQUEST_PARENT_ID +
+                         request.ParentRequestID);
+            } else {
+                list.Add("N/A");
             }
 
             return list;
@@ -222,17 +283,44 @@ namespace SasquatchCAIRS.Controllers {
             System.IO.File.Copy(templatePath, destinationPath);
 
             using (WordprocessingDocument document = WordprocessingDocument.Open(destinationPath, true)) {
-                Body body = document.MainDocumentPart.Document.Body;
+                MainDocumentPart mainPart = document.MainDocumentPart;
+                int altChunkIdCounter = 1;
+                int blockLevelCounter = 1;
+
                 foreach (string s in input) {
-                    Paragraph paragraph = body.AppendChild(new Paragraph());
-                    Run run = paragraph.AppendChild(new Run());
-                    if (Constants.Export.EXPORT_HEADERS.Contains(s)) {
-                        RunProperties runProperties = new RunProperties();
-                        runProperties.AppendChild<Bold>(new Bold());
-                        run.AppendChild<RunProperties>(runProperties);
+                    string altChunkId = String.Format("AltChunkId{0}",
+                                                      altChunkIdCounter++);
+
+                    // Import data as html content using Altchunk
+                    AlternativeFormatImportPart chunk =
+                        mainPart.AddAlternativeFormatImportPart(
+                            AlternativeFormatImportPartType.Html, altChunkId);
+
+                    using (Stream chunkStream = chunk.GetStream(
+                        FileMode.Create, FileAccess.Write)) {
+                        
+                        using (StreamWriter stringWriter =
+                               new StreamWriter(chunkStream, Encoding.UTF8)) {
+                            // Requires Encoding.UTF8 to remove special characters
+                            String content;
+
+                            if (Constants.Export.EXPORT_HEADERS.Contains(s)) {
+                                content = "<h3>" + s + "</h3>";
+                            } else {
+                                content = s;
+                            }
+
+                            stringWriter.Write("<html><body>" + content + "</html></body>");
+;                        }
                     }
-                    run.AppendChild(new Text(s));
+
+                    AltChunk altChunk = new AltChunk {Id = altChunkId};
+
+                    mainPart.Document.Body.InsertAt(altChunk,
+                                                    blockLevelCounter++);
+                    mainPart.Document.Save();
                 }
+
                 document.Close();
             }
 
