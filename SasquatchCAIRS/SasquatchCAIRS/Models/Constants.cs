@@ -42,6 +42,19 @@ namespace SasquatchCAIRS.Models {
             Consequence.Unlikely
         };
 
+        public enum SearchFilter
+        {
+            All = 0,
+            Any = 1,
+            None = 2,
+        }
+
+        public static readonly SearchFilter[] searchFilterOptions = {
+            SearchFilter.All, 
+            SearchFilter.Any, 
+            SearchFilter.None, 
+        };
+
         public enum ReferenceType {
             URL = 0,
             File = 1,
@@ -102,7 +115,7 @@ namespace SasquatchCAIRS.Models {
 
         public const string EMPTY_DATE = "0001-01-01";
         public const string DATE_FORMAT = "yyyy-MM-dd";
-
+        public const int PAGE_SIZE = 20;
 
         public static class DataTypeStrings {
             public static string DATA_TYPE = "Data Type";
@@ -232,6 +245,7 @@ namespace SasquatchCAIRS.Models {
                 // Search Information
                 public const string PATIENT_NAME_LABEL = "Patient Name";
                 public const string CALLER_NAME_LABEL = "Caller Name";
+                public const string SEARCH_FILTER = "Search Keywords By";
 
                 // Question Information
                 public const string QUESTION = "Question";

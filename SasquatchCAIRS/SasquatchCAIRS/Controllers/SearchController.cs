@@ -17,6 +17,9 @@ namespace SasquatchCAIRS.Controllers {
             new DropdownController();
         private CAIRSDataContext _db = new CAIRSDataContext();
 
+        private static List<Request> _results;
+        private static int _startIndex;
+
         /// <summary>
         /// Given a comma delimited string of keywords returns all requests tbat contain one or more of these keywords
         /// </summary>
@@ -39,10 +42,14 @@ namespace SasquatchCAIRS.Controllers {
                 });
             }
 
-            List<Request> list = searchCriteriaQuery(sc);
-            fillUpKeywordDict(list);
-            ViewBag.ResultSetSize = list.Count;
-            return View("Results", list);
+            _startIndex = 0;
+            ViewBag.startIndex = _startIndex;
+
+            _results = searchCriteriaQuery(sc);
+            fillUpKeywordDict(_results);
+            ViewBag.ResultSetSize = _results.Count;
+
+            return View("Results", _results.Take(Constants.PAGE_SIZE));
         }
 
 
@@ -88,6 +95,7 @@ namespace SasquatchCAIRS.Controllers {
             criteria.requestorLastName = form["requestorLast"];
             criteria.patientFirstName = form["patientFirst"];
             criteria.patientLastName = form["patientLast"];
+            criteria.searchFilter = form["searchFilter"];
 
             if (isEmptySearchCriteria(criteria)) {
                 ViewBag.emptyForm = true;
@@ -98,10 +106,27 @@ namespace SasquatchCAIRS.Controllers {
             Session["criteria"] = criteria;
 
             ViewBag.keywords = criteria.keywordString;
-            List<Request> list = searchCriteriaQuery(criteria);
-            fillUpKeywordDict(list);
-            ViewBag.ResultSetSize = list.Count;
-            return View(list);
+            _results = searchCriteriaQuery(criteria);
+            fillUpKeywordDict(_results);
+
+            ViewBag.ResultSetSize = _results.Count;
+            ViewBag.startIndex = 0;
+            return View(_results.Take(Constants.PAGE_SIZE));
+        }
+
+        [Authorize(Roles = Constants.Roles.VIEWER)]
+        public ActionResult Page(string id) {
+
+            _startIndex = int.Parse(id) > 0 ? int.Parse(id) : 0;
+
+            ViewBag.keywords =
+                ((SearchCriteria) Session["criteria"]).keywordString;
+            ViewBag.startIndex = _startIndex;
+            ViewBag.ResultSetSize = _results.Count;
+
+            fillUpKeywordDict(_results.Skip(_startIndex * Constants.PAGE_SIZE).Take(Constants.PAGE_SIZE));
+
+            return View("Results", _results.Skip(_startIndex * Constants.PAGE_SIZE).Take(Constants.PAGE_SIZE));
         }
 
         /// <summary>
@@ -112,7 +137,8 @@ namespace SasquatchCAIRS.Controllers {
         public ActionResult Modify() {
 
             setDropdownViewbags();
-
+            _startIndex = 0;
+            ViewBag.startIndex = _startIndex;
             SearchCriteria criteria = (SearchCriteria) Session["criteria"];
             return View("Advanced", criteria);
         }
@@ -127,7 +153,7 @@ namespace SasquatchCAIRS.Controllers {
                 || !String.IsNullOrEmpty(sc.patientFirstName) || !String.IsNullOrEmpty(sc.patientLastName)
                 || !String.IsNullOrEmpty(sc.questionType) || !String.IsNullOrEmpty(sc.requestStatus)
                 || !String.IsNullOrEmpty(sc.requestorFirstName) || !String.IsNullOrEmpty(sc.requestorLastName)
-                || !String.IsNullOrEmpty(sc.severity) || !String.IsNullOrEmpty(sc.tumorGroup)
+                || !String.IsNullOrEmpty(sc.severity) || !String.IsNullOrEmpty(sc.tumorGroup) || !String.IsNullOrEmpty(sc.searchFilter)
                 || sc.startTime.CompareTo(new DateTime()) != 0 || sc.completionTime.CompareTo(new DateTime()) != 0) {
                 return false;
             }
@@ -202,6 +228,8 @@ namespace SasquatchCAIRS.Controllers {
             }
             ViewBag.keywordDict = keywords;
         }
+
+      
 
         /// <summary>
         /// Get Requests in Database based on SearchCriteria
@@ -319,12 +347,45 @@ namespace SasquatchCAIRS.Controllers {
                                                 select k);
 
                 // Then we select the Keyword Question pairs with the same keywords
-                IQueryable<KeywordQuestion> keywordQuestions =
-                     (from kqs in _db.KeywordQuestions
-                      from k in keywords
-                      where k.KeywordID == kqs.KeywordID
-                      select kqs);
+                /*
+                IQueryable<Keyword> keywords = _db.Keywords;
 
+                switch (criteria.searchFilter) {
+                        // TODO : fix 'all' and 'none' cases
+                        case "All":
+                        keywords = (from k in _db.Keywords
+                                            where
+                                                keywordsToList(criteria.keywordString, ",")
+                                                .Contains(k.KeywordValue)
+                                            select k);
+                        break;
+                    case "Any":
+                        keywords = (from k in _db.Keywords
+                                            where
+                                                keywordsToList(criteria.keywordString, ",")
+                                                .Contains(k.KeywordValue)
+                                            select k);
+                        break;
+                    case "None":
+                        keywords = (from k in _db.Keywords
+                                            where
+                                                !(keywordsToList(criteria.keywordString, ",")
+                                                .Contains(k.KeywordValue))
+                                            select k);
+                        break;
+                    case null:
+                        keywords = (from k in _db.Keywords
+                                            where
+                                                keywordsToList(criteria.keywordString, ",")
+                                                .Contains(k.KeywordValue)
+                                            select k);
+                        break;
+                }*/
+                IQueryable<KeywordQuestion> keywordQuestions = (from kqs in _db.KeywordQuestions
+                                                                from k in keywords
+                                                                where k.KeywordID == kqs.KeywordID
+                                                                select kqs);
+                    
                 // Then we intersect Keywords with QuestionResponses through the use of a join
                 questionResponses = from key in keywordQuestions
                                     join qr in questionResponses
@@ -332,11 +393,19 @@ namespace SasquatchCAIRS.Controllers {
                                     select qr;
             }
             //Finally we intersect our requests with the question responses and get our results
-            return (from r in requests
-                    join qr in questionResponses
-                    on r.RequestID equals qr.RequestID
+            List<Request> searchResults = (from r in requests
+                                        join qr in questionResponses
+                                            on r.RequestID equals qr.RequestID
 
-                    select r).Distinct().OrderByDescending(r => r.RequestID).ToList();
+                                        select r).Distinct()
+                                                 .OrderByDescending(
+                                                     r => r.RequestID).ToList();
+            if (criteria.searchFilter == "Any")
+                return searchResults.ToList();
+            if (criteria.searchFilter == "None") {
+                return _db.Requests.ToList().Except(searchResults).ToList();
+            }
+            return searchResults;
         }
 
     }
