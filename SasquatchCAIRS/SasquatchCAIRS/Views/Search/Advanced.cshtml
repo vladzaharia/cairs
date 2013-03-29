@@ -51,8 +51,7 @@
         </div>
 
         <div>
-            @if (!Model.startTime.ToString(Constants.DATE_FORMAT)
-                       .Equals(Constants.EMPTY_DATE)) {
+            @if (!Model.startTime.ToString(Constants.DATE_FORMAT).Equals(Constants.EMPTY_DATE)) {
                 <input class="input-medium" name="startTime" id="startTime" type="date" 
                        value="@Model.startTime.ToString(Constants.DATE_FORMAT)" />    
             } else {

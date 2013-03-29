@@ -17,7 +17,13 @@
     </a>
 </div>
 
-For keywords: @ViewBag.keywords
+For keywords: @ViewBag.keywords 
+<br/>
+@{
+    int page = ViewBag.startIndex + 1;
+    int total = (ViewBag.ResultSetSize/Constants.PAGE_SIZE) + 1;
+}
+Showing page @page of @total
 
 <div>
 </div>
@@ -53,7 +59,6 @@ For keywords: @ViewBag.keywords
                     </th>
                 </tr>
 
-
                 @foreach (var request in Model) {
                     <tr>
                         <td class="clickable" data-id="@request.RequestID">
@@ -71,10 +76,9 @@ For keywords: @ViewBag.keywords
                             @Enum.GetName(typeof(Constants.RequestStatus), @request.RequestStatus)
                         </td>
                         <td class="clickable" data-id="@request.RequestID">
-                            @foreach(string keyword in ViewBag.keywordDict[@request.RequestID])
-                            { <span>@keyword </span> }
+                            @foreach (string keyword in ViewBag.keywordDict[@request.RequestID]) { <span>@keyword </span> }
                         </td>
-                        <td class="clickable" data-id="@request.RequestID">
+                        <td class="clickable" data-id="@request.RequestID"> 
                             @Html.DisplayFor(modelItem => request.TimeOpened)
                         </td>
                         <td class="clickable" data-id="@request.RequestID">
@@ -86,6 +90,14 @@ For keywords: @ViewBag.keywords
         </div>
     </fieldset>
 }
+<div>
+    @if((int)ViewBag.startIndex > 0) {
+        @Html.ActionLink("Previous Page", "Page", new {id = @ViewBag.startIndex - 1})
+    } 
+    @if((int)ViewBag.ResultSetSize > Constants.PAGE_SIZE * ((int)ViewBag.startIndex + 1)) {
+        @Html.ActionLink("Next Page", "Page", new {id = @ViewBag.startIndex + 1})
+    }
+</div>
 
 <script type="text/javascript">
     $(function() {
@@ -93,4 +105,6 @@ For keywords: @ViewBag.keywords
             document.location.href = "/Request/Details/" + $(this).attr("data-id");
         });
     })
+    
+
 </script>
