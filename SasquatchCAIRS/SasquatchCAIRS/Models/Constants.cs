@@ -85,7 +85,7 @@ namespace SasquatchCAIRS.Models {
             Unlocked = 2,
             Deleted = 3,
             AccessingLocked = 4,
-            LockedToOtherUser = 5,
+            NotLockedToYou = 5,
             SuccessfulEdit = 6,
             NoRequestEditorRole = 7,
             SuccessfulCreate = 8
@@ -171,6 +171,8 @@ namespace SasquatchCAIRS.Models {
             public const string QUESTION_TUMOUR_GROUP = "Tumour Group: ";
             public const string QUESTION_TIME_SPENT = "Time Spent: ";
             public const string QUESTION_IMPACT_SCORE = "Impact Score: ";
+            public const string QUESTION_SEVERITY = "Severity: ";
+            public const string QUESTION_CONSEQUENCE = "Consequence: ";
             public const string QUESTION_KEYWORDS = "Keywords: ";
             public const string QUESTION_REFERENCES = "References: ";
 
@@ -288,7 +290,7 @@ namespace SasquatchCAIRS.Models {
                 public const string MODIFY_SEARCH = "Modify Search";
                 public const string NEW_SEARCH = "New Search";
                 public const string SEARCH = "Search!";
-                public const string EDIT_USER = "Edit User";
+                public const string EDIT_USER = "Save Changes";
                 public const string EDIT_DROPDOWN = "Save Changes";
                 public const string CREATE_DROPDOWN = "Create Dropdown Entry";
                 public const string USERS = "Users";
@@ -424,7 +426,7 @@ namespace SasquatchCAIRS.Models {
                 case Gender.Other:
                     return "Other";
                 default:
-                    return "None";
+                    return "";
             }
         }
 
@@ -519,7 +521,9 @@ namespace SasquatchCAIRS.Models {
             RequestCompletion = 1,
             RequestDeletion = 2,
             RequestModification = 3,
-            RequestView = 4
+            RequestView = 4,
+            RequestExport = 5,
+            RequestUnlock = 6
 
         }
 

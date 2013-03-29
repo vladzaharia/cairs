@@ -24,7 +24,7 @@
         <th>@Constants.UIString.FieldLabel.REQUEST_ID</th>
         <th>@Constants.UIString.FieldLabel.CALLER_NAME_TABLE</th>
         <th>@Constants.UIString.FieldLabel.STATUS</th>
-        <th>@Constants.UIString.FieldLabel.KEYWORDS</th>
+        <th width="25%">@Constants.UIString.FieldLabel.KEYWORDS</th> @* TODO: MAKE THIS IN CSS *@
         <th>@Constants.UIString.FieldLabel.START_TIME</th>
         <th>@Constants.UIString.FieldLabel.COMPLETED_TIME</th>
     </tr>
@@ -33,7 +33,7 @@
             <td class="clickable" data-id="@request.RequestID">@request.RequestID</td>
             <td class="clickable" data-id="@request.RequestID">@request.RequestorFName @request.RequestorLName</td>
             <td class="clickable" data-id="@request.RequestID">@Constants.getStatusString((Constants.RequestStatus) request.RequestStatus)</td>
-            <td class="clickable" data-id="@request.RequestID">@foreach(string keyword in ViewBag.Keywords[@request.RequestID]) { <span>@keyword </span> }</td>
+            <td class="clickable" data-id="@request.RequestID">@String.Join(", ", ViewBag.Keywords[@request.RequestID])</td>
             <td class="clickable" data-id="@request.RequestID">@request.TimeOpened</td>
             <td class="clickable" data-id="@request.RequestID">@request.TimeClosed</td>
         </tr>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
+using System.Web;
 using SasquatchCAIRS.Models;
 using SasquatchCAIRS.Models.ServiceSystem;
 
@@ -214,66 +215,70 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
         /// <returns>RequestContent contaning QuestionResponseContents,
         /// ReferenceContents and Keywords.</returns>
         public RequestContent getRequestDetails(long requestId) {
-            Request reqResult =
-                (from reqs in _db.Requests
+            IQueryable<Request> requests = (from reqs in _db.Requests
                  where reqs.RequestID == requestId
-                 select reqs)
-                 .First();
+                 select reqs);
 
-            List<QuestionResponse> qrResults =
-                (from qrs in _db.QuestionResponses
-                 where qrs.RequestID == requestId
-                 orderby qrs.QuestionResponseID
-                 select qrs)
-                 .ToList();
+            if (requests.Any()) {
+                Request reqResult = requests.First();
 
-            List<Reference> refResults =
-                (from refs in _db.References
-                 where refs.RequestID == requestId
-                 orderby refs.QuestionResponseID
-                 select refs)
-                 .ToList();
+                List<QuestionResponse> qrResults =
+                    (from qrs in _db.QuestionResponses
+                     where qrs.RequestID == requestId
+                     orderby qrs.QuestionResponseID
+                     select qrs)
+                        .ToList();
 
-            // Create RequestContent holder
-            RequestContent reqContent = new RequestContent(reqResult);
+                List<Reference> refResults =
+                    (from refs in _db.References
+                     where refs.RequestID == requestId
+                     orderby refs.QuestionResponseID
+                     select refs)
+                        .ToList();
 
-            int refCounter = 0;
+                // Create RequestContent holder
+                RequestContent reqContent = new RequestContent(reqResult);
 
-            // For each QuestionResponse in the database
-            foreach (QuestionResponse qr in qrResults) {
+                int refCounter = 0;
 
-                // Create QuestionResponseContent holder
-                QuestionResponseContent qrContent =
-                    new QuestionResponseContent(qr);
-                reqContent.addQuestionResponse(qrContent);
+                // For each QuestionResponse in the database
+                foreach (QuestionResponse qr in qrResults) {
 
-                List<Keyword> kwResults =
-                    (from kws in _db.Keywords
-                     join kqs in _db.KeywordQuestions
-                     on kws.KeywordID equals kqs.KeywordID
-                     where kqs.RequestID == requestId &&
-                           kqs.QuestionResponseID == qr.QuestionResponseID
-                     select kws)
-                     .ToList();
+                    // Create QuestionResponseContent holder
+                    QuestionResponseContent qrContent =
+                        new QuestionResponseContent(qr);
+                    reqContent.addQuestionResponse(qrContent);
 
-                // For each Keyword for the current QuestionResponse
-                foreach (Keyword kw in kwResults) {
-                    qrContent.addKeyword(kw.KeywordValue);
+                    List<Keyword> kwResults =
+                        (from kws in _db.Keywords
+                         join kqs in _db.KeywordQuestions
+                             on kws.KeywordID equals kqs.KeywordID
+                         where kqs.RequestID == requestId &&
+                               kqs.QuestionResponseID == qr.QuestionResponseID
+                         select kws)
+                            .ToList();
+
+                    // For each Keyword for the current QuestionResponse
+                    foreach (Keyword kw in kwResults) {
+                        qrContent.addKeyword(kw.KeywordValue);
+                    }
+
+                    // For each Reference for the current QuestionResponse
+                    while (refCounter < refResults.Count &&
+                           qr.QuestionResponseID ==
+                           refResults[refCounter].QuestionResponseID) {
+
+                        // Create ReferenceContent holder
+                        ReferenceContent refContent =
+                            new ReferenceContent(refResults[refCounter++]);
+                        qrContent.addReference(refContent);
+                    }
                 }
 
-                // For each Reference for the current QuestionResponse
-                while (refCounter < refResults.Count &&
-                    qr.QuestionResponseID ==
-                        refResults[refCounter].QuestionResponseID) {
-
-                    // Create ReferenceContent holder
-                    ReferenceContent refContent =
-                        new ReferenceContent(refResults[refCounter++]);
-                    qrContent.addReference(refContent);
-                }
+                return reqContent;
+            } else {
+                return null;
             }
-
-            return reqContent;
         }
 
         /// <summary>
@@ -312,6 +317,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                     // those already in the database
                     foreach (QuestionResponseContent qrContent in
                              reqContent.questionResponseList) {
+                        qrContent.requestID = reqContent.requestID;
                         
                         if (currQrIds.Remove(qrContent.questionResponseID)) {
                             // QuestionResponse already exists in the database
@@ -366,6 +372,10 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                             // Check all References for the QuestionResponse
                             foreach (ReferenceContent refContent in
                                      qrContent.referenceList) {
+                                refContent.requestID = req.RequestID;
+                                refContent.questionResponseID =
+                                    qr.QuestionResponseID;
+
                                 Reference r = 
                                     createReferenceEntity(refContent);
 
@@ -416,6 +426,10 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                             // Add all References for the QuestionResponse
                             foreach (ReferenceContent refContent in
                                      qrContent.referenceList) {
+                                refContent.requestID = req.RequestID;
+                                refContent.questionResponseID =
+                                    qr.QuestionResponseID;
+
                                 Reference r =
                                     createReferenceEntity(refContent);
 

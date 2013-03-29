@@ -9,7 +9,7 @@ using System.Web.Security;
 
 namespace SasquatchCAIRS.Controllers {
     /// <summary>
-    /// Controller responsible for executing searches and returing the relevant requests
+    /// Controller responsible for executing searches and returning the corresponding requests
     /// </summary>
     public class SearchController : Controller {
 
@@ -18,7 +18,7 @@ namespace SasquatchCAIRS.Controllers {
         private CAIRSDataContext _db = new CAIRSDataContext();
 
         /// <summary>
-        /// Given a comma delimited string of keywords returns all requests with one or more of those keywords
+        /// Given a comma delimited string of keywords returns all requests tbat contain one or more of these keywords
         /// </summary>
         /// <param name="keywords">String of comma delimited keywords</param>
         /// <returns></returns>
@@ -33,6 +33,7 @@ namespace SasquatchCAIRS.Controllers {
 
             long requestId;
             if (long.TryParse(keywords, out requestId)) {
+                
                 return RedirectToAction("Details", "Request", new {
                     id = requestId
                 });
@@ -60,10 +61,10 @@ namespace SasquatchCAIRS.Controllers {
         }
 
         /// <summary>
-        /// Given a SearchCriteria object and the Adv. Search Form it preforms 
+        /// Given a SearchCriteria object and the Advanced Search Form it performs 
         /// a search based upon that criteria and displays the results
         /// </summary>
-        /// <param name="criteria">The SearchCriteria object that hold the filtering data</param>
+        /// <param name="criteria">The SearchCriteria object that holds the filtering data</param>
         /// <param name="form">The Form on the Advanced Search page and all it's data</param>
         /// <returns></returns>
         [HttpPost]
@@ -195,7 +196,7 @@ namespace SasquatchCAIRS.Controllers {
                      join kqs in _db.KeywordQuestions
                          on kws.KeywordID equals kqs.KeywordID
                      where kqs.RequestID == request.RequestID
-                     select kws.KeywordValue)
+                     select kws.KeywordValue).Distinct()
                         .ToList();
                 keywords.Add(request.RequestID, kw);
             }
@@ -278,6 +279,16 @@ namespace SasquatchCAIRS.Controllers {
                             .Contains((int) qr.Severity));
             }
 
+            // Filter on QR's Consequence
+            if (!String.IsNullOrEmpty(criteria.consequence))
+            {
+                questionResponses =
+                    questionResponses.Where(
+                        qr =>
+                        enumToIDs(criteria.consequence, typeof(Constants.Consequence))
+                            .Contains((int)qr.Consequence));
+            }
+
             // Filter on QR's Tumor Group
             if (!String.IsNullOrEmpty(criteria.tumorGroup)) {
                 questionResponses =
@@ -324,7 +335,8 @@ namespace SasquatchCAIRS.Controllers {
             return (from r in requests
                     join qr in questionResponses
                     on r.RequestID equals qr.RequestID
-                    select r).Distinct().ToList();
+
+                    select r).Distinct().OrderByDescending(r => r.RequestID).ToList();
         }
 
     }
