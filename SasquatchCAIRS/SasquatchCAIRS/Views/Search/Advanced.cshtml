@@ -21,8 +21,20 @@
 
     <table class="table unbordered-table valign-middle">
         <tr>
-            <td class="tbl-label">@Constants.UIString.FieldLabel.KEYWORDS</td>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.ANY_KEYWORDS</td>
             <td colspan="3"><input name="keywords" id="keywords" 
+                                   type="text" class="span9"
+                                   value="@Model.keywordString"/></td>
+        </tr>
+        <tr>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.ALL_KEYWORDS</td>
+            <td colspan="3"><input name="allKeywords" id="allKeywords" 
+                                   type="text" class="span9"
+                                   value="@Model.keywordString"/></td>
+        </tr>
+        <tr>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.NONE_KEYWORDS</td>
+            <td colspan="3"><input name="noneKeywords" id="noneKeywords" 
                                    type="text" class="span9"
                                    value="@Model.keywordString"/></td>
         </tr>
