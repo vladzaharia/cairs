@@ -115,7 +115,7 @@ namespace SasquatchCAIRS.Models {
 
         public const string EMPTY_DATE = "0001-01-01";
         public const string DATE_FORMAT = "yyyy-MM-dd";
-
+        public const int PAGE_SIZE = 20;
 
         public static class DataTypeStrings {
             public static string DATA_TYPE = "Data Type";

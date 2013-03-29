@@ -19,7 +19,6 @@ namespace SasquatchCAIRS.Controllers {
 
         private static List<Request> _results;
         private static int _startIndex;
-        private const int PAGE_SIZE = 20;
 
         /// <summary>
         /// Given a comma delimited string of keywords returns all requests tbat contain one or more of these keywords
@@ -50,7 +49,7 @@ namespace SasquatchCAIRS.Controllers {
             fillUpKeywordDict(_results);
             ViewBag.ResultSetSize = _results.Count;
 
-            return View("Results", _results.Take(PAGE_SIZE));
+            return View("Results", _results.Take(Constants.PAGE_SIZE));
         }
 
 
@@ -109,23 +108,25 @@ namespace SasquatchCAIRS.Controllers {
             ViewBag.keywords = criteria.keywordString;
             _results = searchCriteriaQuery(criteria);
             fillUpKeywordDict(_results);
+
             ViewBag.ResultSetSize = _results.Count;
-            return View(_results.Take(PAGE_SIZE));
+            ViewBag.startIndex = 0;
+            return View(_results.Take(Constants.PAGE_SIZE));
         }
 
         [Authorize(Roles = Constants.Roles.VIEWER)]
-        public ActionResult Update(string id) {
+        public ActionResult Page(string id) {
 
-            if (int.Parse(id) > 0) {
-                _startIndex = _startIndex + PAGE_SIZE;
-            } else {
-                _startIndex = _startIndex - PAGE_SIZE;
-            }
-            
+            _startIndex = int.Parse(id) > 0 ? int.Parse(id) : 0;
+
+            ViewBag.keywords =
+                ((SearchCriteria) Session["criteria"]).keywordString;
             ViewBag.startIndex = _startIndex;
-            fillUpKeywordDict(_results.Skip(_startIndex).Take(PAGE_SIZE));
+            ViewBag.ResultSetSize = _results.Count;
 
-            return View("Results", _results.Skip(_startIndex).Take(PAGE_SIZE));
+            fillUpKeywordDict(_results.Skip(_startIndex * Constants.PAGE_SIZE).Take(Constants.PAGE_SIZE));
+
+            return View("Results", _results.Skip(_startIndex * Constants.PAGE_SIZE).Take(Constants.PAGE_SIZE));
         }
 
         /// <summary>
@@ -138,7 +139,6 @@ namespace SasquatchCAIRS.Controllers {
             setDropdownViewbags();
             _startIndex = 0;
             ViewBag.startIndex = _startIndex;
-
             SearchCriteria criteria = (SearchCriteria) Session["criteria"];
             return View("Advanced", criteria);
         }

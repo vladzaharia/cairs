@@ -17,7 +17,13 @@
     </a>
 </div>
 
-For keywords: @ViewBag.keywords @ViewBag.startIndex
+For keywords: @ViewBag.keywords 
+<br/>
+@{
+    int page = ViewBag.startIndex + 1;
+    int total = (ViewBag.ResultSetSize/Constants.PAGE_SIZE) + 1;
+}
+Showing page @page of @total
 
 <div>
 </div>
@@ -85,8 +91,12 @@ For keywords: @ViewBag.keywords @ViewBag.startIndex
     </fieldset>
 }
 <div>
-    @Html.ActionLink("Previous Page", "Update", new {id = "-1"})
-    @Html.ActionLink("Next Page", "Update", new {id = "1"})
+    @if((int)ViewBag.startIndex > 0) {
+        @Html.ActionLink("Previous Page", "Page", new {id = @ViewBag.startIndex - 1})
+    } 
+    @if((int)ViewBag.ResultSetSize > Constants.PAGE_SIZE * ((int)ViewBag.startIndex + 1)) {
+        @Html.ActionLink("Next Page", "Page", new {id = @ViewBag.startIndex + 1})
+    }
 </div>
 
 <script type="text/javascript">
