@@ -22,32 +22,28 @@
         <legend>@Constants.UIString.TitleText.ADVANCED_SEARCH</legend>
         <div>
             <br>
-            @Html.Label(Constants.UIString.FieldLabel.KEYWORDS)
+            @Html.Label(Constants.UIString.FieldLabel.ANY_KEYWORDS)
         </div>
         <div>
             <input class="input-medium" name="keywords" id="keywords" type="text"/>
         </div>
         
         <div>
-            <br/>
-            @Html.Label(Constants.UIString.FieldLabel.SEARCH_FILTER)
+            <br>
+            @Html.Label(Constants.UIString.FieldLabel.ALL_KEYWORDS)
         </div>
-
         <div>
-            @foreach (var searchFilter in Enum.GetValues(
-                typeof(Constants.SearchFilter))) {
-                <label class="checkbox inline">
-                    @if (!String.IsNullOrEmpty(Model.searchFilter) && 
-                         Model.searchFilter.Contains(@searchFilter.ToString())) {
-                        <input type="checkbox" name="searchFilter" value="@searchFilter" checked/>
-                    } else
-                    {
-                        <input type="checkbox" name="searchFilter" value="@searchFilter" />  
-                    }
-                    @searchFilter
-                </label>
-            }
+            <input class="input-medium" name="allKeywords" id="allKeywords" type="text"/>
         </div>
+        
+        <div>
+            <br>
+            @Html.Label(Constants.UIString.FieldLabel.NONE_KEYWORDS)
+        </div>
+        <div>
+            <input class="input-medium" name="noneKeywords" id="noneKeywords" type="text"/>
+        </div>
+        
 
         <div>
             <br />

@@ -42,12 +42,7 @@ namespace SasquatchCAIRS.Models {
             Consequence.Unlikely
         };
 
-        public enum SearchFilter
-        {
-            All = 0,
-            Any = 1,
-            None = 2,
-        }
+       
 
         public static readonly SearchFilter[] searchFilterOptions = {
             SearchFilter.All, 
@@ -243,7 +238,7 @@ namespace SasquatchCAIRS.Models {
                 // Search Information
                 public const string PATIENT_NAME_LABEL = "Patient Name";
                 public const string CALLER_NAME_LABEL = "Caller Name";
-                public const string SEARCH_FILTER = "Search Keywords By";
+                
 
                 // Question Information
                 public const string QUESTION = "Question";
@@ -255,6 +250,9 @@ namespace SasquatchCAIRS.Models {
                 public const string CONSEQUENCE = "Probability of Consequence";
                 public const string IMPACT_SCORE = "Impact Score";
                 public const string KEYWORDS = "Keywords";
+                public const string ANY_KEYWORDS = "Any of These Keywords";
+                public const string ALL_KEYWORDS = "All of These Keywords";
+                public const string NONE_KEYWORDS = "None of These Keywords";
                 public const string REFERENCES = "References";
                 public const string PARENT_REQUEST = "Parent Request ID";
                 public const string TIME_SPENT = "Time Spent";
