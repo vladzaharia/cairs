@@ -44,11 +44,7 @@ namespace SasquatchCAIRS.Models {
 
        
 
-        public static readonly SearchFilter[] searchFilterOptions = {
-            SearchFilter.All, 
-            SearchFilter.Any, 
-            SearchFilter.None, 
-        };
+       
 
         public enum ReferenceType {
             URL = 0,
