@@ -118,6 +118,11 @@ namespace SasquatchCAIRS.Controllers {
             return View(_results.Take(Constants.PAGE_SIZE));
         }
 
+        /// <summary>
+        /// Used for pagination on the results page for requests
+        /// </summary>
+        /// <param name="id">Page Number</param>
+        /// <returns></returns>
         [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Page(string id) {
 
@@ -147,6 +152,11 @@ namespace SasquatchCAIRS.Controllers {
             return View("Advanced", criteria);
         }
 
+        /// <summary>
+        /// Given a SearchCriteria object, this generates a list of strings used to represent all of the fields being filtered on
+        /// </summary>
+        /// <param name="sc">The SearchCriteria object used to filter on Requests</param>
+        /// <returns>A list of strings which represents the values of the SearchCriteria object</returns>
         private List<string> constructCriteriaString(SearchCriteria sc) {
             List<string> result = new List<string>();
             if (!String.IsNullOrEmpty(sc.keywordString)) {
