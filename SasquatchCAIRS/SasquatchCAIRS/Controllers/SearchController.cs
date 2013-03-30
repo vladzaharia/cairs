@@ -48,6 +48,7 @@ namespace SasquatchCAIRS.Controllers {
             _results = searchCriteriaQuery(sc);
             fillUpKeywordDict(_results);
             ViewBag.ResultSetSize = _results.Count;
+            ViewBag.criteria = constructCriteriaString(sc);
 
             return View("Results", _results.Take(Constants.PAGE_SIZE));
         }
@@ -106,12 +107,14 @@ namespace SasquatchCAIRS.Controllers {
 
             Session["criteria"] = criteria;
 
+            
             ViewBag.keywords = criteria.keywordString;
             _results = searchCriteriaQuery(criteria);
             fillUpKeywordDict(_results);
 
             ViewBag.ResultSetSize = _results.Count;
             ViewBag.startIndex = 0;
+            ViewBag.criteria = constructCriteriaString(criteria);
             return View(_results.Take(Constants.PAGE_SIZE));
         }
 
@@ -144,18 +147,91 @@ namespace SasquatchCAIRS.Controllers {
             return View("Advanced", criteria);
         }
 
+        private List<string> constructCriteriaString(SearchCriteria sc) {
+            List<string> result = new List<string>();
+            if (!String.IsNullOrEmpty(sc.keywordString)) {
+                result.Add(Constants.UIString.FieldLabel.ANY_KEYWORDS + ": " +
+                          sc.keywordString.TrimEnd(" ,".ToCharArray()));
+            }
+            if (!String.IsNullOrEmpty(sc.allKeywordString)) {
+                result.Add(Constants.UIString.FieldLabel.ALL_KEYWORDS + ": " +
+                           sc.allKeywordString.TrimEnd(" ,".ToCharArray()));
+            }
+            if (!String.IsNullOrEmpty(sc.noneKeywordString)) {
+                result.Add(Constants.UIString.FieldLabel.NONE_KEYWORDS + ": " +
+                           sc.noneKeywordString.TrimEnd(" ,".ToCharArray()));
+            }
+            if (sc.startTime.CompareTo(new DateTime()) != 0) {
+                result.Add(Constants.UIString.FieldLabel.START_TIME + ": " +
+                           sc.startTime.ToShortDateString());
+            }
+            if (sc.completionTime.CompareTo(new DateTime()) != 0) {
+                result.Add(Constants.UIString.FieldLabel.COMPLETED_TIME + ": " +
+                           sc.completionTime.ToShortDateString());
+            }
+            if (!String.IsNullOrEmpty(sc.requestStatus)) {
+                result.Add(Constants.UIString.FieldLabel.STATUS + ": " +
+                          sc.requestStatus);
+            }
+            if (!String.IsNullOrEmpty(sc.requestorFirstName)) {
+                result.Add(Constants.UIString.FieldLabel.CALLER_FNAME + ": " +
+                          sc.requestorFirstName);
+            }
+            if (!String.IsNullOrEmpty(sc.requestorLastName)) {
+                result.Add(Constants.UIString.FieldLabel.CALLER_LNAME + ": " +
+                          sc.requestorLastName);
+            }
+            if (!String.IsNullOrEmpty(sc.patientFirstName)) {
+                result.Add(Constants.UIString.FieldLabel.PATIENT_FNAME + ": " +
+                          sc.patientFirstName);
+            }
+            if (!String.IsNullOrEmpty(sc.patientLastName)) {
+                result.Add(Constants.UIString.FieldLabel.PATIENT_LNAME + ": " +
+                    sc.patientLastName);
+            }
+            if (!String.IsNullOrEmpty(sc.tumorGroup)) {
+                List<int> ids = typeIDStringtoList(sc.tumorGroup, ",");
+                string tumorGroups = String.Join(", ", 
+                    (from tg in _db.TumourGroups
+                        where ids.Contains(tg.TumourGroupID)
+                        select tg.Value));
+                
+                result.Add(Constants.UIString.FieldLabel.TUMOUR_GROUP + ": " +
+                          tumorGroups);
+            }
+            if (!String.IsNullOrEmpty(sc.questionType)) {
+                List<int> ids = typeIDStringtoList(sc.tumorGroup, ",");
+                string questionTypes = String.Join(", ",
+                    (from qt in _db.QuestionTypes
+                        where ids.Contains(qt.QuestionTypeID)
+                        select qt.Value));
+
+                result.Add(Constants.UIString.FieldLabel.QUESTION_TYPE + ": " +
+                          questionTypes);
+            }
+            if (!String.IsNullOrEmpty(sc.severity)) {
+                result.Add(Constants.UIString.FieldLabel.SEVERITY + ": " +
+                    sc.severity);
+            }
+            if (!String.IsNullOrEmpty(sc.consequence)) {
+                result.Add(Constants.UIString.FieldLabel.CONSEQUENCE + ": " +
+                          sc.consequence);
+            }
+            return result;
+        }
+
         /// <summary>
         /// Checks if SearchCriteria objects are empty/set to default values
         /// </summary>
         /// <param name="sc">The SearchCriteria to be checked for not-null values</param>
         /// <returns>True if the SearchCriteria is empty, false otherwise</returns>
         private bool isEmptySearchCriteria(SearchCriteria sc) {
-            if (!String.IsNullOrEmpty(sc.keywordString) || !String.IsNullOrEmpty(sc.consequence) 
+            if (!String.IsNullOrEmpty(sc.keywordString) || !String.IsNullOrEmpty(sc.noneKeywordString) ||
+                !String.IsNullOrEmpty(sc.allKeywordString) ||!String.IsNullOrEmpty(sc.consequence) 
                 || !String.IsNullOrEmpty(sc.patientFirstName) || !String.IsNullOrEmpty(sc.patientLastName)
                 || !String.IsNullOrEmpty(sc.questionType) || !String.IsNullOrEmpty(sc.requestStatus)
                 || !String.IsNullOrEmpty(sc.requestorFirstName) || !String.IsNullOrEmpty(sc.requestorLastName)
                 || !String.IsNullOrEmpty(sc.severity) || !String.IsNullOrEmpty(sc.tumorGroup)
-                || !String.IsNullOrEmpty(sc.allKeywordString) || !String.IsNullOrEmpty(sc.noneKeywordString)
                 || sc.startTime.CompareTo(new DateTime()) != 0 || sc.completionTime.CompareTo(new DateTime()) != 0) {
                 return false;
             }
