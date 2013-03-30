@@ -333,6 +333,18 @@ namespace SasquatchCAIRS.Models {
                 public const string DISABLED = "Disabled";
             }
 
+            public static class ItemIDs {
+                public const string DASHBOARD = "dashboard";
+                public const string CREATE_REQUEST = "create-request";
+                public const string REPORTS = "reports";
+                public const string ADMIN = "admin";
+                public const string SEARCH_DIV = "quick-search-div";
+                public const string SEARCH_FIELD = "keywords";
+                public const string SEARCH_BUTTON = "search-button";
+                public const string ADVANCED_SEARCH = "advanced-search";
+                public const string SUBMIT_BUTTON = "submit-button";
+            }
+
             public static class Messages {
                 public const string DELETE_REFERENCE_WARNING =
                     "Are you sure you would like to delete this reference?";
