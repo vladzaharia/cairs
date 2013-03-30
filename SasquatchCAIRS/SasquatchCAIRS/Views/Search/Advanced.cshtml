@@ -23,22 +23,24 @@
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.ANY_KEYWORDS</td>
             <td colspan="3">
-                <input name="keywordString" id="keywordString" 
+                <input name="anyKeywordString" id="keywordString" 
                        type="text" class="span9 peek"
-                       data-provide="typeahead" autocomplete="off"
-                       value="@Model.keywordString"/>
+                       autocomplete="off"
+                       value="@Model.anyKeywordString"/>
             </td>
         </tr>
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.ALL_KEYWORDS</td>
             <td colspan="3"><input name="allKeywords" id="allKeywords" 
                                    type="text" class="span9 peek"
+                                   autocomplete="off"
                                    value="@Model.allKeywordString"/></td>
         </tr>
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.NONE_KEYWORDS</td>
             <td colspan="3"><input name="noneKeywords" id="noneKeywords" 
                                    type="text" class="span9 peek"
+                                   autocomplete="off"
                                    value="@Model.noneKeywordString"/></td>
         </tr>
         <tr>
@@ -217,7 +219,7 @@
     $(function () {
         $('#startTime').datepicker();
         $('#completionTime').datepicker();
-        $(/*'#keywordString','#noneKeywords','#allKeywords'*/ '.peek').typeahead({
+        $(/*'#anyKeywordString','#noneKeywords','#allKeywords'*/ '.peek').typeahead({
         source: function (query, process) {
             var last = query.split(/\s*[,;]\s*/).pop();
 

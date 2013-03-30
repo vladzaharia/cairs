@@ -31,7 +31,7 @@ namespace SasquatchCAIRS.Controllers {
             Session["criteria"] = null;
             ViewBag.keywords = keywords;
             SearchCriteria sc = new SearchCriteria();
-            sc.keywordString = keywords;
+            sc.anyKeywordString = keywords;
             Session["criteria"] = sc;
 
             long requestId;
@@ -86,7 +86,7 @@ namespace SasquatchCAIRS.Controllers {
             if (DateTime.TryParse(form["completionTime"], out temp)) {
                 criteria.completionTime = temp;
             }
-            criteria.keywordString = form["keywordString"];
+            criteria.anyKeywordString = form["anyKeywordString"];
             criteria.allKeywordString = form["allKeywords"];
             criteria.noneKeywordString = form["noneKeywords"];
             criteria.requestStatus = form["status"];
@@ -108,7 +108,7 @@ namespace SasquatchCAIRS.Controllers {
             Session["criteria"] = criteria;
 
             
-            ViewBag.keywords = criteria.keywordString;
+            ViewBag.keywords = criteria.anyKeywordString;
             _results = searchCriteriaQuery(criteria);
             fillUpKeywordDict(_results);
 
@@ -129,7 +129,7 @@ namespace SasquatchCAIRS.Controllers {
             _startIndex = int.Parse(id) > 0 ? int.Parse(id) : 0;
 
             ViewBag.keywords =
-                ((SearchCriteria) Session["criteria"]).keywordString;
+                ((SearchCriteria) Session["criteria"]).anyKeywordString;
             ViewBag.startIndex = _startIndex;
             ViewBag.ResultSetSize = _results.Count;
 
@@ -159,9 +159,9 @@ namespace SasquatchCAIRS.Controllers {
         /// <returns>A list of strings which represents the values of the SearchCriteria object</returns>
         private List<string> constructCriteriaString(SearchCriteria sc) {
             List<string> result = new List<string>();
-            if (!String.IsNullOrEmpty(sc.keywordString)) {
+            if (!String.IsNullOrEmpty(sc.anyKeywordString)) {
                 result.Add(Constants.UIString.FieldLabel.ANY_KEYWORDS + ": " +
-                          sc.keywordString.TrimEnd(" ,".ToCharArray()));
+                          sc.anyKeywordString.TrimEnd(" ,".ToCharArray()));
             }
             if (!String.IsNullOrEmpty(sc.allKeywordString)) {
                 result.Add(Constants.UIString.FieldLabel.ALL_KEYWORDS + ": " +
@@ -236,7 +236,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="sc">The SearchCriteria to be checked for not-null values</param>
         /// <returns>True if the SearchCriteria is empty, false otherwise</returns>
         private bool isEmptySearchCriteria(SearchCriteria sc) {
-            if (!String.IsNullOrEmpty(sc.keywordString) || !String.IsNullOrEmpty(sc.noneKeywordString) ||
+            if (!String.IsNullOrEmpty(sc.anyKeywordString) || !String.IsNullOrEmpty(sc.noneKeywordString) ||
                 !String.IsNullOrEmpty(sc.allKeywordString) ||!String.IsNullOrEmpty(sc.consequence) 
                 || !String.IsNullOrEmpty(sc.patientFirstName) || !String.IsNullOrEmpty(sc.patientLastName)
                 || !String.IsNullOrEmpty(sc.questionType) || !String.IsNullOrEmpty(sc.requestStatus)
@@ -259,8 +259,6 @@ namespace SasquatchCAIRS.Controllers {
                 _dropdownController.getEntries(
                     Constants.DropdownTable.QuestionType).OrderBy(qt => qt.value);
         }
-
-
 
         /// <summary>
         /// Converts an input String into a list of Int, used for Question Type ID and Tumour Group ID
@@ -316,6 +314,15 @@ namespace SasquatchCAIRS.Controllers {
             }
             ViewBag.keywordDict = keywords;
         }
+
+        private List<int> getKeywords(string keywordString) {
+            // First we grab the keywords
+            if (String.IsNullOrEmpty(keywordString))
+                return new List<int>();
+            return (from k in _db.Keywords
+                    where keywordsToList( keywordString, ",").Contains(k.KeywordValue)
+                    select k.KeywordID).ToList();
+        } 
 
 
 
@@ -399,13 +406,7 @@ namespace SasquatchCAIRS.Controllers {
             }
 
             // Filter on Question/Response tuples
-            IQueryable<QuestionResponse> questionResponses =
-                _db.QuestionResponses;
-            IQueryable<QuestionResponse> noneQuestionResponses =
-                _db.QuestionResponses;
-            IQueryable<QuestionResponse> allQuestionResponses =
-                _db.QuestionResponses;
-
+            IQueryable<QuestionResponse> questionResponses = _db.QuestionResponses;
 
             // Filter on QR's Severity
             if (!String.IsNullOrEmpty(criteria.severity)) {
@@ -445,141 +446,62 @@ namespace SasquatchCAIRS.Controllers {
             }
 
             // Filter QRs based on keywords
-            if (!String.IsNullOrEmpty(criteria.keywordString)) {
+            if (!String.IsNullOrEmpty(criteria.anyKeywordString + criteria.noneKeywordString + criteria.allKeywordString)) {
+                List<int> any = getKeywords(criteria.anyKeywordString);
+                List<int> none =  getKeywords(criteria.noneKeywordString);
+                List<int> all = getKeywords(criteria.allKeywordString);
 
+                IQueryable<KeywordQuestion> results = _db.KeywordQuestions;
 
-                // First we grab the keywords
-                IQueryable<Keyword> keywords = (from k in _db.Keywords
-                                                where
-                                                    keywordsToList(
-                                                        criteria.keywordString,
-                                                        ",")
-                                                    .Contains(k.KeywordValue)
-                                                select k);
+                if (none.Any()) {
+                    List<long> toRemove =
+                        (from kq in results
+                         where none.Contains(kq.KeywordID)
+                         select kq.RequestID).ToList();
 
-
-
-                // Then we select the Keyword Question pairs with the same keywords
-                IQueryable<KeywordQuestion> keywordQuestions =
-                    (from kqs in _db.KeywordQuestions
-                     from k in keywords
-                     where k.KeywordID == kqs.KeywordID
-                     select kqs);
+                    results = (from r in results
+                               where !toRemove.Contains(r.RequestID)
+                               select r);
+                }
+                if (all.Any()) {
+                    IQueryable<long> acc = null;
+                    foreach (int id in all) {
+                        if (acc == null) {
+                            acc = (from r in results
+                                   where r.KeywordID == id
+                                   select r.RequestID);
+                        } else {
+                            acc = acc.Intersect(from r in results
+                                                where r.KeywordID == id
+                                                select r.RequestID);
+                        }
+                    }
+                    results = (from r in results
+                               where acc.ToList().Contains(r.RequestID)
+                               select r);
+                }
+                if (any.Any()) {
+                    results = (from kq in results
+                                   where any.Contains(kq.KeywordID)
+                                   select kq);
+                }
 
                 
                 // Then we intersect Keywords with QuestionResponses through the use of a join
-                questionResponses = from key in keywordQuestions
-                                    join qr in questionResponses
-                                        on key.QuestionResponseID equals
-                                        qr.QuestionResponseID
-                                    select qr;
-
-
-
-            }
-            if (!String.IsNullOrEmpty(criteria.noneKeywordString)) {
-            IQueryable<Keyword> noneKeywords = (from k in _db.Keywords
-                                                where
-                                                    (keywordsToList(
-                                                        criteria.noneKeywordString,
-                                                        ",")
-                                                    .Contains(k.KeywordValue))
-                                                select k);
-
-            IQueryable<KeywordQuestion> noneKeywordQuestions =
-                (from kqs in _db.KeywordQuestions
-                 from k in noneKeywords
-                 where k.KeywordID == kqs.KeywordID
-                 select kqs);
-
-            noneQuestionResponses = from key in noneKeywordQuestions
-                                    join qr in questionResponses
-                                        on key.QuestionResponseID equals
-                                        qr.QuestionResponseID
-                                    select qr;
-        }
-
-            if (!String.IsNullOrEmpty(criteria.allKeywordString))
-            {
-                IQueryable<Keyword> allKeywords = (from k in _db.Keywords
-                                                    where
-                                                        (keywordsToList(
-                                                            criteria.allKeywordString,
-                                                            ",")
-                                                        .Contains(k.KeywordValue))
-                                                    select k);
-
-                IQueryable<KeywordQuestion> allKeywordQuestions =
-                    (from kqs in _db.KeywordQuestions
-                     from k in allKeywords
-                     where k.KeywordID == kqs.KeywordID
-                     select kqs);
-
-                long var = allKeywordQuestions.First().QuestionResponseID;
-                allKeywordQuestions = (from key in allKeywordQuestions
-                                    where key.QuestionResponseID == var
-                                    select key);
-
-                allQuestionResponses = from key in allKeywordQuestions
-                                        join qr in questionResponses
-                                            on key.QuestionResponseID equals
-                                            qr.QuestionResponseID
-                                        select qr;
+                questionResponses = (from kq in results
+                                     join qr in questionResponses
+                                         on kq.QuestionResponseID equals qr.QuestionResponseID
+                                     select qr);
             }
 
-        //Finally we intersect our requests with the question responses and get our results
-            IQueryable<Request> searchResults = (from r in requests
-                                        join qr in questionResponses
-                                            on r.RequestID equals qr.RequestID
+            List<Request> final = (from r in requests
+                 join qr in questionResponses
+                     on r.RequestID equals qr.RequestID
+                    select r).Distinct()
+                          .OrderByDescending(r => r.RequestID)
+                          .ToList();
 
-                                        select r).Distinct()
-                                                 .OrderByDescending(
-                                                     r => r.RequestID);
-            IQueryable<Request> noneSearchResults = (from r in requests
-                                                join qr in noneQuestionResponses
-                                                    on r.RequestID equals qr.RequestID
-
-                                                select r).Distinct()
-                                                 .OrderByDescending(
-                                                     r => r.RequestID);
-            IQueryable<Request> allSearchResults = (from r in requests
-                                              join qr in allQuestionResponses
-                                                  on r.RequestID equals qr.RequestID
-
-                                              select r).Distinct()
-                                                 .OrderByDescending(
-                                                     r => r.RequestID);
-            List<Request> final = new List<Request>();
-            if (!String.IsNullOrEmpty(criteria.keywordString) &&
-                !String.IsNullOrEmpty(criteria.allKeywordString) && !String.IsNullOrEmpty(criteria.noneKeywordString))
-                final = searchResults.Intersect(allSearchResults).Except(noneSearchResults).ToList();
-            else if (!String.IsNullOrEmpty(criteria.keywordString) &&
-                     !String.IsNullOrEmpty(criteria.allKeywordString) &&
-                     String.IsNullOrEmpty(criteria.noneKeywordString))
-                final = searchResults.Intersect(allSearchResults).ToList();
-            else if (!String.IsNullOrEmpty(criteria.keywordString) &&
-                     String.IsNullOrEmpty(criteria.allKeywordString) &&
-                     !String.IsNullOrEmpty(criteria.noneKeywordString))
-                final = searchResults.Except(noneSearchResults).ToList();
-            else if (String.IsNullOrEmpty(criteria.keywordString) &&
-                     !String.IsNullOrEmpty(criteria.allKeywordString) &&
-                     !String.IsNullOrEmpty(criteria.noneKeywordString))
-                final =  allSearchResults.Except(noneSearchResults).ToList();
-            else if (!String.IsNullOrEmpty(criteria.keywordString) &&
-                String.IsNullOrEmpty(criteria.allKeywordString) && String.IsNullOrEmpty(criteria.noneKeywordString))
-                final = searchResults.ToList();
-            else if (String.IsNullOrEmpty(criteria.keywordString) &&
-                !String.IsNullOrEmpty(criteria.allKeywordString) && String.IsNullOrEmpty(criteria.noneKeywordString))
-                final = allSearchResults.ToList();
-            else if (String.IsNullOrEmpty(criteria.keywordString) &&
-                String.IsNullOrEmpty(criteria.allKeywordString) && !String.IsNullOrEmpty(criteria.noneKeywordString))
-                final = new List<Request>((_db.Requests.Except(noneSearchResults))).ToList();
-            else if (String.IsNullOrEmpty(criteria.keywordString) &&
-                     String.IsNullOrEmpty(criteria.allKeywordString) &&
-                     String.IsNullOrEmpty(criteria.noneKeywordString))
-                final = searchResults.ToList();
             return final;
         }
-
     }
 }
