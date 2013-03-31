@@ -13,8 +13,11 @@ namespace CAIRSTestProject.Integration {
         private const string DOMAIN = "sasquatch.cloudapp.net";
         private const string USERNAME = "team";
         private const string PASSWORD = "trecU5He";
+        private const string ADMIN_USERNAME = "test_admin";
+        private const string ADMIN_PASSWORD = "trecU5He";
 
         IWebDriver _driver;
+        IWebDriver _adminDriver;
 
         /// <summary>
         /// Gets the WebDriver for this session.
@@ -30,6 +33,22 @@ namespace CAIRSTestProject.Integration {
         /// <returns>The Full URL</returns>
         public static string getURL() {
             return "http://" + USERNAME + ":" + PASSWORD + "@" + DOMAIN;
+        }
+
+        /// <summary>
+        /// Gets the Admin WebDriver for this session.
+        /// </summary>
+        /// <returns>An Admin WebDriver, currently Chrome</returns>
+        public IWebDriver getAdminDriver() {
+            return _adminDriver ?? (_adminDriver = new ChromeDriver());
+        }
+
+        /// <summary>
+        /// Get the URL of the app, with username and password for admin user
+        /// </summary>
+        /// <returns>The Full URL</returns>
+        private static string getAdminURL() {
+            return "http://" + ADMIN_USERNAME + ":" + ADMIN_PASSWORD + "@" + DOMAIN;
         }
 
         #region Test Helpers
@@ -53,9 +72,11 @@ namespace CAIRSTestProject.Integration {
         /// </summary>
         /// <param name="role"></param>
         public void addRole(string role) {
+            // Go to the User Page
             goToUserPage();
+
             IWebElement roleBox =
-                _driver.FindElement(By.CssSelector("[for='userRole-" + role + "']"));
+                _adminDriver.FindElement(By.CssSelector("[for='userRole-" + role + "']"));
 
             // If it's unchecked, click it
             if (!roleBox.GetAttribute("class").Contains("checked")) {
@@ -65,11 +86,10 @@ namespace CAIRSTestProject.Integration {
             }
 
             // Submit the Form
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON)).Click();
+            _adminDriver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON)).Click();
 
             // Verify that we're back at the User List Screen
-            StringAssert.AreEqualIgnoringCase(getURL() + "/Admin/User/List?success=True", _driver.Url);
-
+            StringAssert.AreEqualIgnoringCase(getAdminURL() + "/Admin/User/List?success=True", _adminDriver.Url);
         }
 
         /// <summary>
@@ -77,15 +97,11 @@ namespace CAIRSTestProject.Integration {
         /// </summary>
         /// <param name="role"></param>
         public void removeRole(string role) {
-            // We need Administrator to add/remove roles
-            if (role == Constants.Roles.ADMINISTRATOR) {
-                throw new Exception(
-                    "Administrator cannot be removed from a user!");
-            }
-
+            // Go to the User Page
             goToUserPage();
+            
             IWebElement roleBox =
-                _driver.FindElement(By.CssSelector("[for='userRole-" + role + "']"));
+                _adminDriver.FindElement(By.CssSelector("[for='userRole-" + role + "']"));
 
             // If it's checked, click it
             if (roleBox.GetAttribute("class").Contains("checked")) {
@@ -95,10 +111,10 @@ namespace CAIRSTestProject.Integration {
             }
 
             // Submit the Form
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON)).Click();
+            _adminDriver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON)).Click();
 
             // Verify that we're back at the User List Screen
-            StringAssert.AreEqualIgnoringCase(getURL() + "/Admin/User/List?success=True", _driver.Url);
+            StringAssert.AreEqualIgnoringCase(getAdminURL() + "/Admin/User/List?success=True", _adminDriver.Url);
         }
 
         /// <summary>
@@ -106,12 +122,12 @@ namespace CAIRSTestProject.Integration {
         /// </summary>
         private void goToUserPage() {
             // Instantiate the driver and go to User Management
-            getDriver();
-            _driver.Navigate().GoToUrl(getURL());
-            _driver.Navigate().GoToUrl(getURL() + "/Admin/User/List");
+            getAdminDriver();
+            _adminDriver.Navigate().GoToUrl(getAdminURL());
+            _adminDriver.Navigate().GoToUrl(getAdminURL() + "/Admin/User/List");
 
             // Find and Click on Appropriate User
-            _driver.FindElement(By.XPath("//td[contains(.,'" + USERNAME + "')]")).Click();
+            _adminDriver.FindElement(By.XPath("//td[contains(.,'" + USERNAME + "')]")).Click();
         }
 
         #endregion

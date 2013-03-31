@@ -21,6 +21,7 @@ namespace CAIRSTestProject.Integration {
         [TestFixtureTearDown]
         public void Teardown() {
             _driver.Quit();
+            _ctm.getAdminDriver().Quit();
         }
 
         /// <summary>
@@ -125,6 +126,30 @@ namespace CAIRSTestProject.Integration {
 
             // Add Back RequestEditor Role
             _ctm.addRole(Constants.Roles.REPORT_GENERATOR);
+        }
+
+        /// <summary>
+        /// Verifies that the Navigation Items Correctly Enforce Administrator Role
+        /// </summary>
+        [Test]
+        public void VerifyNavAdministratorRole() {
+            // Remove RequestEditor Role
+            _ctm.removeRole(Constants.Roles.ADMINISTRATOR);
+
+            //Navigate to the homepage
+            _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
+
+            // Verify that all menu items taht should be there are there
+            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.DASHBOARD));
+            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.CREATE_REQUEST));
+            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.REPORTS));
+            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SEARCH_BUTTON));
+
+            // Verify that Menu Items Aren't Shown
+            _ctm.verifyItemNotShown(Constants.UIString.ItemIDs.ADMIN);
+
+            // Add Back RequestEditor Role
+            _ctm.addRole(Constants.Roles.ADMINISTRATOR);
         }
 
         #region Helpers
