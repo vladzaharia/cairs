@@ -4,24 +4,28 @@
         @if (ViewBag.Page == "dashboard") {
         <li>@Html.ActionLink(Constants.UIString.TitleText.DASHBOARD, "Index", "Home", new {
             }, new {
-                @class = "btn menu-button btn-custom first active"
+                @class = "btn menu-button btn-custom first active",
+                @id = Constants.UIString.ItemIDs.DASHBOARD
             })</li>
         } else {
         <li>@Html.ActionLink(Constants.UIString.TitleText.DASHBOARD, "Index", "Home", new {
             }, new {
-                @class = "btn menu-button btn-custom first"
+                @class = "btn menu-button btn-custom first",
+                @id = Constants.UIString.ItemIDs.DASHBOARD
             })</li>
         }
         @if (ViewBag.Page == "create") {
             if (User.IsInRole("RequestEditor")) {
                 <li>@Html.ActionLink(Constants.UIString.TitleText.CREATE_REQUEST, "Create", "Request", new {}, new {
-                        @class = "btn menu-button btn-custom active"
+                        @class = "btn menu-button btn-custom active",
+                @id = Constants.UIString.ItemIDs.CREATE_REQUEST
                     })</li>
             }
         } else {
             if (User.IsInRole("RequestEditor")) {
                 <li>@Html.ActionLink(Constants.UIString.TitleText.CREATE_REQUEST, "Create", "Request", new {}, new {
-                        @class = "btn menu-button btn-custom"
+                        @class = "btn menu-button btn-custom",
+                @id = Constants.UIString.ItemIDs.CREATE_REQUEST
                     })</li>
             }
         }
@@ -29,13 +33,15 @@
         @if (ViewBag.Page == "report") {
             if (User.IsInRole("ReportGenerator")) {
                  <li>@Html.ActionLink(Constants.UIString.TitleText.REPORTS, "Reports", "ServiceSystem", new {}, new {
-                         @class = "btn menu-button btn-custom active"
+                         @class = "btn menu-button btn-custom active",
+                @id = Constants.UIString.ItemIDs.REPORTS
                      })</li>
              }
         } else {
             if (User.IsInRole("ReportGenerator")) {
                  <li>@Html.ActionLink(Constants.UIString.TitleText.REPORTS, "Reports", "ServiceSystem", new {}, new {
-                         @class = "btn menu-button btn-custom"
+                         @class = "btn menu-button btn-custom",
+                @id = Constants.UIString.ItemIDs.REPORTS
                      })</li>
              }
         }
@@ -43,13 +49,15 @@
         @if (ViewBag.Page == "admin") {
             if (User.IsInRole("Administrator")) {
                 <li>@Html.ActionLink(Constants.UIString.TitleText.ADMIN, "Index", "Admin", new {}, new {
-                        @class = "btn menu-button btn-custom active"
+                        @class = "btn menu-button btn-custom active",
+                @id = Constants.UIString.ItemIDs.ADMIN
                     })</li>
             }
         } else {
             if (User.IsInRole("Administrator")) {
                 <li>@Html.ActionLink(Constants.UIString.TitleText.ADMIN, "Index", "Admin", new {}, new {
-                        @class = "btn menu-button btn-custom"
+                        @class = "btn menu-button btn-custom",
+                @id = Constants.UIString.ItemIDs.ADMIN
                     })</li>
             }
         }
