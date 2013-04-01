@@ -190,7 +190,6 @@
     <Compile Include="Controllers\ServiceSystem\ServiceSystemController.cs" />
     <Compile Include="Controllers\WordExportController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
-    <Compile Include="Models\IDataContext.cs" />
     <Compile Include="Models\SearchSystem\SearchCriteria.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

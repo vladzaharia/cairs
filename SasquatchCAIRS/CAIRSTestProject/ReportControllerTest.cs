@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using SasquatchCAIRS;
 using SasquatchCAIRS.Controllers.ServiceSystem;
-using SasquatchCAIRS.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Assert = NUnit.Framework.Assert;
@@ -13,32 +12,29 @@ namespace CAIRSTestProject {
     [TestFixture]
     public class ReportControllerTest {
         private IDataContext _iDataContext;
-        private Request _request1 ;
-        private Request _request2;
-        private Request _request3;
 
         [TestFixtureSetUp]
         public void setUp() {
             _iDataContext =
                 MockRepository.GenerateStub<IDataContext>();
             _iDataContext.Stub(x => x.Repository<Request>())
-                         .Return(getSampleRequests());
+                         .Return(Samples.getSampleRequests());
         }
 
-        private IQueryable<Request> getSampleRequests() {
-            _request1 = new Request();
-            _request1.TimeOpened = new DateTime(2013, 03, 01);
-            _request2 = new Request();
-            _request2.TimeOpened = new DateTime(2012, 04, 01);
-            _request3 = new Request();
-            _request3.TimeOpened = new DateTime(2013, 04, 05);
-            List<Request> sampleRequests = new List<Request>();
-            sampleRequests.Add(_request1);
-            sampleRequests.Add(_request2);
-            sampleRequests.Add(_request3);
+        //private IQueryable<Request> getSampleRequests() {
+        //    Request _request1 = new Request();
+        //    _request1.TimeOpened = new DateTime(2013, 03, 01);
+        //    Request _request2 = new Request();
+        //    _request2.TimeOpened = new DateTime(2012, 04, 01);
+        //    Request _request3 = new Request();
+        //    _request3.TimeOpened = new DateTime(2013, 04, 05);
+        //    List<Request> sampleRequests = new List<Request>();
+        //    sampleRequests.Add(_request1);
+        //    sampleRequests.Add(_request2);
+        //    sampleRequests.Add(_request3);
 
-            return sampleRequests.AsQueryable();
-        }
+        //    return sampleRequests.AsQueryable();
+        //}
 
 
         [Test]

@@ -20,11 +20,17 @@ namespace SasquatchCAIRS
 	using System.Linq.Expressions;
 	using System.ComponentModel;
 	using System;
-    using SasquatchCAIRS.Models;
+
+    public interface IDataContext {
+        IQueryable<T> Repository<T>() where T : class;
+        void insert<T>(T item) where T : class;
+        void delete<T>(T item) where T : class;
+        void submitChanges();
+    }
 	
 	
 	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="sasquatch")]
-	public partial class CAIRSDataContext : System.Data.Linq.DataContext, SasquatchCAIRS.Models.IDataContext
+	public partial class CAIRSDataContext : System.Data.Linq.DataContext, IDataContext
 	{
 		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();
