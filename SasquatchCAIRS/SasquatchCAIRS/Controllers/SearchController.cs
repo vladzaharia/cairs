@@ -257,10 +257,10 @@ namespace SasquatchCAIRS.Controllers {
         }
 
         /// <summary>
-        /// 
+        /// Checks whether or not all fields are empty except keywords which must contain at least one valid keyword
         /// </summary>
-        /// <param name="sc"></param>
-        /// <returns></returns>
+        /// <param name="sc">The SearchCriteria Object</param>
+        /// <returns>False if there is at most 1 valid keywords or filled in field</returns>
         private bool emptyButValidKeywords(SearchCriteria sc) {
             if (getKeywords(sc.anyKeywordString).Any() || getKeywords(sc.allKeywordString).Any()
                 || getKeywords(sc.noneKeywordString).Any() || !String.IsNullOrEmpty(sc.consequence)
