@@ -17,7 +17,9 @@
     </a>
 </div>
 
-For keywords: @ViewBag.keywords 
+@foreach (string str in ViewBag.criteria) {
+    @str <br/>
+}
 <br/>
 @{
     int page = ViewBag.startIndex + 1;
