@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SasquatchCAIRS", "SasquatchCAIRS\SasquatchCAIRS.csproj", "{13C99E73-2753-42D9-9651-333E1600B7F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CAIRSTestProject", "CAIRSTestProject\CAIRSTestProject.csproj", "{2DE04DE8-D9D9-4E9A-803E-E5177DB520A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{13C99E73-2753-42D9-9651-333E1600B7F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13C99E73-2753-42D9-9651-333E1600B7F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13C99E73-2753-42D9-9651-333E1600B7F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DE04DE8-D9D9-4E9A-803E-E5177DB520A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DE04DE8-D9D9-4E9A-803E-E5177DB520A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DE04DE8-D9D9-4E9A-803E-E5177DB520A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DE04DE8-D9D9-4E9A-803E-E5177DB520A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,16 +10,25 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
 {
     public class ReportController : Controller
     {
-        private CAIRSDataContext _db = new CAIRSDataContext();
+        //private CAIRSDataContext _db = new CAIRSDataContext();
+        private readonly IDataContext _db;
+
+        public ReportController(IDataContext context) {
+            _db = context;
+        }
+
+        public ReportController() {
+            _db = new CAIRSDataContext();
+        }
 
         /// <summary>
         /// checks if any data exists for the given period
         /// </summary>
         /// <param name="start">start date stamp</param>
         /// <param name="end">end date stamp</param>
-        /// <returns></returns>
+        /// <returns>returns true if no data is found</returns>
         public bool checkForDataForMonth(DateTime start, DateTime end) {
-            List<Request> requests = (from reqs in _db.Requests
+            List<Request> requests = (from reqs in _db.Repository<Request>()
                                   where
                                       reqs.TimeOpened > start &&
                                       reqs.TimeOpened <= end
@@ -33,9 +42,9 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
         /// <param name="month">month user selected</param>
         /// <param name="startYear">start year selected by user</param>
         /// <param name="endYear">end year selected by user</param>
-        /// <returns></returns>
+        /// <returns>returns true if no data is found</returns>
         public bool checkForDataForMpy(int month, int startYear, int endYear) {
-            List<Request> requests = (from reqs in _db.Requests
+            List<Request> requests = (from reqs in _db.Repository<Request>()
                                       where reqs.TimeOpened.Year >= startYear && reqs.TimeOpened.Year <= endYear && reqs.TimeOpened.Month == month
                                       select reqs).ToList();
             return !requests.Any();
@@ -46,9 +55,9 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
         /// </summary>
         /// <param name="startYear">start year selected by user</param>
         /// <param name="endYear">end year selected by user</param>
-        /// <returns></returns>
+        /// <returns>returns true if no data is found</returns>
         public bool checkForDataForFy(int startYear, int endYear) {
-            List<Request> requests = (from reqs in _db.Requests
+            List<Request> requests = (from reqs in _db.Repository<Request>()
                                       where reqs.TimeOpened.Year >= startYear && reqs.TimeOpened.Year <= endYear
                                       select reqs).ToList();
             return !requests.Any();
@@ -72,7 +81,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 case Constants.StratifyOption.Region:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the region
-                    Dictionary<int, List<Request>> regionDictionary = (from reqs in _db.Requests
+                    Dictionary<int, List<Request>> regionDictionary = (from reqs in _db.Repository<Request>()
                                                                        where
                                                                            reqs.TimeOpened > startDate &&
                                                                            reqs.TimeOpened <= endDate
@@ -101,7 +110,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 case Constants.StratifyOption.CallerType:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the callerType
-                    Dictionary<int, List<Request>> callerDictionary = (from reqs in _db.Requests
+                    Dictionary<int, List<Request>> callerDictionary = (from reqs in _db.Repository<Request>()
                                                                        where
                                                                            reqs.TimeOpened > startDate &&
                                                                            reqs.TimeOpened <= endDate
@@ -131,11 +140,11 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                     //Retrieves the QuestionResponse from the database which opened within the given timeFrame,
                     //adds the open, close timestamps, then group them by the tumourGroup
                     Dictionary<int, List<QandRwithTimestamp>> qrTumourGrpDic =
-                        (from reqs in _db.Requests
+                        (from reqs in _db.Repository<Request>()
                          where
                              reqs.TimeOpened > startDate &&
                              reqs.TimeOpened <= endDate
-                         join qr in _db.QuestionResponses on reqs.RequestID
+                         join qr in _db.Repository<QuestionResponse>() on reqs.RequestID
                              equals qr.RequestID
                          select
                              new QandRwithTimestamp(qr, reqs.TimeOpened,
@@ -162,7 +171,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 default:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the year
-                    Dictionary<MonthYearPair, List<Request>> dictionaryByMonth = (from reqs in _db.Requests
+                    Dictionary<MonthYearPair, List<Request>> dictionaryByMonth = (from reqs in _db.Repository<Request>()
                                                                                   where
                                                                                       reqs.TimeOpened > startDate &&
                                                                                       reqs.TimeOpened <= endDate
@@ -257,7 +266,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 case Constants.StratifyOption.Region:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the region
-                    Dictionary<int, List<Request>> regionDictionary = (from reqs in _db.Requests
+                    Dictionary<int, List<Request>> regionDictionary = (from reqs in _db.Repository<Request>()
                                                                        where
                                                                            reqs.TimeOpened > startDate &&
                                                                            reqs.TimeOpened <= enDated
@@ -285,7 +294,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 case Constants.StratifyOption.CallerType:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the callerType
-                    Dictionary<int, List<Request>> callerDictionary = (from reqs in _db.Requests
+                    Dictionary<int, List<Request>> callerDictionary = (from reqs in _db.Repository<Request>()
                                                                        where
                                                                            reqs.TimeOpened > startDate &&
                                                                            reqs.TimeOpened <= enDated
@@ -312,11 +321,11 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                     break;
                 case Constants.StratifyOption.TumorGroup:
                     Dictionary<int, List<QandRwithTimestamp>> qrTumourGrpDic =
-                        (from reqs in _db.Requests
+                        (from reqs in _db.Repository<Request>()
                          where
                              reqs.TimeOpened > startDate &&
                              reqs.TimeOpened <= enDated
-                         join qr in _db.QuestionResponses on reqs.RequestID
+                         join qr in _db.Repository<QuestionResponse>() on reqs.RequestID
                              equals qr.RequestID
                          select
                              new QandRwithTimestamp(qr, reqs.TimeOpened,
@@ -346,8 +355,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                     Dictionary<FiscalYear, List<Request>> dictionaryByYear = (from
                                                                                   reqs
                                                                                   in
-                                                                                  _db
-                                                                                  .Requests
+                                                                                  _db.Repository<Request>()
                                                                               where
                                                                                   reqs
                                                                                       .TimeOpened >
@@ -455,7 +463,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 case Constants.StratifyOption.Region:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the region
-                    Dictionary<int, List<Request>> regionDictionary = (from reqs in _db.Requests
+                    Dictionary<int, List<Request>> regionDictionary = (from reqs in _db.Repository<Request>()
                                                                        where
                                                                            reqs.TimeOpened > start &&
                                                                            reqs.TimeOpened <= end &&
@@ -486,7 +494,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 case Constants.StratifyOption.CallerType:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the callerType
-                    Dictionary<int, List<Request>> callerDictionary = (from reqs in _db.Requests
+                    Dictionary<int, List<Request>> callerDictionary = (from reqs in _db.Repository<Request>()
                                                                        where
                                                                            reqs.TimeOpened > start &&
                                                                            reqs.TimeOpened <= end &&
@@ -514,11 +522,11 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                     break;
                 case Constants.StratifyOption.TumorGroup:
                     Dictionary<int, List<QandRwithTimestamp>> qrTumourGrpDic =
-                        (from reqs in _db.Requests
+                        (from reqs in _db.Repository<Request>()
                          where
                              reqs.TimeOpened > start &&
                              reqs.TimeOpened <= end
-                         join qr in _db.QuestionResponses on reqs.RequestID
+                         join qr in _db.Repository<QuestionResponse>() on reqs.RequestID
                              equals qr.RequestID
                          select
                              new QandRwithTimestamp(qr, reqs.TimeOpened,
@@ -545,7 +553,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 default:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the year
-                    Dictionary<int, List<Request>> dictionaryByYear = (from reqs in _db.Requests
+                    Dictionary<int, List<Request>> dictionaryByYear = (from reqs in _db.Repository<Request>()
                                                                        where
                                                                            reqs.TimeOpened > start &&
                                                                            reqs.TimeOpened <= end &&
@@ -1173,7 +1181,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
         private Int32 totalTimeSpent(IEnumerable<Request> reqList) {
            
             return
-                reqList.Select(curRequest => (from qrs in _db.QuestionResponses
+                reqList.Select(curRequest => (from qrs in _db.Repository<QuestionResponse>()
                                               where
                                                   qrs.RequestID ==
                                                   curRequest.RequestID &&
@@ -1213,17 +1221,17 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             switch (stratifyOption)
             {
                 case Constants.StratifyOption.Region:
-                    codes = (from region in _db.Regions
+                    codes = (from region in _db.Repository<Region>()
                              orderby region.Value
                              select region).ToDictionary(region => region.RegionID, r => r.Code);
                     break;
                 case Constants.StratifyOption.CallerType:
-                    codes = (from callerType in _db.RequestorTypes
+                    codes = (from callerType in _db.Repository<RequestorType>()
                              orderby callerType.Value
                              select callerType).ToDictionary(ct => ct.RequestorTypeID, ct => ct.Code);
                     break;
                 case Constants.StratifyOption.TumorGroup:
-                    codes = (from tumorGroup in _db.TumourGroups
+                    codes = (from tumorGroup in _db.Repository<TumourGroup>()
                              orderby tumorGroup.Value
                              select tumorGroup).ToDictionary(tg => tg.TumourGroupID, tg => tg.Code);
                     break;
