@@ -4,7 +4,6 @@ SasquatchCAIRS/SasquatchCAIRS/bin
 SasquatchCAIRS/SasquatchCAIRS/Properties/PublishProfiles
 SasquatchCAIRS/SasquatchCAIRS/Properties/PublishProfiles/*
 SasquatchCAIRS/SasquatchCAIRS/obj
-SasquatchCAIRS/CAIRSDocProject/obj
+SasquatchCAIRS/*/obj
+SasquatchCAIRS/*/bin
 SasquatchCAIRS/CAIRSDocProject/Help
-SasquatchCAIRS/CAIRSTestProject/obj
-SasquatchCAIRS/CAIRSTestProject/bin
