@@ -709,24 +709,5 @@
             <typeparam name="T">The type of the entity</typeparam>
             <returns>The repository of the given type</returns>
         </member>
-        <member name="M:SasquatchCAIRS.CAIRSDataContext.insert``1(``0)">
-            <summary>
-            Adds a new entity to the repository
-            </summary>
-            <typeparam name="T">The type of the entity</typeparam>
-            <param name="item">The entity to add</param>
-        </member>
-        <member name="M:SasquatchCAIRS.CAIRSDataContext.delete``1(``0)">
-            <summary>
-            Deletes the specified entity from the repository
-            </summary>
-            <typeparam name="T">The type of the entity</typeparam>
-            <param name="item">The entity to delete</param>
-        </member>
-        <member name="M:SasquatchCAIRS.CAIRSDataContext.submitChanges">
-            <summary>
-            Submits the changes.
-            </summary>
-        </member>
     </members>
 </doc>

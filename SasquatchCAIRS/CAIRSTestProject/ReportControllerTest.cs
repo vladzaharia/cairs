@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using SasquatchCAIRS;
 using SasquatchCAIRS.Controllers.ServiceSystem;
 using NUnit.Framework;
@@ -19,23 +17,15 @@ namespace CAIRSTestProject {
                 MockRepository.GenerateStub<IDataContext>();
             _iDataContext.Stub(x => x.Repository<Request>())
                          .Return(Samples.getSampleRequests());
+            _iDataContext.Stub(x => x.Repository<QuestionResponse>())
+                         .Return(Samples.getSampleQs());
+            _iDataContext.Stub(x => x.Repository<Region>())
+                         .Return(Samples.getSampleRegions());
+            _iDataContext.Stub(x => x.Repository<TumourGroup>())
+                         .Return(Samples.getSampleTumourGroups());
+            _iDataContext.Stub(x => x.Repository<RequestorType>())
+                         .Return(Samples.getSampleCallerTypes());
         }
-
-        //private IQueryable<Request> getSampleRequests() {
-        //    Request _request1 = new Request();
-        //    _request1.TimeOpened = new DateTime(2013, 03, 01);
-        //    Request _request2 = new Request();
-        //    _request2.TimeOpened = new DateTime(2012, 04, 01);
-        //    Request _request3 = new Request();
-        //    _request3.TimeOpened = new DateTime(2013, 04, 05);
-        //    List<Request> sampleRequests = new List<Request>();
-        //    sampleRequests.Add(_request1);
-        //    sampleRequests.Add(_request2);
-        //    sampleRequests.Add(_request3);
-
-        //    return sampleRequests.AsQueryable();
-        //}
-
 
         [Test]
         public void checkForDataForFyTest() {
