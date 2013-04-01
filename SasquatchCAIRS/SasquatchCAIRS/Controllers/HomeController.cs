@@ -27,14 +27,18 @@ namespace SasquatchCAIRS.Controllers {
                 requests = db.Requests.Select(r => r).Where(
                     r =>
                     (Constants.RequestStatus) r.RequestStatus !=
-                    Constants.RequestStatus.Invalid);
-                //.Where(r => !rlc.isLocked(r.RequestID)); TODO: Fix this
+                    Constants.RequestStatus.Invalid).Where(
+                    r => !db.RequestLocks
+                        .Any(rl => rl.RequestID == r.RequestID && 
+                            rl.UserProfile.UserName != User.Identity.Name));
             } else {
                 requests = db.Requests.Select(r => r).Where(
                     r =>
                     (Constants.RequestStatus) r.RequestStatus ==
-                    Constants.RequestStatus.Completed);
-                //.Where(r => !rlc.isLocked(r.RequestID)); TODO: Fix this
+                    Constants.RequestStatus.Completed).Where(
+                    r => !db.RequestLocks
+                        .Any(rl => rl.RequestID == r.RequestID && 
+                            rl.UserProfile.UserName != User.Identity.Name));
             }
 
             requests = requests.OrderBy(r => r.RequestStatus)
@@ -54,7 +58,7 @@ namespace SasquatchCAIRS.Controllers {
                          join kqs in db.KeywordQuestions on kws.KeywordID equals
                              kqs.KeywordID
                          where kqs.RequestID == rq.RequestID
-                         select kws.KeywordValue)
+                         select kws.KeywordValue).Distinct()
                             .ToList();
                     keywords.Add(rq.RequestID, kw);
                 }
@@ -78,7 +82,7 @@ namespace SasquatchCAIRS.Controllers {
                 ViewBag.Status =
                     "The request is locked and cannot be edited.";
                 ViewBag.StatusColor = "danger";
-            } else if (status == Constants.URLStatus.LockedToOtherUser) {
+            } else if (status == Constants.URLStatus.NotLockedToYou) {
                 ViewBag.Status =
                     "The request is not locked to you and cannot be edited.";
                 ViewBag.StatusColor = "danger";

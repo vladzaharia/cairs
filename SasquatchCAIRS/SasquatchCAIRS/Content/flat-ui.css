@@ -1152,7 +1152,7 @@ textarea,
     background-size: 110px 110px; }
 
   .radio .icon {
-    background-image: url("../images/radio-2x.png");
+    background-image: url("images/radio-2x.png");
     background-size: 110px 110px; } }
 .toggle {
   background-color: #34495e;
@@ -1788,7 +1788,7 @@ textarea,
       border-radius: 0 0 6px 6px;
       padding-bottom: 18px; }
     .todo li.todo-done {
-      background: transparent url("../images/todo/done.png") 92% center no-repeat;
+      background: transparent url("images/todo/done.png") 92% center no-repeat;
       background-size: 20px 20px;
       color: #1abc9c; }
       .todo li.todo-done .todo-name {

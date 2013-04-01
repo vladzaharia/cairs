@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace SasquatchCAIRS.Models.ServiceSystem {
     public class RequestContent {
@@ -174,10 +175,12 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         public long questionResponseID { get; set; }
 
         [Display(Name = "Question")]
+        [AllowHtml]
         [StringLength(1024)]
         public string question { get; set; }
 
         [Display(Name = "Response")]
+        [AllowHtml]
         public string response { get; set; }
 
         [Display(Name = "Time Spent")]
@@ -185,6 +188,7 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
         public short? timeSpent { get; set; }
 
         [Display(Name = "Special Notes")]
+        [AllowHtml]
         [StringLength(1024)]
         public string specialNotes { get; set; }
 
