@@ -149,7 +149,7 @@ namespace SasquatchCAIRS.Controllers {
         /// </summary>
         /// <param name="sc">The SearchCriteria to be checked for not-null values</param>
         /// <returns>True if the SearchCriteria is empty, false otherwise</returns>
-        private bool isEmptySearchCriteria(SearchCriteria sc) {
+        public bool isEmptySearchCriteria(SearchCriteria sc) {
             if (!String.IsNullOrEmpty(sc.keywordString) || !String.IsNullOrEmpty(sc.consequence) 
                 || !String.IsNullOrEmpty(sc.patientFirstName) || !String.IsNullOrEmpty(sc.patientLastName)
                 || !String.IsNullOrEmpty(sc.questionType) || !String.IsNullOrEmpty(sc.requestStatus)
@@ -429,7 +429,7 @@ namespace SasquatchCAIRS.Controllers {
                      where k.KeywordID == kqs.KeywordID
                      select kqs);
 
-                long var = allKeywordQuestions.First().QuestionResponseID;
+                long var = allKeywordQuestions.FirstOrDefault().QuestionResponseID;
                 allKeywordQuestions = (from key in allKeywordQuestions
                                     where key.QuestionResponseID == var
                                     select key);
