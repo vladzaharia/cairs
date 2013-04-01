@@ -4,3 +4,5 @@ SasquatchCAIRS/SasquatchCAIRS/bin
 SasquatchCAIRS/SasquatchCAIRS/Properties/PublishProfiles
 SasquatchCAIRS/SasquatchCAIRS/Properties/PublishProfiles/*
 SasquatchCAIRS/SasquatchCAIRS/obj
+SasquatchCAIRS/*/obj
+SasquatchCAIRS/*/bin
