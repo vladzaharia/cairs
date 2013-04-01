@@ -32,23 +32,28 @@ namespace SasquatchCAIRS.Controllers {
             ViewBag.keywords = keywords;
             SearchCriteria sc = new SearchCriteria();
             sc.anyKeywordString = keywords;
-            Session["criteria"] = sc;
 
             long requestId;
             if (long.TryParse(keywords, out requestId)) {
-                
+
                 return RedirectToAction("Details", "Request", new {
                     id = requestId
                 });
             }
 
+            ViewBag.criteria = constructCriteriaString(sc);
             _startIndex = 0;
             ViewBag.startIndex = _startIndex;
+            Session["criteria"] = sc;
+            
+            if (!getKeywords(sc.anyKeywordString).Any()) {
+                ViewBag.ResultSetSize = 0;
+                return View("Results", new List<Request>());
+            }
 
             _results = searchCriteriaQuery(sc);
             fillUpKeywordDict(_results);
             ViewBag.ResultSetSize = _results.Count;
-            ViewBag.criteria = constructCriteriaString(sc);
 
             return View("Results", _results.Take(Constants.PAGE_SIZE));
         }
@@ -78,7 +83,7 @@ namespace SasquatchCAIRS.Controllers {
         [HttpPost]
         [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Results(SearchCriteria criteria, FormCollection form) {
-           
+
             DateTime temp;
             if (DateTime.TryParse(form["startTime"], out temp)) {
                 criteria.startTime = temp;
@@ -98,7 +103,7 @@ namespace SasquatchCAIRS.Controllers {
             criteria.requestorLastName = form["requestorLast"];
             criteria.patientFirstName = form["patientFirst"];
             criteria.patientLastName = form["patientLast"];
-           
+
             if (isEmptySearchCriteria(criteria)) {
                 ViewBag.emptyForm = true;
                 setDropdownViewbags();
@@ -106,15 +111,17 @@ namespace SasquatchCAIRS.Controllers {
             }
 
             Session["criteria"] = criteria;
-
-            
-            ViewBag.keywords = criteria.anyKeywordString;
-            _results = searchCriteriaQuery(criteria);
-            fillUpKeywordDict(_results);
-
-            ViewBag.ResultSetSize = _results.Count;
             ViewBag.startIndex = 0;
             ViewBag.criteria = constructCriteriaString(criteria);
+            if (emptyButValidKeywords(criteria)) {
+                ViewBag.ResultSetSize = 0;
+                return View("Results", new List<Request>());
+            }
+
+            _results = searchCriteriaQuery(criteria);
+            fillUpKeywordDict(_results);
+            ViewBag.ResultSetSize = _results.Count;
+
             return View(_results.Take(Constants.PAGE_SIZE));
         }
 
@@ -201,11 +208,11 @@ namespace SasquatchCAIRS.Controllers {
             }
             if (!String.IsNullOrEmpty(sc.tumorGroup)) {
                 List<int> ids = typeIDStringtoList(sc.tumorGroup, ",");
-                string tumorGroups = String.Join(", ", 
+                string tumorGroups = String.Join(", ",
                     (from tg in _db.TumourGroups
-                        where ids.Contains(tg.TumourGroupID)
-                        select tg.Value));
-                
+                     where ids.Contains(tg.TumourGroupID)
+                     select tg.Value));
+
                 result.Add(Constants.UIString.FieldLabel.TUMOUR_GROUP + ": " +
                           tumorGroups);
             }
@@ -213,8 +220,8 @@ namespace SasquatchCAIRS.Controllers {
                 List<int> ids = typeIDStringtoList(sc.tumorGroup, ",");
                 string questionTypes = String.Join(", ",
                     (from qt in _db.QuestionTypes
-                        where ids.Contains(qt.QuestionTypeID)
-                        select qt.Value));
+                     where ids.Contains(qt.QuestionTypeID)
+                     select qt.Value));
 
                 result.Add(Constants.UIString.FieldLabel.QUESTION_TYPE + ": " +
                           questionTypes);
@@ -230,14 +237,33 @@ namespace SasquatchCAIRS.Controllers {
             return result;
         }
 
+
         /// <summary>
         /// Checks if SearchCriteria objects are empty/set to default values
         /// </summary>
         /// <param name="sc">The SearchCriteria to be checked for not-null values</param>
         /// <returns>True if the SearchCriteria is empty, false otherwise</returns>
         private bool isEmptySearchCriteria(SearchCriteria sc) {
-            if (!String.IsNullOrEmpty(sc.anyKeywordString) || !String.IsNullOrEmpty(sc.noneKeywordString) ||
-                !String.IsNullOrEmpty(sc.allKeywordString) ||!String.IsNullOrEmpty(sc.consequence) 
+            if (!String.IsNullOrEmpty(sc.allKeywordString) || !String.IsNullOrEmpty(sc.noneKeywordString)
+                || !String.IsNullOrEmpty(sc.anyKeywordString) || !String.IsNullOrEmpty(sc.consequence)
+                || !String.IsNullOrEmpty(sc.patientFirstName) || !String.IsNullOrEmpty(sc.patientLastName)
+                || !String.IsNullOrEmpty(sc.questionType) || !String.IsNullOrEmpty(sc.requestStatus)
+                || !String.IsNullOrEmpty(sc.requestorFirstName) || !String.IsNullOrEmpty(sc.requestorLastName)
+                || !String.IsNullOrEmpty(sc.severity) || !String.IsNullOrEmpty(sc.tumorGroup)
+                || sc.startTime.CompareTo(new DateTime()) != 0 || sc.completionTime.CompareTo(new DateTime()) != 0) {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sc"></param>
+        /// <returns></returns>
+        private bool emptyButValidKeywords(SearchCriteria sc) {
+            if (getKeywords(sc.anyKeywordString).Any() || getKeywords(sc.allKeywordString).Any()
+                || getKeywords(sc.noneKeywordString).Any() || !String.IsNullOrEmpty(sc.consequence)
                 || !String.IsNullOrEmpty(sc.patientFirstName) || !String.IsNullOrEmpty(sc.patientLastName)
                 || !String.IsNullOrEmpty(sc.questionType) || !String.IsNullOrEmpty(sc.requestStatus)
                 || !String.IsNullOrEmpty(sc.requestorFirstName) || !String.IsNullOrEmpty(sc.requestorLastName)
@@ -311,20 +337,23 @@ namespace SasquatchCAIRS.Controllers {
                      select kws.KeywordValue).Distinct()
                         .ToList();
                 keywords.Add(request.RequestID, kw);
-            }
+            }   
             ViewBag.keywordDict = keywords;
         }
 
+        /// <summary>
+        /// Returns a list of keywordIDs from the string given
+        /// </summary>
+        /// <param name="keywordString">The keyword string</param>
+        /// <returns>the list of keywordIDs</returns>
         private List<int> getKeywords(string keywordString) {
             // First we grab the keywords
             if (String.IsNullOrEmpty(keywordString))
                 return new List<int>();
             return (from k in _db.Keywords
-                    where keywordsToList( keywordString, ",").Contains(k.KeywordValue)
+                    where keywordsToList(keywordString, ", ").Contains(k.KeywordValue) 
                     select k.KeywordID).ToList();
-        } 
-
-
+        }
 
         /// <summary>
         /// Get Requests in Database based on SearchCriteria
@@ -379,20 +408,21 @@ namespace SasquatchCAIRS.Controllers {
             }
 
             // Set Criteria based on Users Role(s)
-            if (Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) {} else if (String.IsNullOrEmpty(criteria.requestStatus) &&
-                                                                               Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
+            if (Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) {
+            } else if (String.IsNullOrEmpty(criteria.requestStatus) &&
+                       Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
                 criteria.requestStatus = Enum.GetName(
-                    typeof (Constants.RequestStatus),
+                    typeof(Constants.RequestStatus),
                     Constants.RequestStatus.Completed)
                                          + "," +
                                          Enum.GetName(
-                                             typeof (Constants.RequestStatus
+                                             typeof(Constants.RequestStatus
                                                  ),
                                              Constants.RequestStatus.Open);
             } else if (String.IsNullOrEmpty(criteria.requestStatus) &&
                        Roles.IsUserInRole(Constants.Roles.VIEWER)) {
                 criteria.requestStatus =
-                    Enum.GetName(typeof (Constants.RequestStatus),
+                    Enum.GetName(typeof(Constants.RequestStatus),
                                  Constants.RequestStatus.Completed);
             }
             // Filter on request status
@@ -401,7 +431,7 @@ namespace SasquatchCAIRS.Controllers {
                     requests.Where(
                         r =>
                         enumToIDs(criteria.requestStatus,
-                                  typeof (Constants.RequestStatus))
+                                  typeof(Constants.RequestStatus))
                             .Contains(r.RequestStatus));
             }
 
@@ -413,7 +443,7 @@ namespace SasquatchCAIRS.Controllers {
                 questionResponses =
                     questionResponses.Where(
                         qr =>
-                        enumToIDs(criteria.severity, typeof (Constants.Severity))
+                        enumToIDs(criteria.severity, typeof(Constants.Severity))
                             .Contains((int) qr.Severity));
             }
 
@@ -423,7 +453,7 @@ namespace SasquatchCAIRS.Controllers {
                     questionResponses.Where(
                         qr =>
                         enumToIDs(criteria.consequence,
-                                  typeof (Constants.Consequence))
+                                  typeof(Constants.Consequence))
                             .Contains((int) qr.Consequence));
             }
 
@@ -444,13 +474,13 @@ namespace SasquatchCAIRS.Controllers {
                         typeIDStringtoList(criteria.questionType, ",")
                             .Contains(qr.QuestionType.QuestionTypeID));
             }
+            List<int> any = getKeywords(criteria.anyKeywordString);
+            List<int> none = getKeywords(criteria.noneKeywordString);
+            List<int> all = getKeywords(criteria.allKeywordString);
 
             // Filter QRs based on keywords
-            if (!String.IsNullOrEmpty(criteria.anyKeywordString + criteria.noneKeywordString + criteria.allKeywordString)) {
-                List<int> any = getKeywords(criteria.anyKeywordString);
-                List<int> none =  getKeywords(criteria.noneKeywordString);
-                List<int> all = getKeywords(criteria.allKeywordString);
-
+            if (none.Any() || any.Any() || all.Any()) {
+                
                 IQueryable<KeywordQuestion> results = _db.KeywordQuestions;
 
                 if (none.Any()) {
@@ -482,11 +512,11 @@ namespace SasquatchCAIRS.Controllers {
                 }
                 if (any.Any()) {
                     results = (from kq in results
-                                   where any.Contains(kq.KeywordID)
-                                   select kq);
+                               where any.Contains(kq.KeywordID)
+                               select kq);
                 }
 
-                
+
                 // Then we intersect Keywords with QuestionResponses through the use of a join
                 questionResponses = (from kq in results
                                      join qr in questionResponses
@@ -494,14 +524,12 @@ namespace SasquatchCAIRS.Controllers {
                                      select qr);
             }
 
-            List<Request> final = (from r in requests
-                 join qr in questionResponses
-                     on r.RequestID equals qr.RequestID
+            return (from r in requests
+                    join qr in questionResponses
+                        on r.RequestID equals qr.RequestID
                     select r).Distinct()
                           .OrderByDescending(r => r.RequestID)
                           .ToList();
-
-            return final;
         }
     }
 }
