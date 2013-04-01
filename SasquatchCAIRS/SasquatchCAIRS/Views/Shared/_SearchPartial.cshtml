@@ -1,4 +1,5 @@
-﻿
+﻿@using SasquatchCAIRS.Models
+
 @using (Html.BeginForm("Search", "Search", FormMethod.Post,
                        new {
                            @class = "form search-form"
@@ -8,10 +9,11 @@
                       new {
                           @class = "span2 search-query noEnterSubmit",
                           @dp = "Quick Search",
-                          @autocomplete = "off"
+                          @autocomplete = "off",
+                          @id = Constants.UIString.ItemIDs.SEARCH_DIV
                       })
-                   
-        <button class="btn btn-custom menu-button search-button" type="submit">
+        <button class="btn btn-custom menu-button search-button" 
+            id="@Constants.UIString.ItemIDs.SEARCH_BUTTON" type="submit">
             <i class="icon-search icon-white"></i>
         </button>
     </div>
@@ -19,9 +21,15 @@
 
 <div class="adv-search-div">
     @if (ViewBag.Page == "advanced-search") {
-        @Html.ActionLink("Advanced Search", "Advanced", "Search", new {}, new {@class = "btn menu-button btn-custom active"})
+        @Html.ActionLink("Advanced Search", "Advanced", "Search", new {}, new {
+            @class = "btn menu-button btn-custom active",
+            @id = Constants.UIString.ItemIDs.ADVANCED_SEARCH
+        })
     } else {
-        @Html.ActionLink("Advanced Search", "Advanced", "Search", new {}, new {@class = "btn menu-button btn-custom"})
+        @Html.ActionLink("Advanced Search", "Advanced", "Search", new {}, new {
+            @class = "btn menu-button btn-custom",
+            @id = Constants.UIString.ItemIDs.ADVANCED_SEARCH
+        })
     }
 </div>
 
