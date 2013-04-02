@@ -164,7 +164,7 @@ namespace SasquatchCAIRS.Controllers {
         /// </summary>
         /// <param name="sc">The SearchCriteria object used to filter on Requests</param>
         /// <returns>A list of strings which represents the values of the SearchCriteria object</returns>
-        private List<string> constructCriteriaString(SearchCriteria sc) {
+        public List<string> constructCriteriaString(SearchCriteria sc) {
             List<string> result = new List<string>();
             if (!String.IsNullOrEmpty(sc.anyKeywordString)) {
                 result.Add(Constants.UIString.FieldLabel.ANY_KEYWORDS + ": " +
@@ -303,7 +303,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="input">Input string</param>
         /// <param name="delimiters">Delimiter inside the string</param>
         /// <returns>Corresponding List of Strings</returns>
-        private List<String> keywordsToList(string input, string delimiters) {
+        public List<String> keywordsToList(string input, string delimiters) {
             String[] stringArr = input.Split(delimiters.ToCharArray());
             return stringArr.Select(s => s.Trim()).ToList();
         }
@@ -346,7 +346,7 @@ namespace SasquatchCAIRS.Controllers {
         /// </summary>
         /// <param name="keywordString">The keyword string</param>
         /// <returns>the list of keywordIDs</returns>
-        private List<int> getKeywords(string keywordString) {
+        public List<int> getKeywords(string keywordString) {
             // First we grab the keywords
             if (String.IsNullOrEmpty(keywordString))
                 return new List<int>();
