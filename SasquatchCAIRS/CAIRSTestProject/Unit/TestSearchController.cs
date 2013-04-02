@@ -136,26 +136,14 @@ namespace CAIRSTestProject.Unit
 
         [Test]
         public void Test_getKeywords() {
-            Keyword sampleKw1 = new Keyword {
-                KeywordID = 0,
-                KeywordValue = "test",
-                Active = true
-            };
 
-            Keyword sampleKw2 = new Keyword
-            {
-                KeywordID = 1,
-                KeywordValue = "test2",
-                Active = true
-            };
-
-            Keyword sampleKw3 = new Keyword
-            {
-                KeywordID = 2,
-                KeywordValue = "test3",
-                Active = true
-            };
-
+            SearchController searchCon = new SearchController();
+            
+            List<int> kwIDs = searchCon.getKeywords("chemotherapy, advil, pain, donkey");
+            Assert.AreEqual(kwIDs[0], 94);
+            Assert.AreEqual(kwIDs[1], 82);
+            Assert.AreEqual(kwIDs[2], 47);
+            Assert.AreEqual(kwIDs.Count, 3);
 
 
 
@@ -163,12 +151,84 @@ namespace CAIRSTestProject.Unit
 
         [Test]
         public void Test_enumToIDs() {
+            SearchController searchCon = new SearchController();
+
+            List<int> severityIDs = searchCon.enumToIDs("Major, Minor, Moderate",
+                                                    typeof (Constants.Severity));
+            Assert.AreEqual(severityIDs[0], 0);
+            Assert.AreEqual(severityIDs[1], 2);
+            Assert.AreEqual(severityIDs[2], 1);
+
+            List<int> consequenceIDs =
+                searchCon.enumToIDs("Probable, Unlikely, Certain, Possible", typeof(Constants.Consequence));
             
+            Assert.AreEqual(consequenceIDs[0], 1);
+            Assert.AreEqual(consequenceIDs[1], 3);
+            Assert.AreEqual(consequenceIDs[2], 0);
+            Assert.AreEqual(consequenceIDs[3], 2);
         }
 
         [Test]
         public void Test_emptyButValidKeywords() {
-            
+            SearchController searchCon = new SearchController();
+
+            SearchCriteria validKey = new SearchCriteria
+            {
+                anyKeywordString = "Chemotherapy",
+                allKeywordString = null,
+                noneKeywordString = null,
+                patientFirstName = null,
+                patientLastName = null,
+                questionType = null,
+                requestorFirstName = null,
+                requestorLastName = null,
+                requestStatus = null,
+                tumorGroup = null,
+                severity = null,
+                consequence = null,
+            };
+
+            bool keywordValid = searchCon.emptyButValidKeywords(validKey);
+            Assert.IsFalse(keywordValid);
+
+            SearchCriteria invalidKey = new SearchCriteria
+            {
+                anyKeywordString = null,
+                allKeywordString = "donkey",
+                noneKeywordString = null,
+                patientFirstName = null,
+                patientLastName = null,
+                questionType = null,
+                requestorFirstName = null,
+                requestorLastName = null,
+                requestStatus = null,
+                tumorGroup = null,
+                severity = null,
+                consequence = null,
+            };
+
+            bool keywordInvalid = searchCon.emptyButValidKeywords(invalidKey);
+            Assert.IsTrue(keywordInvalid);
+
+            SearchCriteria oneKeyInvalid = new SearchCriteria
+            {
+                anyKeywordString = "Chemotherapy",
+                allKeywordString = "donkey",
+                noneKeywordString = null,
+                patientFirstName = null,
+                patientLastName = null,
+                questionType = null,
+                requestorFirstName = null,
+                requestorLastName = null,
+                requestStatus = null,
+                tumorGroup = null,
+                severity = null,
+                consequence = null,
+            };
+
+            bool oneKeywordInvalid =
+                searchCon.emptyButValidKeywords(oneKeyInvalid);
+            Assert.IsFalse(oneKeywordInvalid);
         }
 
         [Test]
@@ -178,7 +238,13 @@ namespace CAIRSTestProject.Unit
 
         [Test]
         public void Test_typeIDStringToList() {
-            
+            SearchController searchCon = new SearchController();
+            List<int> intIDs = searchCon.typeIDStringtoList("1,2,3,40,1000000", ",");
+            Assert.AreEqual(intIDs[0], 1);
+            Assert.AreEqual(intIDs[1], 2);
+            Assert.AreEqual(intIDs[2], 3);
+            Assert.AreEqual(intIDs[3], 40);
+            Assert.AreEqual(intIDs[4], 1000000);
         }
 
         [Test]

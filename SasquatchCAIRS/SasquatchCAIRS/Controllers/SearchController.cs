@@ -261,7 +261,7 @@ namespace SasquatchCAIRS.Controllers {
         /// </summary>
         /// <param name="sc"></param>
         /// <returns></returns>
-        private bool emptyButValidKeywords(SearchCriteria sc) {
+        public bool emptyButValidKeywords(SearchCriteria sc) {
             if (getKeywords(sc.anyKeywordString).Any() || getKeywords(sc.allKeywordString).Any()
                 || getKeywords(sc.noneKeywordString).Any() || !String.IsNullOrEmpty(sc.consequence)
                 || !String.IsNullOrEmpty(sc.patientFirstName) || !String.IsNullOrEmpty(sc.patientLastName)
@@ -292,7 +292,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="input">Input String</param>
         /// <param name="delimiters">Delimiter inside string</param>
         /// <returns>Corresponding List of Integers</returns>
-        private List<int> typeIDStringtoList(string input, string delimiters) {
+        public List<int> typeIDStringtoList(string input, string delimiters) {
             string[] arr = input.Split(delimiters.ToCharArray());
             return arr.Select(int.Parse).ToList();
         }
@@ -314,7 +314,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="input">Input String</param>
         /// <param name="type">Enumeration Type</param>
         /// <returns>Corresponding List of Integers for that Type and Input</returns>
-        private List<int> enumToIDs(string input, Type type) {
+        public List<int> enumToIDs(string input, Type type) {
             String[] stringArr = input.Split(",".ToCharArray());
             return stringArr.Select(v => (int) Enum.Parse(type, v)).ToList();
         }
