@@ -425,6 +425,11 @@ namespace SasquatchCAIRS.Controllers
             // Set up the Request Object
             RequestContent request = rmc.getRequestDetails(id);
             if (request == null) {
+                ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST
+                    + " - "
+                    + Constants.UIString.TitleText.ERROR;
+                ViewBag.Error = "The Request ID provided does not exist in the database.";
+
                 return View((object) null);
             }
 
@@ -440,6 +445,7 @@ namespace SasquatchCAIRS.Controllers
                 ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST 
                     + " - " 
                     + Constants.UIString.TitleText.ERROR;
+                ViewBag.Error = "You do not have the necessary permissions to view this request.";
 
                 return View((object) null);
             }
@@ -450,6 +456,7 @@ namespace SasquatchCAIRS.Controllers
                 ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST
                     + " - "
                     + Constants.UIString.TitleText.ERROR;
+                ViewBag.Error = "You do not have the necessary permissions to view this request.";
 
                 return View((object) null);
             }
@@ -466,8 +473,9 @@ namespace SasquatchCAIRS.Controllers
                     ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST
                                     + " - "
                                     + Constants.UIString.TitleText.ERROR;
+                    ViewBag.Error = "This request has been locked to another person and cannot be viewed until unlocked.";
 
-                    return View(request);
+                    return View((object) null);
                 }
             }
 
