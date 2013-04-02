@@ -8,8 +8,9 @@ namespace CAIRSTestProject {
 
         public static IQueryable<Request> getSampleRequests() {
             Request request0 = new Request {
-                TimeOpened = new DateTime(2013, 01, 01, 10, 0, 0),
-                TimeClosed = new DateTime(2013, 01, 01, 10, 05, 00),
+                TimeOpened = new DateTime(2013, 02, 01, 10, 0, 0),
+                TimeClosed = new DateTime(2013, 02, 01, 10, 05, 0),
+                RequestID = 0,
                 RequestorTypeID = 0,
                 RegionID = 0,
                 RequestStatus =
@@ -19,7 +20,8 @@ namespace CAIRSTestProject {
 
             Request request1 = new Request {
                 TimeOpened = new DateTime(2013, 02, 01, 10, 0, 0),
-                TimeClosed = new DateTime(2013, 02, 01, 10, 05, 00),
+                TimeClosed = new DateTime(2013, 02, 01, 10, 05, 0),
+                RequestID = 1,
                 RequestorTypeID = 1,
                 RegionID = 1,
                 RequestStatus =
@@ -29,9 +31,10 @@ namespace CAIRSTestProject {
 
             Request request2 = new Request {
                 TimeOpened = new DateTime(2013, 03, 01, 10, 0, 0),
-                TimeClosed = new DateTime(2013, 03, 01, 10, 05, 00),
+                TimeClosed = new DateTime(2013, 03, 01, 10, 05, 0),
+                RequestID = 2,
                 RequestorTypeID = 2,
-                RegionID = 2,
+                RegionID = null,
                 RequestStatus =
                     (byte)
                     SasquatchCAIRS.Models.Constants.RequestStatus.Completed
@@ -39,9 +42,10 @@ namespace CAIRSTestProject {
 
             Request request3 = new Request {
                 TimeOpened = new DateTime(2013, 04, 01, 10, 0, 0),
-                TimeClosed = new DateTime(2013, 04, 01, 10, 05, 00),
-                RequestorTypeID = 3,
-                RegionID = 3,
+                TimeClosed = new DateTime(2013, 04, 01, 10, 05, 0),
+                RequestID = 3,
+                RequestorTypeID = null,
+                RegionID = 0,
                 RequestStatus =
                     (byte)
                     SasquatchCAIRS.Models.Constants.RequestStatus.Completed
@@ -49,29 +53,32 @@ namespace CAIRSTestProject {
 
             Request request4 = new Request {
                 TimeOpened = new DateTime(2013, 05, 01, 10, 0, 0),
-                TimeClosed = new DateTime(2013, 05, 01, 10, 05, 00),
-                RequestorTypeID = 4,
-                RegionID = 4,
+                TimeClosed = new DateTime(2013, 05, 01, 10, 05, 0),
+                RequestID = 4,
+                RequestorTypeID = 0,
+                RegionID = 1,
                 RequestStatus =
                     (byte)
                     SasquatchCAIRS.Models.Constants.RequestStatus.Completed
             };
 
             Request request5 = new Request {
-                TimeOpened = new DateTime(2013, 06, 01, 10, 0, 0),
-                TimeClosed = new DateTime(2013, 06, 01, 10, 05, 00),
-                RequestorTypeID = 5,
-                RegionID = 0,
+                TimeOpened = new DateTime(2013, 02, 01, 10, 0, 0),
+                TimeClosed = new DateTime(2013, 02, 01, 10, 05, 0),
+                RequestID = 5,
+                RequestorTypeID = 1,
+                RegionID = null,
                 RequestStatus =
                     (byte)
                     SasquatchCAIRS.Models.Constants.RequestStatus.Completed
             };
 
             Request request6 = new Request {
-                TimeOpened = new DateTime(2013, 07, 01, 10, 0, 0),
-                TimeClosed = new DateTime(2013, 07, 01, 10, 05, 00),
-                RequestorTypeID = 0,
-                RegionID = 1,
+                TimeOpened = new DateTime(2013, 03, 01, 10, 0, 0),
+                TimeClosed = new DateTime(2013, 03, 01, 10, 05, 0),
+                RequestID = 6,
+                RequestorTypeID = 2,
+                RegionID = 0,
                 RequestStatus =
                     (byte)
                     SasquatchCAIRS.Models.Constants.RequestStatus.Completed
@@ -109,49 +116,49 @@ namespace CAIRSTestProject {
                 QuestionResponseID = 2,
                 RequestID = 2,
                 TimeSpent = 20,
-                TumourGroupID = 2
+                TumourGroupID = null
             };
 
             QuestionResponse qR3 = new QuestionResponse {
                 QuestionResponseID = 3,
                 RequestID = 3,
                 TimeSpent = 30,
-                TumourGroupID = 3
+                TumourGroupID = 0
             };
 
             QuestionResponse qR4 = new QuestionResponse {
                 QuestionResponseID = 4,
                 RequestID = 4,
                 TimeSpent = 40,
-                TumourGroupID = 0
+                TumourGroupID = 1
             };
 
             QuestionResponse qR5 = new QuestionResponse {
                 QuestionResponseID = 5,
                 RequestID = 5,
                 TimeSpent = 50,
-                TumourGroupID = 1
+                TumourGroupID = null
             };
 
             QuestionResponse qR6 = new QuestionResponse {
                 QuestionResponseID = 6,
                 RequestID = 6,
                 TimeSpent = 60,
-                TumourGroupID = 2
+                TumourGroupID = 0
             };
 
             QuestionResponse qR7 = new QuestionResponse {
                 QuestionResponseID = 7,
                 RequestID = 0,
                 TimeSpent = 70,
-                TumourGroupID = 3
+                TumourGroupID = 1
             };
 
             QuestionResponse qR8 = new QuestionResponse {
                 QuestionResponseID = 8,
                 RequestID = 1,
                 TimeSpent = 80,
-                TumourGroupID = 4
+                TumourGroupID = null
             };
 
             QuestionResponse qR9 = new QuestionResponse {
@@ -189,36 +196,12 @@ namespace CAIRSTestProject {
                 RegionID = 1,
                 Code = "ON",
                 Value = "Ontraio",
-                Active = true
-            };
-
-            Region region2 = new Region {
-                RegionID = 2,
-                Code = "AB",
-                Value = "Alberta",
-                Active = false
-            };
-
-            Region region3 = new Region {
-                RegionID = 3,
-                Code = "NB",
-                Value = "New Brunswik",
-                Active = true
-            };
-
-            Region region4 = new Region {
-                RegionID = 4,
-                Code = "YT",
-                Value = "Yukon",
                 Active = false
             };
 
             List<Region> sampleRegions = new List<Region> {
                 region0,
-                region1,
-                region2,
-                region3,
-                region4
+                region1
             };
             return sampleRegions.AsQueryable();
         }
@@ -235,44 +218,20 @@ namespace CAIRSTestProject {
                 RequestorTypeID = 1,
                 Code = "DRUG CO",
                 Value = "Drug Company",
-                Active = true
+                Active = false
             };
 
             RequestorType requestor2 = new RequestorType {
                 RequestorTypeID = 2,
                 Code = "FAMILY",
-                Value = "Family Member",
+                Value = "Family Members",
                 Active = false
-            };
-
-            RequestorType requestor3 = new RequestorType {
-                RequestorTypeID = 3,
-                Code = "GP",
-                Value = "Family Physician",
-                Active = true
-            };
-
-            RequestorType requestor4 = new RequestorType {
-                RequestorTypeID = 4,
-                Code = "LIB",
-                Value = "Librarian",
-                Active = false
-            };
-
-            RequestorType requestor5 = new RequestorType {
-                RequestorTypeID = 5,
-                Code = "MEDIA",
-                Value = "News Media",
-                Active = true
             };
 
             List<RequestorType> sampleCallers = new List<RequestorType> {
                 requestor0,
                 requestor1,
-                requestor2,
-                requestor3,
-                requestor4,
-                requestor5
+                requestor2
             };
 
             return sampleCallers.AsQueryable();
@@ -290,28 +249,11 @@ namespace CAIRSTestProject {
                 TumourGroupID = 1,
                 Code = "CNS",
                 Value = "Central Nervous System",
-                Active = true
-            };
-
-            TumourGroup tg2 = new TumourGroup {
-                TumourGroupID = 2,
-                Code = "ENDO",
-                Value = "Endocrine",
                 Active = false
             };
 
-            TumourGroup tg3 = new TumourGroup {
-                TumourGroupID = 3,
-                Code = "GEN",
-                Value = "General",
-                Active = true
-            };
-
             List<TumourGroup> sampleTumourGroups = new List<TumourGroup> {
-                tg0,
-                tg1,
-                tg2,
-                tg3
+                tg0, tg1
             };
 
             return sampleTumourGroups.AsQueryable();

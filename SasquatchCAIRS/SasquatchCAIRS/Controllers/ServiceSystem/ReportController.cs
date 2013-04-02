@@ -134,7 +134,6 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                                          (int) dataType;
                         dataTablesForReport.Add(Constants.DATATABLE_TITLES[titleIndex], createDtForEachMonth(startDate, endDate, stratifyBy, dataType, callerAndYear));
                     }
-                    
                     break;
                 case Constants.StratifyOption.TumorGroup:
                     //Retrieves the QuestionResponse from the database which opened within the given timeFrame,
@@ -202,8 +201,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                         dt.Columns.Add(monthColumn);
                         startMonthYearPair.addmonth(1);
                     }
-
-                    foreach (Constants.DataType dataType in dataToDisplay) {
+                    foreach (Constants.DataType dataType in dataToDisplay.OrderByDescending(x=>x).Reverse()) {
                         //adds a row for each dataType in the table
                         DataRow newRow = dt.NewRow();
 
@@ -260,7 +258,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             var dataTablesForReport = new Dictionary<string, DataTable>();
 
             var startDate = new DateTime(startYear, 4, 1, 0, 0, 0);
-            var enDated = new DateTime(endYear, 3, DateTime.DaysInMonth(endYear, 3), 23, 59, 59);
+            var enDated = new DateTime(endYear+1, 3, DateTime.DaysInMonth(endYear, 3), 23, 59, 59);
 
             switch (stratifyBy) {
                 case Constants.StratifyOption.Region:
@@ -396,7 +394,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                         startFiscalYear.addYear(1);
                     }
 
-                    foreach (Constants.DataType dataType in dataToDisplay) {
+                    foreach (Constants.DataType dataType in dataToDisplay.OrderByDescending(x => x).Reverse()) {
                         //adds a row for each dataType in the table
                         DataRow newRow = dt.NewRow();
                         switch (dataType) {
@@ -578,7 +576,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                         dt.Columns.Add(yearColumn);
                     }
 
-                    foreach (Constants.DataType dataType in dataToDisplay) {
+                    foreach (Constants.DataType dataType in dataToDisplay.OrderByDescending(x => x).Reverse()) {
                         //adds a row for each dataType in the table
                         DataRow newRow = dt.NewRow();
 
@@ -661,6 +659,12 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             //gets the names of the stratify groups. ie, callerType,region or tumourGroup Codes
             Dictionary<int, string> idToName = getTypeNames(stratifyBy);
 
+            //Even if the dictionary does not contain the no group data, table should still show them.
+            if (!dictionary.ContainsKey(-1)) {
+                DataRow noGroupRow = dt.NewRow();
+                noGroupRow[stratifyGroups] = "No " + stratifyGroups;
+                dt.Rows.Add(noGroupRow);
+            }
 
             foreach (var keyValuePair in dictionary.OrderByDescending(x => x.Key).Reverse()) {
                 //adds a row for each stratify groups in the table
@@ -749,6 +753,12 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             //gets the names of the stratify groups. ie, callerType,region or tumourGroup Codes
             Dictionary<int, string> idToName = getTypeNames(stratifyBy);
 
+            //Even if the dictionary does not contain the no group data, table should still show them.
+            if (!dictionary.ContainsKey(-1)) {
+                DataRow noGroupRow = dt.NewRow();
+                noGroupRow[stratifyGroups] = "No " + stratifyGroups;
+                dt.Rows.Add(noGroupRow);
+            }
 
             foreach (var keyValuePair in dictionary.OrderByDescending(x => x.Key).Reverse()) {
                 //adds a row for each stratify groups in the table
@@ -831,6 +841,13 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             //gets the names of the stratify groups. ie, callerType,region or tumourGroup Codes
             Dictionary<int, string> idToName = getTypeNames(stratifyBy);
 
+            //Even if the dictionary does not contain the no group data, table should still show them.
+            if (!dictionary.ContainsKey(-1)) {
+                DataRow noGroupRow = dt.NewRow();
+                noGroupRow[stratifyGroups] = "No " + stratifyGroups;
+                dt.Rows.Add(noGroupRow);
+            }
+
             //adds a row for each startify groups with proper data filled in
             foreach (var keyValuePair in dictionary.OrderByDescending(x => x.Key).Reverse()) {
                 DataRow newRow = dt.NewRow();
@@ -907,6 +924,13 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
 
             //gets the names of the stratify groups. ie, callerType,region or tumourGroup Codes
             Dictionary<int, string> idToName = getTypeNames(stratifyBy);
+
+            //Even if the dictionary does not contain the no group data, table should still show them.
+            if (!dictionary.ContainsKey(-1)) {
+                DataRow noGroupRow = dt.NewRow();
+                noGroupRow[stratifyGroups] = "No " + stratifyGroups;
+                dt.Rows.Add(noGroupRow);
+            }
 
             //adds a row for each startify groups with perper data filled in
             foreach (var keyValuePair in dictionary.OrderByDescending(x=>x.Key).Reverse()) {
@@ -987,6 +1011,12 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             //gets the names of the stratify groups. ie, callerType,region or tumourGroup Codes
             Dictionary<int, string> idToName = getTypeNames(stratifyBy);
 
+            //Even if the dictionary does not contain the no group data, table should still show them.
+            if (!dictionary.ContainsKey(-1)) {
+                DataRow noGroupRow = dt.NewRow();
+                noGroupRow[stratifyGroups] = "No " + stratifyGroups;
+                dt.Rows.Add(noGroupRow);
+            }
 
             foreach (var keyValuePair in dictionary.OrderByDescending(x => x.Key).Reverse()) {
                 //adds a row for each stratify groups in the table
@@ -1067,6 +1097,12 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
             //gets the names of the stratify groups. ie, callerType,region or tumourGroup Codes
             Dictionary<int, string> idToName = getTypeNames(stratifyBy);
 
+            //Even if the dictionary does not contain the no group data, table should still show them.
+            if (!dictionary.ContainsKey(-1)) {
+                DataRow noGroupRow = dt.NewRow();
+                noGroupRow[stratifyGroups] = "No " + stratifyGroups;
+                dt.Rows.Add(noGroupRow);
+            }
 
             foreach (var keyValuePair in dictionary.OrderByDescending(x => x.Key).Reverse()) {
                 //adds a row for each stratify groups in the table
@@ -1075,6 +1111,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem
                 //if the key is null then it should create a row for 'No group assigned' requests
                 if (keyValuePair.Key!= -1) {
                     newRow[stratifyGroups] = idToName[keyValuePair.Key];
+                    idToName.Remove(keyValuePair.Key);
                 } else {
                     newRow[stratifyGroups] = "No " + stratifyGroups;
                 }
