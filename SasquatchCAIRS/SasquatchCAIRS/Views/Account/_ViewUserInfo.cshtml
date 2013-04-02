@@ -19,11 +19,11 @@
     </tr>
     <tr>
         <td class="tbl-label">@Constants.UIString.FieldLabel.ROLES</td>
-        <td>@foreach (string role in Roles.GetRolesForUser(Model.UserName)) { @role <br /> }</td>
+        <td id="user-roles">@foreach (string role in Roles.GetRolesForUser(Model.UserName)) { @role <br /> }</td>
     </tr>
     <tr>
         <td class="tbl-label">@Constants.UIString.FieldLabel.GROUPS</td>
-        <td>@foreach (UserGroup group in (new UserController()).getUserGroups(Model.UserName)) {
+        <td id="user-groups">@foreach (UserGroup group in (new UserController()).getUserGroups(Model.UserName)) {
                                                                  <span>@group.Code - @group.Value</span>
                                                                  <br />
                                                              }</td>
