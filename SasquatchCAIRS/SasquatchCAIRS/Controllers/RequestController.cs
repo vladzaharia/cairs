@@ -184,6 +184,13 @@ namespace SasquatchCAIRS.Controllers
 
             var reqContent = rmc.getRequestDetails(id);
 
+            if (reqContent.requestStatus == Constants.RequestStatus.Invalid) {
+                // Invalid request, cannot edit
+                return RedirectToAction("Index", "Home", new {
+                    status = Constants.URLStatus.EditingInvalid
+                });
+            }
+
             ViewBag.RequestorTypes = new SelectList(
                 dc.getEntries(Constants.DropdownTable.RequestorType),
                 "id", "text");
@@ -319,8 +326,8 @@ namespace SasquatchCAIRS.Controllers
             almc.addEntry(reqContent.requestID, up.UserId,
                 Constants.AuditType.RequestModification);
 
-            if (reqContent.requestStatus == Constants.RequestStatus.Completed &&
-                reqContent.timeClosed != null) {
+            if (Request.Form["mark_as_complete"] != null) {
+
                 almc.addEntry(reqContent.requestID, up.UserId,
                     Constants.AuditType.RequestCompletion,
                     (DateTime) reqContent.timeClosed);

@@ -407,6 +407,9 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                             _db.QuestionResponses.InsertOnSubmit(qr);
                             _db.SubmitChanges();
 
+                            qrContent.questionResponseID =
+                                qr.QuestionResponseID;
+
                             // Add new Keywords to QuestionResponse
                             foreach (String kw in qrContent.keywords) {
                                 int kwId = getKeywordIdAndActivate(kw);
@@ -414,9 +417,8 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
                                 // Set Keyword for QuestionResponse
                                 KeywordQuestion kq = new KeywordQuestion {
                                     KeywordID = kwId,
-                                    RequestID = reqContent.requestID,
-                                    QuestionResponseID =
-                                        qrContent.questionResponseID
+                                    RequestID = req.RequestID,
+                                    QuestionResponseID = qr.QuestionResponseID
                                 };
 
                                 _db.KeywordQuestions.InsertOnSubmit(kq);

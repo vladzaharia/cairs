@@ -85,14 +85,21 @@
         <button type="submit" name="delete" class="btn btn-custom">
             <i class="icon-remove button-icon"></i> @Constants.UIString.ButtonText.DELETE_REQUEST
         </button>
-        <button type="submit" name="save_draft" class="btn btn-custom">
-            <i class="icon-save button-icon"></i> @Constants.UIString.ButtonText.SAVE_DRAFT
-        </button>
-        <button type="submit" name="mark_as_complete"
-                class="btn btn-custom"
-                id="mark_as_complete">
-            <i class="icon-check button-icon"></i> @Constants.UIString.ButtonText.MARK_COMPLETE
-        </button>
+        @if (Model.requestStatus == Constants.RequestStatus.Open) {
+            <button type="submit" name="save_draft" class="btn btn-custom">
+                <i class="icon-save button-icon"></i> @Constants.UIString.ButtonText.SAVE_DRAFT
+            </button>
+            <button type="submit" name="mark_as_complete"
+                    class="btn btn-custom"
+                    id="mark_as_complete">
+                <i class="icon-check button-icon"></i> @Constants.UIString.ButtonText.MARK_COMPLETE
+            </button>
+        }
+        @if (Model.requestStatus == Constants.RequestStatus.Completed) {
+            <button type="submit" name="update" class="btn btn-custom">
+                <i class="icon-save button-icon"></i> @Constants.UIString.ButtonText.UPDATE_REQUEST
+            </button>
+        }
     </div>
 }
 
