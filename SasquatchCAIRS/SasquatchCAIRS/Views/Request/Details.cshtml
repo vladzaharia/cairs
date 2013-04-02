@@ -253,7 +253,7 @@
 
 @if (Model == null) {
     <h2>@Constants.UIString.TitleText.VIEW_REQUEST - @Constants.UIString.TitleText.ERROR</h2>
-    <p>Cannot open request. You may not have the appropriate permissions to access this request.</p>
+    <p>@ViewBag.Error</p>
 }
 
 <script type="text/javascript">
