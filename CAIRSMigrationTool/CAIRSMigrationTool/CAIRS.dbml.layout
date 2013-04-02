@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 10.375" name="CAIRS">
+  <DataContextMoniker Name="/CAIRSDataContext" />
+  <nestedChildShapes>
+    <classShape Id="65717e79-7909-4b3e-bcf7-52f612aea62a" absoluteBounds="5.375, 2.5, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/CAIRSDataContext/QuestionResponse" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0e086999-5545-4a8c-8187-ba5077cda153" absoluteBounds="5.39, 2.96, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="570734ac-f212-45c0-8c55-a6de7f409651" absoluteBounds="5.375, 5.5, 2, 1.3862939453125">
+      <DataClassMoniker Name="/CAIRSDataContext/KeywordQuestion" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4b1387ff-65c7-40bb-a52e-6c2d71b783be" absoluteBounds="5.39, 5.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.375 : 5.23240397135417); (6.375 : 5.5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/CAIRSDataContext/QuestionResponse/QuestionResponse_KeywordQuestion" />
+      <nodes>
+        <classShapeMoniker Id="65717e79-7909-4b3e-bcf7-52f612aea62a" />
+        <classShapeMoniker Id="570734ac-f212-45c0-8c55-a6de7f409651" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="d6e7e292-aa09-4baf-9784-1187956ef20f" absoluteBounds="5.375, 7.25, 2, 1.3862939453125">
+      <DataClassMoniker Name="/CAIRSDataContext/Keyword" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b7a42e51-63cb-40e4-bcad-bfdfaba0205f" absoluteBounds="5.39, 7.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.375 : 7.25); (6.375 : 6.8862939453125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/CAIRSDataContext/Keyword/Keyword_KeywordQuestion" />
+      <nodes>
+        <classShapeMoniker Id="d6e7e292-aa09-4baf-9784-1187956ef20f" />
+        <classShapeMoniker Id="570734ac-f212-45c0-8c55-a6de7f409651" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="bff5eac2-0d63-4049-96a1-c3b759d0eb2a" absoluteBounds="8, 4.5, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/CAIRSDataContext/Reference" />
+      <nestedChildShapes>
+        <elementListCompartment Id="410e239d-1a80-423d-9764-ff0fcde7a959" absoluteBounds="8.015, 4.96, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(7.375 : 4.86620198567708); (8 : 4.86620198567708)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/CAIRSDataContext/QuestionResponse/QuestionResponse_Reference" />
+      <nodes>
+        <classShapeMoniker Id="65717e79-7909-4b3e-bcf7-52f612aea62a" />
+        <classShapeMoniker Id="bff5eac2-0d63-4049-96a1-c3b759d0eb2a" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="08de3d42-f18f-4a39-b07d-18be63817578" absoluteBounds="1.125, 6.25, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/CAIRSDataContext/AuditLog" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a4bf3779-b075-4851-b860-be579b31b386" absoluteBounds="1.1400000000000001, 6.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="dadbcca5-d8f9-4b92-805d-49599752bad7" absoluteBounds="5.375, 0.5, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/CAIRSDataContext/QuestionType" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7a6538f8-70a6-48ab-b9d4-3e1de25316c5" absoluteBounds="5.39, 0.96, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.375 : 2.07859537760417); (6.375 : 2.5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/CAIRSDataContext/QuestionType/QuestionType_QuestionResponse" />
+      <nodes>
+        <classShapeMoniker Id="dadbcca5-d8f9-4b92-805d-49599752bad7" />
+        <classShapeMoniker Id="65717e79-7909-4b3e-bcf7-52f612aea62a" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="5a36269d-0383-4131-8579-eaf0f4fdb975" absoluteBounds="3, 0.5, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/CAIRSDataContext/Region" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e085b390-fb9d-4833-a6d7-48969efc4b3b" absoluteBounds="3.0150000000000006, 0.96, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="eaebf4fd-4730-449e-95fd-aae63e603a82" absoluteBounds="3, 3.625, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/CAIRSDataContext/RequestorType" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a21d6416-4dc7-4f1c-bef1-8a876f035ae3" absoluteBounds="3.015, 4.085, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="90a08caa-1cee-4a65-8cc0-3024839d08d1" absoluteBounds="8.125, 2.5, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/CAIRSDataContext/TumourGroup" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ea86e00d-9cb3-4098-b543-8d9367f453fa" absoluteBounds="8.14, 2.96, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(8.125 : 3.28929768880208); (7.375 : 3.28929768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/CAIRSDataContext/TumourGroup/TumourGroup_QuestionResponse" />
+      <nodes>
+        <classShapeMoniker Id="90a08caa-1cee-4a65-8cc0-3024839d08d1" />
+        <classShapeMoniker Id="65717e79-7909-4b3e-bcf7-52f612aea62a" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="c74be5b9-6f60-49b9-84fe-1a57882b1430" absoluteBounds="1.125, 8.375, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/CAIRSDataContext/UserProfile" />
+      <nestedChildShapes>
+        <elementListCompartment Id="87c9b581-7cf7-4903-8e9d-3cea04851846" absoluteBounds="1.1400000000000006, 8.835, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.125 : 8.375); (2.125 : 7.82859537760417)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/CAIRSDataContext/UserProfile/UserProfile_AuditLog" />
+      <nodes>
+        <classShapeMoniker Id="c74be5b9-6f60-49b9-84fe-1a57882b1430" />
+        <classShapeMoniker Id="08de3d42-f18f-4a39-b07d-18be63817578" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="1dd02f30-afef-4660-8cf0-3e80ad1b75dd" absoluteBounds="0.5, 1.375, 2, 4.0785139973958326">
+      <DataClassMoniker Name="/CAIRSDataContext/Request" />
+      <nestedChildShapes>
+        <elementListCompartment Id="53a85b94-9938-4074-bd9e-3004b1658bdb" absoluteBounds="0.51500000000000012, 1.835, 1.9700000000000002, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.5 : 3.03125); (5.375 : 3.03125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CAIRSDataContext/Request/Request_QuestionResponse" />
+      <nodes>
+        <classShapeMoniker Id="1dd02f30-afef-4660-8cf0-3e80ad1b75dd" />
+        <classShapeMoniker Id="65717e79-7909-4b3e-bcf7-52f612aea62a" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(1.8125 : 5.45351399739583); (1.8125 : 6.25)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CAIRSDataContext/Request/Request_AuditLog" />
+      <nodes>
+        <classShapeMoniker Id="1dd02f30-afef-4660-8cf0-3e80ad1b75dd" />
+        <classShapeMoniker Id="08de3d42-f18f-4a39-b07d-18be63817578" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(3 : 1.72679768880208); (2.5 : 1.72679768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CAIRSDataContext/Region/Region_Request" />
+      <nodes>
+        <classShapeMoniker Id="5a36269d-0383-4131-8579-eaf0f4fdb975" />
+        <classShapeMoniker Id="1dd02f30-afef-4660-8cf0-3e80ad1b75dd" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(1.20923076923077 : 1.375); (1.20923076923077 : 1.125); (1.80461538461538 : 1.125); (1.80461538461538 : 1.375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/CAIRSDataContext/Request/Request_Request" />
+      <nodes>
+        <classShapeMoniker Id="1dd02f30-afef-4660-8cf0-3e80ad1b75dd" />
+        <classShapeMoniker Id="1dd02f30-afef-4660-8cf0-3e80ad1b75dd" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(3 : 4.41429768880208); (2.5 : 4.41429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CAIRSDataContext/RequestorType/RequestorType_Request" />
+      <nodes>
+        <classShapeMoniker Id="eaebf4fd-4730-449e-95fd-aae63e603a82" />
+        <classShapeMoniker Id="1dd02f30-afef-4660-8cf0-3e80ad1b75dd" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
