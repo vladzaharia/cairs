@@ -4,8 +4,8 @@ SasquatchCAIRS/SasquatchCAIRS/bin
 SasquatchCAIRS/SasquatchCAIRS/Properties/PublishProfiles
 SasquatchCAIRS/SasquatchCAIRS/Properties/PublishProfiles/*
 SasquatchCAIRS/SasquatchCAIRS/obj
-*/obj
-*/bin
+SasquatchCAIRS/*/obj
+SasquatchCAIRS/*/bin
 CAIRSMigrationTool/CAIRSMigrationTool/obj
 CAIRSMigrationTool/CAIRSMigrationTool/bin
 SasquatchCAIRS/CAIRSDocProject/Help
