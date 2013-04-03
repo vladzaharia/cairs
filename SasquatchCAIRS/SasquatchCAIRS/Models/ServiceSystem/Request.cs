@@ -226,10 +226,6 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             keywords.Add(newKeyword);
         }
 
-        public void removeKeyword(string keyword) {
-             keywords.Remove(keyword);
-        }
-
         /// <summary>
         /// Compares the current instance with another QuestionResponseContent
         /// object and returns an integer that indicates whether the current
