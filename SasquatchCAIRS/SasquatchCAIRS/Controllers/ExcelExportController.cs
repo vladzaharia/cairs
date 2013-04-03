@@ -51,14 +51,16 @@ namespace SasquatchCAIRS.Controllers {
                     string sheetName;
                     WorksheetPart worksheetPart;
 
-                    for (int x = 16; x < tableDictionary.Count - 15; x++) {
-                        CopySheet(spreadsheet.DocumentType, workbook, "Sheet1",
+                    //if there are more than 15 worksheets that needs to be created, 
+                    //the following method copies the first template and adds extra worksheets
+                    //to the given workbook.
+                    for (int x = 16; x <= tableDictionary.Count; x++) {
+                        copySheet(spreadsheet.DocumentType, workbook, "Sheet1",
                                   "Sheet" + x.ToString());
                     }
 
                     int i = 1;
                     foreach (var keyValue in tableDictionary) {
-                        if (i < 16) {
                             table = keyValue.Value;
                             sheetName = "Sheet" + (i).ToString();
                             worksheetPart = getWorksheetPart(workbook, sheetName);
@@ -132,9 +134,9 @@ namespace SasquatchCAIRS.Controllers {
 
                             //incerement i to get the nextsheet
                             i++;
-                        }
                     }
 
+                    //if there were less than 15 worksheets to create, the rest of the templates are deleted.
                     for (int j = i; j < 16; j++) {
                         sheetName = "Sheet" + (j).ToString();
                         deleteAWorkSheet(workbook, sheetName);
@@ -161,7 +163,14 @@ namespace SasquatchCAIRS.Controllers {
             }
         }
 
-        private void CopySheet(SpreadsheetDocumentType docType, WorkbookPart workbookPart, string sheetName,
+        /// <summary>
+        /// copies a sheet with a given sheet name and saves it with the clonedSheetName in the workbook
+        /// </summary>
+        /// <param name="docType">docType to created for temp file in the method</param>
+        /// <param name="workbookPart">workbook which the worksheet to be copied and the copied worksheet to be saved</param>
+        /// <param name="sheetName">name of the worksheet to copy</param>
+        /// <param name="clonedSheetName">new name of the copied sheet</param>
+        private void copySheet(SpreadsheetDocumentType docType, WorkbookPart workbookPart, string sheetName,
                                string clonedSheetName) {
             //Get the source sheet to be copied
             WorksheetPart sourceSheetPart = getWorksheetPart(workbookPart,
@@ -178,9 +187,9 @@ namespace SasquatchCAIRS.Controllers {
             tableId = numTableDefParts;
             //Clean up table definition parts (tables need unique ids)
             if (numTableDefParts != 0)
-                FixupTableParts(clonedSheet, numTableDefParts);
+                fixupTableParts(clonedSheet, numTableDefParts);
             //There should only be one sheet that has focus
-            CleanView(clonedSheet);
+            cleanView(clonedSheet);
 
             //Add new sheet to main workbook part
             Sheets sheets = workbookPart.Workbook.GetFirstChild<Sheets>();
@@ -193,7 +202,11 @@ namespace SasquatchCAIRS.Controllers {
             workbookPart.Workbook.Save();
         }
 
-        private void CleanView(WorksheetPart worksheetPart) {
+        /// <summary>
+        ///  remove any view reference in the cloned worksheet.
+        /// </summary>
+        /// <param name="worksheetPart">worksheet to clean</param>
+        private void cleanView(WorksheetPart worksheetPart) {
             //There can only be one sheet that has focus
             SheetViews views = worksheetPart.Worksheet.GetFirstChild<SheetViews>();
             if (views != null) {
@@ -202,8 +215,12 @@ namespace SasquatchCAIRS.Controllers {
             }
         }
 
-
-        private void FixupTableParts(WorksheetPart worksheetPart, int numTableDefParts) {
+        /// <summary>
+        /// make sure each table has a unique id and name
+        /// </summary>
+        /// <param name="worksheetPart">worksheet for table part fix</param>
+        /// <param name="numTableDefParts">number of the tableDefPart in the original worksheet</param>
+        private void fixupTableParts(WorksheetPart worksheetPart, int numTableDefParts) {
             //Every table needs a unique id and name
             foreach (TableDefinitionPart tableDefPart in worksheetPart.TableDefinitionParts) {
                 tableId++;
@@ -562,7 +579,7 @@ namespace SasquatchCAIRS.Controllers {
 
         #endregion
 
-        //Basic Code from OpenXML tutorial: http://lateral8.com/articles/2010/3/5/openxml-sdk-20-export-a-datatable-to-excel.aspx
+        //Basic Code from OpenXML tutorial blog: http://blogs.msdn.com/b/brian_jones/
         //Customized to create data in more than one excel sheet
     }
 }
