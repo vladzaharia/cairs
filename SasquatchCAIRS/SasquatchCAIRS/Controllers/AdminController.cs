@@ -9,7 +9,7 @@ using SasquatchCAIRS.Models;
 using SasquatchCAIRS.Models.ServiceSystem;
 
 namespace SasquatchCAIRS.Controllers {
-   // [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
+    [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
     public class AdminController : Controller {
         private CAIRSDataContext _db = new CAIRSDataContext();
         private DropdownController _dc = new DropdownController();
@@ -400,10 +400,10 @@ namespace SasquatchCAIRS.Controllers {
                                          bool active) {
             // Blank Value Sanity Checks
             if (table != Constants.DropdownTable.Keyword && code == "") {
-                ModelState.AddModelError("value", "Value cannot be empty!");
+                ModelState.AddModelError("code", "Code cannot be empty!");
             }
             if (value == "") {
-                ModelState.AddModelError("code", "Value cannot be empty!");
+                ModelState.AddModelError("value", "Value cannot be empty!");
             }
 
             // Real Sanity Checks
@@ -483,10 +483,10 @@ namespace SasquatchCAIRS.Controllers {
                                            bool active) {
             // Blank Value Sanity Checks
             if (table != Constants.DropdownTable.Keyword && code == "") {
-                ModelState.AddModelError("value", "Value cannot be empty!");
+                ModelState.AddModelError("code", "Code cannot be empty!");
             }
             if (value == "") {
-                ModelState.AddModelError("code", "Value cannot be empty!");
+                ModelState.AddModelError("value", "Value cannot be empty!");
             }
 
             // Real Sanity Checks

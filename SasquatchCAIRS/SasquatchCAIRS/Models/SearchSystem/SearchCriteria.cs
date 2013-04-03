@@ -11,6 +11,20 @@ namespace SasquatchCAIRS.Models.SearchSystem {
             set;
         }
 
+        [DataType(DataType.Text)]
+        public String allKeywordString
+        {
+            get;
+            set;
+        }
+
+        [DataType(DataType.Text)]
+        public String noneKeywordString
+        {
+            get;
+            set;
+        }
+
         [DataType(DataType.Date)]
         public DateTime startTime { 
             get;
@@ -75,5 +89,8 @@ namespace SasquatchCAIRS.Models.SearchSystem {
             get;
             set;
         }
+
+        
+
     }
 }

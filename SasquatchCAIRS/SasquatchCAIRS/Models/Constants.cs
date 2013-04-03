@@ -42,6 +42,10 @@ namespace SasquatchCAIRS.Models {
             Consequence.Unlikely
         };
 
+       
+
+       
+
         public enum ReferenceType {
             URL = 0,
             File = 1,
@@ -88,7 +92,8 @@ namespace SasquatchCAIRS.Models {
             NotLockedToYou = 5,
             SuccessfulEdit = 6,
             NoRequestEditorRole = 7,
-            SuccessfulCreate = 8
+            SuccessfulCreate = 8,
+            EditingInvalid = 9
         }
 
         public static readonly DropdownTable[] DROPDOWN_TABLES = new DropdownTable[6] {
@@ -102,7 +107,7 @@ namespace SasquatchCAIRS.Models {
 
         public const string EMPTY_DATE = "0001-01-01";
         public const string DATE_FORMAT = "yyyy-MM-dd";
-
+        public const int PAGE_SIZE = 20;
 
         public static class DataTypeStrings {
             public static string DATA_TYPE = "Data Type";
@@ -232,6 +237,7 @@ namespace SasquatchCAIRS.Models {
                 // Search Information
                 public const string PATIENT_NAME_LABEL = "Patient Name";
                 public const string CALLER_NAME_LABEL = "Caller Name";
+                
 
                 // Question Information
                 public const string QUESTION = "Question";
@@ -243,6 +249,9 @@ namespace SasquatchCAIRS.Models {
                 public const string CONSEQUENCE = "Probability of Consequence";
                 public const string IMPACT_SCORE = "Impact Score";
                 public const string KEYWORDS = "Keywords";
+                public const string ANY_KEYWORDS = "Any of These Keywords";
+                public const string ALL_KEYWORDS = "All of These Keywords";
+                public const string NONE_KEYWORDS = "None of These Keywords";
                 public const string REFERENCES = "References";
                 public const string PARENT_REQUEST = "Parent Request ID";
                 public const string TIME_SPENT = "Time Spent";
@@ -297,6 +306,7 @@ namespace SasquatchCAIRS.Models {
                 public const string LOOKUP = "Lookup Fields";
                 public const string GEN_AUDIT = "Generate Audit Report";
                 public const string CREATE = "Create";
+                public const string UPDATE_REQUEST = "Update";
             }
 
             // Text used in Page Titles
@@ -323,6 +333,18 @@ namespace SasquatchCAIRS.Models {
             public static class GeneralText {
                 public const string ACTIVE = "Active";
                 public const string DISABLED = "Disabled";
+            }
+
+            public static class ItemIDs {
+                public const string DASHBOARD = "dashboard";
+                public const string CREATE_REQUEST = "create-request";
+                public const string REPORTS = "reports";
+                public const string ADMIN = "admin";
+                public const string SEARCH_DIV = "quick-search-div";
+                public const string SEARCH_FIELD = "keywords";
+                public const string SEARCH_BUTTON = "search-button";
+                public const string ADVANCED_SEARCH = "advanced-search";
+                public const string SUBMIT_BUTTON = "submit-button";
             }
 
             public static class Messages {
