@@ -67,7 +67,7 @@ namespace SasquatchCAIRS.Models {
             "Avg Time Per Request Stratified by Caller Type", 
             "Avg Time To Complete Stratified by Caller Type",
             "Total Number of Requests Stratified by Caller Type", 
-            "Total Time Spend Stratified by Caller Type",
+            "Total Time Spent Stratified by Caller Type",
             "Avg Time Per Question Stratified by Tumour Group", 
             "Avg Time To Complete Stratified by Tumour Group",
             "Total Number of Questions Stratified by Tumour Group", 
@@ -92,7 +92,8 @@ namespace SasquatchCAIRS.Models {
             NotLockedToYou = 5,
             SuccessfulEdit = 6,
             NoRequestEditorRole = 7,
-            SuccessfulCreate = 8
+            SuccessfulCreate = 8,
+            EditingInvalid = 9
         }
 
         public static readonly DropdownTable[] DROPDOWN_TABLES = new DropdownTable[6] {
@@ -110,7 +111,7 @@ namespace SasquatchCAIRS.Models {
 
         public static class DataTypeStrings {
             public static string DATA_TYPE = "Data Type";
-            public static string AVG_TIME = "Avg Time Per Request/Question";
+            public static string AVG_TIME = "Avg Time";
             public static string AVG_TIME_TO_COMPLETE = "Avg Time To Complete";
             public static string TOTAL_NUM = "Total Number";
             public static string TOTAL_TIME_SPENT = "Total Time Spent";
@@ -305,6 +306,7 @@ namespace SasquatchCAIRS.Models {
                 public const string LOOKUP = "Lookup Fields";
                 public const string GEN_AUDIT = "Generate Audit Report";
                 public const string CREATE = "Create";
+                public const string UPDATE_REQUEST = "Update";
             }
 
             // Text used in Page Titles
@@ -357,18 +359,18 @@ namespace SasquatchCAIRS.Models {
 
         // For Report Generation
         public enum Month {
-            January = 1,
-            Feburary = 2,
-            March = 3,
-            April = 4,
+            Jan = 1,
+            Feb = 2,
+            Mar = 3,
+            Apr = 4,
             May = 5,
-            June = 6,
-            July = 7,
-            August = 8,
-            September = 9,
-            October = 10,
-            November = 11,
-            December = 12
+            Jun = 6,
+            Jul = 7,
+            Aug = 8,
+            Sep = 9,
+            Oct = 10,
+            Nov = 11,
+            Dec = 12
         }
 
         public enum DataType {

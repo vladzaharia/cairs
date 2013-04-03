@@ -184,6 +184,13 @@ namespace SasquatchCAIRS.Controllers
 
             var reqContent = rmc.getRequestDetails(id);
 
+            if (reqContent.requestStatus == Constants.RequestStatus.Invalid) {
+                // Invalid request, cannot edit
+                return RedirectToAction("Index", "Home", new {
+                    status = Constants.URLStatus.EditingInvalid
+                });
+            }
+
             ViewBag.RequestorTypes = new SelectList(
                 dc.getEntries(Constants.DropdownTable.RequestorType),
                 "id", "text");
@@ -319,8 +326,8 @@ namespace SasquatchCAIRS.Controllers
             almc.addEntry(reqContent.requestID, up.UserId,
                 Constants.AuditType.RequestModification);
 
-            if (reqContent.requestStatus == Constants.RequestStatus.Completed &&
-                reqContent.timeClosed != null) {
+            if (Request.Form["mark_as_complete"] != null) {
+
                 almc.addEntry(reqContent.requestID, up.UserId,
                     Constants.AuditType.RequestCompletion,
                     (DateTime) reqContent.timeClosed);
@@ -425,6 +432,11 @@ namespace SasquatchCAIRS.Controllers
             // Set up the Request Object
             RequestContent request = rmc.getRequestDetails(id);
             if (request == null) {
+                ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST
+                    + " - "
+                    + Constants.UIString.TitleText.ERROR;
+                ViewBag.Error = "The Request ID provided does not exist in the database.";
+
                 return View((object) null);
             }
 
@@ -440,6 +452,7 @@ namespace SasquatchCAIRS.Controllers
                 ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST 
                     + " - " 
                     + Constants.UIString.TitleText.ERROR;
+                ViewBag.Error = "You do not have the necessary permissions to view this request.";
 
                 return View((object) null);
             }
@@ -450,6 +463,7 @@ namespace SasquatchCAIRS.Controllers
                 ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST
                     + " - "
                     + Constants.UIString.TitleText.ERROR;
+                ViewBag.Error = "You do not have the necessary permissions to view this request.";
 
                 return View((object) null);
             }
@@ -466,8 +480,9 @@ namespace SasquatchCAIRS.Controllers
                     ViewBag.Title = Constants.UIString.TitleText.VIEW_REQUEST
                                     + " - "
                                     + Constants.UIString.TitleText.ERROR;
+                    ViewBag.Error = "This request has been locked to another person and cannot be viewed until unlocked.";
 
-                    return View(request);
+                    return View((object) null);
                 }
             }
 
