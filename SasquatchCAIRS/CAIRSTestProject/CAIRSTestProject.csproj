@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Data" />
@@ -80,6 +81,7 @@
     <Compile Include="Unit\TestAuditLogManagementController.cs" />
     <Compile Include="Unit\TestRequestManagementController.cs" />
     <Compile Include="Unit\ReportControllerTest.cs" />
+    <Compile Include="Unit\TestUserController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

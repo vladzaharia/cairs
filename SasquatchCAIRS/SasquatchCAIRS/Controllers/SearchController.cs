@@ -1,4 +1,5 @@
-﻿using SasquatchCAIRS.Controllers.ServiceSystem;
+﻿using System.Diagnostics.CodeAnalysis;
+using SasquatchCAIRS.Controllers.ServiceSystem;
 using SasquatchCAIRS.Models;
 using SasquatchCAIRS.Models.SearchSystem;
 using System;
@@ -12,6 +13,7 @@ namespace SasquatchCAIRS.Controllers {
     /// <summary>
     /// Controller responsible for executing searches and returning the corresponding requests
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class SearchController : Controller {
 
         private DropdownController _dropdownController =
