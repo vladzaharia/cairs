@@ -76,6 +76,7 @@
     <Compile Include="Integration\NavigationTests.cs" />
     <Compile Include="Integration\AdminUserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unit\TestSearchController.cs" />
     <Compile Include="Unit\TestAuditLogManagementController.cs" />
     <Compile Include="Unit\TestRequestManagementController.cs" />
     <Compile Include="Unit\ReportControllerTest.cs" />

@@ -6,7 +6,7 @@ namespace SasquatchCAIRS.Models.SearchSystem {
     public class SearchCriteria {
 
         [DataType(DataType.Text)]
-        public String keywordString {
+        public String anyKeywordString {
             get;
             set;
         }
