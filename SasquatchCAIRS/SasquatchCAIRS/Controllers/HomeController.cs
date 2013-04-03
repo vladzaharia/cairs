@@ -97,6 +97,10 @@ namespace SasquatchCAIRS.Controllers {
             } else if (status == Constants.URLStatus.SuccessfulCreate) {
                 ViewBag.Status =
                     "The request has been successfully created.";
+                ViewBag.StatusColor = "success";
+            } else if (status == Constants.URLStatus.EditingInvalid) {
+                ViewBag.Status =
+                    "The request is marked as invalid and cannot be edited.";
                 ViewBag.StatusColor = "danger";
             }
 
