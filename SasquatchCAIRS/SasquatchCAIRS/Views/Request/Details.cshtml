@@ -231,7 +231,9 @@
     </table>
 
     <div class="buttons">
-        @if (User.IsInRole(Constants.Roles.REQUEST_EDITOR) && (!ViewBag.IsLocked || ViewBag.IsLockedToMe)) {
+        @if (User.IsInRole(Constants.Roles.REQUEST_EDITOR) 
+            && (!ViewBag.IsLocked || ViewBag.IsLockedToMe)
+            && (Model.requestStatus != Constants.RequestStatus.Invalid)) {
             <a href="@Url.Action("Edit", "Request", new {id = Model.requestID})" class="btn btn-custom">
                 <i class="icon-edit button-icon"></i> @Constants.UIString.ButtonText.EDIT_REQUEST
             </a>
@@ -251,7 +253,7 @@
 
 @if (Model == null) {
     <h2>@Constants.UIString.TitleText.VIEW_REQUEST - @Constants.UIString.TitleText.ERROR</h2>
-    <p>Cannot open request. You may not have the appropriate permissions to access this request.</p>
+    <p>@ViewBag.Error</p>
 }
 
 <script type="text/javascript">
