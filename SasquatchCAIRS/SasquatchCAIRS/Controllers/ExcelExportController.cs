@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,6 +15,7 @@ using Formula = DocumentFormat.OpenXml.Drawing.Charts.Formula;
 
 namespace SasquatchCAIRS.Controllers {
     public class ExcelExportController : Controller {
+        private int tableId = 0;
         #region Public Methods
 
         /// <summary>
@@ -22,12 +24,14 @@ namespace SasquatchCAIRS.Controllers {
         /// </summary>
         /// <param name="reportType">Either Report or AuditLog from constants</param>
         /// <param name="tableDictionary">
-        /// dictionary of the tables to be exported. for either type,
-        ///     the number of tables in the list must not exceed 15</param>
+        ///     dictionary of the tables to be exported. for either type,
+        ///     the number of tables in the list must not exceed 15
+        /// </param>
         /// <param name="templatePath">template file path</param>
         /// <param name="workingCopyPath">working copy path</param>
         public void exportDataTable(Constants.ReportType reportType,
-                                    Dictionary<string, DataTable> tableDictionary,
+                                    Dictionary<string, DataTable>
+                                        tableDictionary,
                                     string templatePath, string workingCopyPath) {
             //Instead of creating a new excel file, let's use the template and make a copy to work with.
             System.IO.File.Copy(templatePath, workingCopyPath, true);
@@ -47,8 +51,13 @@ namespace SasquatchCAIRS.Controllers {
                     string sheetName;
                     WorksheetPart worksheetPart;
 
+                    for (int x = 16; x < tableDictionary.Count - 15; x++) {
+                        CopySheet(spreadsheet.DocumentType, workbook, "Sheet1",
+                                  "Sheet" + x.ToString());
+                    }
+
                     int i = 1;
-                    foreach ( KeyValuePair<string, DataTable> keyValue in tableDictionary ) {
+                    foreach (var keyValue in tableDictionary) {
                         if (i < 16) {
                             table = keyValue.Value;
                             sheetName = "Sheet" + (i).ToString();
@@ -56,11 +65,13 @@ namespace SasquatchCAIRS.Controllers {
 
                             //Merge Cells for title
                             string endColumnIndex =
-                                    getColumnName(table.Columns.Count);
-                            MergeTwoCells(worksheetPart.Worksheet, "A1", endColumnIndex + "1");
+                                getColumnName(table.Columns.Count);
+                            MergeTwoCells(worksheetPart.Worksheet, "A1",
+                                          endColumnIndex + "1");
 
                             data =
-                                worksheetPart.Worksheet.GetFirstChild<SheetData>();
+                                worksheetPart.Worksheet.GetFirstChild<SheetData>
+                                    ();
 
                             //creates title
                             var titleRow = new Row();
@@ -93,13 +104,15 @@ namespace SasquatchCAIRS.Controllers {
                                         data.AppendChild(
                                             createContentRow(
                                                 Constants.CellDataType.Number,
-                                                contentRow, j + Constants.dataStartRow));
+                                                contentRow,
+                                                j + Constants.dataStartRow));
                                         break;
                                     default:
                                         data.AppendChild(
                                             createContentRow(
                                                 Constants.CellDataType.Text,
-                                                contentRow, j + Constants.dataStartRow));
+                                                contentRow,
+                                                j + Constants.dataStartRow));
                                         break;
                                 }
                             }
@@ -148,6 +161,59 @@ namespace SasquatchCAIRS.Controllers {
             }
         }
 
+        private void CopySheet(SpreadsheetDocumentType docType, WorkbookPart workbookPart, string sheetName,
+                               string clonedSheetName) {
+            //Get the source sheet to be copied
+            WorksheetPart sourceSheetPart = getWorksheetPart(workbookPart,
+                                                             sheetName);
+            //Take advantage of AddPart for deep cloning
+            SpreadsheetDocument tempSheet = SpreadsheetDocument.Create(new MemoryStream(), docType);
+            WorkbookPart tempWorkbookPart = tempSheet.AddWorkbookPart();
+            WorksheetPart tempWorksheetPart = tempWorkbookPart.AddPart<WorksheetPart>(sourceSheetPart);
+            //Add cloned sheet and all associated parts to workbook
+            WorksheetPart clonedSheet = workbookPart.AddPart<WorksheetPart>(tempWorksheetPart);
+
+            //Table definition parts are somewhat special and need unique ids...so let's make an id based on count
+            int numTableDefParts = sourceSheetPart.GetPartsCountOfType<TableDefinitionPart>();
+            tableId = numTableDefParts;
+            //Clean up table definition parts (tables need unique ids)
+            if (numTableDefParts != 0)
+                FixupTableParts(clonedSheet, numTableDefParts);
+            //There should only be one sheet that has focus
+            CleanView(clonedSheet);
+
+            //Add new sheet to main workbook part
+            Sheets sheets = workbookPart.Workbook.GetFirstChild<Sheets>();
+            Sheet copiedSheet = new Sheet();
+            copiedSheet.Name = clonedSheetName;
+            copiedSheet.Id = workbookPart.GetIdOfPart(clonedSheet);
+            copiedSheet.SheetId = (uint) sheets.ChildElements.Count + 1;
+            sheets.Append(copiedSheet);
+            //Save Changes
+            workbookPart.Workbook.Save();
+        }
+
+        private void CleanView(WorksheetPart worksheetPart) {
+            //There can only be one sheet that has focus
+            SheetViews views = worksheetPart.Worksheet.GetFirstChild<SheetViews>();
+            if (views != null) {
+                views.Remove();
+                worksheetPart.Worksheet.Save();
+            }
+        }
+
+
+        private void FixupTableParts(WorksheetPart worksheetPart, int numTableDefParts) {
+            //Every table needs a unique id and name
+            foreach (TableDefinitionPart tableDefPart in worksheetPart.TableDefinitionParts) {
+                tableId++;
+                tableDefPart.Table.Id = (uint) tableId;
+                tableDefPart.Table.DisplayName = "CopiedTable" + tableId;
+                tableDefPart.Table.Name = "CopiedTable" + tableId;
+                tableDefPart.Table.Save();
+            }
+        }
+
         /// <summary>
         ///     Finds the worksheetPart with given sheetName
         /// </summary>
@@ -187,7 +253,7 @@ namespace SasquatchCAIRS.Controllers {
                         chartPart.ChartSpace.Descendants<Formula>()) {
                     if (formula.Text.Contains("$D")) {
                         formula.Text = formula.Text.Replace("$D",
-                                                            "$"+getColumnName(
+                                                            "$" + getColumnName(
                                                                 totalColCount));
                     }
                 }
@@ -219,12 +285,17 @@ namespace SasquatchCAIRS.Controllers {
                                     .Descendants
                                     <Formula>()
                             ) {
-                            if (formula.Text.Contains("$"+Constants.dataStartRow.ToString())) {
-                                formula.Text = formula.Text.Replace("$" + Constants.dataStartRow.ToString(),
-                                                                    "$"+(numOfInitBarChartSeries +
-                                                                     i + Constants.reportHeaderRow)
-                                                                        .ToString
-                                                                        ());
+                            if (
+                                formula.Text.Contains("$" +
+                                                      Constants.dataStartRow
+                                                               .ToString())) {
+                                formula.Text =
+                                    formula.Text.Replace(
+                                        "$" + Constants.dataStartRow.ToString(),
+                                        "$" + (numOfInitBarChartSeries +
+                                               i + Constants.reportHeaderRow)
+                                                  .ToString
+                                                  ());
                             }
                         }
 
@@ -352,13 +423,15 @@ namespace SasquatchCAIRS.Controllers {
         }
 
         /// <summary>
-        /// merges the cell with the given range in the given worksheet
+        ///     merges the cell with the given range in the given worksheet
         /// </summary>
         /// <param name="worksheet">worksheet the mergecell belongs to</param>
         /// <param name="cell1Name">start range of the merge cell</param>
         /// <param name="cell2Name">end range of the merge cell</param>
-        private static void MergeTwoCells(Worksheet worksheet, string cell1Name, string cell2Name) {
-            if (worksheet == null || string.IsNullOrEmpty(cell1Name) || string.IsNullOrEmpty(cell2Name)) {
+        private static void MergeTwoCells(Worksheet worksheet, string cell1Name,
+                                          string cell2Name) {
+            if (worksheet == null || string.IsNullOrEmpty(cell1Name) ||
+                string.IsNullOrEmpty(cell2Name)) {
                 return;
             }
 
@@ -370,28 +443,48 @@ namespace SasquatchCAIRS.Controllers {
 
                 // Insert a MergeCells object into the specified position.
                 if (worksheet.Elements<CustomSheetView>().Any()) {
-                    worksheet.InsertAfter(mergeCells, worksheet.Elements<CustomSheetView>().First());
+                    worksheet.InsertAfter(mergeCells,
+                                          worksheet.Elements<CustomSheetView>()
+                                                   .First());
                 } else if (worksheet.Elements<DataConsolidate>().Any()) {
-                    worksheet.InsertAfter(mergeCells, worksheet.Elements<DataConsolidate>().First());
+                    worksheet.InsertAfter(mergeCells,
+                                          worksheet.Elements<DataConsolidate>()
+                                                   .First());
                 } else if (worksheet.Elements<SortState>().Any()) {
-                    worksheet.InsertAfter(mergeCells, worksheet.Elements<SortState>().First());
+                    worksheet.InsertAfter(mergeCells,
+                                          worksheet.Elements<SortState>()
+                                                   .First());
                 } else if (worksheet.Elements<AutoFilter>().Any()) {
-                    worksheet.InsertAfter(mergeCells, worksheet.Elements<AutoFilter>().First());
+                    worksheet.InsertAfter(mergeCells,
+                                          worksheet.Elements<AutoFilter>()
+                                                   .First());
                 } else if (worksheet.Elements<Scenarios>().Any()) {
-                    worksheet.InsertAfter(mergeCells, worksheet.Elements<Scenarios>().First());
+                    worksheet.InsertAfter(mergeCells,
+                                          worksheet.Elements<Scenarios>()
+                                                   .First());
                 } else if (worksheet.Elements<ProtectedRanges>().Any()) {
-                    worksheet.InsertAfter(mergeCells, worksheet.Elements<ProtectedRanges>().First());
+                    worksheet.InsertAfter(mergeCells,
+                                          worksheet.Elements<ProtectedRanges>()
+                                                   .First());
                 } else if (worksheet.Elements<SheetProtection>().Any()) {
-                    worksheet.InsertAfter(mergeCells, worksheet.Elements<SheetProtection>().First());
+                    worksheet.InsertAfter(mergeCells,
+                                          worksheet.Elements<SheetProtection>()
+                                                   .First());
                 } else if (worksheet.Elements<SheetCalculationProperties>().Any()) {
-                    worksheet.InsertAfter(mergeCells, worksheet.Elements<SheetCalculationProperties>().First());
+                    worksheet.InsertAfter(mergeCells,
+                                          worksheet
+                                              .Elements
+                                              <SheetCalculationProperties>()
+                                              .First());
                 } else {
-                    worksheet.InsertAfter(mergeCells, worksheet.Elements<SheetData>().First());
+                    worksheet.InsertAfter(mergeCells,
+                                          worksheet.Elements<SheetData>()
+                                                   .First());
                 }
             }
 
             // Create the merged cell and append it to the MergeCells collection.
-            MergeCell mergeCell = new MergeCell() {
+            var mergeCell = new MergeCell {
                 Reference = new StringValue(cell1Name + ":" + cell2Name)
             };
             mergeCells.Append(mergeCell);
@@ -400,7 +493,7 @@ namespace SasquatchCAIRS.Controllers {
         }
 
         /// <summary>
-        /// deletes a sheet given the workbook the sheet is in and the sheetname;
+        ///     deletes a sheet given the workbook the sheet is in and the sheetname;
         /// </summary>
         /// <param name="wbPart">workbook the sheet is part of</param>
         /// <param name="sheetToDelete">the name of the sheet to be deleted</param>
@@ -408,12 +501,17 @@ namespace SasquatchCAIRS.Controllers {
             string Sheetid = "";
 
             // Get the pivot Table Parts
-            IEnumerable<PivotTableCacheDefinitionPart> pvtTableCacheParts = wbPart.PivotTableCacheDefinitionParts;
-            Dictionary<PivotTableCacheDefinitionPart, string> pvtTableCacheDefinationPart = new Dictionary<PivotTableCacheDefinitionPart, string>();
+            IEnumerable<PivotTableCacheDefinitionPart> pvtTableCacheParts =
+                wbPart.PivotTableCacheDefinitionParts;
+            var pvtTableCacheDefinationPart =
+                new Dictionary<PivotTableCacheDefinitionPart, string>();
             foreach (PivotTableCacheDefinitionPart Item in pvtTableCacheParts) {
                 PivotCacheDefinition pvtCacheDef = Item.PivotCacheDefinition;
                 //Check if this CacheSource is linked to SheetToDelete
-                var pvtCahce = pvtCacheDef.Descendants<CacheSource>().Where(s => s.WorksheetSource.Sheet == sheetToDelete);
+                IEnumerable<CacheSource> pvtCahce =
+                    pvtCacheDef.Descendants<CacheSource>()
+                               .Where(
+                                   s => s.WorksheetSource.Sheet == sheetToDelete);
                 if (pvtCahce.Count() > 0) {
                     pvtTableCacheDefinationPart.Add(Item, Item.ToString());
                 }
@@ -422,7 +520,10 @@ namespace SasquatchCAIRS.Controllers {
                 wbPart.DeletePart(Item.Key);
             }
             //Get the SheetToDelete from workbook.xml
-            Sheet theSheet = wbPart.Workbook.Descendants<Sheet>().Where(s => s.Name == sheetToDelete).FirstOrDefault();
+            Sheet theSheet =
+                wbPart.Workbook.Descendants<Sheet>()
+                      .Where(s => s.Name == sheetToDelete)
+                      .FirstOrDefault();
             if (theSheet == null) {
                 // The specified sheet doesn't exist.
             }
@@ -430,27 +531,29 @@ namespace SasquatchCAIRS.Controllers {
             Sheetid = theSheet.SheetId;
 
             // Remove the sheet reference from the workbook.
-            WorksheetPart worksheetPart = (WorksheetPart) (wbPart.GetPartById(theSheet.Id));
+            var worksheetPart =
+                (WorksheetPart) (wbPart.GetPartById(theSheet.Id));
             theSheet.Remove();
 
             // Delete the worksheet part.
             wbPart.DeletePart(worksheetPart);
 
             //Get the DefinedNames
-            var definedNames = wbPart.Workbook.Descendants<DefinedNames>().FirstOrDefault();
+            DefinedNames definedNames =
+                wbPart.Workbook.Descendants<DefinedNames>().FirstOrDefault();
             if (definedNames != null) {
-                List<DefinedName> defNamesToDelete = new List<DefinedName>();
+                var defNamesToDelete = new List<DefinedName>();
 
                 foreach (DefinedName Item in definedNames) {
                     // This condition checks to delete only those names which are part of Sheet in question
-                    if (Item.Text.Contains(sheetToDelete + "!"))
+                    if (Item.Text.Contains(sheetToDelete + "!")) {
                         defNamesToDelete.Add(Item);
+                    }
                 }
 
                 foreach (DefinedName Item in defNamesToDelete) {
                     Item.Remove();
                 }
-
             }
 
             // Save the workbook.
