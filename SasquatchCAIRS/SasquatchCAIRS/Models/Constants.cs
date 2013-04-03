@@ -175,6 +175,8 @@ namespace SasquatchCAIRS.Models {
             public const string QUESTION_TYPE = "Question Type: ";
             public const string QUESTION_TUMOUR_GROUP = "Tumour Group: ";
             public const string QUESTION_TIME_SPENT = "Time Spent: ";
+            public const string QUESTION_SEVERITY = "Severity: ";
+            public const string QUESTION_CONSEQUENCE = "Consequence: ";
             public const string QUESTION_IMPACT_SCORE = "Impact Score: ";
             public const string QUESTION_SEVERITY = "Severity: ";
             public const string QUESTION_CONSEQUENCE = "Consequence: ";
