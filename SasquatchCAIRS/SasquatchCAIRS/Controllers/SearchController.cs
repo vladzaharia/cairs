@@ -54,7 +54,7 @@ namespace SasquatchCAIRS.Controllers {
                 return View("Results", new List<Request>());
             }
 
-            _results = _smc.searchCriteriaQuery(sc);
+            _results = _smc.searchCriteriaQueryRoles(sc);
             fillUpKeywordDict(_results);
             ViewBag.ResultSetSize = _results.Count;
 
@@ -121,7 +121,7 @@ namespace SasquatchCAIRS.Controllers {
                 return View("Results", new List<Request>());
             }
 
-            _results = _smc.searchCriteriaQuery(criteria);
+            _results = _smc.searchCriteriaQueryRoles(criteria);
             fillUpKeywordDict(_results);
             ViewBag.ResultSetSize = _results.Count;
 
