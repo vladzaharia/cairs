@@ -95,8 +95,10 @@ namespace CAIRSTestProject.Integration {
             Region r =
                 cdc.Regions.FirstOrDefault(region => true);
             Random random = new Random();
-            String codeVal = random.Next(1000000).ToString();
-            String valVal = random.Next(100000000000).ToString();
+            String codeVal =
+                random.Next(1000000).ToString(CultureInfo.InvariantCulture);
+            String valVal =
+                random.Next(100000000).ToString(CultureInfo.InvariantCulture);
 
             if (r == null) {
                 Assert.Fail("No Regions exist in the system!");
