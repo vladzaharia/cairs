@@ -23,11 +23,7 @@ namespace SasquatchCAIRS
 
     public interface IDataContext {
         IQueryable<T> Repository<T>() where T : class;
-        //void insert<T>(T item) where T : class;
-        //void delete<T>(T item) where T : class;
-        //void submitChanges();
     }
-	
 	
 	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="sasquatch")]
 	public partial class CAIRSDataContext : System.Data.Linq.DataContext, IDataContext
@@ -233,32 +229,6 @@ namespace SasquatchCAIRS
             return table;
         }
 
-        ///// <summary>
-        ///// Adds a new entity to the repository
-        ///// </summary>
-        ///// <typeparam name="T">The type of the entity</typeparam>
-        ///// <param name="item">The entity to add</param>
-        //public void insert<T>(T item) where T : class {
-        //    ITable table = this.GetTable<T>();
-        //    table.InsertOnSubmit(item);
-        //}
-
-        ///// <summary>
-        ///// Deletes the specified entity from the repository
-        ///// </summary>
-        ///// <typeparam name="T">The type of the entity</typeparam>
-        ///// <param name="item">The entity to delete</param>
-        //public void delete<T>(T item) where T : class {
-        //    ITable table = this.GetTable<T>();
-        //    table.DeleteOnSubmit(item);
-        //}
-
-        ///// <summary>
-        ///// Submits the changes.
-        ///// </summary>
-        //public void submitChanges() {
-        //    this.SubmitChanges();
-        //}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Reference")]
