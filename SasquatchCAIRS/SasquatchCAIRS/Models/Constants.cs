@@ -92,7 +92,8 @@ namespace SasquatchCAIRS.Models {
             NotLockedToYou = 5,
             SuccessfulEdit = 6,
             NoRequestEditorRole = 7,
-            SuccessfulCreate = 8
+            SuccessfulCreate = 8,
+            EditingInvalid = 9
         }
 
         public static readonly DropdownTable[] DROPDOWN_TABLES = new DropdownTable[6] {
@@ -305,6 +306,7 @@ namespace SasquatchCAIRS.Models {
                 public const string LOOKUP = "Lookup Fields";
                 public const string GEN_AUDIT = "Generate Audit Report";
                 public const string CREATE = "Create";
+                public const string UPDATE_REQUEST = "Update";
             }
 
             // Text used in Page Titles

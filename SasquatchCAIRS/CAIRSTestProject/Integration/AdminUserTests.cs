@@ -31,7 +31,7 @@ namespace CAIRSTestProject.Integration {
             _ctm.removeRole(Constants.Roles.VIEWER);
 
             _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
-            _ctm.findAndClickOnNav(Constants.UIString.ItemIDs.ADMIN,
+            _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
                                    "/Admin/User/List");
 
             // Find and Click on Appropriate User
@@ -52,7 +52,7 @@ namespace CAIRSTestProject.Integration {
                 _driver.Url);
 
             // Click on the User Link in the header and verify the role is there
-            _ctm.findAndClickOnNav("username", "/Account/Manage");
+            _ctm.findAndClick("username", "/Account/Manage");
             IWebElement roles = _driver.FindElement(By.Id("user-roles"));
             StringAssert.Contains(Constants.Roles.VIEWER, roles.Text);
         }
@@ -64,7 +64,7 @@ namespace CAIRSTestProject.Integration {
         public void RemoveRoleTest() {
             // Go to the Admin User Page
             _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
-            _ctm.findAndClickOnNav(Constants.UIString.ItemIDs.ADMIN,
+            _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
                                    "/Admin/User/List");
 
             // Find and Click on Appropriate User
@@ -85,7 +85,7 @@ namespace CAIRSTestProject.Integration {
                 _driver.Url);
 
             // Click on the User Link in the header and verify the role is there
-            _ctm.findAndClickOnNav("username", "/Account/Manage");
+            _ctm.findAndClick("username", "/Account/Manage");
             IWebElement roles = _driver.FindElement(By.Id("user-roles"));
             StringAssert.DoesNotContain(Constants.Roles.VIEWER, roles.Text);
 
@@ -108,7 +108,7 @@ namespace CAIRSTestProject.Integration {
 
             // Go to the Admin User Page
             _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
-            _ctm.findAndClickOnNav(Constants.UIString.ItemIDs.ADMIN,
+            _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
                                    "/Admin/User/List");
 
             // Find and Click on Appropriate User
@@ -137,13 +137,13 @@ namespace CAIRSTestProject.Integration {
                 _driver.Url);
 
             // Click on the User Link in the header and verify the role is there
-            _ctm.findAndClickOnNav("username", "/Account/Manage");
+            _ctm.findAndClick("username", "/Account/Manage");
             IWebElement groups = _driver.FindElement(By.Id("user-groups"));
 
             StringAssert.Contains(ug.Value, groups.Text);
 
             // Clean up and remove the group
-            _ctm.findAndClickOnNav(Constants.UIString.ItemIDs.ADMIN,
+            _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
                                    "/Admin/User/List");
             _driver.FindElement(
                 By.XPath("//td[contains(.,'" + CommonTestingMethods.USERNAME +
@@ -172,7 +172,7 @@ namespace CAIRSTestProject.Integration {
 
             // Set up by adding the group
             _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
-            _ctm.findAndClickOnNav(Constants.UIString.ItemIDs.ADMIN,
+            _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
                                    "/Admin/User/List");
             _driver.FindElement(
                 By.XPath("//td[contains(.,'" + CommonTestingMethods.USERNAME +
@@ -187,7 +187,7 @@ namespace CAIRSTestProject.Integration {
 
             // Go to the Admin User Page
             _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
-            _ctm.findAndClickOnNav(Constants.UIString.ItemIDs.ADMIN,
+            _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
                                    "/Admin/User/List");
 
             // Find and Click on Appropriate User
@@ -216,7 +216,7 @@ namespace CAIRSTestProject.Integration {
                 _driver.Url);
 
             // Click on the User Link in the header and verify the role is there
-            _ctm.findAndClickOnNav("username", "/Account/Manage");
+            _ctm.findAndClick("username", "/Account/Manage");
             IWebElement groups = _driver.FindElement(By.Id("user-groups"));
 
             StringAssert.DoesNotContain(ug.Value, groups.Text);

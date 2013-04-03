@@ -400,10 +400,10 @@ namespace SasquatchCAIRS.Controllers {
                                          bool active) {
             // Blank Value Sanity Checks
             if (table != Constants.DropdownTable.Keyword && code == "") {
-                ModelState.AddModelError("value", "Value cannot be empty!");
+                ModelState.AddModelError("code", "Code cannot be empty!");
             }
             if (value == "") {
-                ModelState.AddModelError("code", "Value cannot be empty!");
+                ModelState.AddModelError("value", "Value cannot be empty!");
             }
 
             // Real Sanity Checks
@@ -483,10 +483,10 @@ namespace SasquatchCAIRS.Controllers {
                                            bool active) {
             // Blank Value Sanity Checks
             if (table != Constants.DropdownTable.Keyword && code == "") {
-                ModelState.AddModelError("value", "Value cannot be empty!");
+                ModelState.AddModelError("code", "Code cannot be empty!");
             }
             if (value == "") {
-                ModelState.AddModelError("code", "Value cannot be empty!");
+                ModelState.AddModelError("value", "Value cannot be empty!");
             }
 
             // Real Sanity Checks

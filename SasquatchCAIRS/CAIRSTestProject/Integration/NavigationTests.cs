@@ -140,13 +140,13 @@ namespace CAIRSTestProject.Integration {
         [Test]
         public void VerifyNavWorks() {
             // Click on each item in the Nav Bar
-            _ctm.findAndClickOnNav(Constants.UIString.ItemIDs.DASHBOARD, "/");
-            _ctm.findAndClickOnNav(Constants.UIString.ItemIDs.CREATE_REQUEST,
+            _ctm.findAndClick(Constants.UIString.ItemIDs.DASHBOARD, "/");
+            _ctm.findAndClick(Constants.UIString.ItemIDs.CREATE_REQUEST,
                                    "/Request/Create");
-            _ctm.findAndClickOnNav(Constants.UIString.ItemIDs.REPORTS, "/Report");
-            _ctm.findAndClickOnNav(Constants.UIString.ItemIDs.ADMIN,
+            _ctm.findAndClick(Constants.UIString.ItemIDs.REPORTS, "/Report");
+            _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
                                    "/Admin/User/List");
-            _ctm.findAndClickOnNav(Constants.UIString.ItemIDs.ADVANCED_SEARCH,
+            _ctm.findAndClick(Constants.UIString.ItemIDs.ADVANCED_SEARCH,
                                    "/Search/Advanced");
         }
     }
