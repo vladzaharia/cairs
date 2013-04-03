@@ -11,7 +11,7 @@ namespace SasquatchCAIRS.Controllers {
     [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
     public class AuditLogManagementController : Controller {
         private CAIRSDataContext _db = new CAIRSDataContext();
-  
+
         /// <summary>
         ///     Add entry to audit log table when an AuditType action is performed on a request.
         /// </summary>
@@ -20,6 +20,23 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="type">The type of audit action</param>
         public void addEntry(long requestId, int userId,
                              Constants.AuditType type) {
+            // Check if requestID is valid
+            bool userFound = ((from up in _db.UserProfiles
+                               where up.UserId == userId
+                               select up.UserId).ToList()).Count != 0;
+
+            // Check if userID is valid
+            bool idFound = (_db.Requests.Where(u => u.RequestID == requestId)
+                               .Select(u => u.RequestID)).Count() != 0;
+                
+            if (!userFound) {
+                throw new UserDoesNotExistException (userId);
+            }
+
+            if (!idFound) {
+                throw new RequestDoesNotExistException(requestId);
+            }
+
             // Create a new entry in the log, using the Request ID, user ID, and action provided.
             // Set to the current datetime
             _db.AuditLogs.InsertOnSubmit(new AuditLog {
@@ -33,7 +50,8 @@ namespace SasquatchCAIRS.Controllers {
             _db.SubmitChanges();
         }
 
-        /// <summary>
+
+    /// <summary>
         ///     Add entry to audit log table when an AuditType action is performed on a request.
         /// </summary>
         /// <param name="requestId">The ID of the Request</param>
@@ -41,7 +59,29 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="type">The type of audit action</param>
         /// <param name="dateTime"></param>
         public void addEntry(long requestId, int userId,
-                             Constants.AuditType type, DateTime dateTime) {
+                             Constants.AuditType type, DateTime dateTime) {            
+            
+            // Check if requestID is valid
+            bool userFound = ((from up in _db.UserProfiles
+                               where up.UserId == userId
+                               select up.UserId).ToList()).Count != 0;
+
+            // Check if userID is valid
+            bool idFound = (_db.Requests.Where(u => u.RequestID == requestId)
+                               .Select(u => u.RequestID)).Count() != 0;
+
+            // Check if datetime is valid
+        bool dateValid = DateTime.MinValue < dateTime &&
+                         dateTime < DateTime.MaxValue;
+                
+            if (!userFound) {
+                throw new UserDoesNotExistException (userId);
+            }
+
+            if (!idFound) {
+                throw new RequestDoesNotExistException(requestId);
+            }
+
             // Create a new entry in the log, using the Request ID, user ID, and action provided.
             // Set to the current datetime
             _db.AuditLogs.InsertOnSubmit(new AuditLog {
@@ -56,11 +96,16 @@ namespace SasquatchCAIRS.Controllers {
         }
 
         /// <summary>
-        ///     Create an audit report with all AuditLog entries for a specified request ID.
+        ///     If report will have data based on Requests specified, call to ExcelExporter and return true, or produce false if there is no data in the report
         /// </summary>
-        /// <param name="auditRequests">The request to track activitiy for</param>
+        /// <param name="auditRequests">The request(s) to track activitiy for</param>
         public bool createReportForRequest(List<Request> auditRequests) {
 
+            // Check if auditRequests were correctly passed
+            if (auditRequests == null) {
+                throw new AuditRequestsDoNotExistException();
+            }
+            
             // Create a new Dictionary, each entry will be an XLS sheet
             Dictionary<string, DataTable> tableExport = new Dictionary<string, DataTable>();
             
@@ -128,7 +173,7 @@ namespace SasquatchCAIRS.Controllers {
         /// <summary>
         ///     Create an audit report with all AuditLog entries for a specified user in a specified date range.
         /// </summary>
-        /// <param name="userIDs">The user ID to track activitiy for</param>
+        /// <param name="userIDs">The user ID(s) to track activitiy for</param>
         /// <param name="startDate"> The start of the specified date range</param>
         /// <param name="endDate">The end of the specified date range</param>
         public bool createReportForUser(IEnumerable<long> userIDs, DateTime startDate,
