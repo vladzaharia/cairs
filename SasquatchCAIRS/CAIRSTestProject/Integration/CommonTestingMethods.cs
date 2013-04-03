@@ -67,7 +67,7 @@ namespace CAIRSTestProject.Integration {
         /// </summary>
         /// <param name="id">ID of Nav Element</param>
         /// <param name="expectedPath">Path Expected</param>
-        public void findAndClickOnNav(string id, string expectedPath) {
+        public void findAndClick(string id, string expectedPath) {
             // Go Home and try this
             _driver.Navigate().GoToUrl(getURL());
 

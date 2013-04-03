@@ -70,13 +70,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Samples.cs" />
+    <Compile Include="Integration\AdminDropdownTests.cs" />
+    <Compile Include="Unit\Samples.cs" />
     <Compile Include="Integration\CommonTestingMethods.cs" />
     <Compile Include="Integration\NavigationTests.cs" />
     <Compile Include="Integration\AdminUserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\TestAuditLogManagementController.cs" />
-    <Compile Include="ReportControllerTest.cs" />
+    <Compile Include="Unit\ReportControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
