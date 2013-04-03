@@ -203,6 +203,7 @@ namespace SasquatchCAIRS.Controllers.ServiceSystem {
             }
 
             int id = kw.KeywordID;
+            kw = null;
 
             return id;
         }
