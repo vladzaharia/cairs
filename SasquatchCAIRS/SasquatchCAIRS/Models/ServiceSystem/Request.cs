@@ -126,18 +126,10 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             _questionResponseList.Add(newQR);
         }
 
-        public void removeQuestionResponse(long questionResponseID) {
-            foreach (QuestionResponseContent qr in _questionResponseList) {
-                if (qr.questionResponseID == questionResponseID) {
-                    _questionResponseList.Remove(qr);
-                }
-            }
-        }
-
         public readonly QuestionResponseContent qrContent = null;
     }
 
-    public class QuestionResponseContent : IComparable {
+    public class QuestionResponseContent {
         public QuestionResponseContent(QuestionResponse qr) {
             referenceList = new List<ReferenceContent>();
             keywords = new List<String>();
@@ -211,52 +203,11 @@ namespace SasquatchCAIRS.Models.ServiceSystem {
             referenceList.Add(newRef);
         }
 
-        public void removeReference(long referenceID) {
-            foreach (ReferenceContent r in referenceList) {
-                if (r.referenceID == referenceID) {
-                    referenceList.Remove(r);
-                }
-            }
-        }
-
         [Display(Name = "Keywords")]
         public List<String> keywords { get; set; }
 
         public void addKeyword(String newKeyword) {
             keywords.Add(newKeyword);
-        }
-
-        /// <summary>
-        /// Compares the current instance with another QuestionResponseContent
-        /// object and returns an integer that indicates whether the current
-        /// instance precedes, follows, or occurs in the same position in the
-        /// sort order as the other object.
-        /// </summary>
-        /// <param name="obj">An object to compare with this instance.</param>
-        /// <returns>
-        /// Less than zero if this instance precedes obj in the sort order.
-        /// Zero if this instance occurs in the same position in the sort order
-        /// as obj.
-        /// Greater than zero if this instance follows obj in the sort order.
-        /// </returns>
-        public int CompareTo(object obj) {
-            if (obj == null) {
-                return 1;
-            }
-
-            QuestionResponseContent otherQRContent = 
-                obj as QuestionResponseContent;
-            if (otherQRContent != null) {
-                if (requestID == otherQRContent.requestID) {
-                    return questionResponseID.CompareTo(
-                        otherQRContent.questionResponseID);
-                } else {
-                    return requestID.CompareTo(otherQRContent.requestID);
-                }
-            } else {
-                throw new ArgumentException(
-                    "Object is not a QuestionResponseContent");
-            }
         }
     }
 

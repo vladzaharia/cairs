@@ -129,6 +129,13 @@ namespace SasquatchCAIRS.Models {
             public const string REQUEST_EDITOR = "RequestEditor";
             public const string REPORT_GENERATOR = "ReportGenerator";
             public const string ADMINISTRATOR = "Administrator";
+
+            public static readonly string[] ROLE_OPTIONS = {
+                VIEWER,
+                REQUEST_EDITOR, 
+                REPORT_GENERATOR, 
+                ADMINISTRATOR
+            };
         }
 
         public static class Export {
@@ -175,9 +182,9 @@ namespace SasquatchCAIRS.Models {
             public const string QUESTION_TYPE = "Question Type: ";
             public const string QUESTION_TUMOUR_GROUP = "Tumour Group: ";
             public const string QUESTION_TIME_SPENT = "Time Spent: ";
+            public const string QUESTION_CONSEQUENCE = "Consequence: ";
             public const string QUESTION_IMPACT_SCORE = "Impact Score: ";
             public const string QUESTION_SEVERITY = "Severity: ";
-            public const string QUESTION_CONSEQUENCE = "Consequence: ";
             public const string QUESTION_KEYWORDS = "Keywords: ";
             public const string QUESTION_REFERENCES = "References: ";
 

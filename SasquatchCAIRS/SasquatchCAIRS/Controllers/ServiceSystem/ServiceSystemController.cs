@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web;
@@ -12,6 +13,7 @@ using System.IO;
 namespace SasquatchCAIRS.Controllers
 {
     [Authorize (Roles = Constants.Roles.REPORT_GENERATOR)]
+    [ExcludeFromCodeCoverage]
     public class ServiceSystemController : Controller
     {
         //

@@ -6,13 +6,12 @@ using SasquatchCAIRS.Controllers.ServiceSystem;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SasquatchCAIRS.Models;
-using SasquatchCAIRS.Models.ServiceSystem;
 using Assert = NUnit.Framework.Assert;
 
 namespace CAIRSTestProject {
     
     [TestFixture]
-    public class ReportControllerTest {
+    public class TestReportController {
         private IDataContext _iDataContext;
         private List<Constants.DataType> _dataTypes;
 
@@ -37,6 +36,16 @@ namespace CAIRSTestProject {
                 Constants.DataType.TotalNumOfRequests,
                 Constants.DataType.TotalTimeSpent
             };
+        }
+
+        [TestFixtureTearDown]
+        public void tearDown() {
+            try {
+                _iDataContext.Replay();
+                _iDataContext.VerifyAllExpectations();
+            } finally {
+                _iDataContext = null;
+            }
         }
 
         [Test]
@@ -521,5 +530,6 @@ namespace CAIRSTestProject {
             Assert.AreEqual(4, generalReport.Rows.Count);
             Assert.AreEqual(4, generalReport.Columns.Count);
         }
+        
     }
 }

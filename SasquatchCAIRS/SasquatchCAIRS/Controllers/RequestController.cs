@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -16,6 +17,7 @@ namespace SasquatchCAIRS.Controllers
     /// <summary>
     /// TODO
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class RequestController : Controller
     {
         //
