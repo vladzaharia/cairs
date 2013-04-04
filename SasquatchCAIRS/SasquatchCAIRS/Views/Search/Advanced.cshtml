@@ -68,7 +68,7 @@
     </table>
 
     if (@Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR) || Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
-         <table class="table unbordered-table valign-middle">
+         <table class="table unbordered-table valign-middle" id="status">
              <tr>
                  <td class="tbl-label">@Constants.UIString.FieldLabel.STATUS</td>
                 @foreach (var status in Enum.GetValues(
@@ -78,7 +78,7 @@
                     {}
                     else {
                     <td class="tbl-content-283">
-                        <label class="checkbox radio-custom">
+                        <label class="checkbox radio-custom" id="@status">
                             @if (!String.IsNullOrEmpty(Model.requestStatus) &&
                                  Model.requestStatus.Contains(@status.ToString())) {
                                 <input type="checkbox" name="status" value="@status" checked/>
@@ -123,16 +123,16 @@
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.TUMOUR_GROUP</td>
             <td>
-                <div class="scroll scroll-box span5">
+                <div class="scroll scroll-box span5" id="tumour-group">
                     @foreach (DropdownEntry item in @ViewBag.TumorGroups) {
                             if (!String.IsNullOrEmpty(Model.tumorGroup) &&
                                  Model.tumorGroup.Contains(@item.id + "")) {
-                                <label class="checkbox radio-custom">
+                                <label class="checkbox radio-custom" id="@item.id">
                                     <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" checked/>
                                     @item.text
                                 </label>
                             } else {
-                                <label class="checkbox radio-custom">
+                                <label class="checkbox radio-custom" id="@item.id">
                                     <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" />
                                     @item.text
                                 </label>
@@ -145,16 +145,16 @@
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.QUESTION_TYPE</td>
             <td>
-                <div class="scroll scroll-box span5">
+                <div class="scroll scroll-box span5" id="question-type">
                     @foreach (DropdownEntry item in @ViewBag.QuestionType) {
                         if (!String.IsNullOrEmpty(Model.questionType) && 
                                  Model.questionType.Contains(@item.id+"")) {
-                                <label class="checkbox radio-custom">
+                                <label class="checkbox radio-custom" id="@item.id">
                                     <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id" checked/>
                                     @item.text
                                 </label>
                             } else {
-                                <label class="checkbox radio-custom">
+                                <label class="checkbox radio-custom" id="@item.id">
                                     <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id"/>
                                     @item.text
                                 </label>

@@ -85,8 +85,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\TestSearchController.cs" />
     <Compile Include="Unit\TestAuditLogManagementController.cs" />
+    <Compile Include="Unit\TestDropdownController.cs" />
     <Compile Include="Unit\TestRequestManagementController.cs" />
-    <Compile Include="Unit\ReportControllerTest.cs" />
+    <Compile Include="Unit\TestReportController.cs" />
     <Compile Include="Unit\TestUserController.cs" />
   </ItemGroup>
   <ItemGroup>

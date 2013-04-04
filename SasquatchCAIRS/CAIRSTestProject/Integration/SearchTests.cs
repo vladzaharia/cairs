@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -28,6 +29,224 @@ namespace CAIRSTestProject.Integration {
         public void Teardown() {
             _driver.Quit();
             _ctm.getAdminDriver().Quit();
+        }
+
+        [Test]
+        public void TestAdvancedSearchAny() {
+            Keyword kw1 = new Keyword {
+                KeywordValue = "SInt-" +
+                    _random.Next().ToString(CultureInfo.InvariantCulture)
+            };
+            Keyword kw2 = new Keyword {
+                KeywordValue = "SInt-" +
+                    _random.Next().ToString(CultureInfo.InvariantCulture)
+            };
+            _cdc.Keywords.InsertAllOnSubmit(new List<Keyword> {kw1,kw2});
+            _cdc.SubmitChanges();
+
+            // Setup the request
+            QuestionResponseContent qrc1 = new QuestionResponseContent {
+                keywords = new List<string> { kw1.KeywordValue }
+            };
+            RequestContent rc1 = new RequestContent {
+                patientFName = "SInt-" +
+                    _random.Next().ToString(CultureInfo.InvariantCulture),
+                requestStatus = Constants.RequestStatus.Open
+            };
+            rc1.addQuestionResponse(qrc1);
+
+            TumourGroup tg = _cdc.TumourGroups.FirstOrDefault(t => t.Active);
+            if (tg == null) {
+                Assert.Fail("No active TumourGroups in the system!");
+            }
+            QuestionResponseContent qrc2 = new QuestionResponseContent {
+                keywords = new List<string> { kw2.KeywordValue },
+                tumourGroupID = tg.TumourGroupID
+            };
+            RequestContent rc2 = new RequestContent {
+                patientFName = "SInt-" +
+                    _random.Next().ToString(CultureInfo.InvariantCulture),
+                requestStatus = Constants.RequestStatus.Completed
+            };
+            rc2.addQuestionResponse(qrc2);
+
+            QuestionType qt = _cdc.QuestionTypes.FirstOrDefault(q => q.Active);
+            if (qt == null) {
+                Assert.Fail("No active QuestionTypes in the system!");
+            }
+            QuestionResponseContent qrc3 = new QuestionResponseContent {
+                keywords = new List<string> { kw2.KeywordValue },
+                questionTypeID = qt.QuestionTypeID
+            };
+            RequestContent rc3 = new RequestContent {
+                patientFName = "SInt-" +
+                    _random.Next().ToString(CultureInfo.InvariantCulture),
+                requestStatus = Constants.RequestStatus.Invalid
+            };
+            rc3.addQuestionResponse(qrc3);
+
+            // Create the RequestContents
+            RequestManagementController rmc = new RequestManagementController();
+            long rid1 = rmc.create(rc1);
+            long rid2 = rmc.create(rc2);
+            long rid3 = rmc.create(rc3);
+
+            //========================================
+            // Vroom! Vroom!
+            //========================================
+            _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
+            _ctm.findAndClick(Constants.UIString.ItemIDs.ADVANCED_SEARCH,
+                              "/Search/Advanced");
+
+            _driver.FindElement(By.Id("keywordString"))
+                   .SendKeys(kw1.KeywordValue + ", " + kw2.KeywordValue + ", ");
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Search/Results");
+
+            // Check Results
+            ReadOnlyCollection<IWebElement> row1 =
+                _driver.FindElements(By.CssSelector("[data-id='" + rid1 + "']"));
+            ReadOnlyCollection<IWebElement> row2 =
+                _driver.FindElements(By.CssSelector("[data-id='" + rid2 + "']"));
+            ReadOnlyCollection<IWebElement> row3 =
+                _driver.FindElements(By.CssSelector("[data-id='" + rid3 + "']"));
+
+            Assert.IsTrue(row1.Count > 0, "Request 1 not in results!");
+            Assert.IsTrue(row2.Count > 0, "Request 2 not in results!");
+            Assert.IsTrue(row3.Count > 0, "Request 3 not in results!");
+
+            // Modify the Search
+            _ctm.findAndClick(Constants.UIString.ItemIDs.MODIFY_SEARCH,
+                              "/Search/Modify");
+            _driver.FindElement(By.Id(Constants.RequestStatus.Open.ToString()))
+                .FindElement(By.ClassName("icon")).Click();
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Search/Results");
+
+            // Check Results
+            row1 = _driver.FindElements(By.CssSelector("[data-id='" + rid1 + "']"));
+            row2 = _driver.FindElements(By.CssSelector("[data-id='" + rid2 + "']"));
+            row3 = _driver.FindElements(By.CssSelector("[data-id='" + rid3 + "']"));
+
+            Assert.IsTrue(row1.Count > 0, "Request 1 not in results!");
+            Assert.IsTrue(row2.Count == 0, "Request 2 in results!");
+            Assert.IsTrue(row3.Count == 0, "Request 3 in results!");
+
+            // Modify the Search
+            _ctm.findAndClick(Constants.UIString.ItemIDs.MODIFY_SEARCH,
+                              "/Search/Modify");
+
+            // Change the Status from Open to Completed
+            _driver.FindElement(By.Id(Constants.RequestStatus.Open.ToString()))
+                .FindElement(By.ClassName("icon")).Click();
+            _driver.FindElement(By.Id(Constants.RequestStatus.Completed.ToString()))
+                .FindElement(By.ClassName("icon")).Click();
+            
+            // Add a Tumour Group Search
+            _driver.FindElement(By.Id("tumour-group"))
+                   .FindElement(
+                       By.Id(
+                           tg.TumourGroupID.ToString(
+                               CultureInfo.InvariantCulture)))
+                   .FindElement(By.ClassName("icon"))
+                   .Click();
+
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Search/Results");
+
+            // Check Results
+            row1 = _driver.FindElements(By.CssSelector("[data-id='" + rid1 + "']"));
+            row2 = _driver.FindElements(By.CssSelector("[data-id='" + rid2 + "']"));
+            row3 = _driver.FindElements(By.CssSelector("[data-id='" + rid3 + "']"));
+
+            Assert.IsTrue(row1.Count == 0, "Request 1 in results!");
+            Assert.IsTrue(row2.Count > 0, "Request 2 not in results!");
+            Assert.IsTrue(row3.Count == 0, "Request 3 in results!");
+
+            // Modify the Search
+            _ctm.findAndClick(Constants.UIString.ItemIDs.MODIFY_SEARCH,
+                              "/Search/Modify");
+
+            // Change the Status from Completed to Invalid
+            _driver.FindElement(By.Id(Constants.RequestStatus.Completed.ToString()))
+                .FindElement(By.ClassName("icon")).Click();
+            _driver.FindElement(By.Id(Constants.RequestStatus.Invalid.ToString()))
+                .FindElement(By.ClassName("icon")).Click();
+
+            // Remove the Tumour Group Search
+            _driver.FindElement(By.Id("tumour-group"))
+                   .FindElement(
+                       By.Id(
+                           tg.TumourGroupID.ToString(
+                               CultureInfo.InvariantCulture)))
+                   .FindElement(By.ClassName("icon"))
+                   .Click();
+
+            // Add a Question Type Search
+            _driver.FindElement(By.Id("question-type"))
+                   .FindElement(
+                       By.Id(
+                           qt.QuestionTypeID.ToString(
+                               CultureInfo.InvariantCulture)))
+                   .FindElement(By.ClassName("icon"))
+                   .Click();
+
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Search/Results");
+
+            // Check Results
+            row1 = _driver.FindElements(By.CssSelector("[data-id='" + rid1 + "']"));
+            row2 = _driver.FindElements(By.CssSelector("[data-id='" + rid2 + "']"));
+            row3 = _driver.FindElements(By.CssSelector("[data-id='" + rid3 + "']"));
+
+            Assert.IsTrue(row1.Count == 0, "Request 1 in results!");
+            Assert.IsTrue(row2.Count == 0, "Request 2 in results!");
+            Assert.IsTrue(row3.Count > 0, "Request 3 not in results!");
+
+            //========================================
+            // Mr. Clean to the rescue!
+            //========================================
+            // Cleanup KeywordQuestion
+            CAIRSDataContext cdc2 = new CAIRSDataContext();
+            KeywordQuestion keyq1 = cdc2.KeywordQuestions.FirstOrDefault(kq => kq.RequestID == rid1);
+            KeywordQuestion keyq2 = cdc2.KeywordQuestions.FirstOrDefault(kq => kq.RequestID == rid2);
+            KeywordQuestion keyq3 = cdc2.KeywordQuestions.FirstOrDefault(kq => kq.RequestID == rid3);
+            if (keyq1 == null || keyq2 == null || keyq3 == null) {
+                Assert.Fail("KeywordQuestion can't be found for Teardown!");
+            }
+            cdc2.KeywordQuestions.DeleteAllOnSubmit(new List<KeywordQuestion> {keyq1, keyq2, keyq3});
+            cdc2.SubmitChanges();
+
+            // Cleanup Keyword
+            Keyword kwDel1 =
+                cdc2.Keywords.FirstOrDefault(k => k.KeywordID == kw1.KeywordID);
+            Keyword kwDel2 =
+                cdc2.Keywords.FirstOrDefault(k => k.KeywordID == kw2.KeywordID);
+            if (kwDel1 == null || kwDel2 == null) {
+                Assert.Fail("KeywordQuestion can't be found for Teardown!");
+            }
+            cdc2.Keywords.DeleteAllOnSubmit(new List<Keyword> {kwDel1, kwDel2});
+            cdc2.SubmitChanges();
+
+            // Cleanup QuestionResponse
+            QuestionResponse qresp1 = cdc2.QuestionResponses.FirstOrDefault(qr => qr.RequestID == rid1);
+            QuestionResponse qresp2 = cdc2.QuestionResponses.FirstOrDefault(qr => qr.RequestID == rid2);
+            QuestionResponse qresp3 = cdc2.QuestionResponses.FirstOrDefault(qr => qr.RequestID == rid3);
+            if (qresp1 == null || qresp2 == null || qresp3 == null) {
+                Assert.Fail("QuestionResponse can't be found for Teardown!");
+            }
+            cdc2.QuestionResponses.DeleteAllOnSubmit(new List<QuestionResponse> {qresp1, qresp2, qresp3});
+            cdc2.SubmitChanges();
+
+            // Cleanup Request
+            Request req1 = cdc2.Requests.FirstOrDefault(r => r.RequestID == rid1);
+            Request req2 = cdc2.Requests.FirstOrDefault(r => r.RequestID == rid2);
+            Request req3 = cdc2.Requests.FirstOrDefault(r => r.RequestID == rid3);
+            if (req1 == null || req2 == null || req3 == null) {
+                Assert.Fail("Request can't be found for Teardown!");
+            }
+            cdc2.Requests.DeleteAllOnSubmit(new List<Request> {req1, req2, req3});
+            cdc2.SubmitChanges();
         }
 
         /// <summary>
@@ -72,6 +291,9 @@ namespace CAIRSTestProject.Integration {
                 "No results were found.", message.Text);
         }
 
+        /// <summary>
+        /// Test the quick search function
+        /// </summary>
         [Test]
         public void TestQuickSearch() {
             Keyword kw = new Keyword {
@@ -97,10 +319,21 @@ namespace CAIRSTestProject.Integration {
 
             //========================================
             // And we're ready to go!
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SEARCH_FIELD))
+            //========================================
+            _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
+            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SEARCH_DIV))
                 .SendKeys(kw.KeywordValue);
-            _ctm.findAndClick(Constants.UIString.ItemIDs.SEARCH_BUTTON, "/Search/Results");
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SEARCH_BUTTON, "/Search/Search");
 
+            IWebElement requestId = _driver.FindElement(By.Id("request-id"));
+
+            StringAssert.AreEqualIgnoringCase(
+                rid.ToString(CultureInfo.InvariantCulture), 
+                requestId.Text);
+
+            //========================================
+            // All done! Cleanup time!
+            //========================================
             // Cleanup KeywordQuestion
             CAIRSDataContext cdc2 = new CAIRSDataContext();
             KeywordQuestion keyq = cdc2.KeywordQuestions.FirstOrDefault(kq => kq.RequestID == rid);
