@@ -23,4 +23,10 @@ namespace SasquatchCAIRS.Models {
             : base("No Requests were specified for audit report!") {
         }
     }
+
+    public class DateRangeInvalidException : Exception {
+        public DateRangeInvalidException()
+            : base("Start date specified is after end date!") {
+        }
+    }
 }

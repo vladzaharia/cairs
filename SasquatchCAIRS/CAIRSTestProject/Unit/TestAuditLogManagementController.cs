@@ -6,6 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Hosting;
+using System.Web.Mvc;
+using System.Web.Routing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Web;
 using SasquatchCAIRS;
 using SasquatchCAIRS.Controllers.ServiceSystem;
 using SasquatchCAIRS.Controllers;
@@ -21,6 +25,7 @@ namespace CAIRSTestProject.Unit {
         private CAIRSDataContext _dc = new CAIRSDataContext();
         private Request rq;
         private UserProfile up;
+        private Request rq2;
         Random _random = new Random();
 
         [TestFixtureSetUp]
@@ -32,12 +37,12 @@ namespace CAIRSTestProject.Unit {
             // Create new Request Directly in DB
             rmc.create(new RequestContent {
                 patientLName =
-                    randomRequestInt.ToString(CultureInfo.InvariantCulture)
+                    "TALM" + randomRequestInt.ToString(CultureInfo.InvariantCulture)
             });
 
             // Create new UserProfile Directly in DB
             _dc.UserProfiles.InsertOnSubmit(new UserProfile {
-                UserName = randomUserInt.ToString(CultureInfo.InvariantCulture)
+                UserName = "TALM" + randomUserInt.ToString(CultureInfo.InvariantCulture)
             });
 
             _dc.SubmitChanges();
@@ -46,18 +51,20 @@ namespace CAIRSTestProject.Unit {
                 _dc.Requests.FirstOrDefault(
                     request => 
                     request.PatientLName == 
-                    randomRequestInt.ToString(CultureInfo.InvariantCulture));
+                    ("TALM" + randomRequestInt.ToString(CultureInfo.InvariantCulture)));
             up =
                 _dc.UserProfiles.FirstOrDefault(
                     userProfile =>
                     userProfile.UserName ==
-                    randomUserInt.ToString(CultureInfo.InvariantCulture));
+                    ("TALM" + randomUserInt.ToString(CultureInfo.InvariantCulture)));
         }
 
         [TestFixtureTearDown]
         public void TearDown() {
             _dc.AuditLogs.DeleteAllOnSubmit(_dc.AuditLogs.Where(au => au.RequestID == rq.RequestID));
             _dc.Requests.DeleteOnSubmit(rq);
+            _dc.AuditLogs.DeleteAllOnSubmit(_dc.AuditLogs.Where(au => au.RequestID == rq2.RequestID));
+            _dc.Requests.DeleteOnSubmit(rq2);
             _dc.UserProfiles.DeleteOnSubmit(up);
             _dc.SubmitChanges();
         }
@@ -146,7 +153,7 @@ namespace CAIRSTestProject.Unit {
         # region AddEntryIncorrect
         
         [Test]
-        [ExpectedException(typeof(UserDoesNotExistException))]
+        [NUnit.Framework.ExpectedException(typeof(UserDoesNotExistException))]
         public void Test_addEntryIncorrectUser() {
             AuditLogManagementController almc = new AuditLogManagementController();
 
@@ -160,7 +167,7 @@ namespace CAIRSTestProject.Unit {
         }
 
         [Test]
-        [ExpectedException(typeof(RequestDoesNotExistException))]
+        [NUnit.Framework.ExpectedException(typeof(RequestDoesNotExistException))]
         public void Test_addEntryIncorrectRequest() {
             AuditLogManagementController almc = new AuditLogManagementController();
 
@@ -174,7 +181,7 @@ namespace CAIRSTestProject.Unit {
         }
 
         [Test]
-        [ExpectedException(typeof(UserDoesNotExistException))]
+        [NUnit.Framework.ExpectedException(typeof(UserDoesNotExistException))]
         public void Test_addEntryWithSpecifiedIncorrectUser() {
             AuditLogManagementController almc = new AuditLogManagementController();
 
@@ -188,7 +195,7 @@ namespace CAIRSTestProject.Unit {
         }
 
         [Test]
-        [ExpectedException(typeof(RequestDoesNotExistException))]
+        [NUnit.Framework.ExpectedException(typeof(RequestDoesNotExistException))]
         public void Test_addEntryWithSpecifiedIncorrectRequest() {
             AuditLogManagementController almc = new AuditLogManagementController();
 
@@ -202,7 +209,7 @@ namespace CAIRSTestProject.Unit {
         }
 
         [Test]
-        [ExpectedException(typeof(SqlTypeException))]
+        [NUnit.Framework.ExpectedException(typeof(SqlTypeException))]
         public void Test_addEntryWithSpecifiedIncorrectDateTime() {
             AuditLogManagementController almc = new AuditLogManagementController();
 
@@ -222,7 +229,7 @@ namespace CAIRSTestProject.Unit {
 
         // Pass createReportForRequest null
         [Test]
-        [ExpectedException(typeof(AuditRequestsDoNotExistException))]
+        [NUnit.Framework.ExpectedException(typeof(AuditRequestsDoNotExistException))]
         public void Test_createReportForRequestNull() {
             AuditLogManagementController almc = new AuditLogManagementController();
             bool returnValue = almc.createReportForRequest(null);
@@ -238,7 +245,7 @@ namespace CAIRSTestProject.Unit {
             Assert.IsFalse(returnValue, "Data in audit report for no requests.");
         }
 
-        // Pass createReportForRequest an empty list
+        // Pass createReportForRequest an list with no audit logs
         [Test]
         public void Test_createReportForRequestNoData() {
             AuditLogManagementController almc = new AuditLogManagementController();
@@ -251,9 +258,11 @@ namespace CAIRSTestProject.Unit {
             Assert.IsFalse(returnValue, "Data in audit report for requests with no AuditLogs.");
         }
 
-        // Pass createReportForRequest an empty list
+        // Pass createReportForRequest a list with one request with audit data
         [Test]
+        [NUnit.Framework.ExpectedException(typeof(System.ArgumentNullException), ExpectedMessage = "path", MatchType = MessageMatch.Contains)]
         public void Test_createReportForRequestWithSingleRequest() {
+            
             AuditLogManagementController almc = new AuditLogManagementController();
 
             // create AuditLogs for rq
@@ -269,18 +278,139 @@ namespace CAIRSTestProject.Unit {
                 rq
             };
 
-            TextWriter writer = new StringWriter();
-            HttpWorkerRequest httpRequest = new SimpleWorkerRequest("virtualDir", "physicalDir", "page", "", writer);
-            HttpContext.Current = new HttpContext(httpRequest);
-
             bool returnValue = almc.createReportForRequest(auditRequests);
-
-            Assert.IsTrue(returnValue, "No audit log created when valid data exists.");
 
             // delete AuditLog created
             AuditLog alCreated = _dc.AuditLogs.FirstOrDefault(r => r.RequestID == rq.RequestID);
             _dc.AuditLogs.DeleteOnSubmit(alCreated);
             _dc.SubmitChanges();
+        }
+
+
+        // Pass createReportForRequest a list with more than one request with audit data
+        [Test]
+        [NUnit.Framework.ExpectedException(typeof(System.ArgumentNullException), ExpectedMessage = "path", MatchType = MessageMatch.Contains)]
+        public void Test_createReportForRequestWithMultipleRequests() {
+            
+            // Create an extra test request to test list with multiple
+            long randomRequestInt = _random.Next(1, 100000000);
+            RequestManagementController rmc = new RequestManagementController();
+
+            // Create new Request Directly in DB
+            rmc.create(new RequestContent {
+                patientLName =
+                    "TALM" + randomRequestInt.ToString(CultureInfo.InvariantCulture)
+            });
+
+            _dc.SubmitChanges();
+
+            rq2 = _dc.Requests.FirstOrDefault(
+                request =>
+                request.PatientLName ==
+                ("TALM" + randomRequestInt.ToString(CultureInfo.InvariantCulture)));
+
+            AuditLogManagementController almc = new AuditLogManagementController();
+
+            // create AuditLogs for rq
+            _dc.AuditLogs.InsertOnSubmit(new AuditLog {
+                RequestID = rq.RequestID,
+                UserID = up.UserId,
+                AuditType = (byte) Constants.AuditType.RequestView,
+                AuditDate = DateTime.Now
+            });
+            _dc.SubmitChanges();
+
+            // create AuditLogs for rq2
+            _dc.AuditLogs.InsertOnSubmit(new AuditLog {
+                RequestID = rq2.RequestID,
+                UserID = up.UserId,
+                AuditType = (byte) Constants.AuditType.RequestView,
+                AuditDate = DateTime.Now
+            });
+            _dc.SubmitChanges();
+
+            System.Collections.Generic.List<Request> auditRequests = new List<Request> {
+                rq, rq2
+            };
+
+            bool returnValue = almc.createReportForRequest(auditRequests);
+
+            // delete both AuditLogs created
+            AuditLog alCreated = _dc.AuditLogs.FirstOrDefault(r => r.RequestID == rq.RequestID);
+            _dc.AuditLogs.DeleteOnSubmit(alCreated);
+            AuditLog alCreated2 = _dc.AuditLogs.FirstOrDefault(r => r.RequestID == rq2.RequestID);
+            _dc.AuditLogs.DeleteOnSubmit(alCreated2);
+            _dc.SubmitChanges();
+        }
+
+
+        #endregion
+
+        #region createReportForUser
+
+        // Pass createReportForUser an invalid userID
+        [Test]
+        [NUnit.Framework.ExpectedException(typeof(UserDoesNotExistException))]
+        public void Test_createReportForUserInvalid() {
+            AuditLogManagementController almc = new AuditLogManagementController();
+            bool returnValue = almc.createReportForUser(0, DateTime.MinValue, DateTime.MaxValue);
+
+        }
+
+        // Pass createReportForUser a user with no audit logs
+        [Test]
+        public void Test_createReportForUserNoData() {
+            AuditLogManagementController almc = new AuditLogManagementController();
+            int randomUserIntNew = _random.Next(1, 100000000);
+
+            _dc.UserProfiles.InsertOnSubmit(new UserProfile {
+                UserName = "TALM" + randomUserIntNew.ToString(CultureInfo.InvariantCulture)
+            });
+
+            _dc.SubmitChanges();
+
+            UserProfile upNew =
+                _dc.UserProfiles.FirstOrDefault(
+                    userProfile =>
+                    userProfile.UserName ==
+                    ("TALM" + randomUserIntNew.ToString(CultureInfo.InvariantCulture)));
+
+            bool returnValue = almc.createReportForUser(upNew.UserId, DateTime.Now.Subtract(TimeSpan.FromHours(1)), DateTime.Now);
+
+            Assert.IsFalse(returnValue, "Data in audit report for requests with no AuditLogs.");
+
+            _dc.UserProfiles.DeleteOnSubmit(upNew);
+            _dc.SubmitChanges();
+        }
+        
+        // Pass createReportForUser invalid date range
+        [Test]
+        [NUnit.Framework.ExpectedException(typeof(DateRangeInvalidException))]
+        public void Test_createReportForUserInvalidDate() {
+            AuditLogManagementController almc = new AuditLogManagementController();
+
+            bool returnValue = almc.createReportForUser(up.UserId, DateTime.Now, DateTime.Now.Subtract(TimeSpan.FromHours(1)));
+
+        }
+
+        // Pass createReportForUser with one audit record
+        [Test]
+        [NUnit.Framework.ExpectedException(typeof(System.ArgumentNullException), ExpectedMessage = "path", MatchType = MessageMatch.Contains)]
+        public void Test_createReportForUserWithSingleAuditLog() {
+
+            AuditLogManagementController almc = new AuditLogManagementController();
+
+            // create AuditLog by up
+            _dc.AuditLogs.InsertOnSubmit(new AuditLog {
+                RequestID = rq.RequestID,
+                UserID = up.UserId,
+                AuditType = (byte) Constants.AuditType.RequestView,
+                AuditDate = DateTime.Now
+            });
+            _dc.SubmitChanges();
+
+            bool returnValue = almc.createReportForUser(up.UserId, DateTime.Now.Subtract(TimeSpan.FromHours(1)), DateTime.Now);
+
         }
 
         #endregion
@@ -334,5 +464,10 @@ namespace CAIRSTestProject.Unit {
             _dc.SubmitChanges();
         }
         #endregion
+
+        public string AppDomainAppPath {
+            get;
+            set;
+        }
     }
 }

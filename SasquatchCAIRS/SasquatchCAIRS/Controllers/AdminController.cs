@@ -188,9 +188,6 @@ namespace SasquatchCAIRS.Controllers {
                 return View(model);
             }
 
-            // If it passes this point, everything is valid.
-            // So clearly, the server fails now.
-
             // check if user selected search by User ID
             if (model.criteriaType != null &&
                 model.criteriaType.Equals("uCriteria")) {
@@ -212,9 +209,9 @@ namespace SasquatchCAIRS.Controllers {
                     return View(model);
                 }
 
-                List<long> auditIDs = (from u in _db.UserProfiles
+                int auditID = (from u in _db.UserProfiles
                                        where auditUser == u.UserName.ToLower()
-                                       select Convert.ToInt64(u.UserId)).ToList();
+                                       select Convert.ToInt32(u.UserId)).FirstOrDefault();
 
                 // call createReportForUser for all users
                 DateTime start = Convert.ToDateTime(model.startDate);
@@ -224,7 +221,7 @@ namespace SasquatchCAIRS.Controllers {
                     new AuditLogManagementController();
                 
                 // true if report has data, false if not                
-                if (almController.createReportForUser(auditIDs,
+                if (almController.createReportForUser(auditID,
                                                   start,
                                                   end) == false){
                     ViewBag.FailMessage = ("There is no data in this audit report!");

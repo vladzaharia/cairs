@@ -12,6 +12,13 @@ namespace SasquatchCAIRS.Controllers {
     public class AuditLogManagementController : Controller {
         private CAIRSDataContext _db = new CAIRSDataContext();
 
+        public AuditLogManagementController():this(new ControllerContext()){}  
+  
+    public AuditLogManagementController(ControllerContext ctx)  
+    {  
+        this.ControllerContext = ctx;  
+    }  
+
         /// <summary>
         ///     Add entry to audit log table when an AuditType action is performed on a request.
         /// </summary>
@@ -20,12 +27,12 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="type">The type of audit action</param>
         public void addEntry(long requestId, int userId,
                              Constants.AuditType type) {
-            // Check if requestID is valid
+            // Check if userID is valid
             bool userFound = ((from up in _db.UserProfiles
                                where up.UserId == userId
                                select up.UserId).ToList()).Count != 0;
 
-            // Check if userID is valid
+            // Check if requestID is valid
             bool idFound = (_db.Requests.Where(u => u.RequestID == requestId)
                                .Select(u => u.RequestID)).Count() != 0;
                 
@@ -157,15 +164,17 @@ namespace SasquatchCAIRS.Controllers {
             }
             
             // Call XLSExporter
-            DateTime markDate = new DateTime(2010, 01, 01, 00, 00, 00, 00);
-            TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
-            string fromPath = Path.Combine(HttpRuntime.AppDomainAppPath,
-                                           "AuditLogTemplate.xlsx");
-            string toPath = Path.Combine(HttpRuntime.AppDomainAppPath, "AuditLogTemplate" + dateStamp.TotalSeconds.ToString() + ".xlsx");
+            XLSExporterHelper(tableExport);
+            
+            //DateTime markDate = new DateTime(2010, 01, 01, 00, 00, 00, 00);
+            //TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
+            //string fromPath = Path.Combine(HttpRuntime.AppDomainAppPath,
+            //                               "AuditLogTemplate.xlsx");
+            //string toPath = Path.Combine(HttpRuntime.AppDomainAppPath, "AuditLogTemplate" + dateStamp.TotalSeconds.ToString() + ".xlsx");
 
-            ExcelExportController eeController = new ExcelExportController();
+            //ExcelExportController eeController = new ExcelExportController();
 
-            eeController.exportDataTable(Constants.ReportType.AuditLog, tableExport, fromPath, toPath);
+            //eeController.exportDataTable(Constants.ReportType.AuditLog, tableExport, fromPath, toPath);
 
             return true;
         }
@@ -176,16 +185,30 @@ namespace SasquatchCAIRS.Controllers {
         /// <param name="userIDs">The user ID(s) to track activitiy for</param>
         /// <param name="startDate"> The start of the specified date range</param>
         /// <param name="endDate">The end of the specified date range</param>
-        public bool createReportForUser(IEnumerable<long> userIDs, DateTime startDate,
+        public bool createReportForUser(int userID, DateTime startDate,
                                         DateTime endDate) {
-            
+
             // Create Dictionary to exports, each DataTable will correspond to user ID
             Dictionary<string, DataTable> tableExport = new Dictionary<string, DataTable>();
             List<DataTable> xlsExports = new List<DataTable>();
 
-            // Create blank list of AuditLogs and fill with all AuditLogs for each user ID
-           foreach (long userID in userIDs) {
-               
+            // check date validity
+            bool dateRangeValid = startDate <= endDate;
+
+            if (!dateRangeValid) {
+                throw new DateRangeInvalidException();
+            }
+            
+            // check user validity
+            bool userFound = ((from up in _db.UserProfiles
+                               where up.UserId == userID
+                               select up.UserId).ToList()).Count != 0;
+
+            if (!userFound) {
+                throw new UserDoesNotExistException(userID);
+            }
+
+            // Create blank list of AuditLogs and fill with all AuditLogs for user ID
                var requestLogs = _db.AuditLogs.Where(r => r.UserID == userID && 
                    r.AuditDate.Date >= startDate.Date && 
                    r.AuditDate.Date <= endDate.Date)
@@ -219,33 +242,46 @@ namespace SasquatchCAIRS.Controllers {
                // add DataTable for this ID to xlsExports
               tableExport.Add(sheetName, xlsTable);
                xlsExports.Add(xlsTable);
-           }
+           
 
            // check if data in report, if not return false
-           bool reportData = false;
-
-           foreach (DataTable dt in xlsExports) {
-               if (dt.Rows.Count > 0) {
-                   reportData = true;
-               }
-           }
+            bool reportData = xlsTable.Rows.Count > 0;
 
             if (reportData == false) {
                 return false;
             }
             
             // Call XLSExporter with table(s)
+           
+            XLSExporterHelper(tableExport);
+            
+            //DateTime markDate = new DateTime(2010, 01, 01, 00, 00, 00, 00);
+            //TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
+            //string fromPath = Path.Combine(HttpRuntime.AppDomainAppPath,
+            //                               "AuditLogTemplate.xlsx");
+            //string toPath = Path.Combine(HttpRuntime.AppDomainAppPath, "AuditLogTemplate" + dateStamp.TotalSeconds.ToString() + ".xlsx");
+            
+            //ExcelExportController eeController = new ExcelExportController();
+            
+            //eeController.exportDataTable(Constants.ReportType.AuditLog, tableExport, fromPath, toPath);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Isolate call to ExcelExportController
+        /// </summary>
+        /// <param name="exportTable">Dictionary to create in excel</param>
+        public void XLSExporterHelper(Dictionary<string, DataTable> exportTable) {
             DateTime markDate = new DateTime(2010, 01, 01, 00, 00, 00, 00);
             TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
             string fromPath = Path.Combine(HttpRuntime.AppDomainAppPath,
                                            "AuditLogTemplate.xlsx");
             string toPath = Path.Combine(HttpRuntime.AppDomainAppPath, "AuditLogTemplate" + dateStamp.TotalSeconds.ToString() + ".xlsx");
-            
-            ExcelExportController eeController = new ExcelExportController();
-            
-            eeController.exportDataTable(Constants.ReportType.AuditLog, tableExport, fromPath, toPath);
 
-            return true;
+            ExcelExportController eeController = new ExcelExportController();
+
+            eeController.exportDataTable(Constants.ReportType.AuditLog, exportTable, fromPath, toPath);
         }
     }
 }
