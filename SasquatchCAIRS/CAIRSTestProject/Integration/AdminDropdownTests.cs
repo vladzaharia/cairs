@@ -6,7 +6,7 @@ using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using SasquatchCAIRS;
-using SasquatchCAIRS.Models;
+using SasquatchCAIRS.Models.Common;
 
 namespace CAIRSTestProject.Integration {
     [TestFixture]
@@ -267,7 +267,8 @@ namespace CAIRSTestProject.Integration {
             // Invalidate the Region
             _driver.FindElement(By.Id("dk_container_active")).Click();
             Thread.Sleep(500);
-            _driver.FindElement(By.CssSelector("[data-dk-dropdown-value=false]")).Click();
+            _driver.FindElement(By.CssSelector("[data-dk-dropdown-value=false]"))
+                   .Click();
 
             // Try to Submit the Form + Verify that we're back to admin page
             _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
@@ -276,18 +277,22 @@ namespace CAIRSTestProject.Integration {
             // Verify Region Does not show up in Create Request Page
             _ctm.findAndClick(Constants.UIString.ItemIDs.CREATE_REQUEST,
                               "/Request/Create");
-            ReadOnlyCollection<IWebElement> regionElements = _driver.FindElement(By.Id("regionID"))
-                                               .FindElements(By.TagName("option"));
+            ReadOnlyCollection<IWebElement> regionElements = _driver.FindElement
+                (By.Id("regionID"))
+                                                                    .FindElements
+                (By.TagName("option"));
 
             foreach (IWebElement element in regionElements) {
-                if (element.GetAttribute("value") == r.RegionID.ToString(CultureInfo.InvariantCulture)) {
+                if (element.GetAttribute("value") ==
+                    r.RegionID.ToString(CultureInfo.InvariantCulture)) {
                     Assert.Fail("Region appears in Create Request Form!");
                 }
             }
 
             // Clean up the DB
-            CAIRSDataContext cdc2 = new CAIRSDataContext();
-            Region reg = cdc2.Regions.FirstOrDefault(region => region.Code == codeVal);
+            var cdc2 = new CAIRSDataContext();
+            Region reg =
+                cdc2.Regions.FirstOrDefault(region => region.Code == codeVal);
             if (reg != null) {
                 cdc2.Regions.DeleteOnSubmit(reg);
                 cdc2.SubmitChanges();
@@ -341,7 +346,8 @@ namespace CAIRSTestProject.Integration {
             // Invalidate the Region
             _driver.FindElement(By.Id("dk_container_active")).Click();
             Thread.Sleep(500);
-            _driver.FindElement(By.CssSelector("[data-dk-dropdown-value=true]")).Click();
+            _driver.FindElement(By.CssSelector("[data-dk-dropdown-value=true]"))
+                   .Click();
 
             // Try to Submit the Form + Verify that we're back to admin page
             _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
@@ -354,8 +360,9 @@ namespace CAIRSTestProject.Integration {
                 By.CssSelector("[value='" + r.RegionID + "']"));
 
             // Clean up the DB
-            CAIRSDataContext cdc2 = new CAIRSDataContext();
-            Region reg = cdc2.Regions.FirstOrDefault(region => region.Code == codeVal);
+            var cdc2 = new CAIRSDataContext();
+            Region reg =
+                cdc2.Regions.FirstOrDefault(region => region.Code == codeVal);
             if (reg != null) {
                 cdc2.Regions.DeleteOnSubmit(reg);
                 cdc2.SubmitChanges();

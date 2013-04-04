@@ -11,7 +11,6 @@
 //using SasquatchCAIRS.Models.ServiceSystem;
 //using Assert = NUnit.Framework.Assert;
 
-
 //namespace CAIRSTestProject.Unit
 //{
 //    [TestFixture]
@@ -62,8 +61,6 @@
 //                requestStatus = Constants.RequestStatus.Open,
 //                requestorFirstName = "vlad",
 //                requestorLastName = "zaharia",
-                
-                
 
 //            });
 
@@ -97,7 +94,6 @@
 //                request =>
 //                request.PatientLName == "Jing's Test3");
 
-
 //        }
 
 //        [TestFixtureTearDown]
@@ -108,7 +104,6 @@
 //            _dc.Requests.DeleteOnSubmit(rq3);
 //            _dc.SubmitChanges();
 //        }
-
 
 //        [Test]
 //        public void Test_isEmptySearchCriteria()
@@ -152,7 +147,6 @@
 
 //            bool criteriaEmpty = searchCon.isEmptySearchCriteria(s);
 //            Assert.IsFalse(criteriaEmpty);
-
 
 //        }
 
@@ -198,10 +192,6 @@
 //                Assert.AreEqual(cs[i], temp[i]);
 //            }
 
-
-
-
-
 //        }
 
 //        [Test]
@@ -216,7 +206,6 @@
 //            Assert.IsTrue(String.Equals(searchList[1], "pain"));
 //            Assert.IsTrue(String.Equals(searchList[2], "advil"));
 //            Assert.IsTrue(String.Equals(searchList[3], "drug dose"));
-
 
 //        }
 
@@ -234,8 +223,6 @@
 //            Assert.AreEqual(kwIDs[1], 94);
 //            Assert.AreEqual(kwIDs[2], 47);
 //            Assert.AreEqual(kwIDs.Count, 3);
-
-
 
 //        }
 
@@ -355,11 +342,11 @@
 //        [Test]
 //        public void Test_searchCriteriaQueryWithNoResults()
 //        {
-            
+
 //            SearchController searchCon = new SearchController();
-            
+
 //            SearchCriteria s = new SearchCriteria
-            
+
 //            {
 //                anyKeywordString = " ",
 //                allKeywordString = null,
@@ -381,7 +368,7 @@
 //        [Test]
 //        public void Test_searchCriteriaQueryWithOneResult() {
 //            SearchController searchCon = new SearchController();
-            
+
 //            SearchCriteria s = new SearchCriteria
 
 //            {
@@ -407,3 +394,4 @@
 
 //    }
 //}
+

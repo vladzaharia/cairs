@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using SasquatchCAIRS.Models;
+using SasquatchCAIRS.Models.Common;
 
 namespace CAIRSTestProject.Integration {
     public class CommonTestingMethods {
@@ -82,7 +81,7 @@ namespace CAIRSTestProject.Integration {
         #region Role Helpers
 
         /// <summary>
-        /// Add all the roles to the test user
+        ///     Add all the roles to the test user
         /// </summary>
         public void addAllRoles() {
             // Go to the User Page

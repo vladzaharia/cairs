@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Diagnostics;
 using System.DirectoryServices;
 using System.Globalization;
 using NUnit.Framework;
@@ -13,23 +10,12 @@ using SasquatchCAIRS.Controllers.Security;
 namespace CAIRSTestProject.Unit {
     [TestFixture]
     public class TestUserController {
-        private CAIRSDataContext _db = new CAIRSDataContext();
-        private DirectorySearcher _searcher;
-        private UserController _uc;
-        private UserProfile _up;
-        private Random _random = new Random();
-
-        [TestFixtureSetUp]
-        public void SetUpTF() {
-            _searcher = MockRepository.GenerateStub<DirectorySearcher>();
-            _uc = new UserController();
-        }
-
         [SetUp]
         public void SetUp() {
             _up = new UserProfile {
                 UserName = "TUC-" + _random.Next(10000000)
-                .ToString(CultureInfo.InvariantCulture),
+                                           .ToString(
+                                               CultureInfo.InvariantCulture),
                 UserFullName = "Test User",
                 UserEmail = "test@example.com"
             };
@@ -48,32 +34,20 @@ namespace CAIRSTestProject.Unit {
             _up = null;
         }
 
-        /// <summary>
-        /// Tests the getUserProfile method
-        /// </summary>
-        [Test]
-        public void TestGetUserProfile() {
-            // Precheck that the UP is set
-            if (_up == null) {
-                Assert.Fail("SetUp has not run yet!");
-            }
+        private CAIRSDataContext _db = new CAIRSDataContext();
+        private DirectorySearcher _searcher;
+        private UserManagementController _uc;
+        private UserProfile _up;
+        private Random _random = new Random();
 
-            // Grab the user through UserController
-            UserProfile generatedUser = _uc.getUserProfile(_up.UserName);
-
-            if (generatedUser == null) {
-                Assert.Fail("Cannot find user!");
-            }
-
-            // Check that the fields match
-            StringAssert.AreEqualIgnoringCase(_up.UserName, generatedUser.UserName);
-            StringAssert.AreEqualIgnoringCase(_up.UserFullName, generatedUser.UserFullName);
-            StringAssert.AreEqualIgnoringCase(_up.UserEmail, generatedUser.UserEmail);
-            Assert.AreEqual(_up.UserId, generatedUser.UserId);
+        [TestFixtureSetUp]
+        public void SetUpTF() {
+            _searcher = MockRepository.GenerateStub<DirectorySearcher>();
+            _uc = new UserManagementController();
         }
 
         /// <summary>
-        /// Tests the getUserGroups method
+        ///     Tests the getUserGroups method
         /// </summary>
         [Test]
         public void TestGetUserGroups() {
@@ -83,7 +57,7 @@ namespace CAIRSTestProject.Unit {
             }
 
             // Create a user group and attach it to the UserProfile
-            UserGroup ug = new UserGroup {
+            var ug = new UserGroup {
                 Code =
                     _random.Next(10000000)
                            .ToString(CultureInfo.InvariantCulture),
@@ -95,9 +69,9 @@ namespace CAIRSTestProject.Unit {
             };
             _db.UserGroups.InsertOnSubmit(ug);
             _db.SubmitChanges();
-            UserGroups ugs = new UserGroups {
+            var ugs = new UserGroups {
                 GroupID = ug.GroupID,
-                UserID =  _up.UserId
+                UserID = _up.UserId
             };
             _db.UserGroups1.InsertOnSubmit(ugs);
             _db.SubmitChanges();
@@ -121,7 +95,16 @@ namespace CAIRSTestProject.Unit {
         }
 
         /// <summary>
-        /// Test Get User Groups with Null Username
+        ///     Test Get User Groups with Blank Username
+        /// </summary>
+        [Test]
+        public void TestGetUserGroupsBlank() {
+            List<UserGroup> ugs = _uc.getUserGroups("");
+            Assert.AreEqual(0, ugs.Count); // Should be Empty
+        }
+
+        /// <summary>
+        ///     Test Get User Groups with Null Username
         /// </summary>
         [Test]
         public void TestGetUserGroupsNull() {
@@ -130,12 +113,30 @@ namespace CAIRSTestProject.Unit {
         }
 
         /// <summary>
-        /// Test Get User Groups with Blank Username
+        ///     Tests the getUserProfile method
         /// </summary>
         [Test]
-        public void TestGetUserGroupsBlank() {
-            List<UserGroup> ugs = _uc.getUserGroups("");
-            Assert.AreEqual(0, ugs.Count); // Should be Empty
+        public void TestGetUserProfile() {
+            // Precheck that the UP is set
+            if (_up == null) {
+                Assert.Fail("SetUp has not run yet!");
+            }
+
+            // Grab the user through UserController
+            UserProfile generatedUser = _uc.getUserProfile(_up.UserName);
+
+            if (generatedUser == null) {
+                Assert.Fail("Cannot find user!");
+            }
+
+            // Check that the fields match
+            StringAssert.AreEqualIgnoringCase(_up.UserName,
+                                              generatedUser.UserName);
+            StringAssert.AreEqualIgnoringCase(_up.UserFullName,
+                                              generatedUser.UserFullName);
+            StringAssert.AreEqualIgnoringCase(_up.UserEmail,
+                                              generatedUser.UserEmail);
+            Assert.AreEqual(_up.UserId, generatedUser.UserId);
         }
     }
 }

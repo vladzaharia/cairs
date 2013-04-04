@@ -1,10 +1,7 @@
 ﻿@if (Request.IsAuthenticated) {
-    String name =  User.Identity.Name;
-        if (ViewBag.Profile.UserFullName != null && !string.Equals("",ViewBag.Profile.UserFullName)) {
-            name = ViewBag.Profile.UserFullName;
+    String name = User.Identity.Name;
+    if (ViewBag.Profile.UserFullName != null && !string.Equals("", ViewBag.Profile.UserFullName)) {
+        name = ViewBag.Profile.UserFullName;
     }
-
-    <text>
-        @Html.ActionLink(name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-custom menu-button username", title = "Manage", @id = "username" })
-    </text>
+    @Html.ActionLink(name, "Manage", "Account", routeValues: null, htmlAttributes: new {@class = "btn btn-custom menu-button username", title = "Manage", @id = "username"})
 }

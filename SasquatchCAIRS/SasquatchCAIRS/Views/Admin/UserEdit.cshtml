@@ -1,15 +1,14 @@
 ﻿@using SasquatchCAIRS
-@using SasquatchCAIRS.Models
-@using SasquatchCAIRS.Models.ServiceSystem
-@using System.Linq;
-@model UserProfile
+@using SasquatchCAIRS.Models.Common
+@using SasquatchCAIRS.Models.Service
+@model SasquatchCAIRS.UserProfile
 
 @{
     ViewBag.Title = Constants.UIString.TitleText.ADMIN + " - " + Constants.UIString.TitleText.EDIT_USER;
     ViewBag.Page = "admin";
 }
 
-@Html.Partial("_AdminNavPartial", new ViewDataDictionary{ { "active", "users" } })
+@Html.Partial("_AdminNavPartial", new ViewDataDictionary {{"active", "users"}})
 
 <h2>@Constants.UIString.TitleText.ADMIN - @Constants.UIString.TitleText.EDIT_USER</h2>
 

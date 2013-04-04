@@ -16,7 +16,7 @@ namespace SasquatchCAIRS {
                 url: "Admin/Dropdown/List",
                 defaults: new {
                     controller = "Admin",
-                    action = "Dropdowns"
+                    action = "DropdownList"
                 });
             routes.MapRoute(
                 name: "DropdownEdit",
@@ -42,7 +42,7 @@ namespace SasquatchCAIRS {
                 url: "Admin/User/List",
                 defaults: new {
                     controller = "Admin",
-                    action = "Users"
+                    action = "UserList"
                 });
             routes.MapRoute(
                 name: "UserEdit",
@@ -66,14 +66,14 @@ namespace SasquatchCAIRS {
                 name: "Report",
                 url: "Report",
                 defaults: new {
-                    controller = "ServiceSystem",
+                    controller = "Report",
                     action = "Reports"
                 });
             routes.MapRoute(
                 name: "ReportDownload",
                 url: "Report/Generate",
                 defaults: new {
-                    controller = "ServiceSystem",
+                    controller = "Report",
                     action = "GeneratingReport"
                 });
 

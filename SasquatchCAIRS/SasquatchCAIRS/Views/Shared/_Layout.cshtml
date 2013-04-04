@@ -25,7 +25,7 @@
     <body>
         <header>
             <div class="logo-wrapper content-wrapper">
-                <p class="site-title">@Html.ActionLink(" ", "Index", "Home", new {}, new { @class="logo" })</p>
+                <p class="site-title">@Html.ActionLink(" ", "Index", "Home", new {}, new {@class = "logo"})</p>
                 <div class="position-right">
                     <section id="login">
                         @Html.Partial("_LoginPartial")
@@ -81,16 +81,16 @@
                 window.setTimeout("DisplaySessionTimeout()", 60000);
 
                 //if session is not less than 0
-                if (sessionTimeout < 0)  {
+                if (sessionTimeout < 0) {
                     window.location.href = '/';
-                    $('.session-timeout').text("Your session has timed out. Please visit the dashboard to start again.")
+                    $('.session-timeout').text("Your session has timed out. Please visit the dashboard to start again.");
                 } else if (sessionTimeout < 5) {
                     $(".session-timeout").show();
                     $("footer").addClass("timeout");
-                } 
+                }
             }
 
-            $(function () {
+            $(function() {
                 $(".session-timeout").hide();
                 DisplaySessionTimeout();
             });

@@ -6,9 +6,9 @@ using System.Linq;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using SasquatchCAIRS;
-using SasquatchCAIRS.Controllers.ServiceSystem;
-using SasquatchCAIRS.Models;
-using SasquatchCAIRS.Models.ServiceSystem;
+using SasquatchCAIRS.Controllers.Service;
+using SasquatchCAIRS.Models.Common;
+using SasquatchCAIRS.Models.Service;
 
 namespace CAIRSTestProject.Integration {
     [TestFixture]
