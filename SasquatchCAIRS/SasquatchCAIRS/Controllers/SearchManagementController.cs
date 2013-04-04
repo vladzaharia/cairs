@@ -81,7 +81,7 @@ namespace SasquatchCAIRS.Controllers
             }
             if (!String.IsNullOrEmpty(sc.tumorGroup))
             {
-                List<int> ids = typeIDStringtoList(sc.tumorGroup, ",");
+                List<int> ids = typeIdStringtoList(sc.tumorGroup, ",");
                 string tumorGroups = String.Join(", ",
                     (from tg in _db.TumourGroups
                      where ids.Contains(tg.TumourGroupID)
@@ -92,7 +92,7 @@ namespace SasquatchCAIRS.Controllers
             }
             if (!String.IsNullOrEmpty(sc.questionType))
             {
-                List<int> ids = typeIDStringtoList(sc.tumorGroup, ",");
+                List<int> ids = typeIdStringtoList(sc.questionType, ",");
                 string questionTypes = String.Join(", ",
                     (from qt in _db.QuestionTypes
                      where ids.Contains(qt.QuestionTypeID)
@@ -160,12 +160,12 @@ namespace SasquatchCAIRS.Controllers
         /// <param name="input">Input String</param>
         /// <param name="delimiters">Delimiter inside string</param>
         /// <returns>Corresponding List of Integers</returns>
-        public List<int> typeIDStringtoList(string input, string delimiters)
+        public List<int> typeIdStringtoList(string input, string delimiters)
         {
-            string[] arr = input.Split(delimiters.ToCharArray());
+            String[] arr = input.Split(delimiters.ToCharArray());
             return arr.Select(int.Parse).ToList();
         }
-
+        
         /// <summary>
         /// Converts a given string into a list of Strings, to separate a  keyword string into individual keywords
         /// </summary>
@@ -311,7 +311,7 @@ namespace SasquatchCAIRS.Controllers
                 questionResponses =
                     questionResponses.Where(
                         qr =>
-                        typeIDStringtoList(criteria.tumorGroup, ",")
+                        typeIdStringtoList(criteria.tumorGroup, ",")
                             .Contains(qr.TumourGroup.TumourGroupID));
             }
 
@@ -320,9 +320,10 @@ namespace SasquatchCAIRS.Controllers
                 questionResponses =
                     questionResponses.Where(
                         qr =>
-                        typeIDStringtoList(criteria.questionType, ",")
+                        typeIdStringtoList(criteria.questionType, ",")
                             .Contains(qr.QuestionType.QuestionTypeID));
             }
+
             List<int> any = getKeywords(criteria.anyKeywordString);
             List<int> none = getKeywords(criteria.noneKeywordString);
             List<int> all = getKeywords(criteria.allKeywordString);
