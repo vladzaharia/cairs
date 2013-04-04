@@ -169,18 +169,14 @@ namespace SasquatchCAIRS.Controllers {
         }
 
 
-
-
-
-
         /// <summary>
         /// Checks whether or not all fields are empty except keywords which must contain at least one valid keyword
         /// </summary>
         /// <param name="sc">The SearchCriteria Object</param>
         /// <returns>False if there is at most 1 valid keywords or filled in field</returns>
         private bool emptyButValidKeywords(SearchCriteria sc) {
-            if (getKeywords(sc.anyKeywordString).Any() || getKeywords(sc.allKeywordString).Any()
-                || getKeywords(sc.noneKeywordString).Any() || !String.IsNullOrEmpty(sc.consequence)
+            if (_smc.getKeywords(sc.anyKeywordString).Any() || _smc.getKeywords(sc.allKeywordString).Any()
+                || _smc.getKeywords(sc.noneKeywordString).Any() || !String.IsNullOrEmpty(sc.consequence)
                 || !String.IsNullOrEmpty(sc.patientFirstName) || !String.IsNullOrEmpty(sc.patientLastName)
                 || !String.IsNullOrEmpty(sc.questionType) || !String.IsNullOrEmpty(sc.requestStatus)
                 || !String.IsNullOrEmpty(sc.requestorFirstName) || !String.IsNullOrEmpty(sc.requestorLastName)
@@ -203,8 +199,6 @@ namespace SasquatchCAIRS.Controllers {
                     Constants.DropdownTable.QuestionType)
                                    .OrderBy(qt => qt.value);
         }
-
-
 
         /// <summary>
         /// Given a list of requests fills up the dictionary of each request's keywords
