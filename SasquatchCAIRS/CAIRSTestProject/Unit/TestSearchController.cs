@@ -4,11 +4,13 @@ using System.Globalization;
 using System.Linq;
 using SasquatchCAIRS;
 using SasquatchCAIRS.Controllers;
-using SasquatchCAIRS.Controllers.ServiceSystem;
-using SasquatchCAIRS.Models.SearchSystem;
+using SasquatchCAIRS.Controllers.Search;
+using SasquatchCAIRS.Controllers.Service;
+using SasquatchCAIRS.Models.Common;
+using SasquatchCAIRS.Models.Search;
 using SasquatchCAIRS.Models;
 using NUnit.Framework;
-using SasquatchCAIRS.Models.ServiceSystem;
+using SasquatchCAIRS.Models.Service;
 using Assert = NUnit.Framework.Assert;
 
 
@@ -401,7 +403,7 @@ namespace CAIRSTestProject.Unit
         public void Test_typeIDStringToList()
         {
             SearchManagementController searchCon = new SearchManagementController();
-            List<int> intIDs = searchCon.typeIDStringtoList("1,2,3,40,1000000", ",");
+            List<int> intIDs = searchCon.typeIdStringtoList("1,2,3,40,1000000", ",");
             Assert.AreEqual(intIDs[0], 1);
             Assert.AreEqual(intIDs[1], 2);
             Assert.AreEqual(intIDs[2], 3);
