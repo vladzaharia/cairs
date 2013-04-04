@@ -179,7 +179,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ExcelExportController.cs" />
     <Compile Include="Controllers\SearchManagementController.cs" />
-    <Compile Include="Controllers\Security\AuditController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AuditLogManagementController.cs" />
     <Compile Include="Controllers\SearchController.cs" />

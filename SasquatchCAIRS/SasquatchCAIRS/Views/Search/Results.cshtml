@@ -63,27 +63,27 @@ Showing page @page of @total
 
                 @foreach (var request in Model) {
                     <tr>
-                        <td class="clickable" data-id="@request.RequestID">
+                        <td class="clickable" data-id="@request.RequestID" id="request-id">
                             @Html.DisplayFor(modelItem => request.RequestID)
                         </td>
-                        <td class="clickable" data-id="@request.RequestID"> 
+                        <td class="clickable" data-id="@request.RequestID" id="requestor-name"> 
                             @Html.DisplayFor(modelItem => request.RequestorFName) 
                             @Html.DisplayFor(modelItem => request.RequestorLName)
                         </td>
-                        <td  class="clickable" data-id="@request.RequestID">
+                        <td  class="clickable" data-id="@request.RequestID" id="patient-name">
                             @Html.DisplayFor(modelItem => request.PatientFName) 
                             @Html.DisplayFor(modelItem => request.PatientLName)
                         </td>
-                        <td class="clickable" data-id="@request.RequestID">
+                        <td class="clickable" data-id="@request.RequestID" id="status">
                             @Enum.GetName(typeof(Constants.RequestStatus), @request.RequestStatus)
                         </td>
-                        <td class="clickable" data-id="@request.RequestID">
+                        <td class="clickable" data-id="@request.RequestID" id="keywords">
                             @String.Join(", ", ViewBag.keywordDict[@request.RequestID])
                         </td>
-                        <td class="clickable" data-id="@request.RequestID"> 
+                        <td class="clickable" data-id="@request.RequestID" id="time-opened"> 
                             @Html.DisplayFor(modelItem => request.TimeOpened)
                         </td>
-                        <td class="clickable" data-id="@request.RequestID">
+                        <td class="clickable" data-id="@request.RequestID" id="time-closed">
                             @Html.DisplayFor(modelItem => request.TimeClosed)
                         </td>
                     </tr>

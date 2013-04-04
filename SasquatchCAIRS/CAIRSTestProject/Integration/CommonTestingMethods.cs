@@ -68,9 +68,6 @@ namespace CAIRSTestProject.Integration {
         /// <param name="id">ID of Nav Element</param>
         /// <param name="expectedPath">Path Expected</param>
         public void findAndClick(string id, string expectedPath) {
-            // Go Home and try this
-            _driver.Navigate().GoToUrl(getURL());
-
             // Find Item and Click
             IWebElement navItem = _driver.FindElement(By.Id(id));
             navItem.Click();
@@ -83,6 +80,34 @@ namespace CAIRSTestProject.Integration {
         #endregion
 
         #region Role Helpers
+
+        /// <summary>
+        /// Add all the roles to the test user
+        /// </summary>
+        public void addAllRoles() {
+            // Go to the User Page
+            goToUserPage();
+
+            // Add all the individual roles
+            foreach (string role in Constants.Roles.ROLE_OPTIONS) {
+                IWebElement roleBox =
+                    _adminDriver.FindElement(
+                        By.CssSelector("[for='userRole-" + role + "']"));
+
+                if (!roleBox.GetAttribute("class").Contains("checked")) {
+                    roleBox.Click();
+                }
+            }
+
+            // Submit the Form
+            _adminDriver.FindElement(
+                By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON)).Click();
+
+            // Verify that we're back at the User List Screen
+            StringAssert.AreEqualIgnoringCase(
+                getAdminURL() + "/Admin/User/List?success=True",
+                _adminDriver.Url);
+        }
 
         /// <summary>
         ///     Add a Role to the User

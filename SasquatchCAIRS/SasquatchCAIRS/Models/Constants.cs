@@ -129,6 +129,13 @@ namespace SasquatchCAIRS.Models {
             public const string REQUEST_EDITOR = "RequestEditor";
             public const string REPORT_GENERATOR = "ReportGenerator";
             public const string ADMINISTRATOR = "Administrator";
+
+            public static readonly string[] ROLE_OPTIONS = {
+                VIEWER,
+                REQUEST_EDITOR, 
+                REPORT_GENERATOR, 
+                ADMINISTRATOR
+            };
         }
 
         public static class Export {

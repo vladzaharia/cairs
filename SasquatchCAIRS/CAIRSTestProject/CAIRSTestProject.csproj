@@ -74,6 +74,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Integration\AdminDropdownTests.cs" />
+    <Compile Include="Integration\SearchTests.cs" />
     <Compile Include="Unit\Samples.cs" />
     <Compile Include="Integration\CommonTestingMethods.cs" />
     <Compile Include="Integration\NavigationTests.cs" />

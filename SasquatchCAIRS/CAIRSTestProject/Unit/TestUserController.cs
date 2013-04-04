@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.DirectoryServices;
 using System.Globalization;
 using NUnit.Framework;
@@ -59,6 +60,10 @@ namespace CAIRSTestProject.Unit {
 
             // Grab the user through UserController
             UserProfile generatedUser = _uc.getUserProfile(_up.UserName);
+
+            if (generatedUser == null) {
+                Assert.Fail("Cannot find user!");
+            }
 
             // Check that the fields match
             StringAssert.AreEqualIgnoringCase(_up.UserName, generatedUser.UserName);
