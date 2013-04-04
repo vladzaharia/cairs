@@ -124,6 +124,12 @@ namespace CAIRSTestProject.Unit {
                     _db.KeywordQuestions.DeleteOnSubmit(kq);
                     _db.SubmitChanges();
 
+                    if ((from kwQ in _db.KeywordQuestions
+                         where kwQ.KeywordID == kqId
+                         select kwQ).Any()) {
+                        continue;
+                    }
+
                     Keyword kw = (from k in _db.Keywords
                                   where k.KeywordID == kqId
                                   select k)
@@ -177,13 +183,11 @@ namespace CAIRSTestProject.Unit {
 
             // Test with new and existing keyword
             qrCon.addKeyword("TRMC_Keyword0");
-            //qrCon.addKeyword("TRMC_Keyword1");
+            qrCon.addKeyword("TRMC_Keyword1");
 
-            //_db.Keywords.InsertOnSubmit(new Keyword {
-            //    Active = false,
-            //    KeywordValue = "TRMC_Keyword0"
-            //});
-            //_db.SubmitChanges();
+            _db.ExecuteCommand(
+                "INSERT INTO Keyword (KeywordValue, Active) " +
+                "VALUES ('TRMC_Keyword0', 'False')");
 
             qrCon.addReference(new ReferenceContent {
                 referenceString = "TRMC_Reference1",
@@ -253,21 +257,15 @@ namespace CAIRSTestProject.Unit {
 
             Assert.AreEqual(kqArr.Length, qrCon.keywords.Count);
 
-            Keyword keyword =
-                (from kw in _db.Keywords
-                 where kw.KeywordID == kqArr[0].KeywordID
-                 select kw)
-                    .Single();
-            Assert.AreEqual(keyword.KeywordValue,
-                            qrCon.keywords.ElementAt(0));
+            foreach (KeywordQuestion t in kqArr) {
+                Keyword keyword =
+                    (from kw in _db.Keywords
+                     where kw.KeywordID == t.KeywordID
+                     select kw)
+                        .Single();
 
-            //keyword =
-            //    (from kw in _db.Keywords
-            //     where kw.KeywordID == kqArr[1].KeywordID
-            //     select kw)
-            //        .Single();
-            //Assert.AreEqual(keyword.KeywordValue,
-            //                qrCon.keywords.ElementAt(1));
+                Assert.True(qrCon.keywords.Contains(keyword.KeywordValue));
+            }
         }
 
         [Test]
@@ -306,8 +304,13 @@ namespace CAIRSTestProject.Unit {
                 consequence = 0
             };
 
+            // Test with new and existing keyword
+            qrCon.addKeyword("TRMC_Keyword0");
             qrCon.addKeyword("TRMC_Keyword1");
-            qrCon.addKeyword("TRMC_Keyword2");
+
+            _db.ExecuteCommand(
+                "INSERT INTO Keyword (KeywordValue, Active) " +
+                "VALUES ('TRMC_Keyword0', 'False')");
 
             qrCon.addReference(new ReferenceContent {
                 referenceString = "TRMC_Reference1",
@@ -364,9 +367,246 @@ namespace CAIRSTestProject.Unit {
             Assert.AreEqual(qrCon.keywords.Count, qrCon2.keywords.Count);
 
             for (int i = 0; i < qrCon.keywords.Count; i++) {
-                Assert.AreEqual(qrCon.keywords.ElementAt(i),
-                                qrCon2.keywords.ElementAt(i));
+                Assert.True(qrCon.keywords.Contains(qrCon2.keywords.ElementAt(i)));
             }
+        }
+
+        [Test]
+        public void Test_edit() {
+            // Cannot use default request ID in RequestContent
+            Assert.Throws<Exception>(() => _rmc.edit(new RequestContent()));
+
+            // Cannot use non-existent request ID
+            var nonexistent = _db.Requests.Max(x => x.RequestID) + 1;
+            Assert.Throws<Exception>(() => _rmc.edit(new RequestContent {
+                requestID = nonexistent
+            }));
+
+            // Create a new request
+            RequestContent rCon = new RequestContent {
+                requestStatus = Constants.RequestStatus.Open,
+                requestorFirstName = "Bob",
+                requestorLastName = "Smith",
+                requestorEmail = "bsmith@gmail.com",
+                requestorPhoneNum = "123-456-7890",
+                requestorPhoneExt = "0000",
+                patientFName = "Jane",
+                patientLName = "Doe",
+                patientGender = Constants.Gender.Female,
+                patientAge = 20,
+                patientAgencyID = "ABCDE",
+                timeOpened = DateTime.Now,
+                regionID = _region.RegionID,
+                requestorTypeID = _rType.RequestorTypeID
+            };
+
+            QuestionResponseContent qrCon1 = new QuestionResponseContent {
+                question = "Test Question",
+                response = "Test Response",
+                timeSpent = 10,
+                specialNotes = "Test Special Notes",
+                questionTypeID = _qType.QuestionTypeID,
+                tumourGroupID = _tGroup.TumourGroupID,
+                severity = 0,
+                consequence = 0
+            };
+
+            // Test with new and existing keyword
+            qrCon1.addKeyword("TRMC_Keyword0");
+            qrCon1.addKeyword("TRMC_Keyword1");
+
+            qrCon1.addReference(new ReferenceContent {
+                referenceString = "TRMC_Reference0",
+                referenceType = Constants.ReferenceType.Text
+            });
+
+            rCon.addQuestionResponse(qrCon1);
+
+            QuestionResponseContent qrCon2 = new QuestionResponseContent {
+                question = "Test Question",
+                response = "Test Response",
+                timeSpent = 10,
+                specialNotes = "Test Special Notes",
+                questionTypeID = _qType.QuestionTypeID,
+                tumourGroupID = _tGroup.TumourGroupID,
+                severity = 0,
+                consequence = 0
+            };
+
+            // Test with new and existing keyword
+            qrCon2.addKeyword("TRMC_Keyword0");
+            qrCon2.addKeyword("TRMC_Keyword2");
+
+            qrCon2.addReference(new ReferenceContent {
+                referenceString = "TRMC_Reference1",
+                referenceType = Constants.ReferenceType.Text
+            });
+            qrCon2.addReference(new ReferenceContent {
+                referenceString = "TRMC_Reference2",
+                referenceType = Constants.ReferenceType.Text
+            });
+
+            rCon.addQuestionResponse(qrCon2);
+
+            _reqId = _rmc.create(rCon);
+
+            // Get saved RequestContent details
+            rCon = _rmc.getRequestDetails((long) _reqId);
+
+            // Edit request
+            rCon.requestStatus = Constants.RequestStatus.Completed;
+            rCon.requestorFirstName = "Jane";
+            rCon.requestorLastName = "Doe";
+            rCon.requestorEmail = "jdoe@gmail.com";
+            rCon.requestorPhoneNum = "098-765-4321";
+            rCon.requestorPhoneExt = "1111";
+            rCon.patientFName = "Bob";
+            rCon.patientLName = "Smith";
+            rCon.patientGender = Constants.Gender.Male;
+            rCon.patientAge = 30;
+            rCon.patientAgencyID = "UVWXYZ";
+            rCon.timeClosed = DateTime.Now;
+
+            // Remove an existing QuestionResponse
+            rCon.questionResponseList.RemoveAt(0);
+
+            // Edit an existing QuestionResponse
+            qrCon1 = rCon.questionResponseList.ElementAt(0);
+
+            qrCon1.question = "Question Test";
+            qrCon1.response = "Response Test";
+            qrCon1.timeSpent = 30;
+            qrCon1.specialNotes = "Special Notes Test";
+            qrCon1.severity = Constants.Severity.Moderate;
+            qrCon1.consequence = Constants.Consequence.Unlikely;
+
+            // Remove an existing keyword from an existing QuestionResponse
+            qrCon1.keywords.RemoveAt(0);
+
+            // Add a new keyword to an existing QuestionResponse
+            qrCon1.addKeyword("TRMC_Keyword3");
+
+            // Remove an existing reference from an existing QuestionResponse
+            qrCon1.referenceList.RemoveAt(0);
+
+            // Edit an existing reference from an existing QuestionResponse
+            qrCon1.referenceList.ElementAt(0).referenceString =
+                "TRMC_Reference4";
+
+            // Add a new reference to an existing QuestionResponse
+            qrCon1.addReference(new ReferenceContent {
+                referenceString = "TRMC_Reference5",
+                referenceType = Constants.ReferenceType.Text
+            });
+
+            // Add a new QuestionResponse
+            qrCon2 = new QuestionResponseContent {
+                question = "Test Question New",
+                response = "Test Response New",
+                timeSpent = 10,
+                specialNotes = "Test Special Notes New",
+                questionTypeID = _qType.QuestionTypeID,
+                tumourGroupID = _tGroup.TumourGroupID,
+                severity = 0,
+                consequence = 0
+            };
+
+            qrCon2.addKeyword("TRMC_Keyword0");
+            qrCon2.addReference(new ReferenceContent {
+                referenceString = "TRMC_Reference3",
+                referenceType = Constants.ReferenceType.Text
+            });
+
+            rCon.addQuestionResponse(qrCon2);
+
+            _rmc.edit(rCon);
+
+
+            RequestContent rConEdited = _rmc.getRequestDetails((long) _reqId);
+
+            Assert.NotNull(rCon);
+            Assert.AreEqual(rCon.requestStatus, rConEdited.requestStatus);
+            Assert.AreEqual(rCon.requestorFirstName,
+                            rConEdited.requestorFirstName);
+            Assert.AreEqual(rCon.requestorLastName, rConEdited.requestorLastName);
+            Assert.AreEqual(rCon.requestorEmail, rConEdited.requestorEmail);
+            Assert.AreEqual(rCon.requestorPhoneNum, rConEdited.requestorPhoneNum);
+            Assert.AreEqual(rCon.requestorPhoneExt, rConEdited.requestorPhoneExt);
+            Assert.AreEqual(rCon.patientFName, rConEdited.patientFName);
+            Assert.AreEqual(rCon.patientLName, rConEdited.patientLName);
+            Assert.AreEqual(rCon.patientGender, rConEdited.patientGender);
+            Assert.AreEqual(rCon.patientAge, rConEdited.patientAge);
+            Assert.AreEqual(rCon.patientAgencyID, rConEdited.patientAgencyID);
+
+            Assert.That(rCon.timeOpened,
+                        Is.EqualTo(rConEdited.timeOpened).Within(1).Seconds);
+            Assert.That(rCon.timeClosed,
+                        Is.EqualTo(rConEdited.timeClosed).Within(1).Seconds);
+
+            Assert.AreEqual(rCon.requestorTypeID, rConEdited.requestorTypeID);
+            Assert.AreEqual(rCon.regionID, rConEdited.regionID);
+
+            Assert.AreEqual(rCon.questionResponseList.Count,
+                            rConEdited.questionResponseList.Count);
+
+            for (int i = 0; i < rCon.questionResponseList.Count; i++) {
+                QuestionResponseContent qrConOrig =
+                    rCon.questionResponseList.ElementAt(i);
+                QuestionResponseContent qrConEdited =
+                    rConEdited.questionResponseList.ElementAt(i);
+
+                Assert.AreEqual(qrConOrig.question, qrConEdited.question);
+                Assert.AreEqual(qrConOrig.response, qrConEdited.response);
+                Assert.AreEqual(qrConOrig.timeSpent, qrConEdited.timeSpent);
+                Assert.AreEqual(qrConOrig.specialNotes, qrConEdited.specialNotes);
+                Assert.AreEqual(qrConOrig.tumourGroupID,
+                                qrConEdited.tumourGroupID);
+                Assert.AreEqual(qrConOrig.questionTypeID,
+                                qrConEdited.questionTypeID);
+                Assert.AreEqual(qrConOrig.severity, qrConEdited.severity);
+                Assert.AreEqual(qrConOrig.consequence, qrConEdited.consequence);
+
+                Assert.AreEqual(qrConOrig.referenceList.Count,
+                                qrConEdited.referenceList.Count);
+
+                for (int j = 0; j < qrConOrig.referenceList.Count; j++) {
+                    Assert.AreEqual(
+                        qrConOrig.referenceList.ElementAt(j).referenceType,
+                        qrConEdited.referenceList.ElementAt(j)
+                                   .referenceType);
+                    Assert.AreEqual(
+                        qrConOrig.referenceList.ElementAt(j).referenceString,
+                        qrConEdited.referenceList.ElementAt(j)
+                                   .referenceString);
+                }
+
+                Assert.AreEqual(qrConOrig.keywords.Count,
+                                qrConEdited.keywords.Count);
+
+                for (int k = 0; k < qrConOrig.keywords.Count; k++) {
+                    Assert.True(
+                        qrConOrig.keywords.Contains(
+                            qrConEdited.keywords.ElementAt(k)));
+
+                }
+            }
+        }
+
+        [Test]
+        public void Test_invalidate() {
+            _reqId = _rmc.create(new RequestContent());
+            _rmc.invalidate((long) _reqId);
+
+            RequestContent rCon = _rmc.getRequestDetails((long) _reqId);
+            Assert.AreEqual(rCon.requestStatus, Constants.RequestStatus.Invalid);
+        }
+
+        [Test]
+        public void Test_exists() {
+            Assert.False(_rmc.requestExists(-1));
+
+            _reqId = _rmc.create(new RequestContent());
+            Assert.True(_rmc.requestExists((long) _reqId));
         }
     }
 }

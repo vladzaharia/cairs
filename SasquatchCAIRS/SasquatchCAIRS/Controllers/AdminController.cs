@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -10,6 +11,7 @@ using SasquatchCAIRS.Models.ServiceSystem;
 
 namespace SasquatchCAIRS.Controllers {
     [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
+    [ExcludeFromCodeCoverage]
     public class AdminController : Controller {
         private CAIRSDataContext _db = new CAIRSDataContext();
         private DropdownController _dc = new DropdownController();

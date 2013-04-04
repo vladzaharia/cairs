@@ -1,8 +1,10 @@
-﻿using System.Web.Mvc;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Web.Mvc;
 using System.Web.Security;
 
 namespace SasquatchCAIRS.Controllers.Security {
     [Authorize]
+    [ExcludeFromCodeCoverage]
     public class AccountController : Controller {
         
         //

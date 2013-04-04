@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.Mvc;
 using System.Web.Security;
 
 namespace SasquatchCAIRS.Controllers {
      [Authorize(Roles = "Administrator")]
+     [ExcludeFromCodeCoverage]
     public class AuditController : Controller {
 
         public class AuditReportGenerator {
