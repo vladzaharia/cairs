@@ -14,6 +14,7 @@ namespace CAIRSTestProject.Integration {
         [TestFixtureSetUp]
         public void Setup() {
             _driver = _ctm.getDriver();
+            _ctm.addAllRoles();
         }
 
         [TestFixtureTearDown]
@@ -43,13 +44,8 @@ namespace CAIRSTestProject.Integration {
             _driver.FindElement(
                 By.CssSelector("[for='userRole-" + Constants.Roles.VIEWER + "']"))
                    .Click();
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-
-            // Verify that we're back at the User List Screen
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/User/List?success=True",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/User/List?success=True");
 
             // Click on the User Link in the header and verify the role is there
             _ctm.findAndClick("username", "/Account/Manage");
@@ -76,13 +72,8 @@ namespace CAIRSTestProject.Integration {
             _driver.FindElement(
                 By.CssSelector("[for='userRole-" + Constants.Roles.VIEWER + "']"))
                    .Click();
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-
-            // Verify that we're back at the User List Screen
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/User/List?success=True",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/User/List?success=True");
 
             // Click on the User Link in the header and verify the role is there
             _ctm.findAndClick("username", "/Account/Manage");
@@ -128,13 +119,8 @@ namespace CAIRSTestProject.Integration {
             }
 
             // Submit the form
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-
-            // Verify that we're back at the User List Screen
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/User/List?success=True",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/User/List?success=True");
 
             // Click on the User Link in the header and verify the role is there
             _ctm.findAndClick("username", "/Account/Manage");
@@ -150,11 +136,8 @@ namespace CAIRSTestProject.Integration {
                          "')]")).Click();
             _driver.FindElement(
                By.CssSelector("[for='userGroup-" + ug.GroupID + "']")).Click();
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/User/List?success=True",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/User/List?success=True");
         }
 
         /// <summary>
@@ -179,11 +162,8 @@ namespace CAIRSTestProject.Integration {
                          "')]")).Click();
             _driver.FindElement(
                By.CssSelector("[for='userGroup-" + ug.GroupID + "']")).Click();
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/User/List?success=True",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/User/List?success=True");
 
             // Go to the Admin User Page
             _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
@@ -207,13 +187,8 @@ namespace CAIRSTestProject.Integration {
             }
 
             // Submit the form
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-
-            // Verify that we're back at the User List Screen
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/User/List?success=True",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/User/List?success=True");
 
             // Click on the User Link in the header and verify the role is there
             _ctm.findAndClick("username", "/Account/Manage");

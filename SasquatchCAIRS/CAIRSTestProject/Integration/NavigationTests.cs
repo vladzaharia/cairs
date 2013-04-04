@@ -11,6 +11,7 @@ namespace CAIRSTestProject.Integration {
         [TestFixtureSetUp]
         public void Setup() {
             _driver = _ctm.getDriver();
+            _ctm.addAllRoles();
         }
 
         [TestFixtureTearDown]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -10,6 +11,7 @@ using SasquatchCAIRS.Models.ServiceSystem;
 
 namespace SasquatchCAIRS.Controllers {
     [Authorize(Roles = Constants.Roles.ADMINISTRATOR)]
+    [ExcludeFromCodeCoverage]
     public class AdminController : Controller {
         private CAIRSDataContext _db = new CAIRSDataContext();
         private DropdownController _dc = new DropdownController();
@@ -31,7 +33,7 @@ namespace SasquatchCAIRS.Controllers {
             ViewBag.SuccessMessage = success
                                          ? "Your changes have been saved."
                                          : null;
-            return View(_db.UserProfiles.Select(up => up));
+            return View(_db.UserProfiles.Select(up => up).OrderBy(up => up.UserName));
         }
 
         //
@@ -41,8 +43,6 @@ namespace SasquatchCAIRS.Controllers {
         public ActionResult UserEdit(int id) {
             UserProfile userProfile =
                 _db.UserProfiles.FirstOrDefault(up => up.UserId == id);
-            var dc = new DropdownController();
-
             ViewBag.Groups =
                 _dc.getEntries(
                     Constants.DropdownTable.UserGroup);
@@ -95,14 +95,7 @@ namespace SasquatchCAIRS.Controllers {
                     }
                 }
             } else {
-                // No boxes checked, clear all groups.
-                foreach (
-                    UserGroups ug in
-                        _db.UserGroups1.Where(newUg => newUg.UserID == up.UserId)
-                    ) {
-                    _db.UserGroups1.DeleteOnSubmit(ug);
-                    _db.SubmitChanges();
-                }
+                ModelState.AddModelError("groups", "A user must have at least one group!");
             }
 
             if (userRole != null) {
@@ -120,12 +113,26 @@ namespace SasquatchCAIRS.Controllers {
                     }
                 }
             } else {
-                // No boxes checked, clear all roles.
-                Roles.RemoveUserFromRoles(userName,
-                                          Roles.GetRolesForUser(userName));
+                ModelState.AddModelError("roles", "A user must have at least one role!");
             }
 
-            return RedirectToAction("Users", new {success = true});
+            if (ModelState.IsValid) {
+                return RedirectToAction("Users", new {
+                    success = true
+                });
+            } else {
+                ViewBag.Groups =
+                _dc.getEntries(
+                    Constants.DropdownTable.UserGroup);
+                ViewBag.Roles = Roles.GetAllRoles();
+
+                if (up != null) {
+                    ViewBag.UserGroups = up.UserGroups.AsQueryable();
+                    ViewBag.UserRoles =
+                        Roles.GetRolesForUser(up.UserName).ToList();
+                }
+                return View(up);
+            }
         }
 
 #endregion
@@ -420,6 +427,11 @@ namespace SasquatchCAIRS.Controllers {
                                                         ? "keyword"
                                                         : "value") +
                                          " is already in use!");
+            }
+
+            // Check if last one in respective table
+            if (_dc.getEntries(table).Count == 1) {
+                ModelState.AddModelError("active", "Cannot disable last active dropdown in list!");
             }
 
             // Route to List page if valid, or back to create with errors

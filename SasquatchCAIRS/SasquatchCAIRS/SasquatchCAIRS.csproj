@@ -85,6 +85,7 @@
     <Reference Include="System.Data.Linq">
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Data.SqlXml" />
     <Reference Include="System.DirectoryServices">
       <Private>True</Private>
     </Reference>
@@ -177,7 +178,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ExcelExportController.cs" />
-    <Compile Include="Controllers\Security\AuditController.cs" />
+    <Compile Include="Controllers\SearchManagementController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AuditLogManagementController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
