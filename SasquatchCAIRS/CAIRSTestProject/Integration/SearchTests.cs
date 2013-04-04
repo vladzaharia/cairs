@@ -31,6 +31,9 @@ namespace CAIRSTestProject.Integration {
             _ctm.getAdminDriver().Quit();
         }
 
+        /// <summary>
+        /// Test Advanced Search with "Any" keyword.
+        /// </summary>
         [Test]
         public void TestAdvancedSearchAny() {
             Keyword kw1 = new Keyword {
@@ -208,13 +211,15 @@ namespace CAIRSTestProject.Integration {
             //========================================
             // Cleanup KeywordQuestion
             CAIRSDataContext cdc2 = new CAIRSDataContext();
-            KeywordQuestion keyq1 = cdc2.KeywordQuestions.FirstOrDefault(kq => kq.RequestID == rid1);
-            KeywordQuestion keyq2 = cdc2.KeywordQuestions.FirstOrDefault(kq => kq.RequestID == rid2);
-            KeywordQuestion keyq3 = cdc2.KeywordQuestions.FirstOrDefault(kq => kq.RequestID == rid3);
+            IQueryable<KeywordQuestion> keyq1 = cdc2.KeywordQuestions.Where(kq => kq.RequestID == rid1);
+            IQueryable<KeywordQuestion> keyq2 = cdc2.KeywordQuestions.Where(kq => kq.RequestID == rid2);
+            IQueryable<KeywordQuestion> keyq3 = cdc2.KeywordQuestions.Where(kq => kq.RequestID == rid3);
             if (keyq1 == null || keyq2 == null || keyq3 == null) {
                 Assert.Fail("KeywordQuestion can't be found for Teardown!");
             }
-            cdc2.KeywordQuestions.DeleteAllOnSubmit(new List<KeywordQuestion> {keyq1, keyq2, keyq3});
+            cdc2.KeywordQuestions.DeleteAllOnSubmit(keyq1);
+            cdc2.KeywordQuestions.DeleteAllOnSubmit(keyq2);
+            cdc2.KeywordQuestions.DeleteAllOnSubmit(keyq3);
             cdc2.SubmitChanges();
 
             // Cleanup Keyword
@@ -246,6 +251,131 @@ namespace CAIRSTestProject.Integration {
                 Assert.Fail("Request can't be found for Teardown!");
             }
             cdc2.Requests.DeleteAllOnSubmit(new List<Request> {req1, req2, req3});
+            cdc2.SubmitChanges();
+        }
+
+        /// <summary>
+        /// Test Advanced Search with "All" entry.
+        /// </summary>
+        [Test]
+        public void TestAdvancedSearchAll() {
+            Keyword kw1 = new Keyword {
+                KeywordValue = "SInt-" +
+                    _random.Next().ToString(CultureInfo.InvariantCulture)
+            };
+            Keyword kw2 = new Keyword {
+                KeywordValue = "SInt-" +
+                    _random.Next().ToString(CultureInfo.InvariantCulture)
+            };
+            _cdc.Keywords.InsertAllOnSubmit(new List<Keyword> { kw1, kw2 });
+            _cdc.SubmitChanges();
+
+            // Setup the request
+            QuestionResponseContent qrc1 = new QuestionResponseContent {
+                keywords = new List<string> { kw1.KeywordValue, kw2.KeywordValue }
+            };
+            RequestContent rc1 = new RequestContent {
+                patientFName = "SInt-" +
+                    _random.Next().ToString(CultureInfo.InvariantCulture),
+                requestStatus = Constants.RequestStatus.Open
+            };
+            rc1.addQuestionResponse(qrc1);
+
+            QuestionResponseContent qrc2 = new QuestionResponseContent {
+                keywords = new List<string> { kw1.KeywordValue }
+            };
+            RequestContent rc2 = new RequestContent {
+                patientFName = "SInt-" +
+                    _random.Next().ToString(CultureInfo.InvariantCulture)
+            };
+            rc2.addQuestionResponse(qrc2);
+
+            // Create the RequestContents
+            RequestManagementController rmc = new RequestManagementController();
+            long rid1 = rmc.create(rc1);
+            long rid2 = rmc.create(rc2);
+
+            //========================================
+            // Vroom! Vroom!
+            //========================================
+            _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
+            _ctm.findAndClick(Constants.UIString.ItemIDs.ADVANCED_SEARCH,
+                              "/Search/Advanced");
+
+            _driver.FindElement(By.Id("allKeywords"))
+                   .SendKeys(kw1.KeywordValue + ", ");
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Search/Results");
+
+            // Check Results
+            ReadOnlyCollection<IWebElement> row1 =
+                _driver.FindElements(By.CssSelector("[data-id='" + rid1 + "']"));
+            ReadOnlyCollection<IWebElement> row2 =
+                _driver.FindElements(By.CssSelector("[data-id='" + rid2 + "']"));
+
+            Assert.IsTrue(row1.Count > 0, "Request 1 not in results!");
+            Assert.IsTrue(row2.Count > 0, "Request 2 not in results!");
+
+            // Modify the Search
+            _ctm.findAndClick(Constants.UIString.ItemIDs.MODIFY_SEARCH,
+                              "/Search/Modify");
+            _driver.FindElement(By.Id("allKeywords"))
+                   .SendKeys(kw2.KeywordValue + ", ");
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Search/Results");
+
+            // Check Results
+            row1 = _driver.FindElements(By.CssSelector("[data-id='" + rid1 + "']"));
+            row2 = _driver.FindElements(By.CssSelector("[data-id='" + rid2 + "']"));
+
+            Assert.IsTrue(row1.Count > 0, "Request 1 not in results!");
+            Assert.IsTrue(row2.Count == 0, "Request 2 in results!");
+
+            //===============================================
+            // Scrubbing Bubbles scrub away all the data!
+            //===============================================
+            // Cleanup KeywordQuestion
+            CAIRSDataContext cdc2 = new CAIRSDataContext();
+            IQueryable<KeywordQuestion> keyq1 =
+                cdc2.KeywordQuestions.Where(
+                    kq => kq.KeywordID == kw1.KeywordID);
+            IQueryable<KeywordQuestion> keyq2 =
+                cdc2.KeywordQuestions.Where(
+                    kq => kq.KeywordID == kw2.KeywordID);
+            if (keyq1 == null || keyq2 == null) {
+                Assert.Fail("KeywordQuestion can't be found for Teardown!");
+            }
+            cdc2.KeywordQuestions.DeleteAllOnSubmit(keyq1);
+            cdc2.KeywordQuestions.DeleteAllOnSubmit(keyq2);
+            cdc2.SubmitChanges();
+
+            // Cleanup Keyword
+            Keyword kwDel1 =
+                cdc2.Keywords.FirstOrDefault(k => k.KeywordID == kw1.KeywordID);
+            Keyword kwDel2 =
+                cdc2.Keywords.FirstOrDefault(k => k.KeywordID == kw2.KeywordID);
+            if (kwDel1 == null || kwDel2 == null) {
+                Assert.Fail("KeywordQuestion can't be found for Teardown!");
+            }
+            cdc2.Keywords.DeleteAllOnSubmit(new List<Keyword> { kwDel1, kwDel2 });
+            cdc2.SubmitChanges();
+
+            // Cleanup QuestionResponse
+            QuestionResponse qresp1 = cdc2.QuestionResponses.FirstOrDefault(qr => qr.RequestID == rid1);
+            QuestionResponse qresp2 = cdc2.QuestionResponses.FirstOrDefault(qr => qr.RequestID == rid2);
+            if (qresp1 == null || qresp2 == null) {
+                Assert.Fail("QuestionResponse can't be found for Teardown!");
+            }
+            cdc2.QuestionResponses.DeleteAllOnSubmit(new List<QuestionResponse> { qresp1, qresp2 });
+            cdc2.SubmitChanges();
+
+            // Cleanup Request
+            Request req1 = cdc2.Requests.FirstOrDefault(r => r.RequestID == rid1);
+            Request req2 = cdc2.Requests.FirstOrDefault(r => r.RequestID == rid2);
+            if (req1 == null || req2 == null) {
+                Assert.Fail("Request can't be found for Teardown!");
+            }
+            cdc2.Requests.DeleteAllOnSubmit(new List<Request> { req1, req2 });
             cdc2.SubmitChanges();
         }
 
