@@ -222,7 +222,6 @@ namespace SasquatchCAIRS.Controllers {
                     (from qt in _db.QuestionTypes
                      where ids.Contains(qt.QuestionTypeID)
                      select qt.Value));
-
                 result.Add(Constants.UIString.FieldLabel.QUESTION_TYPE + ": " +
                           questionTypes);
             }
@@ -236,8 +235,6 @@ namespace SasquatchCAIRS.Controllers {
             }
             return result;
         }
-
-
         /// <summary>
         /// Checks if SearchCriteria objects are empty/set to default values
         /// </summary>
@@ -255,15 +252,14 @@ namespace SasquatchCAIRS.Controllers {
             }
             return true;
         }
-
         /// <summary>
         /// Checks whether or not all fields are empty except keywords which must contain at least one valid keyword
         /// </summary>
         /// <param name="sc">The SearchCriteria Object</param>
         /// <returns>False if there is at most 1 valid keywords or filled in field</returns>
         private bool emptyButValidKeywords(SearchCriteria sc) {
-            if (getKeywords(sc.anyKeywordString).Any() || getKeywords(sc.allKeywordString).Any()
-                || getKeywords(sc.noneKeywordString).Any() || !String.IsNullOrEmpty(sc.consequence)
+            if (_smc.getKeywords(sc.anyKeywordString).Any() || _smc.getKeywords(sc.allKeywordString).Any()
+                || _smc.getKeywords(sc.noneKeywordString).Any() || !String.IsNullOrEmpty(sc.consequence)
                 || !String.IsNullOrEmpty(sc.patientFirstName) || !String.IsNullOrEmpty(sc.patientLastName)
                 || !String.IsNullOrEmpty(sc.questionType) || !String.IsNullOrEmpty(sc.requestStatus)
                 || !String.IsNullOrEmpty(sc.requestorFirstName) || !String.IsNullOrEmpty(sc.requestorLastName)
@@ -307,7 +303,6 @@ namespace SasquatchCAIRS.Controllers {
             String[] stringArr = input.Split(delimiters.ToCharArray());
             return stringArr.Select(s => s.Trim()).ToList();
         }
-
         /// <summary>
         /// Converts a String into List of Intgers based on its Enum value specified in Constants.cs
         /// </summary>
@@ -318,7 +313,6 @@ namespace SasquatchCAIRS.Controllers {
             String[] stringArr = input.Split(",".ToCharArray());
             return stringArr.Select(v => (int) Enum.Parse(type, v)).ToList();
         }
-
         /// <summary>
         /// Given a list of requests fills up the dictionary of each request's keywords
         /// </summary>
