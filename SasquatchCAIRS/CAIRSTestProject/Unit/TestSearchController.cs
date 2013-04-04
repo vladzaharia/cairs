@@ -28,6 +28,9 @@ namespace CAIRSTestProject.Unit
         private Keyword _randomKeyword2;
         private Keyword _randomKeyword3;
         private Keyword _randomKeyword4;
+        private QuestionResponse testQrc;
+        private QuestionResponse testQrc2;
+        private QuestionResponse testQrc3;
 
 
 
@@ -40,22 +43,21 @@ namespace CAIRSTestProject.Unit
             _randomRequestInt3 = random.Next(1, 100000000);
             _randomKeyword = new Keyword
             {
-                KeywordID = 0,
+                KeywordID = random.Next(1,100000000),
                 KeywordValue = ("TSMC" + random.Next(1, 100000000).ToString(CultureInfo.InvariantCulture))
             };
             _randomKeyword2 = new Keyword
             {
-                KeywordID = 1,
+                KeywordID = random.Next(1,100000000),
                 KeywordValue = ("TSMC" + random.Next(1, 100000000).ToString(CultureInfo.InvariantCulture))
             };
             _randomKeyword3 = new Keyword
             {
-                KeywordID = 2,
-                KeywordValue = ("TSMC" + random.Next(1, 100000000).ToString(CultureInfo.InvariantCulture))
+                 KeywordValue = ("TSMC" + random.Next(1, 100000000).ToString(CultureInfo.InvariantCulture))
             };
             _randomKeyword4 = new Keyword
             {
-                KeywordID = 3,
+                KeywordID = random.Next(1,100000000),
                 KeywordValue = ("TSMC" + random.Next(1, 100000000).ToString(CultureInfo.InvariantCulture))
             };
 
@@ -65,6 +67,7 @@ namespace CAIRSTestProject.Unit
             testQrc.keywords.Add(_randomKeyword2.KeywordValue);
             testQrc.severity = Constants.Severity.Minor;
             testQrc.consequence = Constants.Consequence.Certain;
+            
 
 
 
@@ -72,13 +75,14 @@ namespace CAIRSTestProject.Unit
             testQrc2.requestID = _randomRequestInt2;
             testQrc2.keywords.Add(_randomKeyword3.KeywordValue);
             testQrc2.severity = Constants.Severity.Moderate;
+            testQrc2.consequence = Constants.Consequence.Possible;
 
 
             QuestionResponseContent testQrc3 = new QuestionResponseContent();
             testQrc2.requestID = _randomRequestInt3;
             testQrc2.keywords.Add(_randomKeyword4.KeywordValue);
             testQrc.severity = Constants.Severity.Major;
-
+            testQrc3.consequence = Constants.Consequence.Possible;
 
 
             RequestManagementController rmc = new RequestManagementController();
@@ -87,11 +91,13 @@ namespace CAIRSTestProject.Unit
 
             rmc.create(new RequestContent
             {
-                patientFName = "Jing's Test",
+                patientFName = "TSMC Test",
                 questionResponseList = { testQrc, testQrc3 },
                 requestStatus = Constants.RequestStatus.Open,
                 requestorFirstName = "10",
                 requestorLastName = "100",
+                
+                
 
 
 
@@ -99,7 +105,7 @@ namespace CAIRSTestProject.Unit
 
             rmc3.create(new RequestContent
             {
-                patientFName = "Jing's Test2",
+                patientFName = "TSMC Test2",
                 requestorFirstName = "20",
                 requestorLastName = "100",
                 questionResponseList = { testQrc2, testQrc },
@@ -109,7 +115,7 @@ namespace CAIRSTestProject.Unit
 
             rmc2.create(new RequestContent
             {
-                patientFName = "Jing's Test3",
+                patientFName = "TSMC Test3",
                 requestorFirstName = "30",
                 requestorLastName = "100",
                 questionResponseList = { testQrc3 },
@@ -119,26 +125,22 @@ namespace CAIRSTestProject.Unit
 
             _rq = _dc.Requests.FirstOrDefault(
                 request =>
-                request.PatientFName == "Jing's Test");
+                request.PatientFName == "TSMC Test");
 
             _rq2 = _dc.Requests.FirstOrDefault(
                 request =>
-                request.PatientFName == "Jing's Test2");
+                request.PatientFName == "TSMC Test2");
 
             _rq3 = _dc.Requests.FirstOrDefault(
                 request =>
-                request.PatientFName == "Jing's Test3");
+                request.PatientFName == "TSMC Test3");
 
 
         }
 
         [TestFixtureTearDown]
         public void TearDown()
-        {
-            _dc.Requests.DeleteOnSubmit(_rq);
-            _dc.Requests.DeleteOnSubmit(_rq2);
-            _dc.Requests.DeleteOnSubmit(_rq3);
-            _dc.Keywords.Attach(_randomKeyword);
+        {            _dc.Keywords.Attach(_randomKeyword);
             _dc.Keywords.Attach(_randomKeyword2);
             _dc.Keywords.Attach(_randomKeyword3);
             _dc.Keywords.Attach(_randomKeyword4);
@@ -146,18 +148,31 @@ namespace CAIRSTestProject.Unit
             _dc.Keywords.DeleteOnSubmit(_randomKeyword2);
             _dc.Keywords.DeleteOnSubmit(_randomKeyword3);
             _dc.Keywords.DeleteOnSubmit(_randomKeyword4);
+            _dc.QuestionResponses.Attach(testQrc);
+            _dc.QuestionResponses.Attach(testQrc2);
+            _dc.QuestionResponses.Attach(testQrc3);
+            _dc.Requests.Attach(_rq);
+            _dc.Requests.Attach(_rq2);
+            _dc.Requests.Attach(_rq3);
+            _dc.QuestionResponses.DeleteOnSubmit(testQrc);
+            _dc.QuestionResponses.DeleteOnSubmit(testQrc2);
+            _dc.QuestionResponses.DeleteOnSubmit(testQrc3);
+            _dc.Requests.DeleteOnSubmit(_rq);
+            _dc.Requests.DeleteOnSubmit(_rq2);
+            _dc.Requests.DeleteOnSubmit(_rq3);
+
+            
 
             _dc.SubmitChanges();
         }
 
 
         [Test]
-        public void Test_isEmptySearchCriteria()
-        {
+        public void Test_isEmptySearchCriteriaEmpty() {
 
-            SearchManagementController searchCon = new SearchManagementController();
-            SearchCriteria sc = new SearchCriteria
-            {
+            SearchManagementController searchCon =
+                new SearchManagementController();
+            SearchCriteria sc = new SearchCriteria {
                 anyKeywordString = null,
                 allKeywordString = null,
                 noneKeywordString = null,
@@ -171,9 +186,15 @@ namespace CAIRSTestProject.Unit
                 severity = null,
                 consequence = null,
             };
-
+            
             bool isCriteriaEmpty = searchCon.isEmptySearchCriteria(sc);
             Assert.IsTrue(isCriteriaEmpty);
+        }
+
+        [Test]
+        public void Test_isEmptySearchCriteriaNotEmpty(){
+            SearchManagementController searchCon = new SearchManagementController();
+        
 
             SearchCriteria s = new SearchCriteria
             {
@@ -267,15 +288,14 @@ namespace CAIRSTestProject.Unit
 
             SearchManagementController searchCon = new SearchManagementController();
 
-            List<int> kwIDs = searchCon.getKeywords("chemotherapy, advil, pain, donkey");
-            foreach (var kwID in kwIDs)
-            {
-                Console.Write(kwID);
-            }
-            Assert.AreEqual(kwIDs[0], 82);
-            Assert.AreEqual(kwIDs[1], 94);
-            Assert.AreEqual(kwIDs[2], 47);
-            Assert.AreEqual(kwIDs.Count, 3);
+            List<int> kwIDs = searchCon.getKeywords(_randomKeyword.KeywordValue + "," + _randomKeyword2.KeywordValue + ", 57309457");
+            Assert.AreEqual(kwIDs[0],  (from k in _dc.Keywords
+                                           where k.KeywordValue == _randomKeyword.KeywordValue
+                                           select k.KeywordID).First());
+            Assert.AreEqual(kwIDs[1], (from k in _dc.Keywords
+                                           where k.KeywordValue == _randomKeyword2.KeywordValue
+                                           select k.KeywordID).First());
+            Assert.AreEqual(kwIDs.Count, 2);
 
 
 
@@ -302,13 +322,13 @@ namespace CAIRSTestProject.Unit
         }
 
         [Test]
-        public void Test_emptyButValidKeywordsWithValidKw()
+        public void Test_emptyButValidKeywordsValidKw()
         {
             SearchManagementController searchCon = new SearchManagementController();
 
             SearchCriteria validKey = new SearchCriteria
             {
-                anyKeywordString = "Chemotherapy",
+                anyKeywordString = _randomKeyword.KeywordValue,
                 allKeywordString = null,
                 noneKeywordString = null,
                 patientFirstName = null,
@@ -327,13 +347,13 @@ namespace CAIRSTestProject.Unit
         }
 
         [Test]
-        public void Test_emptyButValidKeywordsWithInvalidKw()
+        public void Test_emptyButValidKeywordsInvalidKw()
         {
             SearchManagementController searchCon = new SearchManagementController();
             SearchCriteria invalidKey = new SearchCriteria
             {
                 anyKeywordString = null,
-                allKeywordString = "donkey",
+                allKeywordString = "239048230-948!@#",
                 noneKeywordString = null,
                 patientFirstName = null,
                 patientLastName = null,
@@ -357,8 +377,8 @@ namespace CAIRSTestProject.Unit
             SearchManagementController searchCon = new SearchManagementController();
             SearchCriteria oneKeyInvalid = new SearchCriteria
             {
-                anyKeywordString = "Chemotherapy",
-                allKeywordString = "donkey",
+                anyKeywordString = _randomKeyword.KeywordValue,
+                allKeywordString = "3-09258340598!@#$",
                 noneKeywordString = null,
                 patientFirstName = null,
                 patientLastName = null,
@@ -376,11 +396,6 @@ namespace CAIRSTestProject.Unit
             Assert.IsFalse(oneKeywordInvalid);
         }
 
-        [Test]
-        public void Test_fillUpKeywordDict()
-        {
-
-        }
 
         [Test]
         public void Test_typeIDStringToList()
@@ -418,10 +433,10 @@ namespace CAIRSTestProject.Unit
             };
             List<Request> results = searchCon.searchCriteriaQuery(s);
             Assert.AreEqual(results.Count, 2);
-            Assert.AreEqual(results[0].PatientFName, "Jing's Test2");
+            Assert.AreEqual(results[0].PatientFName, "TSMC Test2");
             Assert.AreEqual(results[0].RequestorFName, "20");
-            Assert.AreEqual(results[0].RequestorLName, "200");
-            Assert.AreEqual(results[1].PatientFName, "Jing's Test");
+            Assert.AreEqual(results[0].RequestorLName, "100");
+            Assert.AreEqual(results[1].PatientFName, "TSMC Test");
             Assert.AreEqual(results[1].RequestorFName, "10");
             Assert.AreEqual(results[1].RequestorLName, "100");
 
@@ -435,7 +450,7 @@ namespace CAIRSTestProject.Unit
             SearchCriteria s = new SearchCriteria
 
             {
-                anyKeywordString = _randomKeyword.KeywordValue,
+                anyKeywordString = _randomKeyword4.KeywordValue,
                 allKeywordString = null,
                 noneKeywordString = null,
                 patientFirstName = null,
@@ -450,9 +465,10 @@ namespace CAIRSTestProject.Unit
             };
             List<Request> results = searchCon.searchCriteriaQuery(s);
             Assert.AreEqual(results.Count, 1);
-            Assert.AreEqual(results[0].PatientFName, "Jing's Test");
-            Assert.AreEqual(results[0].RequestorFName, "10");
+            Assert.AreEqual(results[0].PatientFName, "TSMC Test2");
+            Assert.AreEqual(results[0].RequestorFName, "20");
             Assert.AreEqual(results[0].RequestorLName, "100");
+
         }
 
         [Test]
@@ -478,7 +494,7 @@ namespace CAIRSTestProject.Unit
             };
             List<Request> results = searchCon.searchCriteriaQuery(s);
             Assert.AreEqual(results.Count, 1);
-            Assert.AreEqual(results[0].PatientFName, "Jing's Test");
+            Assert.AreEqual(results[0].PatientFName, "TSMC Test");
             Assert.AreEqual(results[0].RequestorFName, "10");
             Assert.AreEqual(results[0].RequestorLName, "100");
         }
@@ -494,7 +510,7 @@ namespace CAIRSTestProject.Unit
                 anyKeywordString = null,
                 allKeywordString = null,
                 noneKeywordString = null,
-                patientFirstName = "Jing's Test3",
+                patientFirstName = "TSMC Test3",
                 patientLastName = null,
                 questionType = null,
                 requestorFirstName = null,
@@ -506,9 +522,9 @@ namespace CAIRSTestProject.Unit
             };
             List<Request> results = searchCon.searchCriteriaQuery(s);
             // Assert.AreEqual(results.Count, 1);
-            Assert.AreEqual(results[0].PatientFName, "Jing's Test3");
+            Assert.AreEqual(results[0].PatientFName, "TSMC Test3");
             Assert.AreEqual(results[0].RequestorFName, "30");
-            Assert.AreEqual(results[0].RequestorLName, "300");
+            Assert.AreEqual(results[0].RequestorLName, "100");
         }
 
         [Test]
@@ -534,7 +550,7 @@ namespace CAIRSTestProject.Unit
             };
             List<Request> results = searchCon.searchCriteriaQuery(s);
             // Assert.AreEqual(results.Count, 1);
-            Assert.AreEqual(results[0].PatientFName, "Jing's Test2");
+            Assert.AreEqual(results[0].PatientFName, "TSMC Test2");
             Assert.AreEqual(results[0].RequestorFName, "20");
             Assert.AreEqual(results[0].RequestorLName, "100");
         }
@@ -550,11 +566,11 @@ namespace CAIRSTestProject.Unit
                 anyKeywordString = null,
                 allKeywordString = null,
                 noneKeywordString = null,
-                patientFirstName = "Jing's Test2",
+                patientFirstName = null,
                 patientLastName = null,
                 questionType = null,
                 requestorFirstName = null,
-                requestorLastName = null,
+                requestorLastName = "100",
                 requestStatus = null,
                 tumorGroup = null,
                 severity = "Moderate",
@@ -562,7 +578,7 @@ namespace CAIRSTestProject.Unit
             };
             List<Request> results = searchCon.searchCriteriaQuery(s);
             //  Assert.AreEqual(results.Count, 1);
-            Assert.AreEqual(results[0].PatientFName, "Jing's Test2");
+            Assert.AreEqual(results[0].PatientFName, "TSMC Test2");
             Assert.AreEqual(results[0].RequestorFName, "20");
             Assert.AreEqual(results[0].RequestorLName, "100");
             Assert.AreEqual(results[0].QuestionResponses[0].Severity, 1);
@@ -579,10 +595,10 @@ namespace CAIRSTestProject.Unit
                 anyKeywordString = null,
                 allKeywordString = null,
                 noneKeywordString = null,
-                patientFirstName = "Jing's Test",
+                patientFirstName = null,
                 patientLastName = null,
                 questionType = null,
-                requestorFirstName = null,
+                requestorFirstName = "10",
                 requestorLastName = null,
                 requestStatus = null,
                 tumorGroup = null,
@@ -591,7 +607,7 @@ namespace CAIRSTestProject.Unit
             };
             List<Request> results = searchCon.searchCriteriaQuery(s);
             //  Assert.AreEqual(results.Count, 1);
-            Assert.AreEqual(results[0].PatientFName, "Jing's Test");
+            Assert.AreEqual(results[0].PatientFName, "TSMC Test");
             Assert.AreEqual(results[0].RequestorFName, "10");
             Assert.AreEqual(results[0].RequestorLName, "100");
             Assert.AreEqual(results[0].QuestionResponses[0].Consequence, 0);
