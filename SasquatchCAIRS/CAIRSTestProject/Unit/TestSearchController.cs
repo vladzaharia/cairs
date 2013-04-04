@@ -138,6 +138,10 @@ namespace CAIRSTestProject.Unit
             _dc.Requests.DeleteOnSubmit(_rq);
             _dc.Requests.DeleteOnSubmit(_rq2);
             _dc.Requests.DeleteOnSubmit(_rq3);
+            _dc.Keywords.Attach(_randomKeyword);
+            _dc.Keywords.Attach(_randomKeyword2);
+            _dc.Keywords.Attach(_randomKeyword3);
+            _dc.Keywords.Attach(_randomKeyword4);
             _dc.Keywords.DeleteOnSubmit(_randomKeyword);
             _dc.Keywords.DeleteOnSubmit(_randomKeyword2);
             _dc.Keywords.DeleteOnSubmit(_randomKeyword3);
