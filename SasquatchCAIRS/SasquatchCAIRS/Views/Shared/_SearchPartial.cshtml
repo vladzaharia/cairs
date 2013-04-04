@@ -7,7 +7,7 @@
     <div class="input-append quick-search-div">
         @Html.TextBox("keywords", "",
                       new {
-                          @class = "span2 search-query noEnterSubmit",
+                          @class = "span2 search-query autoCompleteKeywords noEnterSubmit",
                           @dp = "Quick Search",
                           @autocomplete = "off",
                           @id = Constants.UIString.ItemIDs.SEARCH_DIV
@@ -50,7 +50,7 @@
         return true;
     });
     
-    $("#keywords").typeahead({
+    $(".autoCompleteKeywords").typeahead({
         source: function (query, process) {
             var last = query.split(/\s*[,;]\s*/).pop();
 
