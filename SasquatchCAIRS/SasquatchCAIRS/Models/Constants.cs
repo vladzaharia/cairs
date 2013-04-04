@@ -352,6 +352,7 @@ namespace SasquatchCAIRS.Models {
                 public const string SEARCH_BUTTON = "search-button";
                 public const string ADVANCED_SEARCH = "advanced-search";
                 public const string SUBMIT_BUTTON = "submit-button";
+                public const string MODIFY_SEARCH = "modify-search";
             }
 
             public static class Messages {
