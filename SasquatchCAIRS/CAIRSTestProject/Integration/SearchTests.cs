@@ -75,7 +75,8 @@ namespace CAIRSTestProject.Integration {
         [Test]
         public void TestQuickSearch() {
             Keyword kw = new Keyword {
-                KeywordValue = _random.Next().ToString(CultureInfo.InvariantCulture)
+                KeywordValue = "SInt-" + 
+                    _random.Next().ToString(CultureInfo.InvariantCulture)
             };
             _cdc.Keywords.InsertOnSubmit(kw);
             _cdc.SubmitChanges();
@@ -85,7 +86,8 @@ namespace CAIRSTestProject.Integration {
                 keywords = new List<string> { kw.KeywordValue }
             };
             RequestContent rc = new RequestContent {
-                patientFName = _random.Next().ToString(CultureInfo.InvariantCulture),
+                patientFName = "SInt-" + 
+                    _random.Next().ToString(CultureInfo.InvariantCulture),
             };
             rc.addQuestionResponse(qrc);
 
@@ -93,35 +95,45 @@ namespace CAIRSTestProject.Integration {
             RequestManagementController rmc = new RequestManagementController();
             long rid = rmc.create(rc);
 
-            
-
-
+            //========================================
+            // And we're ready to go!
+            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SEARCH_FIELD))
+                .SendKeys(kw.KeywordValue);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SEARCH_BUTTON, "/Search/Results");
 
             // Cleanup KeywordQuestion
-            KeywordQuestion keyq = _cdc.KeywordQuestions.FirstOrDefault(kq => kq.RequestID == rid);
+            CAIRSDataContext cdc2 = new CAIRSDataContext();
+            KeywordQuestion keyq = cdc2.KeywordQuestions.FirstOrDefault(kq => kq.RequestID == rid);
             if (keyq == null) {
                 Assert.Fail("KeywordQuestion can't be found for Teardown!");
             }
-            _cdc.KeywordQuestions.DeleteOnSubmit(keyq);
+            cdc2.KeywordQuestions.DeleteOnSubmit(keyq);
+            cdc2.SubmitChanges();
 
             // Cleanup Keyword
-            _cdc.Keywords.DeleteOnSubmit(kw);
+            Keyword kwDel =
+                cdc2.Keywords.FirstOrDefault(k => k.KeywordID == kw.KeywordID);
+            if (kwDel == null) {
+                Assert.Fail("KeywordQuestion can't be found for Teardown!");
+            }
+            cdc2.Keywords.DeleteOnSubmit(kwDel);
+            cdc2.SubmitChanges();
 
             // Cleanup QuestionResponse
-            QuestionResponse qresp = _cdc.QuestionResponses.FirstOrDefault(qr => qr.RequestID == rid);
+            QuestionResponse qresp = cdc2.QuestionResponses.FirstOrDefault(qr => qr.RequestID == rid);
             if (qresp == null) {
                 Assert.Fail("QuestionResponse can't be found for Teardown!");
             }
-            _cdc.QuestionResponses.DeleteOnSubmit(qresp);
+            cdc2.QuestionResponses.DeleteOnSubmit(qresp);
+            cdc2.SubmitChanges();
 
             // Cleanup Request
-            Request req = _cdc.Requests.FirstOrDefault(r => r.RequestID == rid);
+            Request req = cdc2.Requests.FirstOrDefault(r => r.RequestID == rid);
             if (req == null) {
                 Assert.Fail("Request can't be found for Teardown!");
             }
-            _cdc.Requests.DeleteOnSubmit(req);
-
-            _cdc.SubmitChanges();
+            cdc2.Requests.DeleteOnSubmit(req);
+            cdc2.SubmitChanges();
         }
     }
 }
