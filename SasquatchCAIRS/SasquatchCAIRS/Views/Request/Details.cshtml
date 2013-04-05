@@ -225,7 +225,11 @@
     <table class="table information-table">
         <tr>
             <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.PARENT_REQUEST</td>
-            <td width="85%" class="tbl-top">@Model.parentRequestID</td>
+            <td width="85%" class="tbl-top">
+                @if (@Model.parentRequestID != null) {
+                    @Html.ActionLink(@Model.parentRequestID.ToString(), "Details", new {id = @Model.parentRequestID})
+                }
+            </td>
         </tr>
     </table>
 
