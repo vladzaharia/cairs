@@ -278,16 +278,122 @@ namespace CAIRSTestProject.Unit {
         }
 
         [Test]
-        public void Test_edit() {
+        public void Test_getRequestDetailsInvalid() {
+            // Should return null
+            Assert.Null(_rmc.getRequestDetails(-1));
+        }
+
+        [Test]
+        public void Test_getRequestDetails() {
+            // Check request is actually returned
+            DateTime opened = DateTime.Now;
+
+            RequestContent rCon = new RequestContent {
+                requestStatus = Constants.RequestStatus.Open,
+                requestorFirstName = "Bob",
+                requestorLastName = "Smith",
+                requestorEmail = "bsmith@gmail.com",
+                requestorPhoneNum = "123-456-7890",
+                requestorPhoneExt = "0000",
+                patientFName = "Jane",
+                patientLName = "Doe",
+                patientGender = Constants.Gender.Female,
+                patientAge = 20,
+                patientAgencyID = "ABCDE",
+                timeOpened = opened,
+                regionID = _region.RegionID,
+                requestorTypeID = _rType.RequestorTypeID
+            };
+
+            QuestionResponseContent qrCon = new QuestionResponseContent {
+                question = "Test Question",
+                response = "Test Response",
+                timeSpent = 10,
+                specialNotes = "Test Special Notes",
+                questionTypeID = _qType.QuestionTypeID,
+                tumourGroupID = _tGroup.TumourGroupID,
+                severity = 0,
+                consequence = 0
+            };
+
+            qrCon.addKeyword("TRMC_Keyword0");
+
+            qrCon.addReference(new ReferenceContent {
+                referenceString = "TRMC_Reference1",
+                referenceType = Constants.ReferenceType.Text
+            });
+
+            rCon.addQuestionResponse(qrCon);
+
+            _reqId = _rmc.create(rCon);
+
+            RequestContent rCon2 = _rmc.getRequestDetails((long) _reqId);
+
+            Assert.NotNull(rCon);
+            Assert.AreEqual(rCon.requestStatus, rCon2.requestStatus);
+            Assert.AreEqual(rCon.requestorFirstName, rCon2.requestorFirstName);
+            Assert.AreEqual(rCon.requestorLastName, rCon2.requestorLastName);
+            Assert.AreEqual(rCon.requestorEmail, rCon2.requestorEmail);
+            Assert.AreEqual(rCon.requestorPhoneNum, rCon2.requestorPhoneNum);
+            Assert.AreEqual(rCon.requestorPhoneExt, rCon2.requestorPhoneExt);
+            Assert.AreEqual(rCon.patientFName, rCon2.patientFName);
+            Assert.AreEqual(rCon.patientLName, rCon2.patientLName);
+            Assert.AreEqual(rCon.patientGender, rCon2.patientGender);
+            Assert.AreEqual(rCon.patientAge, rCon2.patientAge);
+            Assert.AreEqual(rCon.patientAgencyID, rCon2.patientAgencyID);
+
+            Assert.That(rCon.timeOpened, Is.EqualTo(rCon2.timeOpened).Within(1).Seconds);
+            Assert.Null(rCon2.timeClosed);
+
+            Assert.AreEqual(rCon.requestorTypeID, rCon2.requestorTypeID);
+            Assert.AreEqual(rCon.regionID, rCon2.regionID);
+
+            Assert.AreEqual(rCon.questionResponseList.Count,
+                            rCon2.questionResponseList.Count);
+
+            QuestionResponseContent qrCon2 =
+                rCon2.questionResponseList.ElementAt(0);
+
+            Assert.AreEqual(qrCon.question, qrCon2.question);
+            Assert.AreEqual(qrCon.response, qrCon2.response);
+            Assert.AreEqual(qrCon.timeSpent, qrCon2.timeSpent);
+            Assert.AreEqual(qrCon.specialNotes, qrCon2.specialNotes);
+            Assert.AreEqual(qrCon.tumourGroupID, qrCon2.tumourGroupID);
+            Assert.AreEqual(qrCon.questionTypeID, qrCon2.questionTypeID);
+            Assert.AreEqual(qrCon.severity, qrCon2.severity);
+            Assert.AreEqual(qrCon.consequence, qrCon2.consequence);
+
+            Assert.AreEqual(qrCon.referenceList.Count,
+                            qrCon2.referenceList.Count);
+            Assert.AreEqual(qrCon.referenceList.ElementAt(0).referenceType,
+                            qrCon2.referenceList.ElementAt(0).referenceType);
+            Assert.AreEqual(qrCon.referenceList.ElementAt(0).referenceString,
+                            qrCon2.referenceList.ElementAt(0).referenceString);
+
+            Assert.AreEqual(qrCon.keywords.Count, qrCon2.keywords.Count);
+
+            for (int i = 0; i < qrCon.keywords.Count; i++) {
+                Assert.True(qrCon.keywords.Contains(qrCon2.keywords.ElementAt(i)));
+            }
+        }
+
+        [Test]
+        public void Test_editInvalid() {
             // Cannot use default request ID in RequestContent
             Assert.Throws<Exception>(() => _rmc.edit(new RequestContent()));
+        }
 
+        [Test]
+        public void Test_editNonexistent() {
             // Cannot use non-existent request ID
             long nonexistent = _db.Requests.Max(x => x.RequestID) + 1;
             Assert.Throws<Exception>(() => _rmc.edit(new RequestContent {
                 requestID = nonexistent
             }));
+        }
 
+        [Test]
+        public void Test_edit() {
             // Create a new request
             var rCon = new RequestContent {
                 requestStatus = Constants.RequestStatus.Open,
@@ -317,9 +423,7 @@ namespace CAIRSTestProject.Unit {
                 consequence = 0
             };
 
-            // Test with new and existing keyword
             qrCon1.addKeyword("TRMC_Keyword0");
-            qrCon1.addKeyword("TRMC_Keyword1");
 
             qrCon1.addReference(new ReferenceContent {
                 referenceString = "TRMC_Reference0",
@@ -429,7 +533,6 @@ namespace CAIRSTestProject.Unit {
 
             RequestContent rConEdited = _rmc.getRequestDetails((long) _reqId);
 
-            Assert.NotNull(rCon);
             Assert.AreEqual(rCon.requestStatus, rConEdited.requestStatus);
             Assert.AreEqual(rCon.requestorFirstName,
                             rConEdited.requestorFirstName);
@@ -497,119 +600,12 @@ namespace CAIRSTestProject.Unit {
         }
 
         [Test]
-        public void Test_exists() {
+        public void Test_existsFalse() {
             Assert.False(_rmc.requestExists(-1));
-
-            _reqId = _rmc.create(new RequestContent());
-            Assert.True(_rmc.requestExists((long) _reqId));
         }
 
         [Test]
-        public void Test_getRequestDetails() {
-            // Should return null
-            Assert.Null(_rmc.getRequestDetails(-1));
-
-            // Check request is actually returned
-            DateTime opened = DateTime.Now;
-
-            var rCon = new RequestContent {
-                requestStatus = Constants.RequestStatus.Open,
-                requestorFirstName = "Bob",
-                requestorLastName = "Smith",
-                requestorEmail = "bsmith@gmail.com",
-                requestorPhoneNum = "123-456-7890",
-                requestorPhoneExt = "0000",
-                patientFName = "Jane",
-                patientLName = "Doe",
-                patientGender = Constants.Gender.Female,
-                patientAge = 20,
-                patientAgencyID = "ABCDE",
-                timeOpened = opened,
-                regionID = _region.RegionID,
-                requestorTypeID = _rType.RequestorTypeID
-            };
-
-            var qrCon = new QuestionResponseContent {
-                question = "Test Question",
-                response = "Test Response",
-                timeSpent = 10,
-                specialNotes = "Test Special Notes",
-                questionTypeID = _qType.QuestionTypeID,
-                tumourGroupID = _tGroup.TumourGroupID,
-                severity = 0,
-                consequence = 0
-            };
-
-            // Test with new and existing keyword
-            qrCon.addKeyword("TRMC_Keyword0");
-            qrCon.addKeyword("TRMC_Keyword1");
-
-            _db.ExecuteCommand(
-                "INSERT INTO Keyword (KeywordValue, Active) " +
-                "VALUES ('TRMC_Keyword0', 'False')");
-
-            qrCon.addReference(new ReferenceContent {
-                referenceString = "TRMC_Reference1",
-                referenceType = Constants.ReferenceType.Text
-            });
-
-            rCon.addQuestionResponse(qrCon);
-
-            _reqId = _rmc.create(rCon);
-
-            RequestContent rCon2 = _rmc.getRequestDetails((long) _reqId);
-
-            Assert.NotNull(rCon);
-            Assert.AreEqual(rCon.requestStatus, rCon2.requestStatus);
-            Assert.AreEqual(rCon.requestorFirstName, rCon2.requestorFirstName);
-            Assert.AreEqual(rCon.requestorLastName, rCon2.requestorLastName);
-            Assert.AreEqual(rCon.requestorEmail, rCon2.requestorEmail);
-            Assert.AreEqual(rCon.requestorPhoneNum, rCon2.requestorPhoneNum);
-            Assert.AreEqual(rCon.requestorPhoneExt, rCon2.requestorPhoneExt);
-            Assert.AreEqual(rCon.patientFName, rCon2.patientFName);
-            Assert.AreEqual(rCon.patientLName, rCon2.patientLName);
-            Assert.AreEqual(rCon.patientGender, rCon2.patientGender);
-            Assert.AreEqual(rCon.patientAge, rCon2.patientAge);
-            Assert.AreEqual(rCon.patientAgencyID, rCon2.patientAgencyID);
-
-            Assert.That(rCon.timeOpened,
-                        Is.EqualTo(rCon2.timeOpened).Within(1).Seconds);
-            Assert.Null(rCon2.timeClosed);
-
-            Assert.AreEqual(rCon.requestorTypeID, rCon2.requestorTypeID);
-            Assert.AreEqual(rCon.regionID, rCon2.regionID);
-
-            Assert.AreEqual(rCon.questionResponseList.Count,
-                            rCon2.questionResponseList.Count);
-
-            QuestionResponseContent qrCon2 =
-                rCon2.questionResponseList.ElementAt(0);
-
-            Assert.AreEqual(qrCon.question, qrCon2.question);
-            Assert.AreEqual(qrCon.response, qrCon2.response);
-            Assert.AreEqual(qrCon.timeSpent, qrCon2.timeSpent);
-            Assert.AreEqual(qrCon.specialNotes, qrCon2.specialNotes);
-            Assert.AreEqual(qrCon.tumourGroupID, qrCon2.tumourGroupID);
-            Assert.AreEqual(qrCon.questionTypeID, qrCon2.questionTypeID);
-            Assert.AreEqual(qrCon.severity, qrCon2.severity);
-            Assert.AreEqual(qrCon.consequence, qrCon2.consequence);
-
-            Assert.AreEqual(qrCon.referenceList.Count,
-                            qrCon2.referenceList.Count);
-            Assert.AreEqual(qrCon.referenceList.ElementAt(0).referenceType,
-                            qrCon2.referenceList.ElementAt(0).referenceType);
-            Assert.AreEqual(qrCon.referenceList.ElementAt(0).referenceString,
-                            qrCon2.referenceList.ElementAt(0).referenceString);
-
-            Assert.AreEqual(qrCon.keywords.Count, qrCon2.keywords.Count);
-
-            for (int i = 0; i < qrCon.keywords.Count; i++) {
-                Assert.True(qrCon.keywords.Contains(qrCon2.keywords.ElementAt(i)));
-            }
-        }
-
-        [Test]
-        public void Test_invalidate() {
+        public void Test_exists() {
             _reqId = _rmc.create(new RequestContent());
             _rmc.invalidate((long) _reqId);
 
