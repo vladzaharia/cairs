@@ -1,15 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="sasquatch" Class="CAIRSDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=sasquatch.cloudapp.net;Initial Catalog=sasquatch;Persist Security Info=True;User ID=team" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="sasquatchConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Reference" Member="References">
-    <Type Name="Reference">
-      <Column Name="ReferenceID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="QuestionResponseID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="RequestID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="ReferenceType" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
-      <Column Name="ReferenceString" Type="System.String" DbType="NVarChar(1024) NOT NULL" CanBeNull="false" />
-      <Association Name="QuestionResponse_Reference" Member="QuestionResponse" ThisKey="QuestionResponseID,RequestID" OtherKey="QuestionResponseID,RequestID" Type="QuestionResponse" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.QuestionType" Member="QuestionTypes">
     <Type Name="QuestionType">
       <Column Name="QuestionTypeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -67,8 +57,8 @@
       <Column Name="TumourGroupID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Severity" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="Consequence" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
-      <Association Name="QuestionResponse_Reference" Member="References" ThisKey="QuestionResponseID,RequestID" OtherKey="QuestionResponseID,RequestID" Type="Reference" />
       <Association Name="QuestionResponse_KeywordQuestion" Member="KeywordQuestions" ThisKey="QuestionResponseID,RequestID" OtherKey="QuestionResponseID,RequestID" Type="KeywordQuestion" />
+      <Association Name="QuestionResponse_Reference" Member="References" ThisKey="QuestionResponseID,RequestID" OtherKey="QuestionResponseID,RequestID" Type="Reference" />
       <Association Name="QuestionType_QuestionResponse" Member="QuestionType" ThisKey="QuestionTypeID" OtherKey="QuestionTypeID" Type="QuestionType" IsForeignKey="true" />
       <Association Name="TumourGroup_QuestionResponse" Member="TumourGroup" ThisKey="TumourGroupID" OtherKey="TumourGroupID" Type="TumourGroup" IsForeignKey="true" />
       <Association Name="Request_QuestionResponse" Member="Request" ThisKey="RequestID" OtherKey="RequestID" Type="Request" IsForeignKey="true" />
@@ -126,16 +116,16 @@
     <Type Name="Request">
       <Column Name="RequestID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="ParentRequestID" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
-      <Column Name="RequestorFName" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
-      <Column Name="RequestorLName" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
-      <Column Name="RequestorPhone" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="RequestorPhoneExt" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
-      <Column Name="RequestorEmail" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
-      <Column Name="PatientFName" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
-      <Column Name="PatientLName" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="RequestorFName" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="RequestorLName" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="RequestorPhone" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="RequestorPhoneExt" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="RequestorEmail" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="PatientFName" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="PatientLName" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
       <Column Name="PatientGender" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
       <Column Name="PatientAge" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
-      <Column Name="PatientAgencyID" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="PatientAgencyID" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
       <Column Name="RequestStatus" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
       <Column Name="TimeOpened" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="TimeClosed" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
@@ -156,6 +146,16 @@
       <Column Name="KeywordValue" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
       <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Keyword_KeywordQuestion" Member="KeywordQuestions" ThisKey="KeywordID" OtherKey="KeywordID" Type="KeywordQuestion" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Reference" Member="References">
+    <Type Name="Reference">
+      <Column Name="ReferenceID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="QuestionResponseID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RequestID" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ReferenceType" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ReferenceString" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Association Name="QuestionResponse_Reference" Member="QuestionResponse" ThisKey="QuestionResponseID,RequestID" OtherKey="QuestionResponseID,RequestID" Type="QuestionResponse" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

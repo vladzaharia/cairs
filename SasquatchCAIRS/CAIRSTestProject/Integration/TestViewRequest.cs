@@ -31,7 +31,108 @@ namespace CAIRSTestProject.Integration {
         }
 
         /// <summary>
-        /// Test View Request with no Viewer Role
+        ///     Test View Request with Invalid status and no Administrator Role
+        /// </summary>
+        [Test]
+        public void TestViewRequestInvalid() {
+            // Create a test request in the DB
+            var rc = new RequestContent {
+                patientFName = "VRInt-" +
+                               _random.Next()
+                                      .ToString(CultureInfo.InvariantCulture),
+                requestStatus = Constants.RequestStatus.Invalid
+            };
+            var rmc = new RequestManagementController();
+            long rid = rmc.create(rc);
+
+            // Remove the Viewer Role from the User
+            _ctm.removeRole(Constants.Roles.ADMINISTRATOR);
+
+            // Attempt to go to the appropriate View Request Page Directly
+            _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
+            _driver.Navigate()
+                   .GoToUrl(CommonTestingMethods.getURL() + "/Request/Details/" +
+                            rid.ToString(CultureInfo.InvariantCulture));
+
+            // Assert that we're redirected to the not authorized page
+            StringAssert.Contains("/Request/Details", _driver.Url);
+            _driver.FindElement(By.Id("error-header"));
+            IWebElement msg = _driver.FindElement(By.Id("error-message"));
+            StringAssert.AreEqualIgnoringCase(
+                "You do not have the necessary permissions to view this request.",
+                msg.Text);
+
+            // Cleanup
+            Request rq = _cdc.Requests.FirstOrDefault(r => r.RequestID == rid);
+            if (rq == null) {
+                Assert.Fail("Request is null");
+            }
+
+            _cdc.Requests.DeleteOnSubmit(rq);
+            _cdc.SubmitChanges();
+
+            _ctm.addRole(Constants.Roles.ADMINISTRATOR);
+        }
+
+        /// <summary>
+        ///     Test View Request that is Locked to Another User
+        /// </summary>
+        [Test]
+        public void TestViewRequestLockedToAnother() {
+            // Create a test request in the DB
+            var rc = new RequestContent {
+                patientFName = "VRInt-" +
+                               _random.Next()
+                                      .ToString(CultureInfo.InvariantCulture)
+            };
+            var rmc = new RequestManagementController();
+            long rid = rmc.create(rc);
+
+            // Create the User
+            var up = new UserProfile {
+                UserName = "VRInt-" +
+                           _random.Next()
+                                  .ToString(CultureInfo.InvariantCulture)
+            };
+            _cdc.UserProfiles.InsertOnSubmit(up);
+            _cdc.SubmitChanges();
+
+            // Create the Lock
+            var rlmc = new RequestLockManagementController();
+            rlmc.addLock(rid, up.UserId);
+
+            // Remove the Viewer Role from the User
+            _ctm.removeRole(Constants.Roles.ADMINISTRATOR);
+
+            // Attempt to go to the appropriate View Request Page Directly
+            _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
+            _driver.Navigate()
+                   .GoToUrl(CommonTestingMethods.getURL() + "/Request/Details/" +
+                            rid.ToString(CultureInfo.InvariantCulture));
+            _driver.FindElement(By.Id("error-header"));
+            IWebElement msg = _driver.FindElement(By.Id("error-message"));
+            StringAssert.AreEqualIgnoringCase(
+                "This request has been locked to another person and cannot be viewed until unlocked.",
+                msg.Text);
+
+            // Assert that we're redirected to the not authorized page
+            StringAssert.Contains("/Request/Details", _driver.Url);
+
+            // Cleanup
+            rlmc.removeLock(rid);
+            _cdc.UserProfiles.DeleteOnSubmit(up);
+            Request rq = _cdc.Requests.FirstOrDefault(r => r.RequestID == rid);
+            if (rq == null) {
+                Assert.Fail("Request is null");
+            }
+            _cdc.Requests.DeleteOnSubmit(rq);
+            _cdc.SubmitChanges();
+
+            _ctm.addRole(Constants.Roles.ADMINISTRATOR);
+        }
+
+        /// <summary>
+        ///     Test View Request with no Viewer Role
         /// </summary>
         [Test]
         public void TestViewRequestNotViewer() {
@@ -69,7 +170,7 @@ namespace CAIRSTestProject.Integration {
         }
 
         /// <summary>
-        /// Test View Request with Open status and no Request Editor Role
+        ///     Test View Request with Open status and no Request Editor Role
         /// </summary>
         [Test]
         public void TestViewRequestOpen() {
@@ -115,123 +216,22 @@ namespace CAIRSTestProject.Integration {
         }
 
         /// <summary>
-        /// Test View Request with Invalid status and no Administrator Role
-        /// </summary>
-        [Test]
-        public void TestViewRequestInvalid() {
-            // Create a test request in the DB
-            var rc = new RequestContent {
-                patientFName = "VRInt-" +
-                               _random.Next()
-                                      .ToString(CultureInfo.InvariantCulture),
-                requestStatus = Constants.RequestStatus.Invalid
-            };
-            var rmc = new RequestManagementController();
-            long rid = rmc.create(rc);
-
-            // Remove the Viewer Role from the User
-            _ctm.removeRole(Constants.Roles.ADMINISTRATOR);
-
-            // Attempt to go to the appropriate View Request Page Directly
-            _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
-            _driver.Navigate()
-                   .GoToUrl(CommonTestingMethods.getURL() + "/Request/Details/" +
-                            rid.ToString(CultureInfo.InvariantCulture));
-
-            // Assert that we're redirected to the not authorized page
-            StringAssert.Contains("/Request/Details", _driver.Url);
-            _driver.FindElement(By.Id("error-header"));
-            IWebElement msg = _driver.FindElement(By.Id("error-message"));
-            StringAssert.AreEqualIgnoringCase(
-                "You do not have the necessary permissions to view this request.",
-                msg.Text);
-
-            // Cleanup
-            Request rq = _cdc.Requests.FirstOrDefault(r => r.RequestID == rid);
-            if (rq == null) {
-                Assert.Fail("Request is null");
-            }
-
-            _cdc.Requests.DeleteOnSubmit(rq);
-            _cdc.SubmitChanges();
-
-            _ctm.addRole(Constants.Roles.ADMINISTRATOR);
-        }
-
-        /// <summary>
-        /// Test View Request that is Locked to Another User
-        /// </summary>
-        [Test]
-        public void TestViewRequestLockedToAnother() {
-            // Create a test request in the DB
-            var rc = new RequestContent {
-                patientFName = "VRInt-" +
-                               _random.Next()
-                                      .ToString(CultureInfo.InvariantCulture)
-            };
-            var rmc = new RequestManagementController();
-            long rid = rmc.create(rc);
-
-            // Create the User
-            UserProfile up = new UserProfile {
-                UserName = "VRInt-" +
-                           _random.Next()
-                                  .ToString(CultureInfo.InvariantCulture)
-            };
-            _cdc.UserProfiles.InsertOnSubmit(up);
-            _cdc.SubmitChanges();
-
-            // Create the Lock
-            RequestLockManagementController rlmc = new RequestLockManagementController();
-            rlmc.addLock(rid, up.UserId);
-
-            // Remove the Viewer Role from the User
-            _ctm.removeRole(Constants.Roles.ADMINISTRATOR);
-
-            // Attempt to go to the appropriate View Request Page Directly
-            _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
-            _driver.Navigate()
-                   .GoToUrl(CommonTestingMethods.getURL() + "/Request/Details/" +
-                            rid.ToString(CultureInfo.InvariantCulture));
-            _driver.FindElement(By.Id("error-header"));
-            IWebElement msg = _driver.FindElement(By.Id("error-message"));
-            StringAssert.AreEqualIgnoringCase(
-                "This request has been locked to another person and cannot be viewed until unlocked.",
-                msg.Text);
-
-            // Assert that we're redirected to the not authorized page
-            StringAssert.Contains("/Request/Details", _driver.Url);
-
-            // Cleanup
-            rlmc.removeLock(rid);
-            _cdc.UserProfiles.DeleteOnSubmit(up);
-            Request rq = _cdc.Requests.FirstOrDefault(r => r.RequestID == rid);
-            if (rq == null) {
-                Assert.Fail("Request is null");
-            }
-            _cdc.Requests.DeleteOnSubmit(rq);
-            _cdc.SubmitChanges();
-
-            _ctm.addRole(Constants.Roles.ADMINISTRATOR);
-        }
-
-        /// <summary>
-        /// Test View Request which works
+        ///     Test View Request which works
         /// </summary>
         [Test]
         public void TestViewRequestWorking() {
             // Add some Dependencies
-            RequestorType rt = new RequestorType {
+            var rt = new RequestorType {
                 Code = _random.Next(1000000)
-                                      .ToString(CultureInfo.InvariantCulture),
+                              .ToString(CultureInfo.InvariantCulture),
                 Value = "VRInt-" +
-                               _random.Next()
-                                      .ToString(CultureInfo.InvariantCulture),
+                        _random.Next()
+                               .ToString(CultureInfo.InvariantCulture),
                 Active = true
             };
             _cdc.RequestorTypes.InsertOnSubmit(rt);
 
-            QuestionType qt = new QuestionType {
+            var qt = new QuestionType {
                 Code = _random.Next(1000000)
                               .ToString(CultureInfo.InvariantCulture),
                 Value = "VRInt-" +
@@ -241,7 +241,7 @@ namespace CAIRSTestProject.Integration {
             };
             _cdc.QuestionTypes.InsertOnSubmit(qt);
 
-            TumourGroup tg = new TumourGroup {
+            var tg = new TumourGroup {
                 Code = _random.Next(1000000)
                               .ToString(CultureInfo.InvariantCulture),
                 Value = "VRInt-" +
@@ -251,7 +251,7 @@ namespace CAIRSTestProject.Integration {
             };
             _cdc.TumourGroups.InsertOnSubmit(tg);
 
-            Region r = new Region {
+            var r = new Region {
                 Code = _random.Next(1000000)
                               .ToString(CultureInfo.InvariantCulture),
                 Value = "VRInt-" +
@@ -261,7 +261,7 @@ namespace CAIRSTestProject.Integration {
             };
             _cdc.Regions.InsertOnSubmit(r);
 
-            Keyword k = new Keyword {
+            var k = new Keyword {
                 KeywordValue = "VRInt-" +
                                _random.Next()
                                       .ToString(CultureInfo.InvariantCulture),
@@ -305,15 +305,15 @@ namespace CAIRSTestProject.Integration {
                                                CultureInfo.InvariantCulture)
             };
 
-            ReferenceContent refCont = new ReferenceContent {
+            var refCont = new ReferenceContent {
                 referenceType = Constants.ReferenceType.Text,
                 referenceString = "VRInt-" +
-                           _random.Next()
-                                  .ToString(
-                                      CultureInfo.InvariantCulture)
+                                  _random.Next()
+                                         .ToString(
+                                             CultureInfo.InvariantCulture)
             };
 
-            QuestionResponseContent qrc = new QuestionResponseContent {
+            var qrc = new QuestionResponseContent {
                 question = "VRInt-" +
                            _random.Next()
                                   .ToString(
@@ -329,7 +329,7 @@ namespace CAIRSTestProject.Integration {
                 consequence = Constants.Consequence.Certain,
                 severity = Constants.Severity.Major,
                 keywords = new List<string> {k.KeywordValue},
-                referenceList = new List<ReferenceContent> { refCont },
+                referenceList = new List<ReferenceContent> {refCont},
                 timeSpent = 255,
                 questionTypeID = qt.QuestionTypeID,
                 tumourGroupID = tg.TumourGroupID
@@ -338,7 +338,7 @@ namespace CAIRSTestProject.Integration {
             var rmc = new RequestManagementController();
             long rid = rmc.create(rc);
 
-            DropdownManagementController dmc = new DropdownManagementController();
+            var dmc = new DropdownManagementController();
 
             // Attempt to go to the appropriate View Request Page Directly
             _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
@@ -351,7 +351,8 @@ namespace CAIRSTestProject.Integration {
 
             // Go through fields and check values
             IWebElement element = _driver.FindElement(By.Id("status"));
-            StringAssert.AreEqualIgnoringCase(rc.requestStatus.ToString(), element.Text);
+            StringAssert.AreEqualIgnoringCase(rc.requestStatus.ToString(),
+                                              element.Text);
 
             element = _driver.FindElement(By.Id("total-time-spent"));
             StringAssert.Contains(qrc.timeSpent.ToString(), element.Text);
@@ -380,13 +381,15 @@ namespace CAIRSTestProject.Integration {
             StringAssert.Contains(rc.patientLName, element.Text);
 
             element = _driver.FindElement(By.Id("patient-gender"));
-            StringAssert.AreEqualIgnoringCase(rc.patientGender.ToString(), element.Text);
+            StringAssert.AreEqualIgnoringCase(rc.patientGender.ToString(),
+                                              element.Text);
 
             element = _driver.FindElement(By.Id("patient-id"));
             StringAssert.AreEqualIgnoringCase(rc.patientAgencyID, element.Text);
 
             element = _driver.FindElement(By.Id("patient-age"));
-            StringAssert.AreEqualIgnoringCase(rc.patientAge.ToString(), element.Text);
+            StringAssert.AreEqualIgnoringCase(rc.patientAge.ToString(),
+                                              element.Text);
 
             element = _driver.FindElement(By.ClassName("question"));
             StringAssert.AreEqualIgnoringCase(qrc.question, element.Text);
@@ -413,16 +416,19 @@ namespace CAIRSTestProject.Integration {
                 1.ToString(CultureInfo.InvariantCulture), element.Text);
 
             element = _driver.FindElement(By.ClassName("impact-sev"));
-            StringAssert.AreEqualIgnoringCase(qrc.severity.ToString(), element.Text);
+            StringAssert.AreEqualIgnoringCase(qrc.severity.ToString(),
+                                              element.Text);
 
             element = _driver.FindElement(By.ClassName("impact-cons"));
-            StringAssert.AreEqualIgnoringCase(qrc.consequence.ToString(), element.Text);
+            StringAssert.AreEqualIgnoringCase(qrc.consequence.ToString(),
+                                              element.Text);
 
             element = _driver.FindElement(By.ClassName("reference-string"));
-            StringAssert.AreEqualIgnoringCase(refCont.referenceString, element.Text);
+            StringAssert.AreEqualIgnoringCase(refCont.referenceString,
+                                              element.Text);
 
             // Cleanup
-            CAIRSDataContext cdc2 = new CAIRSDataContext();
+            var cdc2 = new CAIRSDataContext();
 
             IQueryable<KeywordQuestion> kqs =
                 cdc2.KeywordQuestions.Where(kq => kq.RequestID == rid);

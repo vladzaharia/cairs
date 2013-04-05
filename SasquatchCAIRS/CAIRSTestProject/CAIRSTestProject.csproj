@@ -79,6 +79,8 @@
     <Compile Include="Integration\TestAdminDropdown.cs" />
     <Compile Include="Integration\TestSearch.cs" />
     <Compile Include="Integration\TestViewRequest.cs" />
+    <Compile Include="Integration\TestDashboard.cs" />
+    <Compile Include="Integration\TestCreateRequest.cs" />
     <Compile Include="Unit\Samples.cs" />
     <Compile Include="Integration\CommonTestingMethods.cs" />
     <Compile Include="Integration\TestNavigation.cs" />
