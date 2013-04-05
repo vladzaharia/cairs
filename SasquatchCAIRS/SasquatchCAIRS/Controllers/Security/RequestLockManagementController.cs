@@ -39,8 +39,10 @@ namespace SasquatchCAIRS.Controllers.Security {
         /// <param name="requestId">The ID of the Request</param>
         public void removeLock(long requestId) {
             // Remove the lock from the DB and submit.
-            _db.RequestLocks.DeleteOnSubmit(getRequestLock(requestId));
-            _db.SubmitChanges();
+            if (isLocked(requestId)) {
+                _db.RequestLocks.DeleteOnSubmit(getRequestLock(requestId));
+                _db.SubmitChanges();
+            }
         }
 
         /// <summary>
