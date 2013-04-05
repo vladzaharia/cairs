@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using SasquatchCAIRS.Controllers.Security;
 using SasquatchCAIRS;
-using SasquatchCAIRS.Controllers.ServiceSystem;
-using SasquatchCAIRS.Models.ServiceSystem;
+using SasquatchCAIRS.Controllers.Service;
+using SasquatchCAIRS.Models.Service;
 using Assert = NUnit.Framework.Assert;
 
 namespace CAIRSTestProject.Unit {
     [TestFixture]
     public class TestRequestLockController {
         private CAIRSDataContext _dc = new CAIRSDataContext();
-        private RequestLockController _rlc = new RequestLockController();
+        private RequestLockManagementController _rlc = new RequestLockManagementController();
         private RequestManagementController _rmc = new RequestManagementController();
         private Request lrq, urq;
         private UserProfile up1, up2;
