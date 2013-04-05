@@ -22,10 +22,15 @@
     <ComponentConfigurations />
     <DocumentationSources>
       <DocumentationSource sourceFile="..\SasquatchCAIRS\SasquatchCAIRS.csproj" />
+      <DocumentationSource sourceFile="..\CAIRSTestProject\CAIRSTestProject.csproj" />
     </DocumentationSources>
     <HelpAttributes />
     <NamespaceSummaries />
-    <PlugInConfigurations />
+    <PlugInConfigurations>
+      <PlugInConfig id="Hierarchical Table of Contents" enabled="True">
+        <configuration />
+      </PlugInConfig>
+    </PlugInConfigurations>
     <BuildLogFile />
     <HtmlHelp1xCompilerPath />
     <HtmlHelp2xCompilerPath />
@@ -42,11 +47,21 @@
     <SyntaxFilters>CSharp, VisualBasic, CPlusPlus, AspNet</SyntaxFilters>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <RootNamespaceContainer>False</RootNamespaceContainer>
-    <PresentationStyle>VS2005</PresentationStyle>
+    <PresentationStyle>VS2010</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
     <HelpTitle>Code Documentation for BCCA CAIRS.</HelpTitle>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <TransformComponentArguments>
+      <Argument Key="logoFile" Value="logo.png" xmlns="" />
+      <Argument Key="logoHeight" Value="" xmlns="" />
+      <Argument Key="logoWidth" Value="" xmlns="" />
+      <Argument Key="logoAltText" Value="/sasquatch/docs" xmlns="" />
+      <Argument Key="logoPlacement" Value="left" xmlns="" />
+      <Argument Key="logoAlignment" Value="left" xmlns="" />
+    </TransformComponentArguments>
+    <VisibleItems>Attributes, InheritedMembers, InheritedFrameworkMembers, Internals, Privates, Protected, SealedProtected, PrivateFields</VisibleItems>
+    <MissingTags>AutoDocumentCtors, AutoDocumentDispose</MissingTags>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
@@ -67,6 +82,17 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Icons" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icons\logo.png">
+      <ImageId>logo</ImageId>
+      <AlternateText>logo</AlternateText>
+      <CopyToMedia>True</CopyToMedia>
+      <ExcludeFromToc>True</ExcludeFromToc>
+    </Content>
+  </ItemGroup>
   <!-- Import the SHFB build targets -->
   <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
 </Project>

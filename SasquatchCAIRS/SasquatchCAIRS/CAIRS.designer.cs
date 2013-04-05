@@ -24,7 +24,7 @@ namespace SasquatchCAIRS
     public interface IDataContext {
         IQueryable<T> Repository<T>() where T : class;
     }
-	
+
 	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="sasquatch")]
 	public partial class CAIRSDataContext : System.Data.Linq.DataContext, IDataContext
 	{
@@ -33,9 +33,6 @@ namespace SasquatchCAIRS
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertReference(Reference instance);
-    partial void UpdateReference(Reference instance);
-    partial void DeleteReference(Reference instance);
     partial void InsertQuestionType(QuestionType instance);
     partial void UpdateQuestionType(QuestionType instance);
     partial void DeleteQuestionType(QuestionType instance);
@@ -75,19 +72,22 @@ namespace SasquatchCAIRS
     partial void InsertKeyword(Keyword instance);
     partial void UpdateKeyword(Keyword instance);
     partial void DeleteKeyword(Keyword instance);
+    partial void InsertReference(Reference instance);
+    partial void UpdateReference(Reference instance);
+    partial void DeleteReference(Reference instance);
     #endregion
 
-        /// <summary>
-        /// Gets the repository for the given type of entities
-        /// </summary>
-        /// <typeparam name="T">The type of the entity</typeparam>
-        /// <returns>The repository of the given type</returns>
-        public IQueryable<T> Repository<T>() where T : class {
-            Table<T> table = this.GetTable<T>();
-            return table;
-        }
-		
-		public CAIRSDataContext() : 
+	    /// <summary>
+	    /// Gets the repository for the given type of entities
+	    /// </summary>
+	    /// <typeparam name="T">The type of the entity</typeparam>
+	    /// <returns>The repository of the given type</returns>
+	    public IQueryable<T> Repository<T>() where T : class {
+	        Table<T> table = this.GetTable<T>();
+	        return table;
+	    }
+
+	    public CAIRSDataContext() : 
 				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["sasquatchConnectionString"].ConnectionString, mappingSource)
 		{
 			OnCreated();
@@ -115,14 +115,6 @@ namespace SasquatchCAIRS
 				base(connection, mappingSource)
 		{
 			OnCreated();
-		}
-		
-		public System.Data.Linq.Table<Reference> References
-		{
-			get
-			{
-				return this.GetTable<Reference>();
-			}
 		}
 		
 		public System.Data.Linq.Table<QuestionType> QuestionTypes
@@ -228,209 +220,12 @@ namespace SasquatchCAIRS
 				return this.GetTable<Keyword>();
 			}
 		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Reference")]
-	public partial class Reference : INotifyPropertyChanging, INotifyPropertyChanged
-	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private long _ReferenceID;
-		
-		private long _QuestionResponseID;
-		
-		private long _RequestID;
-		
-		private byte _ReferenceType;
-		
-		private string _ReferenceString;
-		
-		private EntityRef<QuestionResponse> _QuestionResponse;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnReferenceIDChanging(long value);
-    partial void OnReferenceIDChanged();
-    partial void OnQuestionResponseIDChanging(long value);
-    partial void OnQuestionResponseIDChanged();
-    partial void OnRequestIDChanging(long value);
-    partial void OnRequestIDChanged();
-    partial void OnReferenceTypeChanging(byte value);
-    partial void OnReferenceTypeChanged();
-    partial void OnReferenceStringChanging(string value);
-    partial void OnReferenceStringChanged();
-    #endregion
-		
-		public Reference()
-		{
-			this._QuestionResponse = default(EntityRef<QuestionResponse>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceID", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public long ReferenceID
+		public System.Data.Linq.Table<Reference> References
 		{
 			get
 			{
-				return this._ReferenceID;
-			}
-			set
-			{
-				if ((this._ReferenceID != value))
-				{
-					this.OnReferenceIDChanging(value);
-					this.SendPropertyChanging();
-					this._ReferenceID = value;
-					this.SendPropertyChanged("ReferenceID");
-					this.OnReferenceIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionResponseID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
-		public long QuestionResponseID
-		{
-			get
-			{
-				return this._QuestionResponseID;
-			}
-			set
-			{
-				if ((this._QuestionResponseID != value))
-				{
-					if (this._QuestionResponse.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnQuestionResponseIDChanging(value);
-					this.SendPropertyChanging();
-					this._QuestionResponseID = value;
-					this.SendPropertyChanged("QuestionResponseID");
-					this.OnQuestionResponseIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
-		public long RequestID
-		{
-			get
-			{
-				return this._RequestID;
-			}
-			set
-			{
-				if ((this._RequestID != value))
-				{
-					if (this._QuestionResponse.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRequestIDChanging(value);
-					this.SendPropertyChanging();
-					this._RequestID = value;
-					this.SendPropertyChanged("RequestID");
-					this.OnRequestIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceType", DbType="TinyInt NOT NULL")]
-		public byte ReferenceType
-		{
-			get
-			{
-				return this._ReferenceType;
-			}
-			set
-			{
-				if ((this._ReferenceType != value))
-				{
-					this.OnReferenceTypeChanging(value);
-					this.SendPropertyChanging();
-					this._ReferenceType = value;
-					this.SendPropertyChanged("ReferenceType");
-					this.OnReferenceTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceString", DbType="NVarChar(1024) NOT NULL", CanBeNull=false)]
-		public string ReferenceString
-		{
-			get
-			{
-				return this._ReferenceString;
-			}
-			set
-			{
-				if ((this._ReferenceString != value))
-				{
-					this.OnReferenceStringChanging(value);
-					this.SendPropertyChanging();
-					this._ReferenceString = value;
-					this.SendPropertyChanged("ReferenceString");
-					this.OnReferenceStringChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_Reference", Storage="_QuestionResponse", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID", IsForeignKey=true)]
-		public QuestionResponse QuestionResponse
-		{
-			get
-			{
-				return this._QuestionResponse.Entity;
-			}
-			set
-			{
-				QuestionResponse previousValue = this._QuestionResponse.Entity;
-				if (((previousValue != value) 
-							|| (this._QuestionResponse.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._QuestionResponse.Entity = null;
-						previousValue.References.Remove(this);
-					}
-					this._QuestionResponse.Entity = value;
-					if ((value != null))
-					{
-						value.References.Add(this);
-						this._QuestionResponseID = value.QuestionResponseID;
-						this._RequestID = value.RequestID;
-					}
-					else
-					{
-						this._QuestionResponseID = default(long);
-						this._RequestID = default(long);
-					}
-					this.SendPropertyChanged("QuestionResponse");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+				return this.GetTable<Reference>();
 			}
 		}
 	}
@@ -1271,9 +1066,9 @@ namespace SasquatchCAIRS
 		
 		private System.Nullable<byte> _Consequence;
 		
-		private EntitySet<Reference> _References;
-		
 		private EntitySet<KeywordQuestion> _KeywordQuestions;
+		
+		private EntitySet<Reference> _References;
 		
 		private EntityRef<QuestionType> _QuestionType;
 		
@@ -1309,8 +1104,8 @@ namespace SasquatchCAIRS
 		
 		public QuestionResponse()
 		{
-			this._References = new EntitySet<Reference>(new Action<Reference>(this.attach_References), new Action<Reference>(this.detach_References));
 			this._KeywordQuestions = new EntitySet<KeywordQuestion>(new Action<KeywordQuestion>(this.attach_KeywordQuestions), new Action<KeywordQuestion>(this.detach_KeywordQuestions));
+			this._References = new EntitySet<Reference>(new Action<Reference>(this.attach_References), new Action<Reference>(this.detach_References));
 			this._QuestionType = default(EntityRef<QuestionType>);
 			this._TumourGroup = default(EntityRef<TumourGroup>);
 			this._Request = default(EntityRef<Request>);
@@ -1529,19 +1324,6 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_Reference", Storage="_References", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID")]
-		public EntitySet<Reference> References
-		{
-			get
-			{
-				return this._References;
-			}
-			set
-			{
-				this._References.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_KeywordQuestion", Storage="_KeywordQuestions", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID")]
 		public EntitySet<KeywordQuestion> KeywordQuestions
 		{
@@ -1552,6 +1334,19 @@ namespace SasquatchCAIRS
 			set
 			{
 				this._KeywordQuestions.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_Reference", Storage="_References", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID")]
+		public EntitySet<Reference> References
+		{
+			get
+			{
+				return this._References;
+			}
+			set
+			{
+				this._References.Assign(value);
 			}
 		}
 		
@@ -1677,18 +1472,6 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		private void attach_References(Reference entity)
-		{
-			this.SendPropertyChanging();
-			entity.QuestionResponse = this;
-		}
-		
-		private void detach_References(Reference entity)
-		{
-			this.SendPropertyChanging();
-			entity.QuestionResponse = null;
-		}
-		
 		private void attach_KeywordQuestions(KeywordQuestion entity)
 		{
 			this.SendPropertyChanging();
@@ -1696,6 +1479,18 @@ namespace SasquatchCAIRS
 		}
 		
 		private void detach_KeywordQuestions(KeywordQuestion entity)
+		{
+			this.SendPropertyChanging();
+			entity.QuestionResponse = null;
+		}
+		
+		private void attach_References(Reference entity)
+		{
+			this.SendPropertyChanging();
+			entity.QuestionResponse = this;
+		}
+		
+		private void detach_References(Reference entity)
 		{
 			this.SendPropertyChanging();
 			entity.QuestionResponse = null;
@@ -2868,7 +2663,7 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorFName", DbType="NVarChar(64)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorFName", DbType="NVarChar(128)")]
 		public string RequestorFName
 		{
 			get
@@ -2888,7 +2683,7 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorLName", DbType="NVarChar(64)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorLName", DbType="NVarChar(128)")]
 		public string RequestorLName
 		{
 			get
@@ -2908,7 +2703,7 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorPhone", DbType="NVarChar(20)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorPhone", DbType="NVarChar(128)")]
 		public string RequestorPhone
 		{
 			get
@@ -2928,7 +2723,7 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorPhoneExt", DbType="NVarChar(15)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorPhoneExt", DbType="NVarChar(128)")]
 		public string RequestorPhoneExt
 		{
 			get
@@ -2948,7 +2743,7 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorEmail", DbType="NVarChar(64)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorEmail", DbType="NVarChar(128)")]
 		public string RequestorEmail
 		{
 			get
@@ -2968,7 +2763,7 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientFName", DbType="NVarChar(64)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientFName", DbType="NVarChar(128)")]
 		public string PatientFName
 		{
 			get
@@ -2988,7 +2783,7 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientLName", DbType="NVarChar(64)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientLName", DbType="NVarChar(128)")]
 		public string PatientLName
 		{
 			get
@@ -3048,7 +2843,7 @@ namespace SasquatchCAIRS
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientAgencyID", DbType="NVarChar(15)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientAgencyID", DbType="NVarChar(128)")]
 		public string PatientAgencyID
 		{
 			get
@@ -3534,6 +3329,211 @@ namespace SasquatchCAIRS
 		{
 			this.SendPropertyChanging();
 			entity.Keyword = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Reference")]
+	public partial class Reference : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private long _ReferenceID;
+		
+		private long _QuestionResponseID;
+		
+		private long _RequestID;
+		
+		private byte _ReferenceType;
+		
+		private string _ReferenceString;
+		
+		private EntityRef<QuestionResponse> _QuestionResponse;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnReferenceIDChanging(long value);
+    partial void OnReferenceIDChanged();
+    partial void OnQuestionResponseIDChanging(long value);
+    partial void OnQuestionResponseIDChanged();
+    partial void OnRequestIDChanging(long value);
+    partial void OnRequestIDChanged();
+    partial void OnReferenceTypeChanging(byte value);
+    partial void OnReferenceTypeChanged();
+    partial void OnReferenceStringChanging(string value);
+    partial void OnReferenceStringChanged();
+    #endregion
+		
+		public Reference()
+		{
+			this._QuestionResponse = default(EntityRef<QuestionResponse>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceID", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public long ReferenceID
+		{
+			get
+			{
+				return this._ReferenceID;
+			}
+			set
+			{
+				if ((this._ReferenceID != value))
+				{
+					this.OnReferenceIDChanging(value);
+					this.SendPropertyChanging();
+					this._ReferenceID = value;
+					this.SendPropertyChanged("ReferenceID");
+					this.OnReferenceIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionResponseID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long QuestionResponseID
+		{
+			get
+			{
+				return this._QuestionResponseID;
+			}
+			set
+			{
+				if ((this._QuestionResponseID != value))
+				{
+					if (this._QuestionResponse.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnQuestionResponseIDChanging(value);
+					this.SendPropertyChanging();
+					this._QuestionResponseID = value;
+					this.SendPropertyChanged("QuestionResponseID");
+					this.OnQuestionResponseIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long RequestID
+		{
+			get
+			{
+				return this._RequestID;
+			}
+			set
+			{
+				if ((this._RequestID != value))
+				{
+					if (this._QuestionResponse.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRequestIDChanging(value);
+					this.SendPropertyChanging();
+					this._RequestID = value;
+					this.SendPropertyChanged("RequestID");
+					this.OnRequestIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceType", DbType="TinyInt NOT NULL")]
+		public byte ReferenceType
+		{
+			get
+			{
+				return this._ReferenceType;
+			}
+			set
+			{
+				if ((this._ReferenceType != value))
+				{
+					this.OnReferenceTypeChanging(value);
+					this.SendPropertyChanging();
+					this._ReferenceType = value;
+					this.SendPropertyChanged("ReferenceType");
+					this.OnReferenceTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceString", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		public string ReferenceString
+		{
+			get
+			{
+				return this._ReferenceString;
+			}
+			set
+			{
+				if ((this._ReferenceString != value))
+				{
+					this.OnReferenceStringChanging(value);
+					this.SendPropertyChanging();
+					this._ReferenceString = value;
+					this.SendPropertyChanged("ReferenceString");
+					this.OnReferenceStringChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_Reference", Storage="_QuestionResponse", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID", IsForeignKey=true)]
+		public QuestionResponse QuestionResponse
+		{
+			get
+			{
+				return this._QuestionResponse.Entity;
+			}
+			set
+			{
+				QuestionResponse previousValue = this._QuestionResponse.Entity;
+				if (((previousValue != value) 
+							|| (this._QuestionResponse.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._QuestionResponse.Entity = null;
+						previousValue.References.Remove(this);
+					}
+					this._QuestionResponse.Entity = value;
+					if ((value != null))
+					{
+						value.References.Add(this);
+						this._QuestionResponseID = value.QuestionResponseID;
+						this._RequestID = value.RequestID;
+					}
+					else
+					{
+						this._QuestionResponseID = default(long);
+						this._RequestID = default(long);
+					}
+					this.SendPropertyChanged("QuestionResponse");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

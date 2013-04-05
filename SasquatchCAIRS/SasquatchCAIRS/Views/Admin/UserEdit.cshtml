@@ -1,15 +1,14 @@
 ﻿@using SasquatchCAIRS
-@using SasquatchCAIRS.Models
-@using SasquatchCAIRS.Models.ServiceSystem
-@using System.Linq;
-@model UserProfile
+@using SasquatchCAIRS.Models.Common
+@using SasquatchCAIRS.Models.Service
+@model SasquatchCAIRS.UserProfile
 
 @{
     ViewBag.Title = Constants.UIString.TitleText.ADMIN + " - " + Constants.UIString.TitleText.EDIT_USER;
     ViewBag.Page = "admin";
 }
 
-@Html.Partial("_AdminNavPartial", new ViewDataDictionary{ { "active", "users" } })
+@Html.Partial("_AdminNavPartial", new ViewDataDictionary {{"active", "users"}})
 
 <h2>@Constants.UIString.TitleText.ADMIN - @Constants.UIString.TitleText.EDIT_USER</h2>
 
@@ -20,7 +19,7 @@
             <tr>
                 <td class="tbl-label palette-silver">@Constants.UIString.FieldLabel.USERNAME</td>
                 <td class="tbl-content-4 palette-silver">@Html.DisplayFor(m => m.UserName)</td>
-                <td class="tbl-info palette-silver" rowspan="3">These values are retrieved from Active Directory and are updated on every login. They cannot be changed here.</td>
+                <td class="tbl-info palette-silver" rowspan="3" colspan="2">These values are retrieved from Active Directory and are updated on every login. They cannot be changed here.</td>
             </tr>
             <tr>
                 <td class="tbl-label palette-silver">@Constants.UIString.FieldLabel.FULL_NAME</td>
@@ -50,7 +49,7 @@
                         </label>
                     }    
                 </td>
-                <td>@Html.ValidationMessage("Roles")</td>
+                <td>@Html.ValidationMessage("roles")</td>
             </tr>
             <tr>
                 <td class="tbl-label">@Constants.UIString.FieldLabel.GROUPS</td>
@@ -72,7 +71,7 @@
                         </label>
                     }               
                 </td>
-                <td>@Html.ValidationMessage("Groups")</td>
+                <td>@Html.ValidationMessage("groups")</td>
             </tr>
             <tr>
                 <td><input type="hidden" name="userName" value="@Html.DisplayFor(m => m.UserName)"/></td>

@@ -1,4 +1,4 @@
-﻿@using SasquatchCAIRS.Models
+﻿@using SasquatchCAIRS.Models.Common
 @{
     ViewBag.Title = Constants.UIString.TitleText.DASHBOARD;
     ViewBag.Page = "dashboard";
@@ -19,30 +19,30 @@
 }
 
 @if (ViewBag.Requests != null) {
-<table class="table table-hover">
-    <tr>
-        <th>@Constants.UIString.FieldLabel.REQUEST_ID</th>
-        <th>@Constants.UIString.FieldLabel.CALLER_NAME_TABLE</th>
-        <th>@Constants.UIString.FieldLabel.STATUS</th>
-        <th width="25%">@Constants.UIString.FieldLabel.KEYWORDS</th> @* TODO: MAKE THIS IN CSS *@
-        <th>@Constants.UIString.FieldLabel.START_TIME</th>
-        <th>@Constants.UIString.FieldLabel.COMPLETED_TIME</th>
-    </tr>
-    @foreach (var request in ViewBag.Requests) {
+    <table class="table table-hover">
         <tr>
-            <td class="clickable" data-id="@request.RequestID">@request.RequestID</td>
-            <td class="clickable" data-id="@request.RequestID">@request.RequestorFName @request.RequestorLName</td>
-            <td class="clickable" data-id="@request.RequestID">@Constants.getStatusString((Constants.RequestStatus) request.RequestStatus)</td>
-            <td class="clickable" data-id="@request.RequestID">@String.Join(", ", ViewBag.Keywords[@request.RequestID])</td>
-            <td class="clickable" data-id="@request.RequestID">@request.TimeOpened</td>
-            <td class="clickable" data-id="@request.RequestID">@request.TimeClosed</td>
+            <th>@Constants.UIString.FieldLabel.REQUEST_ID</th>
+            <th>@Constants.UIString.FieldLabel.CALLER_NAME_TABLE</th>
+            <th>@Constants.UIString.FieldLabel.STATUS</th>
+            <th width="25%">@Constants.UIString.FieldLabel.KEYWORDS</th> @* TODO: MAKE THIS IN CSS *@
+            <th>@Constants.UIString.FieldLabel.START_TIME</th>
+            <th>@Constants.UIString.FieldLabel.COMPLETED_TIME</th>
         </tr>
-    }
-</table>
+        @foreach (dynamic request in ViewBag.Requests) {
+            <tr>
+                <td class="clickable" data-id="@request.RequestID">@request.RequestID</td>
+                <td class="clickable" data-id="@request.RequestID">@request.RequestorFName @request.RequestorLName</td>
+                <td class="clickable" data-id="@request.RequestID">@Constants.getStatusString((Constants.RequestStatus) request.RequestStatus)</td>
+                <td class="clickable" data-id="@request.RequestID">@String.Join(", ", ViewBag.Keywords[@request.RequestID])</td>
+                <td class="clickable" data-id="@request.RequestID">@request.TimeOpened</td>
+                <td class="clickable" data-id="@request.RequestID">@request.TimeClosed</td>
+            </tr>
+        }
+    </table>
 }
 
 @if (ViewBag.Requests == null) {
-    <p>Nothing to see here!</p>
+    <p id="error-message">Nothing to see here!</p>
 }
 
 <script type="text/javascript">
@@ -52,4 +52,3 @@
         });
     })
 </script>
-
