@@ -172,16 +172,6 @@ namespace SasquatchCAIRS.Controllers.Security {
             // Call XLSExporter
             XLSExporterHelper(tableExport);
 
-            //DateTime markDate = new DateTime(2010, 01, 01, 00, 00, 00, 00);
-            //TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
-            //string fromPath = Path.Combine(HttpRuntime.AppDomainAppPath,
-            //                               "AuditLogTemplate.xlsx");
-            //string toPath = Path.Combine(HttpRuntime.AppDomainAppPath, "AuditLogTemplate" + dateStamp.TotalSeconds.ToString() + ".xlsx");
-
-            //ExcelExportController eeController = new ExcelExportController();
-
-            //eeController.exportDataTable(Constants.ReportType.AuditLog, tableExport, fromPath, toPath);
-
             return true;
         }
 
@@ -259,16 +249,6 @@ namespace SasquatchCAIRS.Controllers.Security {
             // Call XLSExporter with table(s)
 
             XLSExporterHelper(tableExport);
-
-            //DateTime markDate = new DateTime(2010, 01, 01, 00, 00, 00, 00);
-            //TimeSpan dateStamp = DateTime.Now.Subtract(markDate);
-            //string fromPath = Path.Combine(HttpRuntime.AppDomainAppPath,
-            //                               "AuditLogTemplate.xlsx");
-            //string toPath = Path.Combine(HttpRuntime.AppDomainAppPath, "AuditLogTemplate" + dateStamp.TotalSeconds.ToString() + ".xlsx");
-
-            //ExcelExportController eeController = new ExcelExportController();
-
-            //eeController.exportDataTable(Constants.ReportType.AuditLog, tableExport, fromPath, toPath);
 
             return true;
         }
