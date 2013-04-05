@@ -96,7 +96,7 @@ namespace SasquatchCAIRS.Models.Service {
         /// <summary>
         ///     Requestor's Phone Number
         /// </summary>
-        [Display(Name = "Phone Number")]
+        [Display(Name = "Phone Number"), StringLength(128)]
         [DataType(DataType.PhoneNumber)]
         public string requestorPhoneNum { get; set; }
 

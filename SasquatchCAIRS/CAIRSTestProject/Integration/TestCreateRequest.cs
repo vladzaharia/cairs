@@ -63,55 +63,60 @@ namespace CAIRSTestProject.Integration {
             _driver.FindElement(By.ClassName("validation-summary-errors"));
 
             // Last Name
+            _driver.FindElement(By.Id("requestorFirstName")).Clear();
             _driver.FindElement(By.Id("requestorLastName"))
                    .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
             _ctm.findAndClick("save_draft", "/Request/Create");
             _driver.FindElement(By.ClassName("validation-summary-errors"));
 
             // Email
+            _driver.FindElement(By.Id("requestorLastName")).Clear();
             _driver.FindElement(By.Id("requestorEmail"))
                    .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
             _ctm.findAndClick("save_draft", "/Request/Create");
             _driver.FindElement(By.ClassName("validation-summary-errors"));
 
             // Phone Number
+            _driver.FindElement(By.Id("requestorEmail")).Clear();
             _driver.FindElement(By.Id("requestorPhoneNum"))
                    .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
             _ctm.findAndClick("save_draft", "/Request/Create");
             _driver.FindElement(By.ClassName("validation-summary-errors"));
 
             // Phone Extension
+            _driver.FindElement(By.Id("requestorPhoneNum")).Clear();
             _driver.FindElement(By.Id("requestorPhoneExt"))
                    .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
             _ctm.findAndClick("save_draft", "/Request/Create");
             _driver.FindElement(By.ClassName("validation-summary-errors"));
 
             // Patient First Name
+            _driver.FindElement(By.Id("requestorPhoneExt")).Clear();
             _driver.FindElement(By.Id("patientFName"))
                    .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
             _ctm.findAndClick("save_draft", "/Request/Create");
             _driver.FindElement(By.ClassName("validation-summary-errors"));
 
             // Patient Last Name
+            _driver.FindElement(By.Id("patientFName")).Clear();
             _driver.FindElement(By.Id("patientLName"))
                    .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
             _ctm.findAndClick("save_draft", "/Request/Create");
             _driver.FindElement(By.ClassName("validation-summary-errors"));
 
-            // Patient Age
-            _driver.FindElement(By.Id("patientAge"))
-                   .SendKeys("256");
-            _ctm.findAndClick("save_draft", "/Request/Create");
-            _driver.FindElement(By.ClassName("validation-summary-errors"));
-
             // Agency ID
+            _driver.FindElement(By.Id("patientLName")).Clear();
             _driver.FindElement(By.Id("patientAgencyID"))
                    .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
             _ctm.findAndClick("save_draft", "/Request/Create");
             _driver.FindElement(By.ClassName("validation-summary-errors"));
 
-            // Time Spent
-
+            // Reference
+            _driver.FindElement(By.ClassName("patientAgencyID")).Clear();
+            _driver.FindElement(By.ClassName("reference"))
+                   .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
+            _ctm.findAndClick("save_draft", "/Request/Create");
+            _driver.FindElement(By.ClassName("validation-summary-errors"));
         }
 
         /// <summary>
@@ -119,6 +124,30 @@ namespace CAIRSTestProject.Integration {
         /// </summary>
         [Test]
         public void TestCreateRequestValidation() {
+            // Attempt to go to the Create Request Page
+            _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
+            _ctm.findAndClick(Constants.UIString.ItemIDs.CREATE_REQUEST,
+                              "/Request/Create");
+
+            // Patient Age
+            _driver.FindElement(By.Id("patientAge"))
+                   .SendKeys("256");
+            _ctm.findAndClick("save_draft", "/Request/Create");
+            _driver.FindElement(By.ClassName("validation-summary-errors"));
+
+            // Time Spent
+            _driver.FindElement(By.Id("patientAge")).Clear();
+            _driver.FindElement(By.ClassName("time-spent"))
+                   .SendKeys("32768");
+            _ctm.findAndClick("save_draft", "/Request/Create");
+            _driver.FindElement(By.ClassName("validation-summary-errors"));
+
+            // Email
+            _driver.FindElement(By.ClassName("time-spent")).Clear();
+            _driver.FindElement(By.Id("requestorEmail"))
+                   .SendKeys("abcd");
+            _ctm.findAndClick("save_draft", "/Request/Create");
+            _driver.FindElement(By.ClassName("validation-summary-errors"));
         }
 
         /// <summary>
@@ -126,6 +155,12 @@ namespace CAIRSTestProject.Integration {
         /// </summary>
         [Test]
         public void TestCreateRequestValid() {
+            // Attempt to go to the Create Request Page
+            _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
+            _ctm.findAndClick(Constants.UIString.ItemIDs.CREATE_REQUEST,
+                              "/Request/Create");
+
+            
         }
     }
 }
