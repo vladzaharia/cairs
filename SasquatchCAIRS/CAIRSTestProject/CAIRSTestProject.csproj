@@ -92,6 +92,7 @@
     <Compile Include="Unit\TestRequestManagementController.cs" />
     <Compile Include="Unit\TestReportController.cs" />
     <Compile Include="Unit\TestUserController.cs" />
+    <Compile Include="Unit\TestRequestLockController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

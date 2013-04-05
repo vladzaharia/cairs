@@ -243,7 +243,7 @@ namespace CAIRSTestProject.Unit {
         }
 
         [Test]
-        public void TestAddActiveKeyword() {
+        public void TestCreateActiveKeyword() {
             _table = Constants.DropdownTable.Keyword;
             _ddc.createEntry(_table, _testCode, _testValue, true);
             Keyword toCheck = (from keys in _dc.Keywords
@@ -255,7 +255,7 @@ namespace CAIRSTestProject.Unit {
         }
 
         [Test]
-        public void TestAddActiveQuestionType() {
+        public void TestCreateActiveQuestionType() {
             _table = Constants.DropdownTable.QuestionType;
             _ddc.createEntry(_table, _testCode, _testValue, true);
             QuestionType toCheck = (from qts in _dc.QuestionTypes
@@ -268,7 +268,7 @@ namespace CAIRSTestProject.Unit {
         }
 
         [Test]
-        public void TestAddActiveRegion() {
+        public void TestCreateActiveRegion() {
             _table = Constants.DropdownTable.Region;
             _ddc.createEntry(_table, _testCode, _testValue, true);
             Region toCheck = (from regs in _dc.Regions
@@ -281,7 +281,7 @@ namespace CAIRSTestProject.Unit {
         }
 
         [Test]
-        public void TestAddActiveRequestorType() {
+        public void TestCreateActiveRequestorType() {
             _table = Constants.DropdownTable.RequestorType;
             _ddc.createEntry(_table, _testCode, _testValue, true);
             RequestorType toCheck = (from rts in _dc.RequestorTypes
