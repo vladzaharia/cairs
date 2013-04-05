@@ -269,10 +269,13 @@ namespace CAIRSTestProject.Unit {
         }
 
         [Test]
-        public void Test_getRequestDetails() {
+        public void Test_getRequestDetailsInvalid() {
             // Should return null
             Assert.Null(_rmc.getRequestDetails(-1));
+        }
 
+        [Test]
+        public void Test_getRequestDetails() {
             // Check request is actually returned
             DateTime opened = DateTime.Now;
 
@@ -304,13 +307,7 @@ namespace CAIRSTestProject.Unit {
                 consequence = 0
             };
 
-            // Test with new and existing keyword
             qrCon.addKeyword("TRMC_Keyword0");
-            qrCon.addKeyword("TRMC_Keyword1");
-
-            _db.ExecuteCommand(
-                "INSERT INTO Keyword (KeywordValue, Active) " +
-                "VALUES ('TRMC_Keyword0', 'False')");
 
             qrCon.addReference(new ReferenceContent {
                 referenceString = "TRMC_Reference1",
@@ -372,16 +369,22 @@ namespace CAIRSTestProject.Unit {
         }
 
         [Test]
-        public void Test_edit() {
+        public void Test_editInvalid() {
             // Cannot use default request ID in RequestContent
             Assert.Throws<Exception>(() => _rmc.edit(new RequestContent()));
+        }
 
+        [Test]
+        public void Test_editNonexistent() {
             // Cannot use non-existent request ID
             var nonexistent = _db.Requests.Max(x => x.RequestID) + 1;
             Assert.Throws<Exception>(() => _rmc.edit(new RequestContent {
                 requestID = nonexistent
             }));
+        }
 
+        [Test]
+        public void Test_edit() {
             // Create a new request
             RequestContent rCon = new RequestContent {
                 requestStatus = Constants.RequestStatus.Open,
@@ -411,9 +414,7 @@ namespace CAIRSTestProject.Unit {
                 consequence = 0
             };
 
-            // Test with new and existing keyword
             qrCon1.addKeyword("TRMC_Keyword0");
-            qrCon1.addKeyword("TRMC_Keyword1");
 
             qrCon1.addReference(new ReferenceContent {
                 referenceString = "TRMC_Reference0",
@@ -524,7 +525,6 @@ namespace CAIRSTestProject.Unit {
 
             RequestContent rConEdited = _rmc.getRequestDetails((long) _reqId);
 
-            Assert.NotNull(rCon);
             Assert.AreEqual(rCon.requestStatus, rConEdited.requestStatus);
             Assert.AreEqual(rCon.requestorFirstName,
                             rConEdited.requestorFirstName);
@@ -602,9 +602,12 @@ namespace CAIRSTestProject.Unit {
         }
 
         [Test]
-        public void Test_exists() {
+        public void Test_existsFalse() {
             Assert.False(_rmc.requestExists(-1));
+        }
 
+        [Test]
+        public void Test_exists() {
             _reqId = _rmc.create(new RequestContent());
             Assert.True(_rmc.requestExists((long) _reqId));
         }
