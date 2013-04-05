@@ -205,23 +205,19 @@ namespace CAIRSTestProject.Integration {
                    .SendKeys(pId);
             _driver.FindElement(By.Id("patientAge"))
                    .SendKeys(pAge);
-            _driver.FindElement(By.ClassName("time-Spent"))
+            _driver.FindElement(By.ClassName("time-spent"))
                    .SendKeys(timeSpent);
-            _driver.FindElement(By.Id("parentRequestId"))
+            _driver.FindElement(By.Id("parentRequestID"))
                    .SendKeys(parentRequest);
             _driver.FindElement(By.ClassName("reference"))
                    .SendKeys(reference);
 
             // Submit the Form
-            _driver.FindElement(By.Id("save_draft"));
+            _driver.FindElement(By.Id("save_draft")).Click();
             StringAssert.Contains("/Request/Details", _driver.Url);
 
-            long newRid =
-                Convert.ToInt64(
-                    Regex.Match(_driver.Url, ".*\\/([0-9]+)").Groups[0]);
-
             Request newReq =
-                _cdc.Requests.FirstOrDefault(r => r.RequestID == newRid);
+                _cdc.Requests.OrderByDescending(r => r.RequestID).FirstOrDefault(r => true);
             if (newReq == null) {
                 Assert.Fail("Can't find newly-created Request.");
             }
@@ -232,6 +228,40 @@ namespace CAIRSTestProject.Integration {
             StringAssert.AreEqualIgnoringCase(rPhone, newReq.RequestorPhone);
             StringAssert.AreEqualIgnoringCase(rExt, newReq.RequestorPhoneExt);
             StringAssert.AreEqualIgnoringCase(pFName, newReq.PatientFName);
+            StringAssert.AreEqualIgnoringCase(pLName, newReq.PatientLName);
+            StringAssert.AreEqualIgnoringCase(pId, newReq.PatientAgencyID);
+            StringAssert.AreEqualIgnoringCase(pAge, newReq.PatientAge.ToString());
+            StringAssert.AreEqualIgnoringCase(parentRequest, newReq.ParentRequestID.ToString());
+            StringAssert.AreEqualIgnoringCase(timeSpent, newReq.QuestionResponses.First().TimeSpent.ToString());
+            StringAssert.AreEqualIgnoringCase(reference, newReq.QuestionResponses.First().References.First().ReferenceString);
+
+            // Cleanup Time
+            IQueryable<AuditLog> aus =
+                _cdc.AuditLogs.Where(a => a.RequestID == newReq.RequestID);
+            _cdc.AuditLogs.DeleteAllOnSubmit(aus);
+
+            Reference rf =
+                _cdc.References.FirstOrDefault(r => r.RequestID == newReq.RequestID);
+            if (rf == null) {
+                Assert.Fail("Can't find Reference for Cleanup");
+            }
+            _cdc.References.DeleteOnSubmit(rf);
+
+            QuestionResponse qr =
+                _cdc.QuestionResponses.FirstOrDefault(qr2 => qr2.RequestID == newReq.RequestID);
+            if (qr == null) {
+                Assert.Fail("Can't find QuestionResponse for Cleanup");
+            }
+
+            Request req1 = _cdc.Requests.FirstOrDefault(r => r.RequestID == rid1);
+            if (req1 == null) {
+                Assert.Fail("Can't find Request for Cleanup");
+            }
+
+            _cdc.QuestionResponses.DeleteOnSubmit(qr);
+            _cdc.Requests.DeleteOnSubmit(newReq);
+            _cdc.Requests.DeleteOnSubmit(req1);
+            _cdc.SubmitChanges();
         }
     }
 }

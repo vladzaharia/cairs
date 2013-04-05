@@ -26,8 +26,8 @@
     <table class="table unbordered-table valign-middle">
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.AUDIT_CRITERIA</td>
-            <td class="tbl-field"><label class="radio radio-custom">@Html.RadioButtonFor(model => model.criteriaType, "uCriteria") Username Criteria</label></td>
-            <td class="tbl-field"><label class="radio radio-custom">@Html.RadioButtonFor(model => model.criteriaType, "rCriteria") Request ID Criteria</label></td>
+            <td class="tbl-field"><label class="radio radio-custom" id="username-radio">@Html.RadioButtonFor(model => model.criteriaType, "uCriteria") Username Criteria</label></td>
+            <td class="tbl-field"><label class="radio radio-custom" id="request-radio">@Html.RadioButtonFor(model => model.criteriaType, "rCriteria") Request ID Criteria</label></td>
             <td>@Html.ValidationMessageFor(m => m.criteriaType)</td>
         </tr>
     </table>
@@ -64,7 +64,7 @@
         <tr>
             <td class="tbl-label"></td>
             <td>
-                <button class="btn btn-custom" type="submit">
+                <button class="btn btn-custom" type="submit" id="@Constants.UIString.ItemIDs.SUBMIT_BUTTON">
                     <i class="icon-download-alt button-icon"></i> @Constants.UIString.ButtonText.GEN_AUDIT
                 </button>
             </td>

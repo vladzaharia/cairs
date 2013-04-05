@@ -17,7 +17,7 @@
     @Html.HiddenFor(model => model.timeOpened)
 
     <h3>Caller Information</h3>
-    <table class="table unbordered-table">
+    <table class="table unbordered-table valign-middle">
         <tr>
             <td class="tbl-label">@Html.LabelFor(model => model.requestorFirstName)</td>
             <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorFirstName, new {@class = "span4"})</td>
@@ -45,7 +45,7 @@
     </table>
 
     <h3>Patient Information</h3>
-    <table class="table unbordered-table">
+    <table class="table unbordered-table valign-middle">
         <tr>
             <td class="tbl-label">@Html.LabelFor(model => model.patientFName)</td>
             <td class="tbl-content-4">@Html.TextBoxFor(model => model.patientFName, new {@class = "span4"})</td>
@@ -73,7 +73,7 @@
     </a>
 
     <h3>Properties</h3>
-    <table class="table unbordered-table">
+    <table class="table unbordered-table valign-middle">
         <tr>
             <td class="tbl-label">@Html.LabelFor(model => model.parentRequestID)</td>
             <td>@Html.TextBoxFor(model => model.parentRequestID, new {@class = "span4"})</td>
