@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Web.Security;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using SasquatchCAIRS;
@@ -54,6 +55,62 @@ namespace CAIRSTestProject.Integration {
             _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
             _ctm.findAndClick(Constants.UIString.ItemIDs.CREATE_REQUEST,
                               "/Request/Create");
+
+            // First Name
+            _driver.FindElement(By.Id("requestorFirstName"))
+                   .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
+            _ctm.findAndClick("save_draft", "/Request/Create");
+            _driver.FindElement(By.ClassName("validation-summary-errors"));
+
+            // Last Name
+            _driver.FindElement(By.Id("requestorLastName"))
+                   .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
+            _ctm.findAndClick("save_draft", "/Request/Create");
+            _driver.FindElement(By.ClassName("validation-summary-errors"));
+
+            // Email
+            _driver.FindElement(By.Id("requestorEmail"))
+                   .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
+            _ctm.findAndClick("save_draft", "/Request/Create");
+            _driver.FindElement(By.ClassName("validation-summary-errors"));
+
+            // Phone Number
+            _driver.FindElement(By.Id("requestorPhoneNum"))
+                   .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
+            _ctm.findAndClick("save_draft", "/Request/Create");
+            _driver.FindElement(By.ClassName("validation-summary-errors"));
+
+            // Phone Extension
+            _driver.FindElement(By.Id("requestorPhoneExt"))
+                   .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
+            _ctm.findAndClick("save_draft", "/Request/Create");
+            _driver.FindElement(By.ClassName("validation-summary-errors"));
+
+            // Patient First Name
+            _driver.FindElement(By.Id("patientFName"))
+                   .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
+            _ctm.findAndClick("save_draft", "/Request/Create");
+            _driver.FindElement(By.ClassName("validation-summary-errors"));
+
+            // Patient Last Name
+            _driver.FindElement(By.Id("patientLName"))
+                   .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
+            _ctm.findAndClick("save_draft", "/Request/Create");
+            _driver.FindElement(By.ClassName("validation-summary-errors"));
+
+            // Patient Age
+            _driver.FindElement(By.Id("patientAge"))
+                   .SendKeys("256");
+            _ctm.findAndClick("save_draft", "/Request/Create");
+            _driver.FindElement(By.ClassName("validation-summary-errors"));
+
+            // Agency ID
+            _driver.FindElement(By.Id("patientAgencyID"))
+                   .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
+            _ctm.findAndClick("save_draft", "/Request/Create");
+            _driver.FindElement(By.ClassName("validation-summary-errors"));
+
+            // Time Spent
 
         }
 
