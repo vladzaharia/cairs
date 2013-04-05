@@ -1,6 +1,6 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
-using SasquatchCAIRS.Models;
+using SasquatchCAIRS.Models.Common;
 
 namespace CAIRSTestProject.Integration {
     [TestFixture]
@@ -143,12 +143,12 @@ namespace CAIRSTestProject.Integration {
             // Click on each item in the Nav Bar
             _ctm.findAndClick(Constants.UIString.ItemIDs.DASHBOARD, "/");
             _ctm.findAndClick(Constants.UIString.ItemIDs.CREATE_REQUEST,
-                                   "/Request/Create");
+                              "/Request/Create");
             _ctm.findAndClick(Constants.UIString.ItemIDs.REPORTS, "/Report");
             _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
-                                   "/Admin/User/List");
+                              "/Admin/User/List");
             _ctm.findAndClick(Constants.UIString.ItemIDs.ADVANCED_SEARCH,
-                                   "/Search/Advanced");
+                              "/Search/Advanced");
         }
     }
 }

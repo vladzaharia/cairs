@@ -3,6 +3,7 @@ using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Web.Mvc;
 using SasquatchCAIRS.Controllers.Security;
+using SasquatchCAIRS.Models.Common;
 using WebMatrix.WebData;
 using System.Web.Security;
 using SasquatchCAIRS.Models;
@@ -20,7 +21,7 @@ namespace SasquatchCAIRS.Filters {
 
             // Add Profile Information to ViewBag for header
             dynamic viewBag = filterContext.Controller.ViewBag;
-            UserController profileController = new UserController();
+            UserManagementController profileController = new UserManagementController();
             viewBag.Profile = profileController.loginAndGetUserProfile(filterContext.HttpContext.User.Identity.Name);
         }
 
