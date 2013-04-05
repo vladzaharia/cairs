@@ -135,8 +135,6 @@ namespace CAIRSTestProject.Integration {
             var rmc = new RequestManagementController();
             long rid1 = rmc.create(rc1);
 
-            _ctm.removeRole(Constants.Roles.REQUEST_EDITOR);
-
             // Go to the Dashboard
             _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
 
@@ -145,10 +143,7 @@ namespace CAIRSTestProject.Integration {
             Assert.Greater(elements.Count, 0);
 
             elements = _driver.FindElements(By.ClassName("add-button"));
-            Assert.AreEqual(0, elements.Count);
-
-            // Add the roles back
-            _ctm.addRole(Constants.Roles.REQUEST_EDITOR);
+            Assert.AreEqual(1, elements.Count);
 
             Request rq1 = _cdc.Requests.FirstOrDefault(r => r.RequestID == rid1);
             if (rq1 == null) {

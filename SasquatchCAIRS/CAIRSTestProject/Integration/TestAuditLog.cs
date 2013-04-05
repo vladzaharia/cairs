@@ -107,7 +107,7 @@ namespace CAIRSTestProject.Integration {
             _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
                               "/Admin/Audit");
             _driver.FindElement(By.CssSelector("[data-valmsg-for='requestID']"));
-
+            Thread.Sleep(500);
             // Test the start/end date
             _driver.FindElement(By.Id("requestID")).Clear();
             _driver.FindElement(By.Id("requestID")).SendKeys("1000-100");

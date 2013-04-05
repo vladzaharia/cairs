@@ -58,10 +58,10 @@ namespace CAIRSTestProject.Integration {
             _ctm.findAndClick("monthPerYear-radio", "/Report");
             _ctm.findAndClick("dk_container_MPYStartYear", "/Report");
             _driver.FindElement(By.Id("dk_container_MPYStartYear"))
-                   .FindElement(By.CssSelector("[data-dk-dropdown-value='2011']"));
+                   .FindElement(By.CssSelector("[data-dk-dropdown-value='2011']")).Click();
             _ctm.findAndClick("dk_container_MPYEndYear", "/Report");
             _driver.FindElement(By.Id("dk_container_MPYEndYear"))
-                   .FindElement(By.CssSelector("[data-dk-dropdown-value='2010']"));
+                   .FindElement(By.CssSelector("[data-dk-dropdown-value='2010']")).Click();
 
             // Click on Submit Button
             _ctm.findAndClick("submitBtn", "/Report");
@@ -80,13 +80,13 @@ namespace CAIRSTestProject.Integration {
             _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
             _ctm.findAndClick(Constants.UIString.ItemIDs.REPORTS, "/Report");
 
-            _ctm.findAndClick("monthPerYear-radio", "/Report");
+            _ctm.findAndClick("year-radio", "/Report");
             _ctm.findAndClick("dk_container_FYStartYear", "/Report");
-            _driver.FindElement(By.Id("dk_container_MPYStartYear"))
-                   .FindElement(By.CssSelector("[data-dk-dropdown-value='2011']"));
-            _ctm.findAndClick("dk_container_FYStartYear", "/Report");
-            _driver.FindElement(By.Id("dk_container_MPYEndYear"))
-                   .FindElement(By.CssSelector("[data-dk-dropdown-value='2010']"));
+            _driver.FindElement(By.Id("dk_container_FYStartYear"))
+                   .FindElement(By.CssSelector("[data-dk-dropdown-value='2011']")).Click();
+            _ctm.findAndClick("dk_container_FYEndYear", "/Report");
+            _driver.FindElement(By.Id("dk_container_FYEndYear"))
+                   .FindElement(By.CssSelector("[data-dk-dropdown-value='2010']")).Click();
 
             // Click on Submit Button
             _ctm.findAndClick("submitBtn", "/Report");

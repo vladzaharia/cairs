@@ -115,7 +115,7 @@ namespace CAIRSTestProject.Integration {
             _driver.FindElement(By.ClassName("validation-summary-errors"));
 
             // Reference
-            _driver.FindElement(By.ClassName("patientAgencyID")).Clear();
+            _driver.FindElement(By.Id("patientAgencyID")).Clear();
             _driver.FindElement(By.ClassName("reference"))
                    .SendKeys("CrInt-" + Membership.GeneratePassword(128, 0));
             _ctm.findAndClick("save_draft", "/Request/Create");
@@ -146,7 +146,6 @@ namespace CAIRSTestProject.Integration {
             _driver.FindElement(By.ClassName("validation-summary-errors"));
 
             // Email
-            _driver.FindElement(By.ClassName("time-spent")).Clear();
             _driver.FindElement(By.Id("requestorEmail"))
                    .SendKeys("abcd");
             _ctm.findAndClick("save_draft", "/Request/Create");
