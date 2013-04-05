@@ -160,7 +160,11 @@ namespace CAIRSTestProject.Integration {
             _ctm.findAndClick(Constants.UIString.ItemIDs.CREATE_REQUEST,
                               "/Request/Create");
 
-            
+            String rFName = "CrInt-" + Membership.GeneratePassword(10, 0);
+            String rLName = "CrInt-" + Membership.GeneratePassword(10, 0);
+
+            String pFName = "CrInt-" + Membership.GeneratePassword(10, 0);
+            String pLName = "CrInt-" + Membership.GeneratePassword(10, 0);
         }
     }
 }
