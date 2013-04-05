@@ -248,9 +248,11 @@
 
     var initCheck = false;
     var startDate = new Date();
-    startDate.setFullYear(startDate.getYear, startDate.getMonth, 1);
+    startDate.setDate(1);
+    startDate.setHours(0, 0, 0, 0);
     var endDate = new Date();
-    endDate.setFullYear(endDate.getYear, endDate.getMonth, 1);
+    endDate.setDate(1);
+    endDate.setHours(0, 0, 0, 0);
 
     var frompicker = $("#fromdatepicker").datepicker({ format: "mm/yyyy", viewMode: "months", minViewMode: "months" }).on("changeDate", function(ev) {
         if (ev.date.valueOf() > endDate.valueOf()) {
