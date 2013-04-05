@@ -205,7 +205,7 @@
                     <tr>
                         <td class="tbl-label">@Constants.getReferenceString(reference.referenceType)</td>
                         @if (reference.referenceType == Constants.ReferenceType.URL) {
-                            <td><a href="@reference.referenceString">@reference.referenceString</a></td>
+                            <td><a href="@reference.referenceString" target="_blank">@reference.referenceString</a></td>
                         }
                         @if (reference.referenceType == Constants.ReferenceType.File) {
                             <td><a href="file://@reference.referenceString">@reference.referenceString</a></td>
