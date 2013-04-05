@@ -1,4 +1,4 @@
-﻿@using SasquatchCAIRS.Models
+﻿@using SasquatchCAIRS.Models.Common
 
 @using (Html.BeginForm("Search", "Search", FormMethod.Post,
                        new {
@@ -7,12 +7,13 @@
     <div class="input-append quick-search-div">
         @Html.TextBox("keywords", "",
                       new {
-                          @class = "span2 search-query noEnterSubmit",
+                          @class = "span2 search-query autoCompleteKeywords noEnterSubmit",
                           @dp = "Quick Search",
+                          @autocomplete = "off",
                           @id = Constants.UIString.ItemIDs.SEARCH_DIV
                       })
         <button class="btn btn-custom menu-button search-button" 
-            id="@Constants.UIString.ItemIDs.SEARCH_BUTTON" type="submit">
+                id="@Constants.UIString.ItemIDs.SEARCH_BUTTON" type="submit">
             <i class="icon-search icon-white"></i>
         </button>
     </div>
@@ -35,16 +36,44 @@
 
 <script type="text/javascript">
 
-    $(function () {
-        $('.quick-search-div :submit').click(function (e) {
+    $(function() {
+        $('.quick-search-div :submit').click(function(e) {
             if ($('.search-query').val().length == 0 || $('.search-query').val() == "Quick Search") {
-                    e.preventDefault();
-                }
-            });
+                e.preventDefault();
+            }
         });
-    
-    $('.noEnterSubmit').keypress(function(e){
+    });
+
+    $('.noEnterSubmit').keypress(function(e) {
         if (e.which == 13 && ($(this).val().length == 0 || $(this).val() == "Quick Search"))
             return false;
+        return true;
+    });
+
+    $(".autoCompleteKeywords").typeahead({
+        source: function(query, process) {
+            var last = query.split(/\s*[,;]\s*/).pop();
+
+            $.post("@Url.Action("GetMatchingKeywords", "Request")/" + last, function(data) {
+                process(data);
+            });
+        },
+        updater: function(item) {
+            var terms = this.query.split(/\s*[,;]\s*/);
+            terms.pop();
+            terms.push(item);
+            terms.push("");
+
+            return terms.join(", ");
+        },
+        matcher: function(item) {
+            return (this.query).split(/\s*[,;]\s*/).pop().length > 0;
+        },
+        highlighter: function(item) {
+            var query = this.query.split(/\s*[,;]\s*/).pop().replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
+            return item.replace(new RegExp('(' + query + ')', 'ig'), function($1, match) {
+                return '<strong>' + match + '</strong>';
+            });
+        }
     });
 </script>

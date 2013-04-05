@@ -1,41 +1,47 @@
-﻿@using SasquatchCAIRS.Models
-@model SasquatchCAIRS.Models.ServiceSystem.DropdownEntry
+﻿@using SasquatchCAIRS.Models.Common
+@model SasquatchCAIRS.Models.Service.DropdownEntry
 
 @{
     ViewBag.Destination = "Dropdown" + ViewBag.Action;
 }
 
 @using (Html.BeginForm((string) ViewBag.Destination, "Admin",
-                          FormMethod.Post, new {@class = "form"})) {
-        <table class="table unbordered-table valign-middle">
-            @if (ViewBag.Table != Constants.DropdownTable.Keyword) {
-                <tr>
-                    <td class="tbl-label">Code</td>
-                    <td class="tbl-field">@Html.TextBoxFor(m => m.code, new {@class = "span3"})</td>
-                    <td>@Html.ValidationMessageFor(m => m.code)</td>
-                </tr>
-            }
+                       FormMethod.Post, new {@class = "form"})) {
+    <table class="table unbordered-table valign-middle">
+        @if (ViewBag.Table != Constants.DropdownTable.Keyword) {
             <tr>
-                <td class="tbl-label">@if (ViewBag.Table == Constants.DropdownTable.Keyword) { <span>Keyword</span> } else { <span>Value</span> }</td>
-                <td class="tbl-field">@Html.TextBoxFor(m => m.value, new { @class = "span3" })</td>
-                <td>@Html.ValidationMessageFor(m => m.value)</td>
+                <td class="tbl-label">Code</td>
+                <td class="tbl-field">@Html.TextBoxFor(m => m.code, new {@class = "span3"})</td>
+                <td>@Html.ValidationMessageFor(m => m.code)</td>
             </tr>
-            <tr>
-                <td class="tbl-label">Status</td>
-                <td class="tbl-field">@Html.DropDownListFor(m => m.active, (SelectList) ViewBag.SelectList, new { @class = "span3" })</td>
-                <td>@Html.ValidationMessageFor(m => m.active)</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <button class="btn btn-custom" type="submit" id="@Constants.UIString.ItemIDs.SUBMIT_BUTTON">
-                        @if (ViewBag.Action == "Edit") {
-                            <i class="icon-save button-icon"></i> @Constants.UIString.ButtonText.EDIT_DROPDOWN
-                        } else {
-                            <i class="icon-check button-icon"></i> @Constants.UIString.ButtonText.CREATE_DROPDOWN
-                        }
-                    </button>
-                </td>
-            </tr>
-        </table>
-    }
+        }
+        <tr>
+            <td class="tbl-label">@if (ViewBag.Table == Constants.DropdownTable.Keyword) {
+                                      <span>Keyword</span>
+                                  } else {
+                                      <span>Value</span>
+                                  }</td>
+            <td class="tbl-field">@Html.TextBoxFor(m => m.value, new {@class = "span3"})</td>
+            <td>@Html.ValidationMessageFor(m => m.value)</td>
+        </tr>
+        <tr>
+            <td class="tbl-label">Status</td>
+            <td class="tbl-field">@Html.DropDownListFor(m => m.active, (SelectList) ViewBag.SelectList, new {@class = "span3"})</td>
+            <td>@Html.ValidationMessageFor(m => m.active)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button class="btn btn-custom" type="submit" id="@Constants.UIString.ItemIDs.SUBMIT_BUTTON">
+                    @if (ViewBag.Action == "Edit") {
+                        <i class="icon-save button-icon"></i>
+                        @Constants.UIString.ButtonText.EDIT_DROPDOWN
+                    } else {
+                        <i class="icon-check button-icon"></i>
+                        @Constants.UIString.ButtonText.CREATE_DROPDOWN
+                    }
+                </button>
+            </td>
+        </tr>
+    </table>
+}

@@ -36,6 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -43,10 +46,13 @@
       <HintPath>..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="WebDriver">
@@ -71,14 +77,18 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Integration\AdminDropdownTests.cs" />
+    <Compile Include="Integration\SearchTests.cs" />
     <Compile Include="Unit\Samples.cs" />
     <Compile Include="Integration\CommonTestingMethods.cs" />
     <Compile Include="Integration\NavigationTests.cs" />
     <Compile Include="Integration\AdminUserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unit\TestSearchController.cs" />
     <Compile Include="Unit\TestAuditLogManagementController.cs" />
+    <Compile Include="Unit\TestDropdownController.cs" />
     <Compile Include="Unit\TestRequestManagementController.cs" />
-    <Compile Include="Unit\ReportControllerTest.cs" />
+    <Compile Include="Unit\TestReportController.cs" />
+    <Compile Include="Unit\TestUserController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

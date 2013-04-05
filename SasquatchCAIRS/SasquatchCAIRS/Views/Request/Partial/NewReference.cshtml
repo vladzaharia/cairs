@@ -1,7 +1,7 @@
-﻿@using SasquatchCAIRS.Helper
-@using SasquatchCAIRS.Models
-
-@model SasquatchCAIRS.Models.ServiceSystem.ReferenceContent
+﻿
+@using SasquatchCAIRS.Helper
+@using SasquatchCAIRS.Models.Common
+@model SasquatchCAIRS.Models.Service.ReferenceContent
 
 @{
     Layout = null;
@@ -11,7 +11,6 @@
     @using (Html.BeginCollectionItemFromIndex(
         "questionResponseList[" + ((String) ViewBag.Guid) + "].referenceList",
         (String) ViewBag.RefGuid)) {
-        
         if (Model.requestID != -1) {
             @:@Html.HiddenFor(model => model.requestID)
         }
@@ -23,15 +22,15 @@
         if (Model.referenceID != -1) {
             @:@Html.HiddenFor(model => model.referenceID);
         }
-        
+
         <td class="tbl-label tbl-nobold">
             @Html.DropDownListFor(model => model.referenceType,
                                   (SelectList) @ViewBag.ReferenceTypes,
-                                          new {@class="span4"})
+                                  new {@class = "span4"})
         
         </td>
         <td class="tbl-content-560">
-            @Html.TextBoxFor(model => model.referenceString, new { @class="input-546" })
+            @Html.TextBoxFor(model => model.referenceString, new {@class = "input-546"})
             <input type="file" id="@(ViewBag.HtmlIdPrefix)referenceFilepath" class="input-546" />
         </td>
         <td>
@@ -44,7 +43,7 @@
 </tr>
 
 <script type="text/javascript">
-    $(function () {
+    $(function() {
         $("#@(ViewBag.HtmlIdPrefix)referenceType").dropkick({
             change: function(value) {
                 if (value == "@Constants.ReferenceType.File.ToString()") {
@@ -59,10 +58,10 @@
 
         $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").hide();
 
-        $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").change(function () {
+        $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").change(function() {
             $("#@(ViewBag.HtmlIdPrefix)referenceString").val($(this).val());
         });
-        
+
         $("#@(ViewBag.HtmlIdPrefix)referenceType").change();
 
         $("#@(ViewBag.HtmlIdPrefix)remove").click(function(e) {

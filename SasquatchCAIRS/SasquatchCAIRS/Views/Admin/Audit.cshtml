@@ -1,14 +1,12 @@
-﻿@using SasquatchCAIRS
-@using SasquatchCAIRS.Models
-@using SasquatchCAIRS.Models.ServiceSystem
-@model SasquatchCAIRS.Models.ServiceSystem.AuditCriteria
+﻿@using SasquatchCAIRS.Models.Common
+@model SasquatchCAIRS.Models.Security.AuditCriteria
 
 @{
     ViewBag.Title = "Audit";
     ViewBag.Page = "admin";
 }
 
-@Html.Partial("_AdminNavPartial", new ViewDataDictionary{ { "active", "audit" } })
+@Html.Partial("_AdminNavPartial", new ViewDataDictionary {{"active", "audit"}})
 
 <h2>@Constants.UIString.TitleText.ADMIN - @Constants.UIString.TitleText.AUDIT_LOG</h2>
 
@@ -38,17 +36,17 @@
     <table class="table unbordered-table valign-middle hideable" id="uCriteria">
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.USERNAME</td>
-            <td class="tbl-field">@Html.TextBoxFor(m => m.userName, new { @class = "span3" })</td>
+            <td class="tbl-field">@Html.TextBoxFor(m => m.userName, new {@class = "span3"})</td>
             <td>@Html.ValidationMessageFor(m => m.userName)</td>
         </tr>
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.START_DATE</td>
-            <td class="tbl-field">@Html.TextBoxFor(m => m.startDate, new { @class = "span3" })</td>
+            <td class="tbl-field">@Html.TextBoxFor(m => m.startDate, new {@class = "span3"})</td>
             <td>@Html.ValidationMessageFor(m => m.startDate)</td>
         </tr>
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.END_DATE</td>
-            <td class="tbl-field">@Html.TextBoxFor(m => m.endDate, new { @class = "span3" })</td>
+            <td class="tbl-field">@Html.TextBoxFor(m => m.endDate, new {@class = "span3"})</td>
             <td>@Html.ValidationMessageFor(m => m.endDate)</td>
         </tr>
     </table>
@@ -57,7 +55,7 @@
     <table class="table unbordered-table valign-middle hideable" id="rCriteria">
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.REQUEST_ID</td>
-            <td class="tbl-field">@Html.TextBoxFor(m => m.requestID, new { @class = "span3" })</td>
+            <td class="tbl-field">@Html.TextBoxFor(m => m.requestID, new {@class = "span3"})</td>
             <td>@Html.ValidationMessageFor(m => m.requestID)</td>
         </tr>
     </table>
@@ -72,14 +70,14 @@
             </td>
         </tr>
     </table>
-    }
+}
     
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
 
 <script type="text/javascript">
-    $(function () {
+    $(function() {
         $('#endDate').datepicker();
         $('#startDate').datepicker();
     });
@@ -88,7 +86,7 @@
         $(".radio-custom").click(function() {
             var criteria = $(this).children("input").val(),
                 $table = $("#" + criteria);
-            
+
             $table.show();
             $table.siblings("#h4-" + criteria).show();
             $table.siblings(".hideable").not("#h4-" + criteria).hide();
@@ -96,7 +94,7 @@
 
         $(".hideable").hide();
         setTimeout(function() {
-            $(".hideable#" + $(".radio-custom.checked input").val()).show()
+            $(".hideable#" + $(".radio-custom.checked input").val()).show();
         }, 100);
     });
 </script>

@@ -1,4 +1,5 @@
-﻿@using SasquatchCAIRS.Models
+﻿@using SasquatchCAIRS
+@using SasquatchCAIRS.Models.Common
 @model IEnumerable<SasquatchCAIRS.Request>
 
 @{
@@ -8,7 +9,7 @@
 <h2>@Constants.UIString.TitleText.RESULTS</h2>
 
 <div class="buttons add-button">
-    <a href="@Url.Action("Modify")" class="btn btn-custom">
+    <a href="@Url.Action("Modify")" class="btn btn-custom" id="@Constants.UIString.ItemIDs.MODIFY_SEARCH">
         <i class="icon-edit button-icon"></i> @Constants.UIString.ButtonText.MODIFY_SEARCH
     </a>
     
@@ -17,7 +18,10 @@
     </a>
 </div>
 
-For keywords: @ViewBag.keywords 
+@foreach (string str in ViewBag.criteria) {
+    @str
+    <br/>
+}
 <br/>
 @{
     int page = ViewBag.startIndex + 1;
@@ -30,7 +34,6 @@ Showing page @page of @total
 @if (@ViewBag.ResultSetSize < 1) {
     <div class="message palette-danger-dark">@Constants.UIString.Response.NO_RESULTS</div>
 } else {
-
     <fieldset class="results">
         <legend>@Constants.UIString.TitleText.RESULTS</legend>
         <div>
@@ -59,29 +62,29 @@ Showing page @page of @total
                     </th>
                 </tr>
 
-                @foreach (var request in Model) {
+                @foreach (Request request in Model) {
                     <tr>
-                        <td class="clickable" data-id="@request.RequestID">
+                        <td class="clickable" data-id="@request.RequestID" id="request-id">
                             @Html.DisplayFor(modelItem => request.RequestID)
                         </td>
-                        <td class="clickable" data-id="@request.RequestID"> 
+                        <td class="clickable" data-id="@request.RequestID" id="requestor-name"> 
                             @Html.DisplayFor(modelItem => request.RequestorFName) 
                             @Html.DisplayFor(modelItem => request.RequestorLName)
                         </td>
-                        <td  class="clickable" data-id="@request.RequestID">
+                        <td  class="clickable" data-id="@request.RequestID" id="patient-name">
                             @Html.DisplayFor(modelItem => request.PatientFName) 
                             @Html.DisplayFor(modelItem => request.PatientLName)
                         </td>
-                        <td class="clickable" data-id="@request.RequestID">
-                            @Enum.GetName(typeof(Constants.RequestStatus), @request.RequestStatus)
+                        <td class="clickable" data-id="@request.RequestID" id="status">
+                            @Enum.GetName(typeof (Constants.RequestStatus), @request.RequestStatus)
                         </td>
-                        <td class="clickable" data-id="@request.RequestID">
+                        <td class="clickable" data-id="@request.RequestID" id="keywords">
                             @String.Join(", ", ViewBag.keywordDict[@request.RequestID])
                         </td>
-                        <td class="clickable" data-id="@request.RequestID"> 
+                        <td class="clickable" data-id="@request.RequestID" id="time-opened"> 
                             @Html.DisplayFor(modelItem => request.TimeOpened)
                         </td>
-                        <td class="clickable" data-id="@request.RequestID">
+                        <td class="clickable" data-id="@request.RequestID" id="time-closed">
                             @Html.DisplayFor(modelItem => request.TimeClosed)
                         </td>
                     </tr>
@@ -91,10 +94,10 @@ Showing page @page of @total
     </fieldset>
 }
 <div>
-    @if((int)ViewBag.startIndex > 0) {
+    @if ((int) ViewBag.startIndex > 0) {
         @Html.ActionLink("Previous Page", "Page", new {id = @ViewBag.startIndex - 1})
     } 
-    @if((int)ViewBag.ResultSetSize > Constants.PAGE_SIZE * ((int)ViewBag.startIndex + 1)) {
+    @if ((int) ViewBag.ResultSetSize > Constants.PAGE_SIZE*((int) ViewBag.startIndex + 1)) {
         @Html.ActionLink("Next Page", "Page", new {id = @ViewBag.startIndex + 1})
     }
 </div>
@@ -105,6 +108,5 @@ Showing page @page of @total
             document.location.href = "/Request/Details/" + $(this).attr("data-id");
         });
     })
-    
 
 </script>

@@ -6,7 +6,7 @@ using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using SasquatchCAIRS;
-using SasquatchCAIRS.Models;
+using SasquatchCAIRS.Models.Common;
 
 namespace CAIRSTestProject.Integration {
     [TestFixture]
@@ -17,6 +17,7 @@ namespace CAIRSTestProject.Integration {
         [TestFixtureSetUp]
         public void Setup() {
             _driver = _ctm.getDriver();
+            _ctm.addAllRoles();
         }
 
         [TestFixtureTearDown]
@@ -54,21 +55,16 @@ namespace CAIRSTestProject.Integration {
                    .Click();
 
             // Go to Create Region
-            _driver.FindElement(By.Id("button-Region")).Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/Dropdown/Create/Region",
-                _driver.Url);
+            _ctm.findAndClick("button-Region",
+                              "/Admin/Dropdown/Create/Region");
 
             // Enter Already Existing Data
             _driver.FindElement(By.Id("code")).SendKeys(r.Code);
             _driver.FindElement(By.Id("value")).SendKeys(r.Value);
 
             // Try to Submit the Form + Verify that we're on the same page
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/Dropdown/Create/Region",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/Dropdown/Create/Region");
 
             // Find the Code error and check the text
             IWebElement codeMsg =
@@ -88,11 +84,8 @@ namespace CAIRSTestProject.Integration {
             _driver.FindElement(By.Id("value")).SendKeys(r.Value);
 
             // Try to Submit the Form + Verify that we're on the same page
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/Dropdown/Create/Region",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/Dropdown/Create/Region");
 
             valMsg =
                 _driver.FindElement(By.CssSelector("[data-valmsg-for='value']"));
@@ -106,11 +99,8 @@ namespace CAIRSTestProject.Integration {
             _driver.FindElement(By.Id("value")).SendKeys(valVal);
 
             // Try to Submit the Form + Verify that we're on the same page
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/Dropdown/Create/Region",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/Dropdown/Create/Region");
 
             valMsg =
                 _driver.FindElement(By.CssSelector("[data-valmsg-for='code']"));
@@ -140,11 +130,8 @@ namespace CAIRSTestProject.Integration {
                 _driver.Url);
 
             // Try to Submit the Form + Verify that we're on the same page
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/Dropdown/Create/Region",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/Dropdown/Create/Region");
 
             // Find the Code error and check the text
             IWebElement codeMsg =
@@ -162,11 +149,8 @@ namespace CAIRSTestProject.Integration {
                    .SendKeys(
                        (new Random()).Next(1000000)
                                      .ToString(CultureInfo.InvariantCulture));
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/Dropdown/Create/Region",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/Dropdown/Create/Region");
             valMsg =
                 _driver.FindElement(By.CssSelector("[data-valmsg-for='value']"));
             StringAssert.AreEqualIgnoringCase("Value cannot be empty!",
@@ -178,11 +162,8 @@ namespace CAIRSTestProject.Integration {
                    .SendKeys(
                        (new Random()).Next(1000000)
                                      .ToString(CultureInfo.InvariantCulture));
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/Dropdown/Create/Region",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/Dropdown/Create/Region");
             codeMsg =
                 _driver.FindElement(By.CssSelector("[data-valmsg-for='code']"));
             StringAssert.AreEqualIgnoringCase("Code cannot be empty!",
@@ -212,22 +193,16 @@ namespace CAIRSTestProject.Integration {
                    .Click();
 
             // Go to Create Region
-            _driver.FindElement(By.Id("button-Region")).Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/Dropdown/Create/Region",
-                _driver.Url);
+            _ctm.findAndClick("button-Region",
+                              "/Admin/Dropdown/Create/Region");
 
             // Enter Already Existing Data
             _driver.FindElement(By.Id("code")).SendKeys(codeVal);
             _driver.FindElement(By.Id("value")).SendKeys(valVal);
 
             // Try to Submit the Form + Verify that we're back to admin page
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() +
-                "/Admin/Dropdown/List?success=True",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/Dropdown/List?success=True");
 
             // Verify Region Shows up in Create Request Page
             var cdc = new CAIRSDataContext();
@@ -292,31 +267,32 @@ namespace CAIRSTestProject.Integration {
             // Invalidate the Region
             _driver.FindElement(By.Id("dk_container_active")).Click();
             Thread.Sleep(500);
-            _driver.FindElement(By.CssSelector("[data-dk-dropdown-value=false]")).Click();
+            _driver.FindElement(By.CssSelector("[data-dk-dropdown-value=false]"))
+                   .Click();
 
             // Try to Submit the Form + Verify that we're back to admin page
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() +
-                "/Admin/Dropdown/List?success=True",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/Dropdown/List?success=True");
 
             // Verify Region Does not show up in Create Request Page
             _ctm.findAndClick(Constants.UIString.ItemIDs.CREATE_REQUEST,
                               "/Request/Create");
-            ReadOnlyCollection<IWebElement> regionElements = _driver.FindElement(By.Id("regionID"))
-                                               .FindElements(By.TagName("option"));
+            ReadOnlyCollection<IWebElement> regionElements = _driver.FindElement
+                (By.Id("regionID"))
+                                                                    .FindElements
+                (By.TagName("option"));
 
             foreach (IWebElement element in regionElements) {
-                if (element.GetAttribute("value") == r.RegionID.ToString(CultureInfo.InvariantCulture)) {
+                if (element.GetAttribute("value") ==
+                    r.RegionID.ToString(CultureInfo.InvariantCulture)) {
                     Assert.Fail("Region appears in Create Request Form!");
                 }
             }
 
             // Clean up the DB
-            CAIRSDataContext cdc2 = new CAIRSDataContext();
-            Region reg = cdc2.Regions.FirstOrDefault(region => region.Code == codeVal);
+            var cdc2 = new CAIRSDataContext();
+            Region reg =
+                cdc2.Regions.FirstOrDefault(region => region.Code == codeVal);
             if (reg != null) {
                 cdc2.Regions.DeleteOnSubmit(reg);
                 cdc2.SubmitChanges();
@@ -370,15 +346,12 @@ namespace CAIRSTestProject.Integration {
             // Invalidate the Region
             _driver.FindElement(By.Id("dk_container_active")).Click();
             Thread.Sleep(500);
-            _driver.FindElement(By.CssSelector("[data-dk-dropdown-value=true]")).Click();
+            _driver.FindElement(By.CssSelector("[data-dk-dropdown-value=true]"))
+                   .Click();
 
             // Try to Submit the Form + Verify that we're back to admin page
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() +
-                "/Admin/Dropdown/List?success=True",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/Dropdown/List?success=True");
 
             // Verify Region Shows up in Create Request Page
             _ctm.findAndClick(Constants.UIString.ItemIDs.CREATE_REQUEST,
@@ -387,8 +360,9 @@ namespace CAIRSTestProject.Integration {
                 By.CssSelector("[value='" + r.RegionID + "']"));
 
             // Clean up the DB
-            CAIRSDataContext cdc2 = new CAIRSDataContext();
-            Region reg = cdc2.Regions.FirstOrDefault(region => region.Code == codeVal);
+            var cdc2 = new CAIRSDataContext();
+            Region reg =
+                cdc2.Regions.FirstOrDefault(region => region.Code == codeVal);
             if (reg != null) {
                 cdc2.Regions.DeleteOnSubmit(reg);
                 cdc2.SubmitChanges();

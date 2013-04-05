@@ -2,8 +2,7 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using SasquatchCAIRS;
-using SasquatchCAIRS.Models;
-using StringAssert = NUnit.Framework.StringAssert;
+using SasquatchCAIRS.Models.Common;
 
 namespace CAIRSTestProject.Integration {
     [TestFixture]
@@ -14,6 +13,7 @@ namespace CAIRSTestProject.Integration {
         [TestFixtureSetUp]
         public void Setup() {
             _driver = _ctm.getDriver();
+            _ctm.addAllRoles();
         }
 
         [TestFixtureTearDown]
@@ -23,82 +23,11 @@ namespace CAIRSTestProject.Integration {
         }
 
         /// <summary>
-        /// Test that the role is added successfully
-        /// </summary>
-        [Test]
-        public void AddRoleTest() {
-            // Remove the Viewer Role from the User
-            _ctm.removeRole(Constants.Roles.VIEWER);
-
-            _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
-            _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
-                                   "/Admin/User/List");
-
-            // Find and Click on Appropriate User
-            _driver.FindElement(
-                By.XPath("//td[contains(.,'" + CommonTestingMethods.USERNAME +
-                         "')]")).Click();
-
-            // Check the box and submit the form
-            _driver.FindElement(
-                By.CssSelector("[for='userRole-" + Constants.Roles.VIEWER + "']"))
-                   .Click();
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-
-            // Verify that we're back at the User List Screen
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/User/List?success=True",
-                _driver.Url);
-
-            // Click on the User Link in the header and verify the role is there
-            _ctm.findAndClick("username", "/Account/Manage");
-            IWebElement roles = _driver.FindElement(By.Id("user-roles"));
-            StringAssert.Contains(Constants.Roles.VIEWER, roles.Text);
-        }
-        
-        /// <summary>
-        /// Test that the role is properly removed from the user.
-        /// </summary>
-        [Test]
-        public void RemoveRoleTest() {
-            // Go to the Admin User Page
-            _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
-            _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
-                                   "/Admin/User/List");
-
-            // Find and Click on Appropriate User
-            _driver.FindElement(
-                By.XPath("//td[contains(.,'" + CommonTestingMethods.USERNAME +
-                         "')]")).Click();
-
-            // Check the box and submit the form
-            _driver.FindElement(
-                By.CssSelector("[for='userRole-" + Constants.Roles.VIEWER + "']"))
-                   .Click();
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-
-            // Verify that we're back at the User List Screen
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/User/List?success=True",
-                _driver.Url);
-
-            // Click on the User Link in the header and verify the role is there
-            _ctm.findAndClick("username", "/Account/Manage");
-            IWebElement roles = _driver.FindElement(By.Id("user-roles"));
-            StringAssert.DoesNotContain(Constants.Roles.VIEWER, roles.Text);
-
-            // Add the Viewer Role Back through the Admin Screen
-            _ctm.addRole(Constants.Roles.VIEWER);
-        }
-
-        /// <summary>
-        /// Test that adding a group works.
+        ///     Test that adding a group works.
         /// </summary>
         [Test]
         public void AddGroupTest() {
-            CAIRSDataContext cdc = new CAIRSDataContext();
+            var cdc = new CAIRSDataContext();
             UserGroup ug =
                 cdc.UserGroups.FirstOrDefault(group => group.Active);
 
@@ -109,7 +38,7 @@ namespace CAIRSTestProject.Integration {
             // Go to the Admin User Page
             _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
             _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
-                                   "/Admin/User/List");
+                              "/Admin/User/List");
 
             // Find and Click on Appropriate User
             _driver.FindElement(
@@ -118,7 +47,7 @@ namespace CAIRSTestProject.Integration {
 
             // Check the UG is
             IWebElement groupElement = _driver.FindElement(
-               By.CssSelector("[for='userGroup-" + ug.GroupID + "']"));
+                By.CssSelector("[for='userGroup-" + ug.GroupID + "']"));
 
             // Select the group if not already checked, else fail test
             if (!groupElement.GetAttribute("class").Contains("checked")) {
@@ -128,13 +57,8 @@ namespace CAIRSTestProject.Integration {
             }
 
             // Submit the form
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-
-            // Verify that we're back at the User List Screen
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/User/List?success=True",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/User/List?success=True");
 
             // Click on the User Link in the header and verify the role is there
             _ctm.findAndClick("username", "/Account/Manage");
@@ -144,25 +68,52 @@ namespace CAIRSTestProject.Integration {
 
             // Clean up and remove the group
             _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
-                                   "/Admin/User/List");
+                              "/Admin/User/List");
             _driver.FindElement(
                 By.XPath("//td[contains(.,'" + CommonTestingMethods.USERNAME +
                          "')]")).Click();
             _driver.FindElement(
-               By.CssSelector("[for='userGroup-" + ug.GroupID + "']")).Click();
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/User/List?success=True",
-                _driver.Url);
+                By.CssSelector("[for='userGroup-" + ug.GroupID + "']")).Click();
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/User/List?success=True");
         }
 
         /// <summary>
-        /// Test that removing a group works.
+        ///     Test that the role is added successfully
+        /// </summary>
+        [Test]
+        public void AddRoleTest() {
+            // Remove the Viewer Role from the User
+            _ctm.removeRole(Constants.Roles.VIEWER);
+
+            _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
+            _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
+                              "/Admin/User/List");
+
+            // Find and Click on Appropriate User
+            _driver.FindElement(
+                By.XPath("//td[contains(.,'" + CommonTestingMethods.USERNAME +
+                         "')]")).Click();
+
+            // Check the box and submit the form
+            _driver.FindElement(
+                By.CssSelector("[for='userRole-" + Constants.Roles.VIEWER + "']"))
+                   .Click();
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/User/List?success=True");
+
+            // Click on the User Link in the header and verify the role is there
+            _ctm.findAndClick("username", "/Account/Manage");
+            IWebElement roles = _driver.FindElement(By.Id("user-roles"));
+            StringAssert.Contains(Constants.Roles.VIEWER, roles.Text);
+        }
+
+        /// <summary>
+        ///     Test that removing a group works.
         /// </summary>
         [Test]
         public void RemoveGroupTest() {
-            CAIRSDataContext cdc = new CAIRSDataContext();
+            var cdc = new CAIRSDataContext();
             UserGroup ug =
                 cdc.UserGroups.FirstOrDefault(group => group.Active);
 
@@ -173,22 +124,19 @@ namespace CAIRSTestProject.Integration {
             // Set up by adding the group
             _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
             _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
-                                   "/Admin/User/List");
+                              "/Admin/User/List");
             _driver.FindElement(
                 By.XPath("//td[contains(.,'" + CommonTestingMethods.USERNAME +
                          "')]")).Click();
             _driver.FindElement(
-               By.CssSelector("[for='userGroup-" + ug.GroupID + "']")).Click();
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/User/List?success=True",
-                _driver.Url);
+                By.CssSelector("[for='userGroup-" + ug.GroupID + "']")).Click();
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/User/List?success=True");
 
             // Go to the Admin User Page
             _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
             _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
-                                   "/Admin/User/List");
+                              "/Admin/User/List");
 
             // Find and Click on Appropriate User
             _driver.FindElement(
@@ -197,7 +145,7 @@ namespace CAIRSTestProject.Integration {
 
             // Check the UG is
             IWebElement groupElement = _driver.FindElement(
-               By.CssSelector("[for='userGroup-" + ug.GroupID + "']"));
+                By.CssSelector("[for='userGroup-" + ug.GroupID + "']"));
 
             // Select the group if not already checked, else fail test
             if (groupElement.GetAttribute("class").Contains("checked")) {
@@ -207,19 +155,45 @@ namespace CAIRSTestProject.Integration {
             }
 
             // Submit the form
-            _driver.FindElement(By.Id(Constants.UIString.ItemIDs.SUBMIT_BUTTON))
-                   .Click();
-
-            // Verify that we're back at the User List Screen
-            StringAssert.AreEqualIgnoringCase(
-                CommonTestingMethods.getURL() + "/Admin/User/List?success=True",
-                _driver.Url);
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/User/List?success=True");
 
             // Click on the User Link in the header and verify the role is there
             _ctm.findAndClick("username", "/Account/Manage");
             IWebElement groups = _driver.FindElement(By.Id("user-groups"));
 
             StringAssert.DoesNotContain(ug.Value, groups.Text);
+        }
+
+        /// <summary>
+        ///     Test that the role is properly removed from the user.
+        /// </summary>
+        [Test]
+        public void RemoveRoleTest() {
+            // Go to the Admin User Page
+            _driver.Navigate().GoToUrl(CommonTestingMethods.getURL());
+            _ctm.findAndClick(Constants.UIString.ItemIDs.ADMIN,
+                              "/Admin/User/List");
+
+            // Find and Click on Appropriate User
+            _driver.FindElement(
+                By.XPath("//td[contains(.,'" + CommonTestingMethods.USERNAME +
+                         "')]")).Click();
+
+            // Check the box and submit the form
+            _driver.FindElement(
+                By.CssSelector("[for='userRole-" + Constants.Roles.VIEWER + "']"))
+                   .Click();
+            _ctm.findAndClick(Constants.UIString.ItemIDs.SUBMIT_BUTTON,
+                              "/Admin/User/List?success=True");
+
+            // Click on the User Link in the header and verify the role is there
+            _ctm.findAndClick("username", "/Account/Manage");
+            IWebElement roles = _driver.FindElement(By.Id("user-roles"));
+            StringAssert.DoesNotContain(Constants.Roles.VIEWER, roles.Text);
+
+            // Add the Viewer Role Back through the Admin Screen
+            _ctm.addRole(Constants.Roles.VIEWER);
         }
     }
 }

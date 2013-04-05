@@ -1,6 +1,6 @@
-﻿@using SasquatchCAIRS.Models
-@using SasquatchCAIRS.Models.ServiceSystem
-@model SasquatchCAIRS.Models.SearchSystem.SearchCriteria
+﻿@using SasquatchCAIRS.Models.Common
+@using SasquatchCAIRS.Models.Service
+@model SasquatchCAIRS.Models.Search.SearchCriteria
 
 @{
     ViewBag.Title = Constants.UIString.TitleText.ADVANCED_SEARCH;
@@ -14,29 +14,34 @@
 }
 
 @using (Html.BeginForm("Results", "Search", FormMethod.Post,
-    new {
-        @class = "form advanced-search-form"
-    })) {
+                       new {
+                           @class = "form advanced-search-form"
+                       })) {
     @Html.ValidationSummary(true)
 
     <table class="table unbordered-table valign-middle">
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.ANY_KEYWORDS</td>
-            <td colspan="3"><input name="keywords" id="keywords" 
-                                   type="text" class="span9"
-                                   value="@Model.keywordString"/></td>
+            <td colspan="3">
+                <input name="anyKeywordString" id="keywordString" 
+                       type="text" class="span9 peek"
+                       autocomplete="off"
+                       value="@Model.anyKeywordString"/>
+            </td>
         </tr>
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.ALL_KEYWORDS</td>
             <td colspan="3"><input name="allKeywords" id="allKeywords" 
-                                   type="text" class="span9"
-                                   value="@Model.keywordString"/></td>
+                                   type="text" class="span9 peek"
+                                   autocomplete="off"
+                                   value="@Model.allKeywordString"/></td>
         </tr>
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.NONE_KEYWORDS</td>
             <td colspan="3"><input name="noneKeywords" id="noneKeywords" 
-                                   type="text" class="span9"
-                                   value="@Model.keywordString"/></td>
+                                   type="text" class="span9 peek"
+                                   autocomplete="off"
+                                   value="@Model.noneKeywordString"/></td>
         </tr>
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.START_TIME</td>
@@ -44,7 +49,7 @@
                 @if (Model.startTime != null && !Model.startTime.ToString(Constants.DATE_FORMAT)
                                                       .Equals(Constants.EMPTY_DATE)) {
                     <input class="span3" name="startTime" id="startTime" type="text" 
-                           value="@Model.startTime.ToString(Constants.DATE_FORMAT)" />    
+                           value="@Model.startTime.ToString(Constants.DATE_FORMAT)" />
                 } else {
                     <input class="span3" name="startTime" id="startTime" type="text" />
                 }
@@ -54,7 +59,7 @@
                 @if (!Model.completionTime.ToString(Constants.DATE_FORMAT)
                            .Equals(Constants.EMPTY_DATE)) {
                     <input class="span3" name="completionTime" id="completionTime" type="text" 
-                           value="@Model.completionTime.ToString(Constants.DATE_FORMAT)" />    
+                           value="@Model.completionTime.ToString(Constants.DATE_FORMAT)" />
                 } else {
                     <input class="span3" name="completionTime" id="completionTime" type="text" />
                 }
@@ -63,31 +68,29 @@
     </table>
 
     if (@Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR) || Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
-         <table class="table unbordered-table valign-middle">
-             <tr>
-                 <td class="tbl-label">@Constants.UIString.FieldLabel.STATUS</td>
-                @foreach (var status in Enum.GetValues(
+        <table class="table unbordered-table valign-middle" id="status">
+            <tr>
+                <td class="tbl-label">@Constants.UIString.FieldLabel.STATUS</td>
+                @foreach (object status in Enum.GetValues(
                     typeof (Constants.RequestStatus))) {
-                    if (Constants.RequestStatus.Invalid.CompareTo(status) == 0 && 
-                        !Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) 
-                    {}
-                    else {
-                    <td class="tbl-content-283">
-                        <label class="checkbox radio-custom">
-                            @if (!String.IsNullOrEmpty(Model.requestStatus) &&
-                                 Model.requestStatus.Contains(@status.ToString())) {
-                                <input type="checkbox" name="status" value="@status" checked/>
-                            } else {
-                                <input type="checkbox" name="status" value="@status" />
-                            }
-                            @status
-                        </label>
-                    </td>
+                    if (Constants.RequestStatus.Invalid.CompareTo(status) == 0 &&
+                        !Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) {} else {
+                        <td class="tbl-content-283">
+                            <label class="checkbox radio-custom" id="@status">
+                                @if (!String.IsNullOrEmpty(Model.requestStatus) &&
+                                     Model.requestStatus.Contains(@status.ToString())) {
+                                    <input type="checkbox" name="status" value="@status" checked/>
+                                } else {
+                                    <input type="checkbox" name="status" value="@status" />
+                                }
+                                @status
+                            </label>
+                        </td>
                     }
                 }
-             </tr>
-         </table>
-     }
+            </tr>
+        </table>
+    }
 
     <table class="table unbordered-table valign-middle">
         <tr>
@@ -118,20 +121,20 @@
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.TUMOUR_GROUP</td>
             <td>
-                <div class="scroll scroll-box span5">
+                <div class="scroll scroll-box span5" id="tumour-group">
                     @foreach (DropdownEntry item in @ViewBag.TumorGroups) {
-                            if (!String.IsNullOrEmpty(Model.tumorGroup) &&
-                                 Model.tumorGroup.Contains(@item.id + "")) {
-                                <label class="checkbox radio-custom">
-                                    <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" checked/>
-                                    @item.text
-                                </label>
-                            } else {
-                                <label class="checkbox radio-custom">
-                                    <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" />
-                                    @item.text
-                                </label>
-                            }
+                        if (!String.IsNullOrEmpty(Model.tumorGroup) &&
+                            Model.tumorGroup.Contains(@item.id + "")) {
+                            <label class="checkbox radio-custom" id="@item.id">
+                                <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" checked/>
+                                @item.text
+                            </label>
+                        } else {
+                            <label class="checkbox radio-custom" id="@item.id">
+                                <input type="checkbox" name="tumorGroup" class="internalcheckbox" value="@item.id" />
+                                @item.text
+                            </label>
+                        }
                     }
                 </div>
             </td>
@@ -140,20 +143,20 @@
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.QUESTION_TYPE</td>
             <td>
-                <div class="scroll scroll-box span5">
+                <div class="scroll scroll-box span5" id="question-type">
                     @foreach (DropdownEntry item in @ViewBag.QuestionType) {
-                        if (!String.IsNullOrEmpty(Model.questionType) && 
-                                 Model.questionType.Contains(@item.id+"")) {
-                                <label class="checkbox radio-custom">
-                                    <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id" checked/>
-                                    @item.text
-                                </label>
-                            } else {
-                                <label class="checkbox radio-custom">
-                                    <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id"/>
-                                    @item.text
-                                </label>
-                            }
+                        if (!String.IsNullOrEmpty(Model.questionType) &&
+                            Model.questionType.Contains(@item.id + "")) {
+                            <label class="checkbox radio-custom" id="@item.id">
+                                <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id" checked/>
+                                @item.text
+                            </label>
+                        } else {
+                            <label class="checkbox radio-custom" id="@item.id">
+                                <input type="checkbox" name="questionType" class="internalcheckbox" value="@item.id"/>
+                                @item.text
+                            </label>
+                        }
                     }
                 </div>
             </td>
@@ -163,7 +166,7 @@
     <table class="table unbordered-table valign-middle">
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.SEVERITY</td>
-            @foreach (var severity in Enum.GetValues(typeof (Constants.Severity))) {
+            @foreach (object severity in Enum.GetValues(typeof (Constants.Severity))) {
                 <td class="tbl-content-283">
                     <label class="checkbox radio-custom">
                         @if (!String.IsNullOrEmpty(Model.severity) &&
@@ -181,7 +184,7 @@
     <table class="table unbordered-table valign-middle">
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.CONSEQUENCE</td>
-            @foreach (var consequence in Enum.GetValues(typeof (Constants.Consequence))) {
+            @foreach (object consequence in Enum.GetValues(typeof (Constants.Consequence))) {
                 <td class="tbl-content-2125">
                     <label class="checkbox radio-custom">
                         @if (!String.IsNullOrEmpty(Model.consequence) &&
@@ -201,7 +204,7 @@
         <tr>
             <td class="tbl-label"></td>
             <td>
-                <button class="btn btn-custom" type="submit" id="search-submit-button">
+                <button class="btn btn-custom" type="submit" id="@Constants.UIString.ItemIDs.SUBMIT_BUTTON">
                     <i class="icon-search"></i> @Constants.UIString.ButtonText.SEARCH
                 </button>
 
@@ -211,8 +214,35 @@
 }
 
 <script type="text/javascript">
-    $(function () {
+    $(function() {
         $('#startTime').datepicker();
         $('#completionTime').datepicker();
+        $(/*'#anyKeywordString','#noneKeywords','#allKeywords'*/ '.peek').typeahead({
+            source: function(query, process) {
+                var last = query.split(/\s*[,;]\s*/).pop();
+
+                $.post("@Url.Action("GetMatchingKeywords", "Request")/" + last, function(data) {
+                    process(data);
+                });
+            },
+            updater: function(item) {
+                var terms = this.query.split(/\s*[,;]\s*/);
+                terms.pop();
+                terms.push(item);
+                terms.push("");
+
+                return terms.join(", ");
+            },
+            matcher: function(item) {
+                return (this.query).split(/\s*[,;]\s*/).pop().length > 0;
+            },
+            highlighter: function(item) {
+                var query = this.query.split(/\s*[,;]\s*/).pop().replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
+                return item.replace(new RegExp('(' + query + ')', 'ig'), function($1, match) {
+                    return '<strong>' + match + '</strong>';
+                });
+            }
+        });
     });
+
 </script>

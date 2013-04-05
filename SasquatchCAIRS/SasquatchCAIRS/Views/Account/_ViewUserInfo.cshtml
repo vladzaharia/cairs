@@ -1,8 +1,7 @@
-﻿@model SasquatchCAIRS.UserProfile
-
-@using SasquatchCAIRS
+﻿@using SasquatchCAIRS
 @using SasquatchCAIRS.Controllers.Security
-@using SasquatchCAIRS.Models
+@using SasquatchCAIRS.Models.Common
+@model SasquatchCAIRS.UserProfile
 <h4>User Information</h4>
 <table class ="table">
     <tr>
@@ -19,13 +18,16 @@
     </tr>
     <tr>
         <td class="tbl-label">@Constants.UIString.FieldLabel.ROLES</td>
-        <td id="user-roles">@foreach (string role in Roles.GetRolesForUser(Model.UserName)) { @role <br /> }</td>
+        <td id="user-roles">@foreach (string role in Roles.GetRolesForUser(Model.UserName)) {
+                                @role
+                                <br />
+                            }</td>
     </tr>
     <tr>
         <td class="tbl-label">@Constants.UIString.FieldLabel.GROUPS</td>
-        <td id="user-groups">@foreach (UserGroup group in (new UserController()).getUserGroups(Model.UserName)) {
-                                                                 <span>@group.Code - @group.Value</span>
-                                                                 <br />
-                                                             }</td>
+        <td id="user-groups">@foreach (UserGroup group in (new UserManagementController()).getUserGroups(Model.UserName)) {
+                                 <span>@group.Code - @group.Value</span>
+                                 <br />
+                             }</td>
     </tr>
 </table>
