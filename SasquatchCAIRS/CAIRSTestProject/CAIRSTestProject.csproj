@@ -76,12 +76,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Integration\AdminDropdownTests.cs" />
-    <Compile Include="Integration\SearchTests.cs" />
+    <Compile Include="Integration\TestAdminDropdown.cs" />
+    <Compile Include="Integration\TestSearch.cs" />
+    <Compile Include="Integration\TestViewRequest.cs" />
     <Compile Include="Unit\Samples.cs" />
     <Compile Include="Integration\CommonTestingMethods.cs" />
-    <Compile Include="Integration\NavigationTests.cs" />
-    <Compile Include="Integration\AdminUserTests.cs" />
+    <Compile Include="Integration\TestNavigation.cs" />
+    <Compile Include="Integration\TestAdminUsers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\TestSearchController.cs" />
     <Compile Include="Unit\TestAuditLogManagementController.cs" />
