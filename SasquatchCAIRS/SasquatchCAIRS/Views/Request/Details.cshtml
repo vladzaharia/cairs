@@ -11,26 +11,26 @@
     <table class="table information-table">
         <tr>
             <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.CREATED_BY</td>
-            <td class="tbl-content-4 tbl-top">@ViewBag.CreatedBy</td>
+            <td class="tbl-content-4 tbl-top" id="created-by">@ViewBag.CreatedBy</td>
 
             <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.START_TIME</td>
-            <td class="tbl-content-4 tbl-top">@Model.timeOpened</td>
+            <td class="tbl-content-4 tbl-top" id="time-opened">@Model.timeOpened</td>
         </tr>
         @if (Model.timeClosed != null) {
             <tr>
                 <td class="tbl-label">@Constants.UIString.FieldLabel.COMPLETED_BY</td>
-                <td class="tbl-content-4">@ViewBag.CompletedBy</td>
+                <td class="tbl-content-4" id="completed-by">@ViewBag.CompletedBy</td>
 
                 <td class="tbl-label">@Constants.UIString.FieldLabel.COMPLETED_TIME</td>
-                <td class="tbl-content-4">@Model.timeClosed</td>
+                <td class="tbl-content-4" id="time-closed">@Model.timeClosed</td>
             </tr>
         }
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.STATUS</td>
-            <td class="tbl-content-4">@Constants.getStatusString(Model.requestStatus)</td>
+            <td class="tbl-content-4" id="status">@Constants.getStatusString(Model.requestStatus)</td>
 
             <td class="tbl-label">@Constants.UIString.FieldLabel.TOTAL_TIME_SPENT</td>
-            <td class="tbl-content-4">@ViewBag.TimeSpent mins</td>
+            <td class="tbl-content-4" id="total-time-spent">@ViewBag.TimeSpent mins</td>
         </tr>
     </table>
 
@@ -38,11 +38,11 @@
     <table class="table unbordered-table">
         <tr>
             <td class="tbl-top tbl-label">@Constants.UIString.FieldLabel.CALLER_NAME</td>
-            <td class="tbl-top tbl-content-4" colspan="3">@Model.requestorFirstName @Model.requestorLastName</td>
+            <td class="tbl-top tbl-content-4" colspan="3"  id="requestor-name">@Model.requestorFirstName @Model.requestorLastName</td>
         </tr>
         <tr>
             <td class="tbl-label tbl-border">@Constants.UIString.FieldLabel.CALLER_EMAIL</td>
-            <td class="tbl-border tbl-content-4">@Model.requestorEmail</td>
+            <td class="tbl-border tbl-content-4"  id="requestor-email">@Model.requestorEmail</td>
 
             <td class="tbl-label">@Constants.UIString.FieldLabel.CALLER_TYPE</td>
             <td class="tbl-content-4">
@@ -53,13 +53,13 @@
                 }
 
                 @if (requestorType != null) {
-                    <span>@requestorType.Code - @requestorType.Value</span>
+                    <span id="caller-type">@requestorType.Code - @requestorType.Value</span>
                 }
             </td>
         </tr>
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.CALLER_PHONE</td>
-            <td class="tbl-content-4">@Model.requestorPhoneNum @Model.requestorPhoneExt</td>
+            <td class="tbl-content-4" id="requestor-phone">@Model.requestorPhoneNum @Model.requestorPhoneExt</td>
 
             <td class="tbl-label">@Constants.UIString.FieldLabel.CALLER_REGION</td>
             <td class="tbl-content-4">
@@ -70,7 +70,7 @@
                 }
 
                 @if (region != null) {
-                    <span>@region.Code - @region.Value</span>
+                    <span id="region">@region.Code - @region.Value</span>
                 }
             </td>
         </tr>
@@ -80,17 +80,17 @@
     <table class="table unbordered-table">
         <tr>
             <td class="tbl-top tbl-label">@Constants.UIString.FieldLabel.PATIENT_NAME</td>
-            <td class="tbl-top">@Model.patientFName @Model.patientLName</td>
+            <td class="tbl-top" id="patient-name">@Model.patientFName @Model.patientLName</td>
 
             <td class="tbl-label">@Constants.UIString.FieldLabel.PATIENT_ID</td>
-            <td class="tbl-content-4">@Model.patientAgencyID</td>
+            <td class="tbl-content-4" id="patient-id">@Model.patientAgencyID</td>
         </tr>
         <tr>
             <td class="tbl-label tbl-border">@Constants.UIString.FieldLabel.PATIENT_GENDER</td>
-            <td class="tbl-content-4 tbl-border">@Constants.getGenderString(Model.patientGender)</td>
+            <td class="tbl-content-4 tbl-border" id="patient-gender">@Constants.getGenderString(Model.patientGender)</td>
 
             <td class="tbl-label tbl-border">@Constants.UIString.FieldLabel.PATIENT_AGE</td>
-            <td class="tbl-content-4 tbl-border">@Model.patientAge</td>
+            <td class="tbl-content-4 tbl-border" id="patient-age">@Model.patientAge</td>
         </tr>
     </table>
 
@@ -103,19 +103,19 @@
                 <td class="focal" colspan="6">@Constants.UIString.FieldLabel.QUESTION</td>
             </tr>
             <tr>
-                <td colspan="6" id="question_@(i)">@qr.question</td>
+                <td class="question" colspan="6" id="question_@(i)">@qr.question</td>
             </tr>
             <tr>
                 <td class="focal" colspan="6">@Constants.UIString.FieldLabel.RESPONSE</td>
             </tr>
             <tr>
-                <td colspan="6" id="response_@(i)">@qr.response</td>
+                <td  class="response" colspan="6" id="response_@(i)">@qr.response</td>
             </tr>
             <tr>
                 <td class="focal" colspan="6">@Constants.UIString.FieldLabel.SPECIAL_NOTES</td>
             </tr>
             <tr>
-                <td colspan="6" id="specialNotes_@(i)">@qr.specialNotes</td>
+                <td class="special-notes" colspan="6" id="specialNotes_@(i)">@qr.specialNotes</td>
             </tr>
             
             <tr>
@@ -128,7 +128,7 @@
                     }
 
                     @if (questionType != null) {
-                        <span>@questionType.Code - @questionType.Value</span>
+                        <span class="question-type">@questionType.Code - @questionType.Value</span>
                     }
                 </td>
 
@@ -141,16 +141,16 @@
                     }
 
                     @if (tumourGroup != null) {
-                        <span>@tumourGroup.Code - @tumourGroup.Value</span>
+                        <span class="tumour-group">@tumourGroup.Code - @tumourGroup.Value</span>
                     }
                 </td>
 
                 <td class="tbl-label">@Constants.UIString.FieldLabel.TIME_SPENT</td>
-                <td class="tbl-content-6">@qr.timeSpent mins</td>
+                <td class="tbl-content-6 time-spent">@qr.timeSpent mins</td>
             </tr>
         </table>
 
-        <div class="sxs">
+        <div class="sxs">t
             <div class="sxs-one impact">
                 <table class="table unbordered-table no-margin">
                     <tr>
@@ -188,7 +188,7 @@
                         <td class="focal">@Constants.UIString.FieldLabel.KEYWORDS</td>
                     </tr>
                     <tr>
-                        <td>@String.Join(", ", qr.keywords)</td>
+                        <td class="keywords">@String.Join(", ", qr.keywords)</td>
                     </tr>
                 </table>
             </div>
@@ -205,13 +205,13 @@
                     <tr>
                         <td class="tbl-label">@Constants.getReferenceString(reference.referenceType)</td>
                         @if (reference.referenceType == Constants.ReferenceType.URL) {
-                            <td><a href="@reference.referenceString">@reference.referenceString</a></td>
+                            <td class="reference-string"><a href="@reference.referenceString">@reference.referenceString</a></td>
                         }
                         @if (reference.referenceType == Constants.ReferenceType.File) {
-                            <td><a href="file://@reference.referenceString">@reference.referenceString</a></td>
+                            <td class="reference-string"><a href="file://@reference.referenceString">@reference.referenceString</a></td>
                         }
                         @if (reference.referenceType == Constants.ReferenceType.Text) {
-                            <td>@reference.referenceString</td>
+                            <td class="reference-string">@reference.referenceString</td>
                         }
                     </tr>
                 }
@@ -225,7 +225,7 @@
     <table class="table information-table">
         <tr>
             <td class="tbl-label tbl-top">@Constants.UIString.FieldLabel.PARENT_REQUEST</td>
-            <td width="85%" class="tbl-top">@Model.parentRequestID</td>
+            <td width="85%" class="tbl-top" id="parent-request">@Model.parentRequestID</td>
         </tr>
     </table>
 
@@ -251,8 +251,8 @@
 }
 
 @if (Model == null) {
-    <h2>@Constants.UIString.TitleText.VIEW_REQUEST - @Constants.UIString.TitleText.ERROR</h2>
-    <p>@ViewBag.Error</p>
+    <h2 id="error-header">@Constants.UIString.TitleText.VIEW_REQUEST - @Constants.UIString.TitleText.ERROR</h2>
+    <p id="error-message">@ViewBag.Error</p>
 }
 
 <script type="text/javascript">

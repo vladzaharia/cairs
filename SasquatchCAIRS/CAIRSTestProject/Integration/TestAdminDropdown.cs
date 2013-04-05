@@ -10,7 +10,7 @@ using SasquatchCAIRS.Models.Common;
 
 namespace CAIRSTestProject.Integration {
     [TestFixture]
-    public class AdminDropdownTests {
+    public class TestAdminDropdown {
         private CommonTestingMethods _ctm = new CommonTestingMethods();
         private IWebDriver _driver;
 

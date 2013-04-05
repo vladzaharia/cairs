@@ -6,7 +6,7 @@ using SasquatchCAIRS.Models.Common;
 
 namespace CAIRSTestProject.Integration {
     [TestFixture]
-    public class AdminUserTests {
+    public class TestAdminUsers {
         private CommonTestingMethods _ctm = new CommonTestingMethods();
         private IWebDriver _driver;
 
