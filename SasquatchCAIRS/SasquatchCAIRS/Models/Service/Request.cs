@@ -143,7 +143,7 @@ namespace SasquatchCAIRS.Models.Service {
         ///     Patient's Age
         /// </summary>
         [Display(Name = "Patient Age")]
-        [Range(0, 32767)]
+        [Range(0, 255)]
         public byte? patientAge { get; set; }
 
         /// <summary>
