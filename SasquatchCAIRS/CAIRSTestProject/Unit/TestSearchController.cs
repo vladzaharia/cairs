@@ -148,12 +148,13 @@ namespace CAIRSTestProject.Unit
             _dc.Keywords.DeleteOnSubmit(_randomKeyword2);
             _dc.Keywords.DeleteOnSubmit(_randomKeyword3);
             _dc.Keywords.DeleteOnSubmit(_randomKeyword4);
-            _dc.QuestionResponses.Attach(testQrc);
-            _dc.QuestionResponses.Attach(testQrc2);
-            _dc.QuestionResponses.Attach(testQrc3);
             _dc.Requests.Attach(_rq);
             _dc.Requests.Attach(_rq2);
             _dc.Requests.Attach(_rq3);
+            _dc.QuestionResponses.Attach(testQrc);
+            _dc.QuestionResponses.Attach(testQrc2);
+            _dc.QuestionResponses.Attach(testQrc3);
+
             _dc.QuestionResponses.DeleteOnSubmit(testQrc);
             _dc.QuestionResponses.DeleteOnSubmit(testQrc2);
             _dc.QuestionResponses.DeleteOnSubmit(testQrc3);
@@ -421,6 +422,7 @@ namespace CAIRSTestProject.Unit
                 anyKeywordString = null,
                 allKeywordString = _randomKeyword.KeywordValue + "," + _randomKeyword2.KeywordValue,
                 noneKeywordString = null,
+                keyQuestResp = "Keywords",
                 patientFirstName = null,
                 patientLastName = null,
                 questionType = null,
@@ -453,6 +455,7 @@ namespace CAIRSTestProject.Unit
                 anyKeywordString = _randomKeyword4.KeywordValue,
                 allKeywordString = null,
                 noneKeywordString = null,
+                keyQuestResp = "Keywords",
                 patientFirstName = null,
                 patientLastName = null,
                 questionType = null,
@@ -482,6 +485,7 @@ namespace CAIRSTestProject.Unit
                 anyKeywordString = null,
                 allKeywordString = _randomKeyword.KeywordValue + "," + _randomKeyword2.KeywordValue,
                 noneKeywordString = _randomKeyword4.KeywordValue,
+                keyQuestResp = "Keywords",
                 patientFirstName = null,
                 patientLastName = null,
                 questionType = null,
@@ -510,6 +514,7 @@ namespace CAIRSTestProject.Unit
                 anyKeywordString = null,
                 allKeywordString = null,
                 noneKeywordString = null,
+                keyQuestResp = "Keywords",
                 patientFirstName = "TSMC Test3",
                 patientLastName = null,
                 questionType = null,
@@ -538,6 +543,7 @@ namespace CAIRSTestProject.Unit
                 anyKeywordString = null,
                 allKeywordString = null,
                 noneKeywordString = null,
+                keyQuestResp = "Keywords",
                 patientFirstName = null,
                 patientLastName = null,
                 questionType = null,
@@ -566,6 +572,7 @@ namespace CAIRSTestProject.Unit
                 anyKeywordString = null,
                 allKeywordString = null,
                 noneKeywordString = null,
+                keyQuestResp = "Keywords",
                 patientFirstName = null,
                 patientLastName = null,
                 questionType = null,
@@ -595,6 +602,7 @@ namespace CAIRSTestProject.Unit
                 anyKeywordString = null,
                 allKeywordString = null,
                 noneKeywordString = null,
+                keyQuestResp = "Keywords",
                 patientFirstName = null,
                 patientLastName = null,
                 questionType = null,
@@ -613,6 +621,36 @@ namespace CAIRSTestProject.Unit
             Assert.AreEqual(results[0].QuestionResponses[0].Consequence, 0);
         }
 
+        [Test]
+        public void Test_s()
+        {
+            SearchManagementController searchCon = new SearchManagementController();
 
+            SearchCriteria s = new SearchCriteria
+
+            {
+                anyKeywordString = null,
+                allKeywordString = null,
+                noneKeywordString = "the",
+                keyQuestResp = "Question",
+                patientFirstName = null,
+                patientLastName = null,
+                questionType = null,
+                requestorFirstName = null,
+                requestorLastName = null,
+                requestStatus = null,
+                tumorGroup = null,
+                severity = null,
+                consequence = "Certain",
+            };
+            List<Request> results = searchCon.searchCriteriaQuery(s);
+            List<long> l = searchCon.getQuestions("for");
+            foreach (var l1 in l) {
+                Console.WriteLine(l1);
+            }
+            foreach (Request request in results) {
+                Console.WriteLine(request.RequestID);
+            }
+        }
     }
 }

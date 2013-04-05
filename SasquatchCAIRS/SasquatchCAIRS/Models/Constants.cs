@@ -24,6 +24,15 @@ namespace SasquatchCAIRS.Models {
             Minor = 2
         }
 
+        public enum KeyQsRes {
+            Keywords = 0,
+            Question =1,
+            Response = 2
+        }
+
+        public static readonly KeyQsRes[] KeyQsReses = {
+            KeyQsRes.Keywords, KeyQsRes.Question, KeyQsRes.Response,
+        };
         public static readonly Severity[] severityOptions = {
             Severity.Major, Severity.Moderate, Severity.Minor
         };
@@ -252,6 +261,7 @@ namespace SasquatchCAIRS.Models {
                 public const string ANY_KEYWORDS = "Any of These Keywords";
                 public const string ALL_KEYWORDS = "All of These Keywords";
                 public const string NONE_KEYWORDS = "None of These Keywords";
+                public const string KEY_QS_RES = "In:";
                 public const string REFERENCES = "References";
                 public const string PARENT_REQUEST = "Parent Request ID";
                 public const string TIME_SPENT = "Time Spent";

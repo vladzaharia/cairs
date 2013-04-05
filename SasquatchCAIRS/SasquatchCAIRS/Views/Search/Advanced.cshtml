@@ -43,6 +43,24 @@
                                    autocomplete="off"
                                    value="@Model.noneKeywordString"/></td>
         </tr>
+        <table class="table unbordered-table valign-middle">
+        <tr>
+            <td class="tbl-label">@Constants.UIString.FieldLabel.KEY_QS_RES</td>
+            @foreach (var keyQuestResp in Enum.GetValues(typeof (Constants.KeyQsRes))) {
+                <td class="tbl-content-283">
+                    <label class="radio radio-custom">
+                        @if (!String.IsNullOrEmpty(Model.keyQuestResp) &&
+                             Model.keyQuestResp.Contains(@keyQuestResp.ToString())) {
+                            <input type="radio" name="keyQuestResp" value="@keyQuestResp" checked/>
+                        } else {
+                            <input type="radio" name="keyQuestResp" value="@keyQuestResp" />
+                        }
+                        @keyQuestResp
+                    </label>
+                </td>
+            }
+        </tr>
+    </table>
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.START_TIME</td>
             <td>

@@ -108,6 +108,7 @@ namespace SasquatchCAIRS.Controllers {
             criteria.requestorLastName = form["requestorLast"];
             criteria.patientFirstName = form["patientFirst"];
             criteria.patientLastName = form["patientLast"];
+            criteria.keyQuestResp = form["keyQuestResp"];
 
             if (_smc.isEmptySearchCriteria(criteria)) {
                 ViewBag.emptyForm = true;

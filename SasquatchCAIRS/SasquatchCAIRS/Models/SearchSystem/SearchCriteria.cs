@@ -90,6 +90,13 @@ namespace SasquatchCAIRS.Models.SearchSystem {
             set;
         }
 
+        [DataType(DataType.Text)]
+        public String keyQuestResp
+        {
+            get;
+            set;
+        }
+
         
 
     }

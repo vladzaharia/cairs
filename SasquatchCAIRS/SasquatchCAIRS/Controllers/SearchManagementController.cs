@@ -203,6 +203,45 @@ namespace SasquatchCAIRS.Controllers
                     where keywordsToList(keywordString, ", ").Contains(k.KeywordValue) 
                     select k.KeywordID).ToList();
         }
+        /// <summary>
+        /// Gets List of Request ID that contain keywordWordString in a Question
+        /// </summary>
+        /// <param name="keywordString">Input Search String</param>
+        /// <returns>List of Request ID's</returns>
+        public List<long> getQuestions(string keywordString)
+        {
+            // First we grab the keywords
+            if (String.IsNullOrEmpty(keywordString))
+                return new List<long>();
+            List<string> test = keywordsToList(keywordString, " ,");
+            List<long> acc = new List<long>();
+            foreach (string s in test) {
+                acc.Union((from qr in _db.QuestionResponses
+                           where qr.Question.Contains(s) && qr.Question!=null
+                           select qr.RequestID).ToList());
+
+            }
+            return acc;
+           /* return (from k in keywordsToList(keywordString, " ,")
+                        from q in _db.QuestionResponses
+                        where q.Question.Contains(k)
+                        select q.RequestID).ToList();*/
+        }
+
+        /// <summary>
+        /// Gets List of Request ID that contain the keywordString in a Response
+        /// </summary>
+        /// <param name="keywordString">Input Search String</param>
+        /// <returns>List of Request ID's</returns>
+        public List<long> getResponse(string keywordString)
+        {
+            // First we grab the keywords
+            if (String.IsNullOrEmpty(keywordString))
+                return new List<long>();
+            return (from k in _db.QuestionResponses
+                    where keywordsToList(keywordString, ", ").Contains(k.Response)
+                    select k.RequestID).ToList();
+        }
 
         /// <summary>
         /// Get Requests in Database based on SearchCriteria
@@ -256,24 +295,6 @@ namespace SasquatchCAIRS.Controllers
                         (criteria.completionTime.CompareTo(r.TimeClosed) <= 0));
             }
 
-            // Set Criteria based on Users Role(s)
-          /*  if (Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) {
-            } else if (String.IsNullOrEmpty(criteria.requestStatus) &&
-                       Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
-                criteria.requestStatus = Enum.GetName(
-                    typeof(Constants.RequestStatus),
-                    Constants.RequestStatus.Completed)
-                                         + "," +
-                                         Enum.GetName(
-                                             typeof(Constants.RequestStatus
-                                                 ),
-                                             Constants.RequestStatus.Open);
-            } else if (String.IsNullOrEmpty(criteria.requestStatus) &&
-                       Roles.IsUserInRole(Constants.Roles.VIEWER)) {
-                criteria.requestStatus =
-                    Enum.GetName(typeof(Constants.RequestStatus),
-                                 Constants.RequestStatus.Completed);
-            }*/
             // Filter on request status
             if (!String.IsNullOrEmpty(criteria.requestStatus)) {
                 requests =
@@ -323,12 +344,102 @@ namespace SasquatchCAIRS.Controllers
                         typeIDStringtoList(criteria.questionType, ",")
                             .Contains(qr.QuestionType.QuestionTypeID));
             }
+                List<long>  anyq = getQuestions(criteria.anyKeywordString);
+                List<long> allq = getQuestions(criteria.anyKeywordString);
+                List<long> noneq = getQuestions(criteria.anyKeywordString);
+            if ((noneq.Any() || anyq.Any() || allq.Any()) &&
+                (criteria.keyQuestResp == "Question")) {
+                if (noneq.Any()) {
+                    List<long> toRemove =
+                        (from qr in questionResponses
+                         where noneq.Contains(qr.RequestID)
+                         select qr.QuestionResponseID).ToList();
+
+                    questionResponses = (from q in questionResponses
+                                         where !toRemove.Contains(q.QuestionResponseID)
+                                         select q);
+                }
+
+
+
+                if (allq.Any()) {
+                    IQueryable<long> acc = null;
+                    foreach (var id in allq) {
+                        if (acc == null) {
+                            acc = (from q in questionResponses
+                                   where q.RequestID == id
+                                   select q.RequestID);
+                        } else {
+                            acc = acc.Intersect(from r in questionResponses
+                                                where r.RequestID == id
+                                                select r.RequestID);
+                        }
+                    }
+                }
+
+                if (anyq.Any()) {
+                    questionResponses = (from q in questionResponses
+                                         where anyq.Contains(q.RequestID)
+                                         select q);
+                }
+            }
+
+            List<long> anyr = getResponse(criteria.anyKeywordString);
+            List<long> allr = getResponse(criteria.anyKeywordString);
+            List<long> noner = getResponse(criteria.anyKeywordString);
+            if ((noner.Any() || anyr.Any() || allr.Any()) &&
+                (criteria.keyQuestResp == "Response"))
+            {
+                if (noner.Any())
+                {
+                    List<long> toRemove =
+                        (from qr in questionResponses
+                         where noner.Contains(qr.RequestID)
+                         select qr.RequestID).ToList();
+
+                    questionResponses = (from q in questionResponses
+                                         where !toRemove.Contains(q.RequestID)
+                                         select q).AsQueryable();
+                }
+
+
+
+                if (allr.Any())
+                {
+                    IQueryable<long> acc = null;
+                    foreach (var id in allr)
+                    {
+                        if (acc == null)
+                        {
+                            acc = (from q in questionResponses
+                                   where q.RequestID == id
+                                   select q.RequestID);
+                        }
+                        else
+                        {
+                            acc = acc.Intersect(from r in questionResponses
+                                                where r.RequestID == id
+                                                select r.RequestID);
+                        }
+                    }
+                    questionResponses = (from q in questionResponses
+                               where acc.ToList().Contains(q.RequestID)
+                               select q);
+                }
+
+                if (anyr.Any())
+                {
+                    questionResponses = (from q in questionResponses
+                                         where anyr.Contains(q.RequestID)
+                                         select q);
+                }
+            }
             List<int> any = getKeywords(criteria.anyKeywordString);
             List<int> none = getKeywords(criteria.noneKeywordString);
             List<int> all = getKeywords(criteria.allKeywordString);
 
             // Filter QRs based on keywords
-            if (none.Any() || any.Any() || all.Any()) {
+            if ((none.Any() || any.Any() || all.Any()) && criteria.keyQuestResp == "Keywords") {
                 
                 IQueryable<KeywordQuestion> results = _db.KeywordQuestions;
 
