@@ -30,6 +30,30 @@ namespace CAIRSMigrationTool
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
+    partial void InsertUserProfile(UserProfile instance);
+    partial void UpdateUserProfile(UserProfile instance);
+    partial void DeleteUserProfile(UserProfile instance);
+    partial void InsertAuditLog(AuditLog instance);
+    partial void UpdateAuditLog(AuditLog instance);
+    partial void DeleteAuditLog(AuditLog instance);
+    partial void InsertRequest(Request instance);
+    partial void UpdateRequest(Request instance);
+    partial void DeleteRequest(Request instance);
+    partial void InsertRegion(Region instance);
+    partial void UpdateRegion(Region instance);
+    partial void DeleteRegion(Region instance);
+    partial void InsertRequestorType(RequestorType instance);
+    partial void UpdateRequestorType(RequestorType instance);
+    partial void DeleteRequestorType(RequestorType instance);
+    partial void InsertQuestionType(QuestionType instance);
+    partial void UpdateQuestionType(QuestionType instance);
+    partial void DeleteQuestionType(QuestionType instance);
+    partial void InsertTumourGroup(TumourGroup instance);
+    partial void UpdateTumourGroup(TumourGroup instance);
+    partial void DeleteTumourGroup(TumourGroup instance);
+    partial void InsertReference(Reference instance);
+    partial void UpdateReference(Reference instance);
+    partial void DeleteReference(Reference instance);
     partial void InsertQuestionResponse(QuestionResponse instance);
     partial void UpdateQuestionResponse(QuestionResponse instance);
     partial void DeleteQuestionResponse(QuestionResponse instance);
@@ -39,30 +63,6 @@ namespace CAIRSMigrationTool
     partial void InsertKeyword(Keyword instance);
     partial void UpdateKeyword(Keyword instance);
     partial void DeleteKeyword(Keyword instance);
-    partial void InsertReference(Reference instance);
-    partial void UpdateReference(Reference instance);
-    partial void DeleteReference(Reference instance);
-    partial void InsertAuditLog(AuditLog instance);
-    partial void UpdateAuditLog(AuditLog instance);
-    partial void DeleteAuditLog(AuditLog instance);
-    partial void InsertQuestionType(QuestionType instance);
-    partial void UpdateQuestionType(QuestionType instance);
-    partial void DeleteQuestionType(QuestionType instance);
-    partial void InsertRegion(Region instance);
-    partial void UpdateRegion(Region instance);
-    partial void DeleteRegion(Region instance);
-    partial void InsertRequestorType(RequestorType instance);
-    partial void UpdateRequestorType(RequestorType instance);
-    partial void DeleteRequestorType(RequestorType instance);
-    partial void InsertTumourGroup(TumourGroup instance);
-    partial void UpdateTumourGroup(TumourGroup instance);
-    partial void DeleteTumourGroup(TumourGroup instance);
-    partial void InsertUserProfile(UserProfile instance);
-    partial void UpdateUserProfile(UserProfile instance);
-    partial void DeleteUserProfile(UserProfile instance);
-    partial void InsertRequest(Request instance);
-    partial void UpdateRequest(Request instance);
-    partial void DeleteRequest(Request instance);
     #endregion
 		
 		public CAIRSDataContext() : 
@@ -95,6 +95,70 @@ namespace CAIRSMigrationTool
 			OnCreated();
 		}
 		
+		public System.Data.Linq.Table<UserProfile> UserProfiles
+		{
+			get
+			{
+				return this.GetTable<UserProfile>();
+			}
+		}
+		
+		public System.Data.Linq.Table<AuditLog> AuditLogs
+		{
+			get
+			{
+				return this.GetTable<AuditLog>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Request> Requests
+		{
+			get
+			{
+				return this.GetTable<Request>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Region> Regions
+		{
+			get
+			{
+				return this.GetTable<Region>();
+			}
+		}
+		
+		public System.Data.Linq.Table<RequestorType> RequestorTypes
+		{
+			get
+			{
+				return this.GetTable<RequestorType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<QuestionType> QuestionTypes
+		{
+			get
+			{
+				return this.GetTable<QuestionType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TumourGroup> TumourGroups
+		{
+			get
+			{
+				return this.GetTable<TumourGroup>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Reference> References
+		{
+			get
+			{
+				return this.GetTable<Reference>();
+			}
+		}
+		
 		public System.Data.Linq.Table<QuestionResponse> QuestionResponses
 		{
 			get
@@ -118,481 +182,158 @@ namespace CAIRSMigrationTool
 				return this.GetTable<Keyword>();
 			}
 		}
-		
-		public System.Data.Linq.Table<Reference> References
-		{
-			get
-			{
-				return this.GetTable<Reference>();
-			}
-		}
-		
-		public System.Data.Linq.Table<AuditLog> AuditLogs
-		{
-			get
-			{
-				return this.GetTable<AuditLog>();
-			}
-		}
-		
-		public System.Data.Linq.Table<QuestionType> QuestionTypes
-		{
-			get
-			{
-				return this.GetTable<QuestionType>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Region> Regions
-		{
-			get
-			{
-				return this.GetTable<Region>();
-			}
-		}
-		
-		public System.Data.Linq.Table<RequestorType> RequestorTypes
-		{
-			get
-			{
-				return this.GetTable<RequestorType>();
-			}
-		}
-		
-		public System.Data.Linq.Table<TumourGroup> TumourGroups
-		{
-			get
-			{
-				return this.GetTable<TumourGroup>();
-			}
-		}
-		
-		public System.Data.Linq.Table<UserProfile> UserProfiles
-		{
-			get
-			{
-				return this.GetTable<UserProfile>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Request> Requests
-		{
-			get
-			{
-				return this.GetTable<Request>();
-			}
-		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.QuestionResponse")]
-	public partial class QuestionResponse : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserProfile")]
+	public partial class UserProfile : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private long _QuestionResponseID;
+		private int _UserId;
 		
-		private long _RequestID;
+		private string _UserName;
 		
-		private string _Question;
+		private string _UserFullName;
 		
-		private string _Response;
+		private string _UserEmail;
 		
-		private System.Nullable<short> _TimeSpent;
+		private bool _UserStatus;
 		
-		private string _SpecialNotes;
-		
-		private System.Nullable<int> _QuestionTypeID;
-		
-		private System.Nullable<int> _TumourGroupID;
-		
-		private System.Nullable<byte> _Severity;
-		
-		private System.Nullable<byte> _Consequence;
-		
-		private EntitySet<KeywordQuestion> _KeywordQuestions;
-		
-		private EntitySet<Reference> _References;
-		
-		private EntityRef<QuestionType> _QuestionType;
-		
-		private EntityRef<TumourGroup> _TumourGroup;
-		
-		private EntityRef<Request> _Request;
+		private EntitySet<AuditLog> _AuditLogs;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnQuestionResponseIDChanging(long value);
-    partial void OnQuestionResponseIDChanged();
-    partial void OnRequestIDChanging(long value);
-    partial void OnRequestIDChanged();
-    partial void OnQuestionChanging(string value);
-    partial void OnQuestionChanged();
-    partial void OnResponseChanging(string value);
-    partial void OnResponseChanged();
-    partial void OnTimeSpentChanging(System.Nullable<short> value);
-    partial void OnTimeSpentChanged();
-    partial void OnSpecialNotesChanging(string value);
-    partial void OnSpecialNotesChanged();
-    partial void OnQuestionTypeIDChanging(System.Nullable<int> value);
-    partial void OnQuestionTypeIDChanged();
-    partial void OnTumourGroupIDChanging(System.Nullable<int> value);
-    partial void OnTumourGroupIDChanged();
-    partial void OnSeverityChanging(System.Nullable<byte> value);
-    partial void OnSeverityChanged();
-    partial void OnConsequenceChanging(System.Nullable<byte> value);
-    partial void OnConsequenceChanged();
+    partial void OnUserIdChanging(int value);
+    partial void OnUserIdChanged();
+    partial void OnUserNameChanging(string value);
+    partial void OnUserNameChanged();
+    partial void OnUserFullNameChanging(string value);
+    partial void OnUserFullNameChanged();
+    partial void OnUserEmailChanging(string value);
+    partial void OnUserEmailChanged();
+    partial void OnUserStatusChanging(bool value);
+    partial void OnUserStatusChanged();
     #endregion
 		
-		public QuestionResponse()
+		public UserProfile()
 		{
-			this._KeywordQuestions = new EntitySet<KeywordQuestion>(new Action<KeywordQuestion>(this.attach_KeywordQuestions), new Action<KeywordQuestion>(this.detach_KeywordQuestions));
-			this._References = new EntitySet<Reference>(new Action<Reference>(this.attach_References), new Action<Reference>(this.detach_References));
-			this._QuestionType = default(EntityRef<QuestionType>);
-			this._TumourGroup = default(EntityRef<TumourGroup>);
-			this._Request = default(EntityRef<Request>);
+			this._AuditLogs = new EntitySet<AuditLog>(new Action<AuditLog>(this.attach_AuditLogs), new Action<AuditLog>(this.detach_AuditLogs));
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionResponseID", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public long QuestionResponseID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int UserId
 		{
 			get
 			{
-				return this._QuestionResponseID;
+				return this._UserId;
 			}
 			set
 			{
-				if ((this._QuestionResponseID != value))
+				if ((this._UserId != value))
 				{
-					this.OnQuestionResponseIDChanging(value);
+					this.OnUserIdChanging(value);
 					this.SendPropertyChanging();
-					this._QuestionResponseID = value;
-					this.SendPropertyChanged("QuestionResponseID");
-					this.OnQuestionResponseIDChanged();
+					this._UserId = value;
+					this.SendPropertyChanged("UserId");
+					this.OnUserIdChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
-		public long RequestID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(56) NOT NULL", CanBeNull=false)]
+		public string UserName
 		{
 			get
 			{
-				return this._RequestID;
+				return this._UserName;
 			}
 			set
 			{
-				if ((this._RequestID != value))
+				if ((this._UserName != value))
 				{
-					if (this._Request.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRequestIDChanging(value);
+					this.OnUserNameChanging(value);
 					this.SendPropertyChanging();
-					this._RequestID = value;
-					this.SendPropertyChanged("RequestID");
-					this.OnRequestIDChanged();
+					this._UserName = value;
+					this.SendPropertyChanged("UserName");
+					this.OnUserNameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Question", DbType="NVarChar(1024)")]
-		public string Question
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserFullName", DbType="NVarChar(MAX)")]
+		public string UserFullName
 		{
 			get
 			{
-				return this._Question;
+				return this._UserFullName;
 			}
 			set
 			{
-				if ((this._Question != value))
+				if ((this._UserFullName != value))
 				{
-					this.OnQuestionChanging(value);
+					this.OnUserFullNameChanging(value);
 					this.SendPropertyChanging();
-					this._Question = value;
-					this.SendPropertyChanged("Question");
-					this.OnQuestionChanged();
+					this._UserFullName = value;
+					this.SendPropertyChanged("UserFullName");
+					this.OnUserFullNameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Response", DbType="NVarChar(MAX)")]
-		public string Response
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserEmail", DbType="NVarChar(MAX)")]
+		public string UserEmail
 		{
 			get
 			{
-				return this._Response;
+				return this._UserEmail;
 			}
 			set
 			{
-				if ((this._Response != value))
+				if ((this._UserEmail != value))
 				{
-					this.OnResponseChanging(value);
+					this.OnUserEmailChanging(value);
 					this.SendPropertyChanging();
-					this._Response = value;
-					this.SendPropertyChanged("Response");
-					this.OnResponseChanged();
+					this._UserEmail = value;
+					this.SendPropertyChanged("UserEmail");
+					this.OnUserEmailChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeSpent", DbType="SmallInt")]
-		public System.Nullable<short> TimeSpent
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserStatus", DbType="Bit NOT NULL")]
+		public bool UserStatus
 		{
 			get
 			{
-				return this._TimeSpent;
+				return this._UserStatus;
 			}
 			set
 			{
-				if ((this._TimeSpent != value))
+				if ((this._UserStatus != value))
 				{
-					this.OnTimeSpentChanging(value);
+					this.OnUserStatusChanging(value);
 					this.SendPropertyChanging();
-					this._TimeSpent = value;
-					this.SendPropertyChanged("TimeSpent");
-					this.OnTimeSpentChanged();
+					this._UserStatus = value;
+					this.SendPropertyChanged("UserStatus");
+					this.OnUserStatusChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpecialNotes", DbType="NVarChar(1024)")]
-		public string SpecialNotes
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_AuditLog", Storage="_AuditLogs", ThisKey="UserId", OtherKey="UserID")]
+		public EntitySet<AuditLog> AuditLogs
 		{
 			get
 			{
-				return this._SpecialNotes;
+				return this._AuditLogs;
 			}
 			set
 			{
-				if ((this._SpecialNotes != value))
-				{
-					this.OnSpecialNotesChanging(value);
-					this.SendPropertyChanging();
-					this._SpecialNotes = value;
-					this.SendPropertyChanged("SpecialNotes");
-					this.OnSpecialNotesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionTypeID", DbType="Int")]
-		public System.Nullable<int> QuestionTypeID
-		{
-			get
-			{
-				return this._QuestionTypeID;
-			}
-			set
-			{
-				if ((this._QuestionTypeID != value))
-				{
-					if (this._QuestionType.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnQuestionTypeIDChanging(value);
-					this.SendPropertyChanging();
-					this._QuestionTypeID = value;
-					this.SendPropertyChanged("QuestionTypeID");
-					this.OnQuestionTypeIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TumourGroupID", DbType="Int")]
-		public System.Nullable<int> TumourGroupID
-		{
-			get
-			{
-				return this._TumourGroupID;
-			}
-			set
-			{
-				if ((this._TumourGroupID != value))
-				{
-					if (this._TumourGroup.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTumourGroupIDChanging(value);
-					this.SendPropertyChanging();
-					this._TumourGroupID = value;
-					this.SendPropertyChanged("TumourGroupID");
-					this.OnTumourGroupIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Severity", DbType="TinyInt")]
-		public System.Nullable<byte> Severity
-		{
-			get
-			{
-				return this._Severity;
-			}
-			set
-			{
-				if ((this._Severity != value))
-				{
-					this.OnSeverityChanging(value);
-					this.SendPropertyChanging();
-					this._Severity = value;
-					this.SendPropertyChanged("Severity");
-					this.OnSeverityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Consequence", DbType="TinyInt")]
-		public System.Nullable<byte> Consequence
-		{
-			get
-			{
-				return this._Consequence;
-			}
-			set
-			{
-				if ((this._Consequence != value))
-				{
-					this.OnConsequenceChanging(value);
-					this.SendPropertyChanging();
-					this._Consequence = value;
-					this.SendPropertyChanged("Consequence");
-					this.OnConsequenceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_KeywordQuestion", Storage="_KeywordQuestions", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID")]
-		public EntitySet<KeywordQuestion> KeywordQuestions
-		{
-			get
-			{
-				return this._KeywordQuestions;
-			}
-			set
-			{
-				this._KeywordQuestions.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_Reference", Storage="_References", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID")]
-		public EntitySet<Reference> References
-		{
-			get
-			{
-				return this._References;
-			}
-			set
-			{
-				this._References.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionType_QuestionResponse", Storage="_QuestionType", ThisKey="QuestionTypeID", OtherKey="QuestionTypeID", IsForeignKey=true)]
-		public QuestionType QuestionType
-		{
-			get
-			{
-				return this._QuestionType.Entity;
-			}
-			set
-			{
-				QuestionType previousValue = this._QuestionType.Entity;
-				if (((previousValue != value) 
-							|| (this._QuestionType.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._QuestionType.Entity = null;
-						previousValue.QuestionResponses.Remove(this);
-					}
-					this._QuestionType.Entity = value;
-					if ((value != null))
-					{
-						value.QuestionResponses.Add(this);
-						this._QuestionTypeID = value.QuestionTypeID;
-					}
-					else
-					{
-						this._QuestionTypeID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("QuestionType");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TumourGroup_QuestionResponse", Storage="_TumourGroup", ThisKey="TumourGroupID", OtherKey="TumourGroupID", IsForeignKey=true)]
-		public TumourGroup TumourGroup
-		{
-			get
-			{
-				return this._TumourGroup.Entity;
-			}
-			set
-			{
-				TumourGroup previousValue = this._TumourGroup.Entity;
-				if (((previousValue != value) 
-							|| (this._TumourGroup.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TumourGroup.Entity = null;
-						previousValue.QuestionResponses.Remove(this);
-					}
-					this._TumourGroup.Entity = value;
-					if ((value != null))
-					{
-						value.QuestionResponses.Add(this);
-						this._TumourGroupID = value.TumourGroupID;
-					}
-					else
-					{
-						this._TumourGroupID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("TumourGroup");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_QuestionResponse", Storage="_Request", ThisKey="RequestID", OtherKey="RequestID", IsForeignKey=true)]
-		public Request Request
-		{
-			get
-			{
-				return this._Request.Entity;
-			}
-			set
-			{
-				Request previousValue = this._Request.Entity;
-				if (((previousValue != value) 
-							|| (this._Request.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Request.Entity = null;
-						previousValue.QuestionResponses.Remove(this);
-					}
-					this._Request.Entity = value;
-					if ((value != null))
-					{
-						value.QuestionResponses.Add(this);
-						this._RequestID = value.RequestID;
-					}
-					else
-					{
-						this._RequestID = default(long);
-					}
-					this.SendPropertyChanged("Request");
-				}
+				this._AuditLogs.Assign(value);
 			}
 		}
 		
@@ -616,569 +357,16 @@ namespace CAIRSMigrationTool
 			}
 		}
 		
-		private void attach_KeywordQuestions(KeywordQuestion entity)
+		private void attach_AuditLogs(AuditLog entity)
 		{
 			this.SendPropertyChanging();
-			entity.QuestionResponse = this;
+			entity.UserProfile = this;
 		}
 		
-		private void detach_KeywordQuestions(KeywordQuestion entity)
+		private void detach_AuditLogs(AuditLog entity)
 		{
 			this.SendPropertyChanging();
-			entity.QuestionResponse = null;
-		}
-		
-		private void attach_References(Reference entity)
-		{
-			this.SendPropertyChanging();
-			entity.QuestionResponse = this;
-		}
-		
-		private void detach_References(Reference entity)
-		{
-			this.SendPropertyChanging();
-			entity.QuestionResponse = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.KeywordQuestion")]
-	public partial class KeywordQuestion : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _KeywordID;
-		
-		private long _RequestID;
-		
-		private long _QuestionResponseID;
-		
-		private EntityRef<QuestionResponse> _QuestionResponse;
-		
-		private EntityRef<Keyword> _Keyword;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnKeywordIDChanging(int value);
-    partial void OnKeywordIDChanged();
-    partial void OnRequestIDChanging(long value);
-    partial void OnRequestIDChanged();
-    partial void OnQuestionResponseIDChanging(long value);
-    partial void OnQuestionResponseIDChanged();
-    #endregion
-		
-		public KeywordQuestion()
-		{
-			this._QuestionResponse = default(EntityRef<QuestionResponse>);
-			this._Keyword = default(EntityRef<Keyword>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KeywordID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int KeywordID
-		{
-			get
-			{
-				return this._KeywordID;
-			}
-			set
-			{
-				if ((this._KeywordID != value))
-				{
-					if (this._Keyword.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnKeywordIDChanging(value);
-					this.SendPropertyChanging();
-					this._KeywordID = value;
-					this.SendPropertyChanged("KeywordID");
-					this.OnKeywordIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
-		public long RequestID
-		{
-			get
-			{
-				return this._RequestID;
-			}
-			set
-			{
-				if ((this._RequestID != value))
-				{
-					if (this._QuestionResponse.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRequestIDChanging(value);
-					this.SendPropertyChanging();
-					this._RequestID = value;
-					this.SendPropertyChanged("RequestID");
-					this.OnRequestIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionResponseID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
-		public long QuestionResponseID
-		{
-			get
-			{
-				return this._QuestionResponseID;
-			}
-			set
-			{
-				if ((this._QuestionResponseID != value))
-				{
-					if (this._QuestionResponse.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnQuestionResponseIDChanging(value);
-					this.SendPropertyChanging();
-					this._QuestionResponseID = value;
-					this.SendPropertyChanged("QuestionResponseID");
-					this.OnQuestionResponseIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_KeywordQuestion", Storage="_QuestionResponse", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID", IsForeignKey=true)]
-		public QuestionResponse QuestionResponse
-		{
-			get
-			{
-				return this._QuestionResponse.Entity;
-			}
-			set
-			{
-				QuestionResponse previousValue = this._QuestionResponse.Entity;
-				if (((previousValue != value) 
-							|| (this._QuestionResponse.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._QuestionResponse.Entity = null;
-						previousValue.KeywordQuestions.Remove(this);
-					}
-					this._QuestionResponse.Entity = value;
-					if ((value != null))
-					{
-						value.KeywordQuestions.Add(this);
-						this._QuestionResponseID = value.QuestionResponseID;
-						this._RequestID = value.RequestID;
-					}
-					else
-					{
-						this._QuestionResponseID = default(long);
-						this._RequestID = default(long);
-					}
-					this.SendPropertyChanged("QuestionResponse");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Keyword_KeywordQuestion", Storage="_Keyword", ThisKey="KeywordID", OtherKey="KeywordID", IsForeignKey=true)]
-		public Keyword Keyword
-		{
-			get
-			{
-				return this._Keyword.Entity;
-			}
-			set
-			{
-				Keyword previousValue = this._Keyword.Entity;
-				if (((previousValue != value) 
-							|| (this._Keyword.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Keyword.Entity = null;
-						previousValue.KeywordQuestions.Remove(this);
-					}
-					this._Keyword.Entity = value;
-					if ((value != null))
-					{
-						value.KeywordQuestions.Add(this);
-						this._KeywordID = value.KeywordID;
-					}
-					else
-					{
-						this._KeywordID = default(int);
-					}
-					this.SendPropertyChanged("Keyword");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Keyword")]
-	public partial class Keyword : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _KeywordID;
-		
-		private string _Keyword1;
-		
-		private bool _Active;
-		
-		private EntitySet<KeywordQuestion> _KeywordQuestions;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnKeywordIDChanging(int value);
-    partial void OnKeywordIDChanged();
-    partial void OnKeyword1Changing(string value);
-    partial void OnKeyword1Changed();
-    partial void OnActiveChanging(bool value);
-    partial void OnActiveChanged();
-    #endregion
-		
-		public Keyword()
-		{
-			this._KeywordQuestions = new EntitySet<KeywordQuestion>(new Action<KeywordQuestion>(this.attach_KeywordQuestions), new Action<KeywordQuestion>(this.detach_KeywordQuestions));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KeywordID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int KeywordID
-		{
-			get
-			{
-				return this._KeywordID;
-			}
-			set
-			{
-				if ((this._KeywordID != value))
-				{
-					this.OnKeywordIDChanging(value);
-					this.SendPropertyChanging();
-					this._KeywordID = value;
-					this.SendPropertyChanged("KeywordID");
-					this.OnKeywordIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="Keyword", Storage="_Keyword1", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
-		public string Keyword1
-		{
-			get
-			{
-				return this._Keyword1;
-			}
-			set
-			{
-				if ((this._Keyword1 != value))
-				{
-					this.OnKeyword1Changing(value);
-					this.SendPropertyChanging();
-					this._Keyword1 = value;
-					this.SendPropertyChanged("Keyword1");
-					this.OnKeyword1Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
-		public bool Active
-		{
-			get
-			{
-				return this._Active;
-			}
-			set
-			{
-				if ((this._Active != value))
-				{
-					this.OnActiveChanging(value);
-					this.SendPropertyChanging();
-					this._Active = value;
-					this.SendPropertyChanged("Active");
-					this.OnActiveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Keyword_KeywordQuestion", Storage="_KeywordQuestions", ThisKey="KeywordID", OtherKey="KeywordID")]
-		public EntitySet<KeywordQuestion> KeywordQuestions
-		{
-			get
-			{
-				return this._KeywordQuestions;
-			}
-			set
-			{
-				this._KeywordQuestions.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_KeywordQuestions(KeywordQuestion entity)
-		{
-			this.SendPropertyChanging();
-			entity.Keyword = this;
-		}
-		
-		private void detach_KeywordQuestions(KeywordQuestion entity)
-		{
-			this.SendPropertyChanging();
-			entity.Keyword = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Reference")]
-	public partial class Reference : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private long _ReferenceID;
-		
-		private long _QuestionResponseID;
-		
-		private long _RequestID;
-		
-		private byte _ReferenceType;
-		
-		private string _ReferenceString;
-		
-		private EntityRef<QuestionResponse> _QuestionResponse;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnReferenceIDChanging(long value);
-    partial void OnReferenceIDChanged();
-    partial void OnQuestionResponseIDChanging(long value);
-    partial void OnQuestionResponseIDChanged();
-    partial void OnRequestIDChanging(long value);
-    partial void OnRequestIDChanged();
-    partial void OnReferenceTypeChanging(byte value);
-    partial void OnReferenceTypeChanged();
-    partial void OnReferenceStringChanging(string value);
-    partial void OnReferenceStringChanged();
-    #endregion
-		
-		public Reference()
-		{
-			this._QuestionResponse = default(EntityRef<QuestionResponse>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceID", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public long ReferenceID
-		{
-			get
-			{
-				return this._ReferenceID;
-			}
-			set
-			{
-				if ((this._ReferenceID != value))
-				{
-					this.OnReferenceIDChanging(value);
-					this.SendPropertyChanging();
-					this._ReferenceID = value;
-					this.SendPropertyChanged("ReferenceID");
-					this.OnReferenceIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionResponseID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
-		public long QuestionResponseID
-		{
-			get
-			{
-				return this._QuestionResponseID;
-			}
-			set
-			{
-				if ((this._QuestionResponseID != value))
-				{
-					if (this._QuestionResponse.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnQuestionResponseIDChanging(value);
-					this.SendPropertyChanging();
-					this._QuestionResponseID = value;
-					this.SendPropertyChanged("QuestionResponseID");
-					this.OnQuestionResponseIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
-		public long RequestID
-		{
-			get
-			{
-				return this._RequestID;
-			}
-			set
-			{
-				if ((this._RequestID != value))
-				{
-					if (this._QuestionResponse.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRequestIDChanging(value);
-					this.SendPropertyChanging();
-					this._RequestID = value;
-					this.SendPropertyChanged("RequestID");
-					this.OnRequestIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceType", DbType="TinyInt NOT NULL")]
-		public byte ReferenceType
-		{
-			get
-			{
-				return this._ReferenceType;
-			}
-			set
-			{
-				if ((this._ReferenceType != value))
-				{
-					this.OnReferenceTypeChanging(value);
-					this.SendPropertyChanging();
-					this._ReferenceType = value;
-					this.SendPropertyChanged("ReferenceType");
-					this.OnReferenceTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceString", DbType="NVarChar(1024) NOT NULL", CanBeNull=false)]
-		public string ReferenceString
-		{
-			get
-			{
-				return this._ReferenceString;
-			}
-			set
-			{
-				if ((this._ReferenceString != value))
-				{
-					this.OnReferenceStringChanging(value);
-					this.SendPropertyChanging();
-					this._ReferenceString = value;
-					this.SendPropertyChanged("ReferenceString");
-					this.OnReferenceStringChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_Reference", Storage="_QuestionResponse", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID", IsForeignKey=true)]
-		public QuestionResponse QuestionResponse
-		{
-			get
-			{
-				return this._QuestionResponse.Entity;
-			}
-			set
-			{
-				QuestionResponse previousValue = this._QuestionResponse.Entity;
-				if (((previousValue != value) 
-							|| (this._QuestionResponse.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._QuestionResponse.Entity = null;
-						previousValue.References.Remove(this);
-					}
-					this._QuestionResponse.Entity = value;
-					if ((value != null))
-					{
-						value.References.Add(this);
-						this._QuestionResponseID = value.QuestionResponseID;
-						this._RequestID = value.RequestID;
-					}
-					else
-					{
-						this._QuestionResponseID = default(long);
-						this._RequestID = default(long);
-					}
-					this.SendPropertyChanged("QuestionResponse");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
+			entity.UserProfile = null;
 		}
 	}
 	
@@ -1398,123 +586,488 @@ namespace CAIRSMigrationTool
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.QuestionType")]
-	public partial class QuestionType : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Request")]
+	public partial class Request : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _QuestionTypeID;
+		private long _RequestID;
 		
-		private string _Value;
+		private System.Nullable<long> _ParentRequestID;
 		
-		private string _Code;
+		private string _RequestorFName;
 		
-		private bool _Active;
+		private string _RequestorLName;
+		
+		private string _RequestorPhone;
+		
+		private string _RequestorPhoneExt;
+		
+		private string _RequestorEmail;
+		
+		private string _PatientFName;
+		
+		private string _PatientLName;
+		
+		private System.Nullable<byte> _PatientGender;
+		
+		private System.Nullable<byte> _PatientAge;
+		
+		private string _PatientAgencyID;
+		
+		private byte _RequestStatus;
+		
+		private System.DateTime _TimeOpened;
+		
+		private System.Nullable<System.DateTime> _TimeClosed;
+		
+		private System.Nullable<int> _RegionID;
+		
+		private System.Nullable<int> _RequestorTypeID;
+		
+		private EntitySet<AuditLog> _AuditLogs;
+		
+		private EntitySet<Request> _Requests;
 		
 		private EntitySet<QuestionResponse> _QuestionResponses;
+		
+		private EntityRef<Request> _Request1;
+		
+		private EntityRef<Region> _Region;
+		
+		private EntityRef<RequestorType> _RequestorType;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnQuestionTypeIDChanging(int value);
-    partial void OnQuestionTypeIDChanged();
-    partial void OnValueChanging(string value);
-    partial void OnValueChanged();
-    partial void OnCodeChanging(string value);
-    partial void OnCodeChanged();
-    partial void OnActiveChanging(bool value);
-    partial void OnActiveChanged();
+    partial void OnRequestIDChanging(long value);
+    partial void OnRequestIDChanged();
+    partial void OnParentRequestIDChanging(System.Nullable<long> value);
+    partial void OnParentRequestIDChanged();
+    partial void OnRequestorFNameChanging(string value);
+    partial void OnRequestorFNameChanged();
+    partial void OnRequestorLNameChanging(string value);
+    partial void OnRequestorLNameChanged();
+    partial void OnRequestorPhoneChanging(string value);
+    partial void OnRequestorPhoneChanged();
+    partial void OnRequestorPhoneExtChanging(string value);
+    partial void OnRequestorPhoneExtChanged();
+    partial void OnRequestorEmailChanging(string value);
+    partial void OnRequestorEmailChanged();
+    partial void OnPatientFNameChanging(string value);
+    partial void OnPatientFNameChanged();
+    partial void OnPatientLNameChanging(string value);
+    partial void OnPatientLNameChanged();
+    partial void OnPatientGenderChanging(System.Nullable<byte> value);
+    partial void OnPatientGenderChanged();
+    partial void OnPatientAgeChanging(System.Nullable<byte> value);
+    partial void OnPatientAgeChanged();
+    partial void OnPatientAgencyIDChanging(string value);
+    partial void OnPatientAgencyIDChanged();
+    partial void OnRequestStatusChanging(byte value);
+    partial void OnRequestStatusChanged();
+    partial void OnTimeOpenedChanging(System.DateTime value);
+    partial void OnTimeOpenedChanged();
+    partial void OnTimeClosedChanging(System.Nullable<System.DateTime> value);
+    partial void OnTimeClosedChanged();
+    partial void OnRegionIDChanging(System.Nullable<int> value);
+    partial void OnRegionIDChanged();
+    partial void OnRequestorTypeIDChanging(System.Nullable<int> value);
+    partial void OnRequestorTypeIDChanged();
     #endregion
 		
-		public QuestionType()
+		public Request()
 		{
+			this._AuditLogs = new EntitySet<AuditLog>(new Action<AuditLog>(this.attach_AuditLogs), new Action<AuditLog>(this.detach_AuditLogs));
+			this._Requests = new EntitySet<Request>(new Action<Request>(this.attach_Requests), new Action<Request>(this.detach_Requests));
 			this._QuestionResponses = new EntitySet<QuestionResponse>(new Action<QuestionResponse>(this.attach_QuestionResponses), new Action<QuestionResponse>(this.detach_QuestionResponses));
+			this._Request1 = default(EntityRef<Request>);
+			this._Region = default(EntityRef<Region>);
+			this._RequestorType = default(EntityRef<RequestorType>);
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionTypeID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int QuestionTypeID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public long RequestID
 		{
 			get
 			{
-				return this._QuestionTypeID;
+				return this._RequestID;
 			}
 			set
 			{
-				if ((this._QuestionTypeID != value))
+				if ((this._RequestID != value))
 				{
-					this.OnQuestionTypeIDChanging(value);
+					this.OnRequestIDChanging(value);
 					this.SendPropertyChanging();
-					this._QuestionTypeID = value;
-					this.SendPropertyChanged("QuestionTypeID");
-					this.OnQuestionTypeIDChanged();
+					this._RequestID = value;
+					this.SendPropertyChanged("RequestID");
+					this.OnRequestIDChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
-		public string Value
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ParentRequestID", DbType="BigInt")]
+		public System.Nullable<long> ParentRequestID
 		{
 			get
 			{
-				return this._Value;
+				return this._ParentRequestID;
 			}
 			set
 			{
-				if ((this._Value != value))
+				if ((this._ParentRequestID != value))
 				{
-					this.OnValueChanging(value);
+					if (this._Request1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnParentRequestIDChanging(value);
 					this.SendPropertyChanging();
-					this._Value = value;
-					this.SendPropertyChanged("Value");
-					this.OnValueChanged();
+					this._ParentRequestID = value;
+					this.SendPropertyChanged("ParentRequestID");
+					this.OnParentRequestIDChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
-		public string Code
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorFName", DbType="NVarChar(128)")]
+		public string RequestorFName
 		{
 			get
 			{
-				return this._Code;
+				return this._RequestorFName;
 			}
 			set
 			{
-				if ((this._Code != value))
+				if ((this._RequestorFName != value))
 				{
-					this.OnCodeChanging(value);
+					this.OnRequestorFNameChanging(value);
 					this.SendPropertyChanging();
-					this._Code = value;
-					this.SendPropertyChanged("Code");
-					this.OnCodeChanged();
+					this._RequestorFName = value;
+					this.SendPropertyChanged("RequestorFName");
+					this.OnRequestorFNameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
-		public bool Active
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorLName", DbType="NVarChar(128)")]
+		public string RequestorLName
 		{
 			get
 			{
-				return this._Active;
+				return this._RequestorLName;
 			}
 			set
 			{
-				if ((this._Active != value))
+				if ((this._RequestorLName != value))
 				{
-					this.OnActiveChanging(value);
+					this.OnRequestorLNameChanging(value);
 					this.SendPropertyChanging();
-					this._Active = value;
-					this.SendPropertyChanged("Active");
-					this.OnActiveChanged();
+					this._RequestorLName = value;
+					this.SendPropertyChanged("RequestorLName");
+					this.OnRequestorLNameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionType_QuestionResponse", Storage="_QuestionResponses", ThisKey="QuestionTypeID", OtherKey="QuestionTypeID")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorPhone", DbType="NVarChar(128)")]
+		public string RequestorPhone
+		{
+			get
+			{
+				return this._RequestorPhone;
+			}
+			set
+			{
+				if ((this._RequestorPhone != value))
+				{
+					this.OnRequestorPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._RequestorPhone = value;
+					this.SendPropertyChanged("RequestorPhone");
+					this.OnRequestorPhoneChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorPhoneExt", DbType="NVarChar(128)")]
+		public string RequestorPhoneExt
+		{
+			get
+			{
+				return this._RequestorPhoneExt;
+			}
+			set
+			{
+				if ((this._RequestorPhoneExt != value))
+				{
+					this.OnRequestorPhoneExtChanging(value);
+					this.SendPropertyChanging();
+					this._RequestorPhoneExt = value;
+					this.SendPropertyChanged("RequestorPhoneExt");
+					this.OnRequestorPhoneExtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorEmail", DbType="NVarChar(128)")]
+		public string RequestorEmail
+		{
+			get
+			{
+				return this._RequestorEmail;
+			}
+			set
+			{
+				if ((this._RequestorEmail != value))
+				{
+					this.OnRequestorEmailChanging(value);
+					this.SendPropertyChanging();
+					this._RequestorEmail = value;
+					this.SendPropertyChanged("RequestorEmail");
+					this.OnRequestorEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientFName", DbType="NVarChar(128)")]
+		public string PatientFName
+		{
+			get
+			{
+				return this._PatientFName;
+			}
+			set
+			{
+				if ((this._PatientFName != value))
+				{
+					this.OnPatientFNameChanging(value);
+					this.SendPropertyChanging();
+					this._PatientFName = value;
+					this.SendPropertyChanged("PatientFName");
+					this.OnPatientFNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientLName", DbType="NVarChar(128)")]
+		public string PatientLName
+		{
+			get
+			{
+				return this._PatientLName;
+			}
+			set
+			{
+				if ((this._PatientLName != value))
+				{
+					this.OnPatientLNameChanging(value);
+					this.SendPropertyChanging();
+					this._PatientLName = value;
+					this.SendPropertyChanged("PatientLName");
+					this.OnPatientLNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientGender", DbType="TinyInt")]
+		public System.Nullable<byte> PatientGender
+		{
+			get
+			{
+				return this._PatientGender;
+			}
+			set
+			{
+				if ((this._PatientGender != value))
+				{
+					this.OnPatientGenderChanging(value);
+					this.SendPropertyChanging();
+					this._PatientGender = value;
+					this.SendPropertyChanged("PatientGender");
+					this.OnPatientGenderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientAge", DbType="TinyInt")]
+		public System.Nullable<byte> PatientAge
+		{
+			get
+			{
+				return this._PatientAge;
+			}
+			set
+			{
+				if ((this._PatientAge != value))
+				{
+					this.OnPatientAgeChanging(value);
+					this.SendPropertyChanging();
+					this._PatientAge = value;
+					this.SendPropertyChanged("PatientAge");
+					this.OnPatientAgeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientAgencyID", DbType="NVarChar(128)")]
+		public string PatientAgencyID
+		{
+			get
+			{
+				return this._PatientAgencyID;
+			}
+			set
+			{
+				if ((this._PatientAgencyID != value))
+				{
+					this.OnPatientAgencyIDChanging(value);
+					this.SendPropertyChanging();
+					this._PatientAgencyID = value;
+					this.SendPropertyChanged("PatientAgencyID");
+					this.OnPatientAgencyIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestStatus", DbType="TinyInt NOT NULL")]
+		public byte RequestStatus
+		{
+			get
+			{
+				return this._RequestStatus;
+			}
+			set
+			{
+				if ((this._RequestStatus != value))
+				{
+					this.OnRequestStatusChanging(value);
+					this.SendPropertyChanging();
+					this._RequestStatus = value;
+					this.SendPropertyChanged("RequestStatus");
+					this.OnRequestStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeOpened", DbType="DateTime NOT NULL")]
+		public System.DateTime TimeOpened
+		{
+			get
+			{
+				return this._TimeOpened;
+			}
+			set
+			{
+				if ((this._TimeOpened != value))
+				{
+					this.OnTimeOpenedChanging(value);
+					this.SendPropertyChanging();
+					this._TimeOpened = value;
+					this.SendPropertyChanged("TimeOpened");
+					this.OnTimeOpenedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeClosed", DbType="DateTime")]
+		public System.Nullable<System.DateTime> TimeClosed
+		{
+			get
+			{
+				return this._TimeClosed;
+			}
+			set
+			{
+				if ((this._TimeClosed != value))
+				{
+					this.OnTimeClosedChanging(value);
+					this.SendPropertyChanging();
+					this._TimeClosed = value;
+					this.SendPropertyChanged("TimeClosed");
+					this.OnTimeClosedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegionID", DbType="Int")]
+		public System.Nullable<int> RegionID
+		{
+			get
+			{
+				return this._RegionID;
+			}
+			set
+			{
+				if ((this._RegionID != value))
+				{
+					if (this._Region.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRegionIDChanging(value);
+					this.SendPropertyChanging();
+					this._RegionID = value;
+					this.SendPropertyChanged("RegionID");
+					this.OnRegionIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorTypeID", DbType="Int")]
+		public System.Nullable<int> RequestorTypeID
+		{
+			get
+			{
+				return this._RequestorTypeID;
+			}
+			set
+			{
+				if ((this._RequestorTypeID != value))
+				{
+					if (this._RequestorType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRequestorTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._RequestorTypeID = value;
+					this.SendPropertyChanged("RequestorTypeID");
+					this.OnRequestorTypeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_AuditLog", Storage="_AuditLogs", ThisKey="RequestID", OtherKey="RequestID")]
+		public EntitySet<AuditLog> AuditLogs
+		{
+			get
+			{
+				return this._AuditLogs;
+			}
+			set
+			{
+				this._AuditLogs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_Request", Storage="_Requests", ThisKey="RequestID", OtherKey="ParentRequestID")]
+		public EntitySet<Request> Requests
+		{
+			get
+			{
+				return this._Requests;
+			}
+			set
+			{
+				this._Requests.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_QuestionResponse", Storage="_QuestionResponses", ThisKey="RequestID", OtherKey="RequestID")]
 		public EntitySet<QuestionResponse> QuestionResponses
 		{
 			get
@@ -1524,6 +1077,108 @@ namespace CAIRSMigrationTool
 			set
 			{
 				this._QuestionResponses.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_Request", Storage="_Request1", ThisKey="ParentRequestID", OtherKey="RequestID", IsForeignKey=true)]
+		public Request Request1
+		{
+			get
+			{
+				return this._Request1.Entity;
+			}
+			set
+			{
+				Request previousValue = this._Request1.Entity;
+				if (((previousValue != value) 
+							|| (this._Request1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Request1.Entity = null;
+						previousValue.Requests.Remove(this);
+					}
+					this._Request1.Entity = value;
+					if ((value != null))
+					{
+						value.Requests.Add(this);
+						this._ParentRequestID = value.RequestID;
+					}
+					else
+					{
+						this._ParentRequestID = default(Nullable<long>);
+					}
+					this.SendPropertyChanged("Request1");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Region_Request", Storage="_Region", ThisKey="RegionID", OtherKey="RegionID", IsForeignKey=true)]
+		public Region Region
+		{
+			get
+			{
+				return this._Region.Entity;
+			}
+			set
+			{
+				Region previousValue = this._Region.Entity;
+				if (((previousValue != value) 
+							|| (this._Region.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Region.Entity = null;
+						previousValue.Requests.Remove(this);
+					}
+					this._Region.Entity = value;
+					if ((value != null))
+					{
+						value.Requests.Add(this);
+						this._RegionID = value.RegionID;
+					}
+					else
+					{
+						this._RegionID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Region");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RequestorType_Request", Storage="_RequestorType", ThisKey="RequestorTypeID", OtherKey="RequestorTypeID", IsForeignKey=true)]
+		public RequestorType RequestorType
+		{
+			get
+			{
+				return this._RequestorType.Entity;
+			}
+			set
+			{
+				RequestorType previousValue = this._RequestorType.Entity;
+				if (((previousValue != value) 
+							|| (this._RequestorType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RequestorType.Entity = null;
+						previousValue.Requests.Remove(this);
+					}
+					this._RequestorType.Entity = value;
+					if ((value != null))
+					{
+						value.Requests.Add(this);
+						this._RequestorTypeID = value.RequestorTypeID;
+					}
+					else
+					{
+						this._RequestorTypeID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("RequestorType");
+				}
 			}
 		}
 		
@@ -1547,16 +1202,40 @@ namespace CAIRSMigrationTool
 			}
 		}
 		
+		private void attach_AuditLogs(AuditLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Request = this;
+		}
+		
+		private void detach_AuditLogs(AuditLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Request = null;
+		}
+		
+		private void attach_Requests(Request entity)
+		{
+			this.SendPropertyChanging();
+			entity.Request1 = this;
+		}
+		
+		private void detach_Requests(Request entity)
+		{
+			this.SendPropertyChanging();
+			entity.Request1 = null;
+		}
+		
 		private void attach_QuestionResponses(QuestionResponse entity)
 		{
 			this.SendPropertyChanging();
-			entity.QuestionType = this;
+			entity.Request = this;
 		}
 		
 		private void detach_QuestionResponses(QuestionResponse entity)
 		{
 			this.SendPropertyChanging();
-			entity.QuestionType = null;
+			entity.Request = null;
 		}
 	}
 	
@@ -1636,7 +1315,7 @@ namespace CAIRSMigrationTool
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
 		public string Code
 		{
 			get
@@ -1798,7 +1477,7 @@ namespace CAIRSMigrationTool
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
 		public string Code
 		{
 			get
@@ -1884,6 +1563,168 @@ namespace CAIRSMigrationTool
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.QuestionType")]
+	public partial class QuestionType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _QuestionTypeID;
+		
+		private string _Value;
+		
+		private string _Code;
+		
+		private bool _Active;
+		
+		private EntitySet<QuestionResponse> _QuestionResponses;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnQuestionTypeIDChanging(int value);
+    partial void OnQuestionTypeIDChanged();
+    partial void OnValueChanging(string value);
+    partial void OnValueChanged();
+    partial void OnCodeChanging(string value);
+    partial void OnCodeChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    #endregion
+		
+		public QuestionType()
+		{
+			this._QuestionResponses = new EntitySet<QuestionResponse>(new Action<QuestionResponse>(this.attach_QuestionResponses), new Action<QuestionResponse>(this.detach_QuestionResponses));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionTypeID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int QuestionTypeID
+		{
+			get
+			{
+				return this._QuestionTypeID;
+			}
+			set
+			{
+				if ((this._QuestionTypeID != value))
+				{
+					this.OnQuestionTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._QuestionTypeID = value;
+					this.SendPropertyChanged("QuestionTypeID");
+					this.OnQuestionTypeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(64) NOT NULL", CanBeNull=false)]
+		public string Value
+		{
+			get
+			{
+				return this._Value;
+			}
+			set
+			{
+				if ((this._Value != value))
+				{
+					this.OnValueChanging(value);
+					this.SendPropertyChanging();
+					this._Value = value;
+					this.SendPropertyChanged("Value");
+					this.OnValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string Code
+		{
+			get
+			{
+				return this._Code;
+			}
+			set
+			{
+				if ((this._Code != value))
+				{
+					this.OnCodeChanging(value);
+					this.SendPropertyChanging();
+					this._Code = value;
+					this.SendPropertyChanged("Code");
+					this.OnCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionType_QuestionResponse", Storage="_QuestionResponses", ThisKey="QuestionTypeID", OtherKey="QuestionTypeID")]
+		public EntitySet<QuestionResponse> QuestionResponses
+		{
+			get
+			{
+				return this._QuestionResponses;
+			}
+			set
+			{
+				this._QuestionResponses.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_QuestionResponses(QuestionResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.QuestionType = this;
+		}
+		
+		private void detach_QuestionResponses(QuestionResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.QuestionType = null;
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TumourGroup")]
 	public partial class TumourGroup : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1960,7 +1801,7 @@ namespace CAIRSMigrationTool
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="Char(10) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
 		public string Code
 		{
 			get
@@ -2046,296 +1887,91 @@ namespace CAIRSMigrationTool
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserProfile")]
-	public partial class UserProfile : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Reference")]
+	public partial class Reference : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _UserId;
+		private long _ReferenceID;
 		
-		private string _UserName;
-		
-		private string _UserFullName;
-		
-		private string _UserEmail;
-		
-		private bool _UserStatus;
-		
-		private EntitySet<AuditLog> _AuditLogs;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnUserIdChanging(int value);
-    partial void OnUserIdChanged();
-    partial void OnUserNameChanging(string value);
-    partial void OnUserNameChanged();
-    partial void OnUserFullNameChanging(string value);
-    partial void OnUserFullNameChanged();
-    partial void OnUserEmailChanging(string value);
-    partial void OnUserEmailChanged();
-    partial void OnUserStatusChanging(bool value);
-    partial void OnUserStatusChanged();
-    #endregion
-		
-		public UserProfile()
-		{
-			this._AuditLogs = new EntitySet<AuditLog>(new Action<AuditLog>(this.attach_AuditLogs), new Action<AuditLog>(this.detach_AuditLogs));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int UserId
-		{
-			get
-			{
-				return this._UserId;
-			}
-			set
-			{
-				if ((this._UserId != value))
-				{
-					this.OnUserIdChanging(value);
-					this.SendPropertyChanging();
-					this._UserId = value;
-					this.SendPropertyChanged("UserId");
-					this.OnUserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(56) NOT NULL", CanBeNull=false)]
-		public string UserName
-		{
-			get
-			{
-				return this._UserName;
-			}
-			set
-			{
-				if ((this._UserName != value))
-				{
-					this.OnUserNameChanging(value);
-					this.SendPropertyChanging();
-					this._UserName = value;
-					this.SendPropertyChanged("UserName");
-					this.OnUserNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserFullName", DbType="NVarChar(MAX)")]
-		public string UserFullName
-		{
-			get
-			{
-				return this._UserFullName;
-			}
-			set
-			{
-				if ((this._UserFullName != value))
-				{
-					this.OnUserFullNameChanging(value);
-					this.SendPropertyChanging();
-					this._UserFullName = value;
-					this.SendPropertyChanged("UserFullName");
-					this.OnUserFullNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserEmail", DbType="NVarChar(MAX)")]
-		public string UserEmail
-		{
-			get
-			{
-				return this._UserEmail;
-			}
-			set
-			{
-				if ((this._UserEmail != value))
-				{
-					this.OnUserEmailChanging(value);
-					this.SendPropertyChanging();
-					this._UserEmail = value;
-					this.SendPropertyChanged("UserEmail");
-					this.OnUserEmailChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserStatus", DbType="Bit NOT NULL")]
-		public bool UserStatus
-		{
-			get
-			{
-				return this._UserStatus;
-			}
-			set
-			{
-				if ((this._UserStatus != value))
-				{
-					this.OnUserStatusChanging(value);
-					this.SendPropertyChanging();
-					this._UserStatus = value;
-					this.SendPropertyChanged("UserStatus");
-					this.OnUserStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_AuditLog", Storage="_AuditLogs", ThisKey="UserId", OtherKey="UserID")]
-		public EntitySet<AuditLog> AuditLogs
-		{
-			get
-			{
-				return this._AuditLogs;
-			}
-			set
-			{
-				this._AuditLogs.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_AuditLogs(AuditLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserProfile = this;
-		}
-		
-		private void detach_AuditLogs(AuditLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.UserProfile = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Request")]
-	public partial class Request : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		private long _QuestionResponseID;
 		
 		private long _RequestID;
 		
-		private System.Nullable<long> _ParentRequestID;
+		private byte _ReferenceType;
 		
-		private string _RequestorFName;
+		private string _ReferenceString;
 		
-		private string _RequestorLName;
-		
-		private string _RequestorPhone;
-		
-		private string _RequestorPhoneExt;
-		
-		private string _RequestorEmail;
-		
-		private string _PatientFName;
-		
-		private string _PatientLName;
-		
-		private System.Nullable<byte> _PatientGender;
-		
-		private System.Nullable<byte> _PatientAge;
-		
-		private string _PatientAgencyID;
-		
-		private byte _RequestStatus;
-		
-		private System.DateTime _TimeOpened;
-		
-		private System.Nullable<System.DateTime> _TimeClosed;
-		
-		private System.Nullable<int> _RegionID;
-		
-		private System.Nullable<int> _RequestorTypeID;
-		
-		private EntitySet<QuestionResponse> _QuestionResponses;
-		
-		private EntitySet<AuditLog> _AuditLogs;
-		
-		private EntitySet<Request> _Requests;
-		
-		private EntityRef<Region> _Region;
-		
-		private EntityRef<Request> _Request1;
-		
-		private EntityRef<RequestorType> _RequestorType;
+		private EntityRef<QuestionResponse> _QuestionResponse;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
+    partial void OnReferenceIDChanging(long value);
+    partial void OnReferenceIDChanged();
+    partial void OnQuestionResponseIDChanging(long value);
+    partial void OnQuestionResponseIDChanged();
     partial void OnRequestIDChanging(long value);
     partial void OnRequestIDChanged();
-    partial void OnParentRequestIDChanging(System.Nullable<long> value);
-    partial void OnParentRequestIDChanged();
-    partial void OnRequestorFNameChanging(string value);
-    partial void OnRequestorFNameChanged();
-    partial void OnRequestorLNameChanging(string value);
-    partial void OnRequestorLNameChanged();
-    partial void OnRequestorPhoneChanging(string value);
-    partial void OnRequestorPhoneChanged();
-    partial void OnRequestorPhoneExtChanging(string value);
-    partial void OnRequestorPhoneExtChanged();
-    partial void OnRequestorEmailChanging(string value);
-    partial void OnRequestorEmailChanged();
-    partial void OnPatientFNameChanging(string value);
-    partial void OnPatientFNameChanged();
-    partial void OnPatientLNameChanging(string value);
-    partial void OnPatientLNameChanged();
-    partial void OnPatientGenderChanging(System.Nullable<byte> value);
-    partial void OnPatientGenderChanged();
-    partial void OnPatientAgeChanging(System.Nullable<byte> value);
-    partial void OnPatientAgeChanged();
-    partial void OnPatientAgencyIDChanging(string value);
-    partial void OnPatientAgencyIDChanged();
-    partial void OnRequestStatusChanging(byte value);
-    partial void OnRequestStatusChanged();
-    partial void OnTimeOpenedChanging(System.DateTime value);
-    partial void OnTimeOpenedChanged();
-    partial void OnTimeClosedChanging(System.Nullable<System.DateTime> value);
-    partial void OnTimeClosedChanged();
-    partial void OnRegionIDChanging(System.Nullable<int> value);
-    partial void OnRegionIDChanged();
-    partial void OnRequestorTypeIDChanging(System.Nullable<int> value);
-    partial void OnRequestorTypeIDChanged();
+    partial void OnReferenceTypeChanging(byte value);
+    partial void OnReferenceTypeChanged();
+    partial void OnReferenceStringChanging(string value);
+    partial void OnReferenceStringChanged();
     #endregion
 		
-		public Request()
+		public Reference()
 		{
-			this._QuestionResponses = new EntitySet<QuestionResponse>(new Action<QuestionResponse>(this.attach_QuestionResponses), new Action<QuestionResponse>(this.detach_QuestionResponses));
-			this._AuditLogs = new EntitySet<AuditLog>(new Action<AuditLog>(this.attach_AuditLogs), new Action<AuditLog>(this.detach_AuditLogs));
-			this._Requests = new EntitySet<Request>(new Action<Request>(this.attach_Requests), new Action<Request>(this.detach_Requests));
-			this._Region = default(EntityRef<Region>);
-			this._Request1 = default(EntityRef<Request>);
-			this._RequestorType = default(EntityRef<RequestorType>);
+			this._QuestionResponse = default(EntityRef<QuestionResponse>);
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceID", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public long ReferenceID
+		{
+			get
+			{
+				return this._ReferenceID;
+			}
+			set
+			{
+				if ((this._ReferenceID != value))
+				{
+					this.OnReferenceIDChanging(value);
+					this.SendPropertyChanging();
+					this._ReferenceID = value;
+					this.SendPropertyChanged("ReferenceID");
+					this.OnReferenceIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionResponseID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long QuestionResponseID
+		{
+			get
+			{
+				return this._QuestionResponseID;
+			}
+			set
+			{
+				if ((this._QuestionResponseID != value))
+				{
+					if (this._QuestionResponse.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnQuestionResponseIDChanging(value);
+					this.SendPropertyChanging();
+					this._QuestionResponseID = value;
+					this.SendPropertyChanged("QuestionResponseID");
+					this.OnQuestionResponseIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
 		public long RequestID
 		{
 			get
@@ -2346,6 +1982,10 @@ namespace CAIRSMigrationTool
 			{
 				if ((this._RequestID != value))
 				{
+					if (this._QuestionResponse.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnRequestIDChanging(value);
 					this.SendPropertyChanging();
 					this._RequestID = value;
@@ -2355,475 +1995,511 @@ namespace CAIRSMigrationTool
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ParentRequestID", DbType="BigInt")]
-		public System.Nullable<long> ParentRequestID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceType", DbType="TinyInt NOT NULL")]
+		public byte ReferenceType
 		{
 			get
 			{
-				return this._ParentRequestID;
+				return this._ReferenceType;
 			}
 			set
 			{
-				if ((this._ParentRequestID != value))
+				if ((this._ReferenceType != value))
 				{
-					if (this._Request1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnParentRequestIDChanging(value);
+					this.OnReferenceTypeChanging(value);
 					this.SendPropertyChanging();
-					this._ParentRequestID = value;
-					this.SendPropertyChanged("ParentRequestID");
-					this.OnParentRequestIDChanged();
+					this._ReferenceType = value;
+					this.SendPropertyChanged("ReferenceType");
+					this.OnReferenceTypeChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorFName", DbType="NVarChar(64)")]
-		public string RequestorFName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceString", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		public string ReferenceString
 		{
 			get
 			{
-				return this._RequestorFName;
+				return this._ReferenceString;
 			}
 			set
 			{
-				if ((this._RequestorFName != value))
+				if ((this._ReferenceString != value))
 				{
-					this.OnRequestorFNameChanging(value);
+					this.OnReferenceStringChanging(value);
 					this.SendPropertyChanging();
-					this._RequestorFName = value;
-					this.SendPropertyChanged("RequestorFName");
-					this.OnRequestorFNameChanged();
+					this._ReferenceString = value;
+					this.SendPropertyChanged("ReferenceString");
+					this.OnReferenceStringChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorLName", DbType="NVarChar(64)")]
-		public string RequestorLName
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_Reference", Storage="_QuestionResponse", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID", IsForeignKey=true)]
+		public QuestionResponse QuestionResponse
 		{
 			get
 			{
-				return this._RequestorLName;
+				return this._QuestionResponse.Entity;
 			}
 			set
 			{
-				if ((this._RequestorLName != value))
-				{
-					this.OnRequestorLNameChanging(value);
-					this.SendPropertyChanging();
-					this._RequestorLName = value;
-					this.SendPropertyChanged("RequestorLName");
-					this.OnRequestorLNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorPhone", DbType="Char(20)")]
-		public string RequestorPhone
-		{
-			get
-			{
-				return this._RequestorPhone;
-			}
-			set
-			{
-				if ((this._RequestorPhone != value))
-				{
-					this.OnRequestorPhoneChanging(value);
-					this.SendPropertyChanging();
-					this._RequestorPhone = value;
-					this.SendPropertyChanged("RequestorPhone");
-					this.OnRequestorPhoneChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorPhoneExt", DbType="Char(15)")]
-		public string RequestorPhoneExt
-		{
-			get
-			{
-				return this._RequestorPhoneExt;
-			}
-			set
-			{
-				if ((this._RequestorPhoneExt != value))
-				{
-					this.OnRequestorPhoneExtChanging(value);
-					this.SendPropertyChanging();
-					this._RequestorPhoneExt = value;
-					this.SendPropertyChanged("RequestorPhoneExt");
-					this.OnRequestorPhoneExtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorEmail", DbType="NVarChar(64)")]
-		public string RequestorEmail
-		{
-			get
-			{
-				return this._RequestorEmail;
-			}
-			set
-			{
-				if ((this._RequestorEmail != value))
-				{
-					this.OnRequestorEmailChanging(value);
-					this.SendPropertyChanging();
-					this._RequestorEmail = value;
-					this.SendPropertyChanged("RequestorEmail");
-					this.OnRequestorEmailChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientFName", DbType="NVarChar(64)")]
-		public string PatientFName
-		{
-			get
-			{
-				return this._PatientFName;
-			}
-			set
-			{
-				if ((this._PatientFName != value))
-				{
-					this.OnPatientFNameChanging(value);
-					this.SendPropertyChanging();
-					this._PatientFName = value;
-					this.SendPropertyChanged("PatientFName");
-					this.OnPatientFNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientLName", DbType="NVarChar(64)")]
-		public string PatientLName
-		{
-			get
-			{
-				return this._PatientLName;
-			}
-			set
-			{
-				if ((this._PatientLName != value))
-				{
-					this.OnPatientLNameChanging(value);
-					this.SendPropertyChanging();
-					this._PatientLName = value;
-					this.SendPropertyChanged("PatientLName");
-					this.OnPatientLNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientGender", DbType="TinyInt")]
-		public System.Nullable<byte> PatientGender
-		{
-			get
-			{
-				return this._PatientGender;
-			}
-			set
-			{
-				if ((this._PatientGender != value))
-				{
-					this.OnPatientGenderChanging(value);
-					this.SendPropertyChanging();
-					this._PatientGender = value;
-					this.SendPropertyChanged("PatientGender");
-					this.OnPatientGenderChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientAge", DbType="TinyInt")]
-		public System.Nullable<byte> PatientAge
-		{
-			get
-			{
-				return this._PatientAge;
-			}
-			set
-			{
-				if ((this._PatientAge != value))
-				{
-					this.OnPatientAgeChanging(value);
-					this.SendPropertyChanging();
-					this._PatientAge = value;
-					this.SendPropertyChanged("PatientAge");
-					this.OnPatientAgeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PatientAgencyID", DbType="Char(15)")]
-		public string PatientAgencyID
-		{
-			get
-			{
-				return this._PatientAgencyID;
-			}
-			set
-			{
-				if ((this._PatientAgencyID != value))
-				{
-					this.OnPatientAgencyIDChanging(value);
-					this.SendPropertyChanging();
-					this._PatientAgencyID = value;
-					this.SendPropertyChanged("PatientAgencyID");
-					this.OnPatientAgencyIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestStatus", DbType="TinyInt NOT NULL")]
-		public byte RequestStatus
-		{
-			get
-			{
-				return this._RequestStatus;
-			}
-			set
-			{
-				if ((this._RequestStatus != value))
-				{
-					this.OnRequestStatusChanging(value);
-					this.SendPropertyChanging();
-					this._RequestStatus = value;
-					this.SendPropertyChanged("RequestStatus");
-					this.OnRequestStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeOpened", DbType="DateTime NOT NULL")]
-		public System.DateTime TimeOpened
-		{
-			get
-			{
-				return this._TimeOpened;
-			}
-			set
-			{
-				if ((this._TimeOpened != value))
-				{
-					this.OnTimeOpenedChanging(value);
-					this.SendPropertyChanging();
-					this._TimeOpened = value;
-					this.SendPropertyChanged("TimeOpened");
-					this.OnTimeOpenedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeClosed", DbType="DateTime")]
-		public System.Nullable<System.DateTime> TimeClosed
-		{
-			get
-			{
-				return this._TimeClosed;
-			}
-			set
-			{
-				if ((this._TimeClosed != value))
-				{
-					this.OnTimeClosedChanging(value);
-					this.SendPropertyChanging();
-					this._TimeClosed = value;
-					this.SendPropertyChanged("TimeClosed");
-					this.OnTimeClosedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegionID", DbType="Int")]
-		public System.Nullable<int> RegionID
-		{
-			get
-			{
-				return this._RegionID;
-			}
-			set
-			{
-				if ((this._RegionID != value))
-				{
-					if (this._Region.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRegionIDChanging(value);
-					this.SendPropertyChanging();
-					this._RegionID = value;
-					this.SendPropertyChanged("RegionID");
-					this.OnRegionIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestorTypeID", DbType="Int")]
-		public System.Nullable<int> RequestorTypeID
-		{
-			get
-			{
-				return this._RequestorTypeID;
-			}
-			set
-			{
-				if ((this._RequestorTypeID != value))
-				{
-					if (this._RequestorType.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRequestorTypeIDChanging(value);
-					this.SendPropertyChanging();
-					this._RequestorTypeID = value;
-					this.SendPropertyChanged("RequestorTypeID");
-					this.OnRequestorTypeIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_QuestionResponse", Storage="_QuestionResponses", ThisKey="RequestID", OtherKey="RequestID")]
-		public EntitySet<QuestionResponse> QuestionResponses
-		{
-			get
-			{
-				return this._QuestionResponses;
-			}
-			set
-			{
-				this._QuestionResponses.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_AuditLog", Storage="_AuditLogs", ThisKey="RequestID", OtherKey="RequestID")]
-		public EntitySet<AuditLog> AuditLogs
-		{
-			get
-			{
-				return this._AuditLogs;
-			}
-			set
-			{
-				this._AuditLogs.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_Request", Storage="_Requests", ThisKey="RequestID", OtherKey="ParentRequestID")]
-		public EntitySet<Request> Requests
-		{
-			get
-			{
-				return this._Requests;
-			}
-			set
-			{
-				this._Requests.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Region_Request", Storage="_Region", ThisKey="RegionID", OtherKey="RegionID", IsForeignKey=true)]
-		public Region Region
-		{
-			get
-			{
-				return this._Region.Entity;
-			}
-			set
-			{
-				Region previousValue = this._Region.Entity;
+				QuestionResponse previousValue = this._QuestionResponse.Entity;
 				if (((previousValue != value) 
-							|| (this._Region.HasLoadedOrAssignedValue == false)))
+							|| (this._QuestionResponse.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._Region.Entity = null;
-						previousValue.Requests.Remove(this);
+						this._QuestionResponse.Entity = null;
+						previousValue.References.Remove(this);
 					}
-					this._Region.Entity = value;
+					this._QuestionResponse.Entity = value;
 					if ((value != null))
 					{
-						value.Requests.Add(this);
-						this._RegionID = value.RegionID;
+						value.References.Add(this);
+						this._QuestionResponseID = value.QuestionResponseID;
+						this._RequestID = value.RequestID;
 					}
 					else
 					{
-						this._RegionID = default(Nullable<int>);
+						this._QuestionResponseID = default(long);
+						this._RequestID = default(long);
 					}
-					this.SendPropertyChanged("Region");
+					this.SendPropertyChanged("QuestionResponse");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_Request", Storage="_Request1", ThisKey="ParentRequestID", OtherKey="RequestID", IsForeignKey=true)]
-		public Request Request1
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.QuestionResponse")]
+	public partial class QuestionResponse : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private long _QuestionResponseID;
+		
+		private long _RequestID;
+		
+		private string _Question;
+		
+		private string _Response;
+		
+		private System.Nullable<short> _TimeSpent;
+		
+		private string _SpecialNotes;
+		
+		private System.Nullable<int> _QuestionTypeID;
+		
+		private System.Nullable<int> _TumourGroupID;
+		
+		private System.Nullable<byte> _Severity;
+		
+		private System.Nullable<byte> _Consequence;
+		
+		private EntitySet<Reference> _References;
+		
+		private EntitySet<KeywordQuestion> _KeywordQuestions;
+		
+		private EntityRef<QuestionType> _QuestionType;
+		
+		private EntityRef<Request> _Request;
+		
+		private EntityRef<TumourGroup> _TumourGroup;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnQuestionResponseIDChanging(long value);
+    partial void OnQuestionResponseIDChanged();
+    partial void OnRequestIDChanging(long value);
+    partial void OnRequestIDChanged();
+    partial void OnQuestionChanging(string value);
+    partial void OnQuestionChanged();
+    partial void OnResponseChanging(string value);
+    partial void OnResponseChanged();
+    partial void OnTimeSpentChanging(System.Nullable<short> value);
+    partial void OnTimeSpentChanged();
+    partial void OnSpecialNotesChanging(string value);
+    partial void OnSpecialNotesChanged();
+    partial void OnQuestionTypeIDChanging(System.Nullable<int> value);
+    partial void OnQuestionTypeIDChanged();
+    partial void OnTumourGroupIDChanging(System.Nullable<int> value);
+    partial void OnTumourGroupIDChanged();
+    partial void OnSeverityChanging(System.Nullable<byte> value);
+    partial void OnSeverityChanged();
+    partial void OnConsequenceChanging(System.Nullable<byte> value);
+    partial void OnConsequenceChanged();
+    #endregion
+		
+		public QuestionResponse()
+		{
+			this._References = new EntitySet<Reference>(new Action<Reference>(this.attach_References), new Action<Reference>(this.detach_References));
+			this._KeywordQuestions = new EntitySet<KeywordQuestion>(new Action<KeywordQuestion>(this.attach_KeywordQuestions), new Action<KeywordQuestion>(this.detach_KeywordQuestions));
+			this._QuestionType = default(EntityRef<QuestionType>);
+			this._Request = default(EntityRef<Request>);
+			this._TumourGroup = default(EntityRef<TumourGroup>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionResponseID", AutoSync=AutoSync.OnInsert, DbType="BigInt NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public long QuestionResponseID
 		{
 			get
 			{
-				return this._Request1.Entity;
+				return this._QuestionResponseID;
 			}
 			set
 			{
-				Request previousValue = this._Request1.Entity;
-				if (((previousValue != value) 
-							|| (this._Request1.HasLoadedOrAssignedValue == false)))
+				if ((this._QuestionResponseID != value))
 				{
+					this.OnQuestionResponseIDChanging(value);
 					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Request1.Entity = null;
-						previousValue.Requests.Remove(this);
-					}
-					this._Request1.Entity = value;
-					if ((value != null))
-					{
-						value.Requests.Add(this);
-						this._ParentRequestID = value.RequestID;
-					}
-					else
-					{
-						this._ParentRequestID = default(Nullable<long>);
-					}
-					this.SendPropertyChanged("Request1");
+					this._QuestionResponseID = value;
+					this.SendPropertyChanged("QuestionResponseID");
+					this.OnQuestionResponseIDChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RequestorType_Request", Storage="_RequestorType", ThisKey="RequestorTypeID", OtherKey="RequestorTypeID", IsForeignKey=true)]
-		public RequestorType RequestorType
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long RequestID
 		{
 			get
 			{
-				return this._RequestorType.Entity;
+				return this._RequestID;
 			}
 			set
 			{
-				RequestorType previousValue = this._RequestorType.Entity;
+				if ((this._RequestID != value))
+				{
+					if (this._Request.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRequestIDChanging(value);
+					this.SendPropertyChanging();
+					this._RequestID = value;
+					this.SendPropertyChanged("RequestID");
+					this.OnRequestIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Question", DbType="NVarChar(1024)")]
+		public string Question
+		{
+			get
+			{
+				return this._Question;
+			}
+			set
+			{
+				if ((this._Question != value))
+				{
+					this.OnQuestionChanging(value);
+					this.SendPropertyChanging();
+					this._Question = value;
+					this.SendPropertyChanged("Question");
+					this.OnQuestionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Response", DbType="NVarChar(MAX)")]
+		public string Response
+		{
+			get
+			{
+				return this._Response;
+			}
+			set
+			{
+				if ((this._Response != value))
+				{
+					this.OnResponseChanging(value);
+					this.SendPropertyChanging();
+					this._Response = value;
+					this.SendPropertyChanged("Response");
+					this.OnResponseChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeSpent", DbType="SmallInt")]
+		public System.Nullable<short> TimeSpent
+		{
+			get
+			{
+				return this._TimeSpent;
+			}
+			set
+			{
+				if ((this._TimeSpent != value))
+				{
+					this.OnTimeSpentChanging(value);
+					this.SendPropertyChanging();
+					this._TimeSpent = value;
+					this.SendPropertyChanged("TimeSpent");
+					this.OnTimeSpentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpecialNotes", DbType="NVarChar(1024)")]
+		public string SpecialNotes
+		{
+			get
+			{
+				return this._SpecialNotes;
+			}
+			set
+			{
+				if ((this._SpecialNotes != value))
+				{
+					this.OnSpecialNotesChanging(value);
+					this.SendPropertyChanging();
+					this._SpecialNotes = value;
+					this.SendPropertyChanged("SpecialNotes");
+					this.OnSpecialNotesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionTypeID", DbType="Int")]
+		public System.Nullable<int> QuestionTypeID
+		{
+			get
+			{
+				return this._QuestionTypeID;
+			}
+			set
+			{
+				if ((this._QuestionTypeID != value))
+				{
+					if (this._QuestionType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnQuestionTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._QuestionTypeID = value;
+					this.SendPropertyChanged("QuestionTypeID");
+					this.OnQuestionTypeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TumourGroupID", DbType="Int")]
+		public System.Nullable<int> TumourGroupID
+		{
+			get
+			{
+				return this._TumourGroupID;
+			}
+			set
+			{
+				if ((this._TumourGroupID != value))
+				{
+					if (this._TumourGroup.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTumourGroupIDChanging(value);
+					this.SendPropertyChanging();
+					this._TumourGroupID = value;
+					this.SendPropertyChanged("TumourGroupID");
+					this.OnTumourGroupIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Severity", DbType="TinyInt")]
+		public System.Nullable<byte> Severity
+		{
+			get
+			{
+				return this._Severity;
+			}
+			set
+			{
+				if ((this._Severity != value))
+				{
+					this.OnSeverityChanging(value);
+					this.SendPropertyChanging();
+					this._Severity = value;
+					this.SendPropertyChanged("Severity");
+					this.OnSeverityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Consequence", DbType="TinyInt")]
+		public System.Nullable<byte> Consequence
+		{
+			get
+			{
+				return this._Consequence;
+			}
+			set
+			{
+				if ((this._Consequence != value))
+				{
+					this.OnConsequenceChanging(value);
+					this.SendPropertyChanging();
+					this._Consequence = value;
+					this.SendPropertyChanged("Consequence");
+					this.OnConsequenceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_Reference", Storage="_References", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID")]
+		public EntitySet<Reference> References
+		{
+			get
+			{
+				return this._References;
+			}
+			set
+			{
+				this._References.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_KeywordQuestion", Storage="_KeywordQuestions", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID")]
+		public EntitySet<KeywordQuestion> KeywordQuestions
+		{
+			get
+			{
+				return this._KeywordQuestions;
+			}
+			set
+			{
+				this._KeywordQuestions.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionType_QuestionResponse", Storage="_QuestionType", ThisKey="QuestionTypeID", OtherKey="QuestionTypeID", IsForeignKey=true)]
+		public QuestionType QuestionType
+		{
+			get
+			{
+				return this._QuestionType.Entity;
+			}
+			set
+			{
+				QuestionType previousValue = this._QuestionType.Entity;
 				if (((previousValue != value) 
-							|| (this._RequestorType.HasLoadedOrAssignedValue == false)))
+							|| (this._QuestionType.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._RequestorType.Entity = null;
-						previousValue.Requests.Remove(this);
+						this._QuestionType.Entity = null;
+						previousValue.QuestionResponses.Remove(this);
 					}
-					this._RequestorType.Entity = value;
+					this._QuestionType.Entity = value;
 					if ((value != null))
 					{
-						value.Requests.Add(this);
-						this._RequestorTypeID = value.RequestorTypeID;
+						value.QuestionResponses.Add(this);
+						this._QuestionTypeID = value.QuestionTypeID;
 					}
 					else
 					{
-						this._RequestorTypeID = default(Nullable<int>);
+						this._QuestionTypeID = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("RequestorType");
+					this.SendPropertyChanged("QuestionType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Request_QuestionResponse", Storage="_Request", ThisKey="RequestID", OtherKey="RequestID", IsForeignKey=true)]
+		public Request Request
+		{
+			get
+			{
+				return this._Request.Entity;
+			}
+			set
+			{
+				Request previousValue = this._Request.Entity;
+				if (((previousValue != value) 
+							|| (this._Request.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Request.Entity = null;
+						previousValue.QuestionResponses.Remove(this);
+					}
+					this._Request.Entity = value;
+					if ((value != null))
+					{
+						value.QuestionResponses.Add(this);
+						this._RequestID = value.RequestID;
+					}
+					else
+					{
+						this._RequestID = default(long);
+					}
+					this.SendPropertyChanged("Request");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TumourGroup_QuestionResponse", Storage="_TumourGroup", ThisKey="TumourGroupID", OtherKey="TumourGroupID", IsForeignKey=true)]
+		public TumourGroup TumourGroup
+		{
+			get
+			{
+				return this._TumourGroup.Entity;
+			}
+			set
+			{
+				TumourGroup previousValue = this._TumourGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._TumourGroup.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TumourGroup.Entity = null;
+						previousValue.QuestionResponses.Remove(this);
+					}
+					this._TumourGroup.Entity = value;
+					if ((value != null))
+					{
+						value.QuestionResponses.Add(this);
+						this._TumourGroupID = value.TumourGroupID;
+					}
+					else
+					{
+						this._TumourGroupID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("TumourGroup");
 				}
 			}
 		}
@@ -2848,40 +2524,364 @@ namespace CAIRSMigrationTool
 			}
 		}
 		
-		private void attach_QuestionResponses(QuestionResponse entity)
+		private void attach_References(Reference entity)
 		{
 			this.SendPropertyChanging();
-			entity.Request = this;
+			entity.QuestionResponse = this;
 		}
 		
-		private void detach_QuestionResponses(QuestionResponse entity)
+		private void detach_References(Reference entity)
 		{
 			this.SendPropertyChanging();
-			entity.Request = null;
+			entity.QuestionResponse = null;
 		}
 		
-		private void attach_AuditLogs(AuditLog entity)
+		private void attach_KeywordQuestions(KeywordQuestion entity)
 		{
 			this.SendPropertyChanging();
-			entity.Request = this;
+			entity.QuestionResponse = this;
 		}
 		
-		private void detach_AuditLogs(AuditLog entity)
+		private void detach_KeywordQuestions(KeywordQuestion entity)
 		{
 			this.SendPropertyChanging();
-			entity.Request = null;
+			entity.QuestionResponse = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.KeywordQuestion")]
+	public partial class KeywordQuestion : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _KeywordID;
+		
+		private long _RequestID;
+		
+		private long _QuestionResponseID;
+		
+		private EntityRef<QuestionResponse> _QuestionResponse;
+		
+		private EntityRef<Keyword> _Keyword;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnKeywordIDChanging(int value);
+    partial void OnKeywordIDChanged();
+    partial void OnRequestIDChanging(long value);
+    partial void OnRequestIDChanged();
+    partial void OnQuestionResponseIDChanging(long value);
+    partial void OnQuestionResponseIDChanged();
+    #endregion
+		
+		public KeywordQuestion()
+		{
+			this._QuestionResponse = default(EntityRef<QuestionResponse>);
+			this._Keyword = default(EntityRef<Keyword>);
+			OnCreated();
 		}
 		
-		private void attach_Requests(Request entity)
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KeywordID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int KeywordID
 		{
-			this.SendPropertyChanging();
-			entity.Request1 = this;
+			get
+			{
+				return this._KeywordID;
+			}
+			set
+			{
+				if ((this._KeywordID != value))
+				{
+					if (this._Keyword.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnKeywordIDChanging(value);
+					this.SendPropertyChanging();
+					this._KeywordID = value;
+					this.SendPropertyChanged("KeywordID");
+					this.OnKeywordIDChanged();
+				}
+			}
 		}
 		
-		private void detach_Requests(Request entity)
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long RequestID
+		{
+			get
+			{
+				return this._RequestID;
+			}
+			set
+			{
+				if ((this._RequestID != value))
+				{
+					if (this._QuestionResponse.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRequestIDChanging(value);
+					this.SendPropertyChanging();
+					this._RequestID = value;
+					this.SendPropertyChanged("RequestID");
+					this.OnRequestIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QuestionResponseID", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long QuestionResponseID
+		{
+			get
+			{
+				return this._QuestionResponseID;
+			}
+			set
+			{
+				if ((this._QuestionResponseID != value))
+				{
+					if (this._QuestionResponse.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnQuestionResponseIDChanging(value);
+					this.SendPropertyChanging();
+					this._QuestionResponseID = value;
+					this.SendPropertyChanged("QuestionResponseID");
+					this.OnQuestionResponseIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="QuestionResponse_KeywordQuestion", Storage="_QuestionResponse", ThisKey="QuestionResponseID,RequestID", OtherKey="QuestionResponseID,RequestID", IsForeignKey=true)]
+		public QuestionResponse QuestionResponse
+		{
+			get
+			{
+				return this._QuestionResponse.Entity;
+			}
+			set
+			{
+				QuestionResponse previousValue = this._QuestionResponse.Entity;
+				if (((previousValue != value) 
+							|| (this._QuestionResponse.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._QuestionResponse.Entity = null;
+						previousValue.KeywordQuestions.Remove(this);
+					}
+					this._QuestionResponse.Entity = value;
+					if ((value != null))
+					{
+						value.KeywordQuestions.Add(this);
+						this._QuestionResponseID = value.QuestionResponseID;
+						this._RequestID = value.RequestID;
+					}
+					else
+					{
+						this._QuestionResponseID = default(long);
+						this._RequestID = default(long);
+					}
+					this.SendPropertyChanged("QuestionResponse");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Keyword_KeywordQuestion", Storage="_Keyword", ThisKey="KeywordID", OtherKey="KeywordID", IsForeignKey=true)]
+		public Keyword Keyword
+		{
+			get
+			{
+				return this._Keyword.Entity;
+			}
+			set
+			{
+				Keyword previousValue = this._Keyword.Entity;
+				if (((previousValue != value) 
+							|| (this._Keyword.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Keyword.Entity = null;
+						previousValue.KeywordQuestions.Remove(this);
+					}
+					this._Keyword.Entity = value;
+					if ((value != null))
+					{
+						value.KeywordQuestions.Add(this);
+						this._KeywordID = value.KeywordID;
+					}
+					else
+					{
+						this._KeywordID = default(int);
+					}
+					this.SendPropertyChanged("Keyword");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Keyword")]
+	public partial class Keyword : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _KeywordID;
+		
+		private string _KeywordValue;
+		
+		private bool _Active;
+		
+		private EntitySet<KeywordQuestion> _KeywordQuestions;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnKeywordIDChanging(int value);
+    partial void OnKeywordIDChanged();
+    partial void OnKeywordValueChanging(string value);
+    partial void OnKeywordValueChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    #endregion
+		
+		public Keyword()
+		{
+			this._KeywordQuestions = new EntitySet<KeywordQuestion>(new Action<KeywordQuestion>(this.attach_KeywordQuestions), new Action<KeywordQuestion>(this.detach_KeywordQuestions));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KeywordID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int KeywordID
+		{
+			get
+			{
+				return this._KeywordID;
+			}
+			set
+			{
+				if ((this._KeywordID != value))
+				{
+					this.OnKeywordIDChanging(value);
+					this.SendPropertyChanging();
+					this._KeywordID = value;
+					this.SendPropertyChanged("KeywordID");
+					this.OnKeywordIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KeywordValue", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		public string KeywordValue
+		{
+			get
+			{
+				return this._KeywordValue;
+			}
+			set
+			{
+				if ((this._KeywordValue != value))
+				{
+					this.OnKeywordValueChanging(value);
+					this.SendPropertyChanging();
+					this._KeywordValue = value;
+					this.SendPropertyChanged("KeywordValue");
+					this.OnKeywordValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Keyword_KeywordQuestion", Storage="_KeywordQuestions", ThisKey="KeywordID", OtherKey="KeywordID")]
+		public EntitySet<KeywordQuestion> KeywordQuestions
+		{
+			get
+			{
+				return this._KeywordQuestions;
+			}
+			set
+			{
+				this._KeywordQuestions.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_KeywordQuestions(KeywordQuestion entity)
 		{
 			this.SendPropertyChanging();
-			entity.Request1 = null;
+			entity.Keyword = this;
+		}
+		
+		private void detach_KeywordQuestions(KeywordQuestion entity)
+		{
+			this.SendPropertyChanging();
+			entity.Keyword = null;
 		}
 	}
 }
