@@ -12,7 +12,7 @@ using SasquatchCAIRS.Models.Service;
 
 namespace CAIRSTestProject.Integration {
     [TestFixture]
-    public class SearchTests {
+    public class TestSearch {
         private CommonTestingMethods _ctm = new CommonTestingMethods();
         private IWebDriver _driver;
         private Random _random = new Random();
