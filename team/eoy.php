@@ -50,7 +50,7 @@
 			$tk_result = mysql_query($tk_query, $db);
 			$task = mysql_fetch_assoc($tk_result);
 
-			if ($task['wkhr'] == null || $task['wkhr'] === 0) {
+			if ($task['wkhr'] == null || $task['wkhr'] == 0 || $task['wkhr'] == "0.0") {
 				echo "<td>0.0</td>";
 			} else {
 				echo "<td>{$task['wkhr']}</td>";
