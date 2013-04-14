@@ -205,7 +205,12 @@
                     <tr>
                         <td class="tbl-label">@Constants.getReferenceString(reference.referenceType)</td>
                         @if (reference.referenceType == Constants.ReferenceType.URL) {
-                            <td class="reference-string"><a href="@reference.referenceString">@reference.referenceString</a></td>
+                            var urlStr = reference.referenceString;
+                            if (!String.Equals(urlStr.Substring(0, 4), "http", StringComparison.CurrentCultureIgnoreCase)) {
+                                urlStr = "//" + urlStr;
+                            }
+                            
+                            <td class="reference-string"><a href="@urlStr">@reference.referenceString</a></td>
                         }
                         @if (reference.referenceType == Constants.ReferenceType.File) {
                             <td class="reference-string"><a href="file://@reference.referenceString">@reference.referenceString</a></td>

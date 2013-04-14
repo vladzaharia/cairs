@@ -191,7 +191,7 @@ namespace SasquatchCAIRS.Models.Common {
         public static readonly Consequence[] consequenceOptions = {
             Consequence.Certain,
             Consequence.Probable,
-            Consequence.Probable,
+            Consequence.Possible,
             Consequence.Unlikely
         };
 

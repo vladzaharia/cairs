@@ -252,7 +252,12 @@ namespace SasquatchCAIRS.Controllers.Export {
 
                         if (r.ReferenceType ==
                             (byte) Constants.ReferenceType.URL) {
-                            refStr = "<a href='" + r.ReferenceString + "'>" +
+                            var urlStr = r.ReferenceString;
+                            if (!String.Equals(urlStr.Substring(0, 4), "http", StringComparison.CurrentCultureIgnoreCase)) {
+                                urlStr = "//" + urlStr;
+                            }
+
+                            refStr = "<a href='" + urlStr + "'>" +
                                      r.ReferenceString + "</a>";
                         } else {
                             refStr = r.ReferenceString;
