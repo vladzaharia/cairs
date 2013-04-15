@@ -89,5 +89,11 @@ namespace SasquatchCAIRS.Models.Search {
         /// </summary>
         [DataType(DataType.Text)]
         public String consequence { get; set; }
+
+        /// <summary>
+        ///     Searching for Keywords in Keywords, Questions, or Responses
+        /// </summary>
+        [DataType(DataType.Text)]
+        public String keyQuestResp { get; set; }
     }
 }

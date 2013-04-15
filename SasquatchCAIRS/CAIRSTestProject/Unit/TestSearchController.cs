@@ -631,9 +631,9 @@ namespace CAIRSTestProject.Unit
             SearchCriteria s = new SearchCriteria
 
             {
-                anyKeywordString = null,
+                anyKeywordString = "the",
                 allKeywordString = null,
-                noneKeywordString = "the",
+                noneKeywordString = null,
                 keyQuestResp = "Question",
                 patientFirstName = null,
                 patientLastName = null,
@@ -643,13 +643,17 @@ namespace CAIRSTestProject.Unit
                 requestStatus = null,
                 tumorGroup = null,
                 severity = null,
-                consequence = "Certain",
+                consequence = null,
             };
             List<Request> results = searchCon.searchCriteriaQuery(s);
-            List<long> l = searchCon.getQuestions("for");
-            foreach (var l1 in l) {
-                Console.WriteLine(l1);
-            }
+            //List<long> l = searchCon.getQuestions("the");
+           // foreach (var l1 in l) {
+           //     Console.WriteLine(l1);
+                
+            //}
+
+            Console.WriteLine("blah");
+            Console.WriteLine(results.Count);
             foreach (Request request in results) {
                 Console.WriteLine(request.RequestID);
             }
