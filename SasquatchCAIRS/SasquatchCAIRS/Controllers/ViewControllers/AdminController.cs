@@ -450,6 +450,15 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
                 ModelState.AddModelError("value", "Value cannot be empty!");
             }
 
+            // Length Sanity Checks
+            if (code.Length > 10) {
+                ModelState.AddModelError("code", "Code cannot be over 10 characters!");
+            }
+
+            if (value.Length > 64) {
+                ModelState.AddModelError("value", "Value cannot be over 64 characters!");
+            }
+
             // Real Sanity Checks
             if (table != Constants.DropdownTable.Keyword &&
                 _dc.getEntries(table).Any(dt => dt.code == code &&
@@ -542,6 +551,15 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
             }
             if (value == "") {
                 ModelState.AddModelError("value", "Value cannot be empty!");
+            }
+
+            // Length Sanity Checks
+            if (code.Length > 10) {
+                ModelState.AddModelError("code", "Code cannot be over 10 characters!");
+            }
+
+            if (value.Length > 64) {
+                ModelState.AddModelError("value", "Value cannot be over 64 characters!");
             }
 
             // Real Sanity Checks
