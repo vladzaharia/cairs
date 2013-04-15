@@ -32,7 +32,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
             new SearchManagementController();
 
         /// <summary>
-        ///     Given a comma delimited string of keywords returns all requests tbat contain one or more of these keywords
+        ///  Given a comma delimited string of keywords returns all requests that contain one or more of these keywords
         /// </summary>
         /// <param name="keywords">String of comma delimited keywords</param>
         /// <returns>The Search Results</returns>
@@ -51,7 +51,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
                     id = requestId
                 });
             }
-
+            
             ViewBag.criteria = _smc.constructCriteriaString(sc);
             _startIndex = 0;
             ViewBag.startIndex = _startIndex;
@@ -96,6 +96,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
         [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Results(SearchCriteria criteria, FormCollection form) {
             DateTime temp;
+            
             if (DateTime.TryParse(form["startTime"], out temp)) {
                 criteria.startTime = temp;
             }
@@ -114,8 +115,14 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
             criteria.requestorLastName = form["requestorLast"];
             criteria.patientFirstName = form["patientFirst"];
             criteria.patientLastName = form["patientLast"];
-            criteria.keyQuestResp = form["keyQuestResp"];
 
+
+            if (criteria.startTime > criteria.completionTime) {
+                ViewBag.invalidDate = true;
+                setDropdownViewbags();
+                return View("Advanced", criteria);
+
+            }
             if (_smc.isEmptySearchCriteria(criteria)) {
                 ViewBag.emptyForm = true;
                 setDropdownViewbags();
@@ -147,8 +154,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
         public ActionResult Page(string id) {
             _startIndex = int.Parse(id) > 0 ? int.Parse(id) : 0;
 
-            ViewBag.keywords =
-                ((SearchCriteria) Session["criteria"]).anyKeywordString;
+            ViewBag.criteria = _smc.constructCriteriaString((SearchCriteria) Session["criteria"]);
             ViewBag.startIndex = _startIndex;
             ViewBag.ResultSetSize = _results.Count;
 

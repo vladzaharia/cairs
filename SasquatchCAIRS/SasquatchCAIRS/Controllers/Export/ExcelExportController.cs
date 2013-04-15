@@ -196,7 +196,7 @@ namespace SasquatchCAIRS.Controllers.Export {
             _tableId = numTableDefParts;
             //Clean up table definition parts (tables need unique ids)
             if (numTableDefParts != 0) {
-                fixupTableParts(clonedSheet, numTableDefParts);
+                fixupTableParts(clonedSheet);
             }
             //There should only be one sheet that has focus
             cleanView(clonedSheet);
@@ -229,9 +229,7 @@ namespace SasquatchCAIRS.Controllers.Export {
         ///     Make sure each table has a unique id and name
         /// </summary>
         /// <param name="worksheetPart">Worksheet for table part fix</param>
-        /// <param name="numTableDefParts">Number of the tableDefPart in the original worksheet</param>
-        private void fixupTableParts(WorksheetPart worksheetPart,
-                                     int numTableDefParts) {
+        private void fixupTableParts(WorksheetPart worksheetPart) {
             //Every table needs a unique id and name
             foreach (
                 TableDefinitionPart tableDefPart in

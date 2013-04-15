@@ -33,7 +33,8 @@ Showing page @page of @total
 </div>
 @if (@ViewBag.ResultSetSize < 1) {
     <div class="message palette-danger-dark">@Constants.UIString.Response.NO_RESULTS</div>
-} else {
+}
+    else {
     <fieldset class="results">
         <legend>@Constants.UIString.TitleText.RESULTS</legend>
         <div>

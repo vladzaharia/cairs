@@ -84,32 +84,32 @@ namespace SasquatchCAIRS.Models.Service {
         /// <summary>
         ///     First name of Requestor
         /// </summary>
-        [Display(Name = "First Name"), StringLength(64)]
+        [Display(Name = "First Name"), StringLength(128)]
         public string requestorFirstName { get; set; }
 
         /// <summary>
         ///     Last Name of Requestor
         /// </summary>
-        [Display(Name = "Last Name"), StringLength(64)]
+        [Display(Name = "Last Name"), StringLength(128)]
         public string requestorLastName { get; set; }
 
         /// <summary>
         ///     Requestor's Phone Number
         /// </summary>
-        [Display(Name = "Phone Number")]
+        [Display(Name = "Phone Number"), StringLength(128)]
         [DataType(DataType.PhoneNumber)]
         public string requestorPhoneNum { get; set; }
 
         /// <summary>
         ///     Requestor's Phone Extension
         /// </summary>
-        [Display(Name = "Phone Ext"), StringLength(15)]
+        [Display(Name = "Phone Ext"), StringLength(128)]
         public string requestorPhoneExt { get; set; }
 
         /// <summary>
         ///     Requestor's Email Address
         /// </summary>
-        [Display(Name = "Email")]
+        [Display(Name = "Email"), StringLength(128)]
         [DataType(DataType.EmailAddress)]
         [EmailAddress]
         public string requestorEmail { get; set; }
@@ -117,13 +117,13 @@ namespace SasquatchCAIRS.Models.Service {
         /// <summary>
         ///     Patient's First Name
         /// </summary>
-        [Display(Name = "First Name"), StringLength(64)]
+        [Display(Name = "First Name"), StringLength(128)]
         public string patientFName { get; set; }
 
         /// <summary>
         ///     Patient's Last Name
         /// </summary>
-        [Display(Name = "Last Name"), StringLength(64)]
+        [Display(Name = "Last Name"), StringLength(128)]
         public string patientLName { get; set; }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace SasquatchCAIRS.Models.Service {
         ///     Patient's Agency ID
         /// </summary>
         [Display(Name = "Agency ID")]
-        [StringLength(15)]
+        [StringLength(128)]
         public string patientAgencyID { get; set; }
 
         /// <summary>
@@ -382,6 +382,7 @@ namespace SasquatchCAIRS.Models.Service {
         /// <summary>
         ///     The Content of the Reference
         /// </summary>
+        [StringLength(128)]
         public string referenceString { get; set; }
     }
 }

@@ -19,19 +19,19 @@
         <tr>
             <td class="tbl-label">Report Type</td>
             <td>
-                <label class="radio radio-custom">
+                <label class="radio radio-custom" id="monthly-radio">
                     <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="Monthly"> 
                     Month Range
                 </label>
             </td>
             <td>
-                <label class="radio radio-custom">
+                <label class="radio radio-custom" id="monthPerYear-radio">
                     <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="MonthPerYear"> 
                     Month by Year
                 </label>
             </td>
             <td>
-                <label class="radio radio-custom">
+                <label class="radio radio-custom" id="year-radio">
                     <input type="radio" name="@Constants.ReportFormStrings.REPORT_OPTION" value="FiscalYear"> 
                     Reporting Year Range
                 </label>
@@ -248,9 +248,11 @@
 
     var initCheck = false;
     var startDate = new Date();
-    startDate.setFullYear(startDate.getYear, startDate.getMonth, 1);
+    startDate.setDate(1);
+    startDate.setHours(0, 0, 0, 0);
     var endDate = new Date();
-    endDate.setFullYear(endDate.getYear, endDate.getMonth, 1);
+    endDate.setDate(1);
+    endDate.setHours(0, 0, 0, 0);
 
     var frompicker = $("#fromdatepicker").datepicker({ format: "mm/yyyy", viewMode: "months", minViewMode: "months" }).on("changeDate", function(ev) {
         if (ev.date.valueOf() > endDate.valueOf()) {

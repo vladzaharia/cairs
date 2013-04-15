@@ -12,7 +12,9 @@
 @if (@ViewBag.emptyForm != null) {
     <div class="message palette-danger-dark">@Constants.UIString.Response.EMPTY_QUERY</div>
 }
-
+@if (@ViewBag.invalidDate != null) {
+    <div class="message palette-danger-dark">@Constants.UIString.Response.INVALID_DATES</div>
+}
 @using (Html.BeginForm("Results", "Search", FormMethod.Post,
                        new {
                            @class = "form advanced-search-form"
@@ -43,24 +45,7 @@
                                    autocomplete="off"
                                    value="@Model.noneKeywordString"/></td>
         </tr>
-        <table class="table unbordered-table valign-middle">
-        <tr>
-            <td class="tbl-label">@Constants.UIString.FieldLabel.KEY_QS_RES</td>
-            @foreach (var keyQuestResp in Enum.GetValues(typeof (Constants.KeyQsRes))) {
-                <td class="tbl-content-283">
-                    <label class="radio radio-custom">
-                        @if (!String.IsNullOrEmpty(Model.keyQuestResp) &&
-                             Model.keyQuestResp.Contains(@keyQuestResp.ToString())) {
-                            <input type="radio" name="keyQuestResp" value="@keyQuestResp" checked/>
-                        } else {
-                            <input type="radio" name="keyQuestResp" value="@keyQuestResp" />
-                        }
-                        @keyQuestResp
-                    </label>
-                </td>
-            }
-        </tr>
-    </table>
+
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.START_TIME</td>
             <td>
@@ -130,7 +115,7 @@
             </td>
             <td>
                 <input type="text" class="span3" name="patientLast" 
-                       placeholder="@Constants.UIString.FieldLabel.PATIENT_FNAME" value="@Model.patientLastName">
+                       placeholder="@Constants.UIString.FieldLabel.PATIENT_LNAME" value="@Model.patientLastName">
             </td>
         </tr>
     </table>
@@ -231,6 +216,8 @@
     </table>
 }
 
+
+
 <script type="text/javascript">
     $(function() {
         $('#startTime').datepicker();
@@ -261,6 +248,10 @@
                 });
             }
         });
-    });
 
+    });
+  
+        
 </script>
+    
+

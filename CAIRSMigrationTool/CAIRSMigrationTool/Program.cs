@@ -104,10 +104,16 @@ namespace CAIRSMigrationTool {
                         columns.Add("RequestID");
                         values.Add(Convert.ToString(reqId));
                         columns.Add("RequestStatus");
-                        values.Add(Convert.ToString(0));
+                        values.Add(Convert.ToString(1));
                         columns.Add("TimeOpened");
                         values.Add("'" +
                                    Convert.ToString(reqReader.GetValue(1)) +
+                                   "'");
+
+                        DateTime now = DateTime.Now;
+                        columns.Add("TimeClosed");
+                        values.Add("'" +
+                                   Convert.ToString(now) +
                                    "'");
 
                         // Set requestor type, if possible
@@ -230,6 +236,8 @@ namespace CAIRSMigrationTool {
                             RequestID = reqId
                         };
 
+                        var emptyStr = "(empty)";
+
                         // Set tumour group, if possible
                         if (!reqReader.IsDBNull(5)) {
                             // Check if code exists
@@ -264,28 +272,26 @@ namespace CAIRSMigrationTool {
                             }
 
                             qr.TumourGroupID = tg.TumourGroupID;
+                        } else {
+                            var tgId =
+                                (from tGroup in db.TumourGroups
+                                 where tGroup.Active
+                                 select tGroup.TumourGroupID).SingleOrDefault();
+
+                            qr.TumourGroupID = tgId;
                         }
 
                         // Set question, if possible
-                        if (!reqReader.IsDBNull(7)) {
-                            qr.Question = reqReader.GetString(7);
-                        }
+                        qr.Question = !reqReader.IsDBNull(7) ? reqReader.GetString(7) : emptyStr;
 
                         // Set response, if possible
-                        if (!reqReader.IsDBNull(8)) {
-                            qr.Response = reqReader.GetString(8);
-                        }
+                        qr.Response = !reqReader.IsDBNull(8) ? reqReader.GetString(8) : emptyStr;
 
                         // Set time spent, if possible
-                        if (!reqReader.IsDBNull(9)) {
-                            qr.TimeSpent =
-                                Convert.ToInt16(reqReader.GetValue(9));
-                        }
+                        qr.TimeSpent = (short) (!reqReader.IsDBNull(9) ? Convert.ToInt16(reqReader.GetValue(9)) : 0);
 
                         // Add special notes
-                        if (!reqReader.IsDBNull(14)) {
-                            qr.SpecialNotes = reqReader.GetString(14);
-                        }
+                        qr.SpecialNotes = !reqReader.IsDBNull(14) ? reqReader.GetString(14) : emptyStr;
 
                         // Set question type ID
                         if (!reqReader.IsDBNull(16)) {
@@ -320,6 +326,13 @@ namespace CAIRSMigrationTool {
                                 db.QuestionTypes.InsertOnSubmit(qt);
                                 db.SubmitChanges();
                             }
+                        } else {
+                            var qtId =
+                                (from qType in db.QuestionTypes
+                                 where qType.Active
+                                 select qType.QuestionTypeID).SingleOrDefault();
+
+                            qr.QuestionTypeID = qtId;
                         }
 
                         // Set impact score
@@ -349,10 +362,39 @@ namespace CAIRSMigrationTool {
                                     qr.Consequence = 3;
                                     break;
                             }
+                        } else {
+                            qr.Severity = 2;
+                            qr.Consequence = 3;
                         }
 
                         // Insert new QuestionResponse entity
                         db.QuestionResponses.InsertOnSubmit(qr);
+                        db.SubmitChanges();
+
+                        var importedKw =
+                            (from keyword in db.Keywords
+                             where keyword.KeywordValue == "imported"
+                             select keyword)
+                                .SingleOrDefault();
+
+                        if (importedKw == null) {
+                            importedKw = new Keyword {
+                                KeywordValue = "imported",
+                                Active = true
+                            };
+
+                            db.Keywords.InsertOnSubmit(importedKw);
+                            db.SubmitChanges();
+                        }
+
+                        var importedKq = new KeywordQuestion {
+                            KeywordID = importedKw.KeywordID,
+                            RequestID = reqId,
+                            QuestionResponseID =
+                                qr.QuestionResponseID
+                        };
+
+                        db.KeywordQuestions.InsertOnSubmit(importedKq);
                         db.SubmitChanges();
 
                         // Set keyword(s), if possibe
@@ -367,12 +409,11 @@ namespace CAIRSMigrationTool {
                                 // TODO: how to handle keywords
                                 if (!String.IsNullOrEmpty(kwStr)) {
                                     var kw = (from keyword in db.Keywords
-                                              where keyword.Keyword1 == kwStr
+                                              where keyword.KeywordValue == kwStr
                                               select keyword)
                                              .SingleOrDefault();
 
                                     if (kw == null) {
-                                        // Skip to preserve keyword integrity?
                                         continue;
                                     }
 
@@ -389,18 +430,15 @@ namespace CAIRSMigrationTool {
                             }
                         }
 
-                        // Set reference, if possible
-                        if (!reqReader.IsDBNull(10)) {
-                            var r = new Reference {
-                                ReferenceString = reqReader.GetString(10),
-                                ReferenceType = 2, // Text
-                                RequestID = reqId,
-                                QuestionResponseID = qr.QuestionResponseID
-                            };
+                        var reference = new Reference {
+                            ReferenceString = !reqReader.IsDBNull(10) ? reqReader.GetString(10) : emptyStr,
+                            ReferenceType = 2, // Text
+                            RequestID = reqId,
+                            QuestionResponseID = qr.QuestionResponseID
+                        };
 
-                            db.References.InsertOnSubmit(r);
-                            db.SubmitChanges();
-                        }
+                        db.References.InsertOnSubmit(reference);
+                        db.SubmitChanges();
 
                         var al = new AuditLog {
                             UserID = up.UserId,
@@ -408,6 +446,16 @@ namespace CAIRSMigrationTool {
                             AuditDate =
                                 Convert.ToDateTime(reqReader.GetValue(1)),
                             AuditType = 0
+                        };
+
+                        db.AuditLogs.InsertOnSubmit(al);
+                        db.SubmitChanges();
+
+                        al = new AuditLog {
+                            UserID = up.UserId,
+                            RequestID = reqId,
+                            AuditDate = (DateTime) now,
+                            AuditType = 1
                         };
 
                         db.AuditLogs.InsertOnSubmit(al);

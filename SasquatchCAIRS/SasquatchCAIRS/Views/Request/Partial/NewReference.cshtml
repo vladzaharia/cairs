@@ -30,8 +30,9 @@
         
         </td>
         <td class="tbl-content-560">
-            @Html.TextBoxFor(model => model.referenceString, new {@class = "input-546"})
+            @Html.TextBoxFor(model => model.referenceString, new {@class = "input-546 reference"})
             <input type="file" id="@(ViewBag.HtmlIdPrefix)referenceFilepath" class="input-546" />
+           <!-- <a href="#" class="btn btn-small" id="@(ViewBag.HtmlIdPrefix)choose">Choose File</a>-->
         </td>
         <td>
             <a href="#warning_modal" data-toggle="modal" 
@@ -47,22 +48,28 @@
         $("#@(ViewBag.HtmlIdPrefix)referenceType").dropkick({
             change: function(value) {
                 if (value == "@Constants.ReferenceType.File.ToString()") {
-                    $("#@(ViewBag.HtmlIdPrefix)referenceString").hide();
+                    $("#@(ViewBag.HtmlIdPrefix)referenceString").prop('readonly', true);
                     $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").show();
                 } else {
                     $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").hide();
-                    $("#@(ViewBag.HtmlIdPrefix)referenceString").show();
+                    $("#@(ViewBag.HtmlIdPrefix)referenceString").prop('readonly', false);
                 }
+
+                $("#@(ViewBag.HtmlIdPrefix)referenceString").val("");
             }
         });
-
-        $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").hide();
 
         $("#@(ViewBag.HtmlIdPrefix)referenceFilepath").change(function() {
             $("#@(ViewBag.HtmlIdPrefix)referenceString").val($(this).val());
         });
 
-        $("#@(ViewBag.HtmlIdPrefix)referenceType").change();
+        @if (Model.referenceType == Constants.ReferenceType.File) {
+            @:$("#@(ViewBag.HtmlIdPrefix)referenceString").prop('readonly', true);
+            @:$("#@(ViewBag.HtmlIdPrefix)referenceFilepath").show();
+        } else {
+            @:$("#@(ViewBag.HtmlIdPrefix)referenceFilepath").hide();
+            @:$("#@(ViewBag.HtmlIdPrefix)referenceString").prop('readonly', false);
+        }
 
         $("#@(ViewBag.HtmlIdPrefix)remove").click(function(e) {
             e.preventDefault();

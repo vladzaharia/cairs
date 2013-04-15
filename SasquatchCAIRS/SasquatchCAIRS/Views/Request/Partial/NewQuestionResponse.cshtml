@@ -17,13 +17,13 @@
             @:@Html.HiddenFor(model => model.questionResponseID)
         }
 
-        <table class="table unbordered-table">
+        <table class="table unbordered-table valign-middle">
             <tr>
                 <td class="tbl-label">
                     @Html.LabelFor(model => model.question)
                 </td>
                 <td class="tbl-nopad">
-                    @Html.TextAreaFor(model => model.question)
+                    @Html.TextAreaFor(model => model.question, new {@class = "question"})
                 </td>
             </tr>
             <tr>
@@ -31,7 +31,7 @@
                     @Html.LabelFor(model => model.response)
                 </td>
                 <td class="tbl-nopad">
-                    @Html.TextAreaFor(model => model.response)
+                    @Html.TextAreaFor(model => model.response, new {@class = "response"})
                 </td>
             </tr>
             <tr>
@@ -39,11 +39,11 @@
                     @Html.LabelFor(model => model.specialNotes)
                 </td>
                 <td class="tbl-nopad">
-                    @Html.TextAreaFor(model => model.specialNotes)
+                    @Html.TextAreaFor(model => model.specialNotes, new {@class = "special-notes"})
                 </td>
             </tr>
         </table>
-        <table class="table unbordered-table">
+        <table class="table unbordered-table valign-middle">
             <tr>
                 <td class="tbl-label">
                     @Html.LabelFor(model => model.questionTypeID)
@@ -68,7 +68,7 @@
                 </td>
                 <td class="tbl-content-4">
                     <div class="input-append">
-                        @Html.TextBoxFor(model => model.timeSpent)
+                        @Html.TextBoxFor(model => model.timeSpent, new {@class="time-spent"})
                         <span class="add-on textbox-add-on">min</span>
                     </div>
                 </td>
@@ -105,16 +105,15 @@
             <i class="icon-plus button-icon"></i> @Constants.UIString.ButtonText.ADD_REFERENCE
         </a>
 
-        <table class="table unbordered-table">
+        <table class="table unbordered-table valign-middle">
             <tr>
                 <td class="tbl-label">@Html.LabelFor(model => model.keywords)</td>
                 <td>
                     <input id="qr-keywords-@(ViewBag.Guid)" type="text"
-                           data-provide="typeahead" autocomplSete="off" class="span10" />
+                           data-provide="typeahead" autocomplSete="off" class="span10 keyword-input" />
                     <div id="qr-keyword-list-@(ViewBag.Guid)">
                         @for (int i = 0; i < Model.keywords.Count(); i++) {
-                            @Html.HiddenFor(model => model.keywords[i])
-                            ;
+                            @Html.HiddenFor(model => model.keywords[i]);
                         }
                     </div>
                 </td>

@@ -119,9 +119,13 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
 
                 foreach (
                     ReferenceContent refContent in
-                        qrContent.referenceList.Where(
-                            refContent => refContent.referenceString == null)) {
-                    refContent.referenceString = "";
+                        qrContent.referenceList) {
+
+                    if (refContent.referenceString == null) {
+                        refContent.referenceString = "";
+                    } else {
+                        refContent.referenceString = refContent.referenceString.Replace("\\", "\\\\");
+                    }
                 }
             }
 
@@ -281,8 +285,8 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
                         break;
                     }
 
-                    foreach (
-                        ReferenceContent refContent in qrContent.referenceList) {
+                    foreach (ReferenceContent refContent
+                             in qrContent.referenceList) {
                         if (String.IsNullOrEmpty(refContent.referenceString)) {
                             ModelState.AddModelError("IncompleteReference",
                                                      "References must be completed before marking request as complete.");
@@ -319,9 +323,13 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
 
                 foreach (
                     ReferenceContent refContent in
-                        qrContent.referenceList.Where(
-                            refContent => refContent.referenceString == null)) {
-                    refContent.referenceString = "";
+                        qrContent.referenceList) {
+
+                    if (refContent.referenceString == null) {
+                        refContent.referenceString = "";
+                    } else {
+                        refContent.referenceString = refContent.referenceString.Replace("\\", "\\\\");
+                    }
                 }
             }
 
