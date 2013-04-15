@@ -451,7 +451,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
             }
 
             // Length Sanity Checks
-            if (code.Length > 10) {
+            if (table != Constants.DropdownTable.Keyword && code.Length > 10) {
                 ModelState.AddModelError("code", "Code cannot be over 10 characters!");
             }
 
@@ -554,7 +554,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
             }
 
             // Length Sanity Checks
-            if (code.Length > 10) {
+            if (table != Constants.DropdownTable.Keyword && code.Length > 10) {
                 ModelState.AddModelError("code", "Code cannot be over 10 characters!");
             }
 
