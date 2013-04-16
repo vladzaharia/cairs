@@ -565,6 +565,7 @@ namespace SasquatchCAIRS.Models.Common
             {
                 // Request Information
                 public const string REQUEST_ID = "Request ID";
+                public const string REQUEST_ID_SPECIAL = "Request ID(s) or Range";
                 public const string CREATED_BY = "Created By";
                 public const string COMPLETED_BY = "Closed By";
                 public const string START_TIME = "Start Time";
