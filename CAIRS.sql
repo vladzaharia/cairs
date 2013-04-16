@@ -539,5 +539,5 @@ go
 
 ALTER TABLE webpages_Roles ADD CONSTRAINT fk_UserId
     FOREIGN KEY (UserId)
-    REFERENCE UserProfile(UserId)
+    REFERENCES UserProfile(UserId)
 go
