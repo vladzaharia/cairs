@@ -69,7 +69,11 @@ h4, h5, h6 {
     padding-bottom: 0;
 }
 
-h4 { padding-top: 10px; }
+h4 {
+    padding-top: 10px;
+    font-weight: 600;
+    font-size: 20px;
+}
 
 /* main layout
 ----------------------------------------------------------*/
@@ -297,6 +301,10 @@ ul#menu li a:hover {
 .btn.btn-custom:hover, .btn.btn-custom:focus { background-color: #2B85CC; }
 
 .btn.btn-custom:active, .btn.btn-custom.active { background-color: #1960AD; }
+
+.req-btn { width: 160px; }
+
+hr { border-top: 1px solid #cccccc; }
 
 .dk_toggle { 
     background-color: #2273BC;
@@ -693,6 +701,7 @@ table .tbl-impact-label { font-weight: bold; }
 
 table .impact-calc {
     background-color: #95A5A6;
+    border: 2px solid #95a5a6;
     color: white;
     padding-left: 16px;
     width: 50%;

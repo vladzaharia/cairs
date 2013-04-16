@@ -207,7 +207,7 @@ namespace SasquatchCAIRS.Models.Common
         public static readonly Consequence[] consequenceOptions = {
             Consequence.Certain,
             Consequence.Probable,
-            Consequence.Probable,
+            Consequence.Possible,
             Consequence.Unlikely
         };
 
@@ -555,6 +555,7 @@ namespace SasquatchCAIRS.Models.Common
                 public const string GEN_AUDIT = "Generate Audit Report";
                 public const string CREATE = "Create";
                 public const string UPDATE_REQUEST = "Update";
+                public const string CANCEL = "Cancel";
             }
 
             /// <summary>

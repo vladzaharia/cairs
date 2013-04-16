@@ -192,7 +192,7 @@ namespace SasquatchCAIRS.Controllers.Search {
             return (from k in _db.Keywords
                     where
                         keywordsToList(keywordString, ", ")
-                        .Contains(k.KeywordValue)
+                        .Contains(k.KeywordValue) && k.Active
                     select k.KeywordID).ToList();
         }
         /// <summary>
@@ -290,7 +290,7 @@ namespace SasquatchCAIRS.Controllers.Search {
                 requests =
                     requests.Where(
                         r => r.TimeOpened.CompareTo(criteria.startTime) >= 0);
-            }
+            }   
 
             // Filter on end time
             if (criteria.completionTime != DateTime.Parse(Constants.EMPTY_DATE)) {
@@ -302,8 +302,8 @@ namespace SasquatchCAIRS.Controllers.Search {
             }
 
             
-                   
-                                             
+            if (Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) {} 
+            else if (String.IsNullOrEmpty(criteria.requestStatus) &&
             
             
             // Filter on request status

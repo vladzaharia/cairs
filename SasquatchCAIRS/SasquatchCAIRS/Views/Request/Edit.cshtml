@@ -83,21 +83,25 @@
     </table>
 
     <div class="buttons">
-        <button type="submit" name="delete" class="btn btn-custom">
-            <i class="icon-remove button-icon"></i> @Constants.UIString.ButtonText.DELETE_REQUEST
+        <button type="submit" name="cancel" class="btn btn-custom req-btn">
+            <i class="icon-undo button-icon"></i> @Constants.UIString.ButtonText.CANCEL
         </button>
+        @if (Model.requestStatus != Constants.RequestStatus.Invalid) {
+            <button type="submit" name="delete" class="btn btn-custom req-btn">
+                <i class="icon-remove button-icon"></i> @Constants.UIString.ButtonText.DELETE_REQUEST
+            </button>
+        }
         @if (Model.requestStatus == Constants.RequestStatus.Open) {
-            <button type="submit" name="save_draft" class="btn btn-custom">
+            <button type="submit" name="save_draft" class="btn btn-custom req-btn">
                 <i class="icon-save button-icon"></i> @Constants.UIString.ButtonText.SAVE_DRAFT
             </button>
             <button type="submit" name="mark_as_complete"
-                    class="btn btn-custom"
+                    class="btn btn-custom req-btn"
                     id="mark_as_complete">
                 <i class="icon-check button-icon"></i> @Constants.UIString.ButtonText.MARK_COMPLETE
             </button>
-        }
-        @if (Model.requestStatus == Constants.RequestStatus.Completed) {
-            <button type="submit" name="update" class="btn btn-custom">
+        } else {
+            <button type="submit" name="update" class="btn btn-custom req-btn">
                 <i class="icon-save button-icon"></i> @Constants.UIString.ButtonText.UPDATE_REQUEST
             </button>
         }
@@ -175,18 +179,28 @@
             if (!json || 0 === json.length) {
                 $.post("@Url.Action("NewReference", "Request")/", { 'id': qrGuid }, function(r) {
                     $("#qr-references-" + qrGuid).append(r);
-                    $(".del-ref").attr("disabled", true);
-                    $(".del-ref").attr("href", "#");
+                    $(".del-ref")
+                        .attr("disabled", true)
+                        .attr("href", "#")
+                        .removeClass("btn-danger")
+                        .addClass("btn-disabled");
                 });
             } else {
                 var jsonObject = (new Function("return " + json))();
                 var refListJson = jsonObject.referenceList;
+
                 for (var i = 0; i < refListJson.length; i++) {
-                    $.post("@Url.Action("NewReference", "Request")/", { 'id': qrGuid, 'json': JSON.stringify(refListJson[i]) }, function(r) {
+                    $.post("@Url.Action("NewReference", "Request")/", { 'id': qrGuid, 'json': JSON.stringify(refListJson[i]) }, function (r) {
                         $("#qr-references-" + qrGuid).append(r);
-                        $(".del-ref").attr("disabled", true);
-                        $(".del-ref").attr("href", "#");
                     });
+                }
+
+                if (refListJson.length <= 1) {
+                    $("#qr-references-" + qrGuid + " .del-ref")
+                        .attr("disabled", true)
+                        .attr("href", "#")
+                        .removeClass("btn-danger")
+                        .addClass("btn-disabled");
                 }
             }
         });
@@ -197,7 +211,11 @@
 
         var qrs = $("#qrContainer > div");
         if (qrs.length <= 1) {
-            $(qrs[0]).find(".del-question").attr("disabled", true).attr("href", "#");
+            $(qrs[0]).find(".del-question")
+                .attr("disabled", true)
+                .attr("href", "#")
+                .removeClass("btn-danger")
+                .addClass("btn-disabled");
         }
 
         return hideModal();
@@ -208,7 +226,11 @@
 
         var refRows = $("#qr-references-" + id + " tr");
         if (refRows.length <= 1) {
-            $(refRows[0]).find(".del-ref").attr("disabled", true).attr("href", "#");
+            $(refRows[0]).find(".del-ref")
+                .attr("disabled", true)
+                .attr("href", "#")
+                .removeClass("btn-danger")
+                .addClass("btn-disabled");
         }
 
         return hideModal();
