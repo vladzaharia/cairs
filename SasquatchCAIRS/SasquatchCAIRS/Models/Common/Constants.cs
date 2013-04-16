@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 
-namespace SasquatchCAIRS.Models.Common {
+namespace SasquatchCAIRS.Models.Common
+{
     /// <summary>
     ///     All of the Constants used throughout the system.
     /// </summary>
-    public static class Constants {
+    public static class Constants
+    {
         /// <summary>
         ///     All the AuditTypes possible.
         /// </summary>
-        public enum AuditType {
+        public enum AuditType
+        {
             RequestCreation = 0,
             RequestCompletion = 1,
             RequestDeletion = 2,
@@ -21,7 +24,8 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     All options for Cell Data Type
         /// </summary>
-        public enum CellDataType {
+        public enum CellDataType
+        {
             Number = 0,
             Text = 1
         }
@@ -29,7 +33,8 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     All Consequence options in the system.
         /// </summary>
-        public enum Consequence {
+        public enum Consequence
+        {
             Certain = 0,
             Probable = 1,
             Possible = 2,
@@ -39,7 +44,8 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     All possible DataTypes
         /// </summary>
-        public enum DataType {
+        public enum DataType
+        {
             AvgTimePerRequest = 1,
             AvgTimeToComplete = 2,
             TotalNumOfRequests = 3,
@@ -49,7 +55,8 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     All DropdownTables in the system.
         /// </summary>
-        public enum DropdownTable {
+        public enum DropdownTable
+        {
             Keyword,
             QuestionType,
             Region,
@@ -61,7 +68,8 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     Genders in the system
         /// </summary>
-        public enum Gender {
+        public enum Gender
+        {
             Female = 0,
             Male = 1,
             Other = 2
@@ -70,7 +78,8 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     All months, needed for Report Generation
         /// </summary>
-        public enum Month {
+        public enum Month
+        {
             Jan = 1,
             Feb = 2,
             Mar = 3,
@@ -88,7 +97,8 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     The type of Reference
         /// </summary>
-        public enum ReferenceType {
+        public enum ReferenceType
+        {
             URL = 0,
             File = 1,
             Text = 2
@@ -97,7 +107,8 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     All options for ReportType
         /// </summary>
-        public enum ReportType {
+        public enum ReportType
+        {
             Report = 0,
             AuditLog = 1
         }
@@ -105,7 +116,8 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     All Request Statuses in the system.
         /// </summary>
-        public enum RequestStatus {
+        public enum RequestStatus
+        {
             Open = 0,
             Completed = 1,
             Invalid = 2
@@ -114,16 +126,19 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     All Severities in the system.
         /// </summary>
-        public enum Severity {
+        public enum Severity
+        {
             Major = 0,
             Moderate = 1,
             Minor = 2
         }
 
+ 
         /// <summary>
         ///     All options for Stratification
         /// </summary>
-        public enum StratifyOption {
+        public enum StratifyOption
+        {
             None = 0,
             Region = 1,
             CallerType = 2,
@@ -133,7 +148,8 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     All Status options used in the URL.
         /// </summary>
-        public enum URLStatus {
+        public enum URLStatus
+        {
             None = 0,
             Expired = 1,
             Unlocked = 2,
@@ -239,8 +255,10 @@ namespace SasquatchCAIRS.Models.Common {
         /// </summary>
         /// <param name="status">Status as a Constants.RequestStatus</param>
         /// <returns>String representing the status</returns>
-        public static string getStatusString(RequestStatus status) {
-            switch (status) {
+        public static string getStatusString(RequestStatus status)
+        {
+            switch (status)
+            {
                 case RequestStatus.Open:
                     return "Open";
                 case RequestStatus.Completed:
@@ -257,8 +275,10 @@ namespace SasquatchCAIRS.Models.Common {
         /// </summary>
         /// <param name="type">Reference Type as a Constants.ReferenceType</param>
         /// <returns>String representing the status</returns>
-        public static string getReferenceString(ReferenceType type) {
-            switch (type) {
+        public static string getReferenceString(ReferenceType type)
+        {
+            switch (type)
+            {
                 case ReferenceType.URL:
                     return "URL";
                 case ReferenceType.File:
@@ -275,8 +295,10 @@ namespace SasquatchCAIRS.Models.Common {
         /// </summary>
         /// <param name="gender">Gender as a Constants.Gender</param>
         /// <returns>String representing the gender</returns>
-        public static string getGenderString(Gender? gender) {
-            switch (gender) {
+        public static string getGenderString(Gender? gender)
+        {
+            switch (gender)
+            {
                 case Gender.Female:
                     return "Female";
                 case Gender.Male:
@@ -293,8 +315,10 @@ namespace SasquatchCAIRS.Models.Common {
         /// </summary>
         /// <param name="dropdown">Dropdown list as Constants.DropdownTable</param>
         /// <returns>String representing the DropdownTable name</returns>
-        public static string getDropdownString(DropdownTable? dropdown) {
-            switch (dropdown) {
+        public static string getDropdownString(DropdownTable? dropdown)
+        {
+            switch (dropdown)
+            {
                 case DropdownTable.Keyword:
                     return "Keyword";
                 case DropdownTable.QuestionType:
@@ -317,8 +341,10 @@ namespace SasquatchCAIRS.Models.Common {
         /// </summary>
         /// <param name="s">The string to parse</param>
         /// <returns>The DropdownTable for the string</returns>
-        public static DropdownTable getTableForString(string s) {
-            switch (s) {
+        public static DropdownTable getTableForString(string s)
+        {
+            switch (s)
+            {
                 case "Keyword":
                     return DropdownTable.Keyword;
                 case "Question Type":
@@ -343,11 +369,14 @@ namespace SasquatchCAIRS.Models.Common {
         /// <param name="consequence">Consequence as Constants.Consequence</param>
         /// <returns>A string representing the impact score.</returns>
         public static string getImpactScore(Severity? severity,
-                                            Consequence? consequence) {
-            switch (consequence) {
+                                            Consequence? consequence)
+        {
+            switch (consequence)
+            {
                 case Consequence.Certain:
                 case Consequence.Probable:
-                    switch (severity) {
+                    switch (severity)
+                    {
                         case Severity.Major:
                             return "1";
                         case Severity.Moderate:
@@ -358,7 +387,8 @@ namespace SasquatchCAIRS.Models.Common {
                             return "";
                     }
                 case Consequence.Possible:
-                    switch (severity) {
+                    switch (severity)
+                    {
                         case Severity.Major:
                         case Severity.Moderate:
                             return "4";
@@ -377,7 +407,8 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     All possible DataType strings
         /// </summary>
-        public static class DataTypeStrings {
+        public static class DataTypeStrings
+        {
             public static string DATA_TYPE = "Data Type";
             public static string AVG_TIME = "Avg Time";
             public static string AVG_TIME_TO_COMPLETE = "Avg Time To Complete";
@@ -388,7 +419,8 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     Used in the Word Exporter
         /// </summary>
-        public static class Export {
+        public static class Export
+        {
             // File Section
             public const string REPORT_TEMPLATE_PATH = "~/ReportTemplate.docx";
             public const string REPORT_TEMP_PATH = "~/Report";
@@ -464,7 +496,8 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     All Possible Report Formats
         /// </summary>
-        public static class ReportFormStrings {
+        public static class ReportFormStrings
+        {
             public static string REPORT_OPTION = "reportOption";
             public static string DATATYPE = "dataType";
             public static string STRATIFY_BY = "stratifyBy";
@@ -473,7 +506,8 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     All the roles in the system.
         /// </summary>
-        public static class Roles {
+        public static class Roles
+        {
             public const string VIEWER = "Viewer";
             public const string REQUEST_EDITOR = "RequestEditor";
             public const string REPORT_GENERATOR = "ReportGenerator";
@@ -493,11 +527,13 @@ namespace SasquatchCAIRS.Models.Common {
         /// <summary>
         ///     Strings used in the UI
         /// </summary>
-        public static class UIString {
+        public static class UIString
+        {
             // String Responses
 
             // Text used in Buttons
-            public static class ButtonText {
+            public static class ButtonText
+            {
                 public const string CREATE_REQUEST = "Create Request";
                 public const string EDIT_REQUEST = "Edit Request";
                 public const string UNLOCK_REQUEST = "Unlock Request";
@@ -525,7 +561,8 @@ namespace SasquatchCAIRS.Models.Common {
             /// <summary>
             ///     All Empty fields
             /// </summary>
-            public static class FieldLabel {
+            public static class FieldLabel
+            {
                 // Request Information
                 public const string REQUEST_ID = "Request ID";
                 public const string CREATED_BY = "Created By";
@@ -602,12 +639,14 @@ namespace SasquatchCAIRS.Models.Common {
 
             // Text used in Page Titles
 
-            public static class GeneralText {
+            public static class GeneralText
+            {
                 public const string ACTIVE = "Active";
                 public const string DISABLED = "Disabled";
             }
 
-            public static class ItemIDs {
+            public static class ItemIDs
+            {
                 public const string DASHBOARD = "dashboard";
                 public const string CREATE_REQUEST = "create-request";
                 public const string REPORTS = "reports";
@@ -620,7 +659,8 @@ namespace SasquatchCAIRS.Models.Common {
                 public const string MODIFY_SEARCH = "modify-search";
             }
 
-            public static class Messages {
+            public static class Messages
+            {
                 public const string DELETE_REFERENCE_WARNING =
                     "Are you sure you would like to delete this reference?";
 
@@ -634,14 +674,19 @@ namespace SasquatchCAIRS.Models.Common {
             /// <summary>
             ///     All Response Strings.
             /// </summary>
-            public static class Response {
+            public static class Response
+            {
                 public const string NO_RESULTS = "No results were found.";
 
                 public const string EMPTY_QUERY =
                     "You have not specified any search criteria.";
+
+                public const string INVALID_DATES =
+                    "The Start Date must be before the End Date.";
             }
 
-            public static class TitleText {
+            public static class TitleText
+            {
                 public const string DASHBOARD = "Dashboard";
                 public const string VIEW_REQUEST = "View Request";
                 public const string REQUEST_NUM = "Request #";
