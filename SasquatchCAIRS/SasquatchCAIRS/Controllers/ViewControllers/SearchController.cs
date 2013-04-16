@@ -95,6 +95,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
         [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Results(SearchCriteria criteria, FormCollection form) {
             DateTime temp;
+            
             if (DateTime.TryParse(form["startTime"], out temp)) {
                 criteria.startTime = temp;
             }
@@ -114,6 +115,13 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
             criteria.patientFirstName = form["patientFirst"];
             criteria.patientLastName = form["patientLast"];
 
+
+            if (criteria.startTime > criteria.completionTime) {
+                ViewBag.invalidDate = true;
+                setDropdownViewbags();
+                return View("Advanced", criteria);
+
+            }
             if (_smc.isEmptySearchCriteria(criteria)) {
                 ViewBag.emptyForm = true;
                 setDropdownViewbags();

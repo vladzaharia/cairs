@@ -12,7 +12,9 @@
 @if (@ViewBag.emptyForm != null) {
     <div class="message palette-danger-dark">@Constants.UIString.Response.EMPTY_QUERY</div>
 }
-
+@if (@ViewBag.invalidDate != null) {
+    <div class="message palette-danger-dark">@Constants.UIString.Response.INVALID_DATES</div>
+}
 @using (Html.BeginForm("Results", "Search", FormMethod.Post,
                        new {
                            @class = "form advanced-search-form"
@@ -43,6 +45,7 @@
                                    autocomplete="off"
                                    value="@Model.noneKeywordString"/></td>
         </tr>
+
         <tr>
             <td class="tbl-label">@Constants.UIString.FieldLabel.START_TIME</td>
             <td>
@@ -213,6 +216,8 @@
     </table>
 }
 
+
+
 <script type="text/javascript">
     $(function() {
         $('#startTime').datepicker();
@@ -243,6 +248,10 @@
                 });
             }
         });
-    });
 
+    });
+  
+        
 </script>
+    
+
