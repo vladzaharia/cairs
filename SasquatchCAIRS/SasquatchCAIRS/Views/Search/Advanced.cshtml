@@ -15,6 +15,9 @@
 @if (@ViewBag.invalidDate != null) {
     <div class="message palette-danger-dark">@Constants.UIString.Response.INVALID_DATES</div>
 }
+@if (@ViewBag.invalidDateFormat != null) {
+    <div class="message palette-danger-dark">@Constants.UIString.Response.INVALID_DATE_FORMAT</div>
+}
 @using (Html.BeginForm("Results", "Search", FormMethod.Post,
                        new {
                            @class = "form advanced-search-form"
