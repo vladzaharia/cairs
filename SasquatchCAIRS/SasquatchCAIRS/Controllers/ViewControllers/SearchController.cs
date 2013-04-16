@@ -76,7 +76,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
         /// <request type="GET">/Search/Advanced</request>
         [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Advanced() {
-            var criteria = new SearchCriteria();\
+            var criteria = new SearchCriteria();
 
             setDropdownViewbags();
 
