@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using SasquatchCAIRS.Controllers.Security;
@@ -604,6 +606,57 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
             return
                 View(new DropdownEntry(0, code, value, active));
         }
+
+        /// <summary>
+        ///     Import keywords from a given CSV file.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult ImportKeywords() {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ImportKeywords(int id = 0) {
+            var file = Request.Files["keywords-file"];
+
+            // Check file was submitted
+            if (file == null || file.ContentLength == 0 ||
+                !file.ContentType.Equals("application/vnd.ms-excel") ||
+                !file.FileName.EndsWith("csv")) {
+                ModelState.AddModelError("InvalidFile",
+                                         "Keyword import only accepts CSV files.");
+                return View();
+            }
+
+            var dmc = new DropdownManagementController();
+
+            var reader = new StreamReader(file.InputStream);
+            while (!reader.EndOfStream) {
+                var str = reader.ReadLine();
+                if (String.IsNullOrEmpty(str)) {
+                    continue;
+                }
+
+                var keyword = str.Split(',')[0];
+                Keyword kw = (from kws in _db.Keywords
+                              where kws.KeywordValue == keyword
+                              select kws)
+                    .FirstOrDefault();
+
+                if (kw == null) {
+                    dmc.addEntry(Constants.DropdownTable.Keyword,
+                                 new DropdownEntry(0, null, keyword, true));
+                } else {
+                    kw.Active = true;
+                    _db.SubmitChanges();
+                }
+            }
+
+            return RedirectToAction("DropdownList", new {
+                success = true
+            });
+        } 
 
         #endregion
     }
