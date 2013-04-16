@@ -290,7 +290,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
             }
 
             if (Request.Form["mark_as_complete"] != null || 
-                (Request.Form["update"] != null && reqContent.requestStatus == Constants.RequestStatus.Completed) {
+                (Request.Form["update"] != null && reqContent.requestStatus == Constants.RequestStatus.Completed)) {
                 foreach (
                     QuestionResponseContent qrContent in
                         reqContent.questionResponseList) {
