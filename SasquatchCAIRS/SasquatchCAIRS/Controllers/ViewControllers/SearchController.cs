@@ -40,7 +40,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
         [HttpPost]
         [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Search(String keywords) {
-            Session["criteria"] = null;
+            Session["criteria"] = new SearchCriteria();
             ViewBag.keywords = keywords;
             var sc = new SearchCriteria();
             sc.anyKeywordString = keywords;
@@ -76,8 +76,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
         /// <request type="GET">/Search/Advanced</request>
         [Authorize(Roles = Constants.Roles.VIEWER)]
         public ActionResult Advanced() {
-            var criteria = new SearchCriteria();
-            Session["criteria"] = null;
+            var criteria = new SearchCriteria();\
 
             setDropdownViewbags();
 

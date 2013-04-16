@@ -192,7 +192,7 @@ namespace SasquatchCAIRS.Controllers.Search {
             return (from k in _db.Keywords
                     where
                         keywordsToList(keywordString, ", ")
-                        .Contains(k.KeywordValue)
+                        .Contains(k.KeywordValue) && k.Active
                     select k.KeywordID).ToList();
         }
 
@@ -237,7 +237,7 @@ namespace SasquatchCAIRS.Controllers.Search {
                 requests =
                     requests.Where(
                         r => r.TimeOpened.CompareTo(criteria.startTime) >= 0);
-            }
+            }   
 
             // Filter on end time
             if (criteria.completionTime != DateTime.Parse(Constants.EMPTY_DATE)) {
@@ -249,7 +249,8 @@ namespace SasquatchCAIRS.Controllers.Search {
             }
 
             // Set Criteria based on Users Role(s)
-            if (Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) {} else if (String.IsNullOrEmpty(criteria.requestStatus) &&
+            if (Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) {} 
+            else if (String.IsNullOrEmpty(criteria.requestStatus) &&
                                                                                Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
                 criteria.requestStatus = Enum.GetName(
                     typeof (Constants.RequestStatus),

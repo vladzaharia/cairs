@@ -114,7 +114,7 @@ namespace SasquatchCAIRS.Controllers.Service {
                     break;
             }
 
-            return list.OrderBy(dd => dd.code).ToList();
+            return list.OrderBy(dd => dd.code).ThenBy(dd => dd.value).ToList();
         }
 
         /// <summary>
