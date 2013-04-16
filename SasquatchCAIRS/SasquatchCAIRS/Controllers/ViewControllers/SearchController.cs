@@ -117,7 +117,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
             criteria.patientFirstName = form["patientFirst"];
             criteria.patientLastName = form["patientLast"];
             
-            if (!DateTime.TryParseExact(form["startTime"], "MM/dd/yyyy",
+            if (!String.IsNullOrEmpty(form["startTime"]) && !DateTime.TryParseExact(form["startTime"], "MM/dd/yyyy",
                                     CultureInfo.InvariantCulture,
                                     DateTimeStyles.None,
                                     out temp)) {
@@ -125,7 +125,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
                 setDropdownViewbags();
                 return View("Advanced", criteria);
             }
-            if (!DateTime.TryParseExact(form["completionTime"], "MM/dd/yyyy",
+            if (!String.IsNullOrEmpty(form["completionTime"]) && !DateTime.TryParseExact(form["completionTime"], "MM/dd/yyyy",
                                         CultureInfo.InvariantCulture,
                                         DateTimeStyles.None,
                                         out temp)) {
