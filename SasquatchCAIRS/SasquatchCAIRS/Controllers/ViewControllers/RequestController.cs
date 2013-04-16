@@ -81,14 +81,16 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
                         break;
                     }
 
-                    foreach (
-                        ReferenceContent refContent in qrContent.referenceList) {
-                        if (String.IsNullOrEmpty(refContent.referenceString)) {
-                            ModelState.AddModelError("IncompleteReference",
-                                                     "References must be completed before marking request as complete.");
-                            valid = false;
-                            break;
-                        }
+                    if (qrContent.keywords.Any(keyword => keyword.Length > 128)) {
+                        ModelState.AddModelError("KeywordTooLong",
+                                                 "Keywords must be less than 128 characters.");
+                        valid = false;
+                    }
+
+                    if (qrContent.referenceList.Any(refContent => String.IsNullOrEmpty(refContent.referenceString))) {
+                        ModelState.AddModelError("IncompleteReference",
+                                                 "References must be completed before marking request as complete.");
+                        valid = false;
                     }
                 }
 
@@ -249,6 +251,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
 
             if (Request.Form["delete"] != null) {
                 rmc.invalidate(reqContent.requestID);
+                rlc.removeLock(reqContent.requestID);
 
                 almc.addEntry(reqContent.requestID, up.UserId,
                               Constants.AuditType.RequestDeletion);
@@ -256,6 +259,25 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
                 return RedirectToAction("Index", "Home", new {
                     status = Constants.URLStatus.Deleted
                 });
+            }
+
+            if (Request.Form["cancel"] != null) {
+                rlc.removeLock(reqContent.requestID);
+
+                if (Roles.IsUserInRole(Constants.Roles.VIEWER)) {
+                    return RedirectToAction(
+                        "Details", "Request",
+                        new {
+                            id = reqContent.requestID
+                        });
+                }
+
+                return RedirectToAction(
+                    "Index", "Home",
+                    new {
+                        status =
+                            Constants.URLStatus.SuccessfulEdit
+                    });
             }
 
             bool valid = ModelState.IsValid;
@@ -285,14 +307,16 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
                         break;
                     }
 
-                    foreach (ReferenceContent refContent
-                             in qrContent.referenceList) {
-                        if (String.IsNullOrEmpty(refContent.referenceString)) {
-                            ModelState.AddModelError("IncompleteReference",
-                                                     "References must be completed before marking request as complete.");
-                            valid = false;
-                            break;
-                        }
+                    if (qrContent.keywords.Any(keyword => keyword.Length > 128)) {
+                        ModelState.AddModelError("KeywordTooLong",
+                                                 "Keywords must be less than 128 characters.");
+                        valid = false;
+                    }
+
+                    if (qrContent.referenceList.Any(refContent => String.IsNullOrEmpty(refContent.referenceString))) {
+                        ModelState.AddModelError("IncompleteReference",
+                                                 "References must be completed before marking request as complete.");
+                        valid = false;
                     }
                 }
 

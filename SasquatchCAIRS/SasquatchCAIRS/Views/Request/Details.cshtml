@@ -58,11 +58,11 @@
             </td>
         </tr>
         <tr>
-            <td class="tbl-label">@Constants.UIString.FieldLabel.CALLER_PHONE</td>
-            <td class="tbl-content-4" id="requestor-phone">@Model.requestorPhoneNum @Model.requestorPhoneExt</td>
+            <td class="tbl-label tbl-border">@Constants.UIString.FieldLabel.CALLER_PHONE</td>
+            <td class="tbl-content-4 tbl-border" id="requestor-phone">@Model.requestorPhoneNum @Model.requestorPhoneExt</td>
 
-            <td class="tbl-label">@Constants.UIString.FieldLabel.CALLER_REGION</td>
-            <td class="tbl-content-4">
+            <td class="tbl-label tbl-border">@Constants.UIString.FieldLabel.CALLER_REGION</td>
+            <td class="tbl-content-4 tbl-border">
                 @{
                     Region region = ((CAIRSDataContext) ViewBag.DataContext)
                         .Regions
@@ -106,21 +106,21 @@
                 <td class="question" colspan="6" id="question_@(i)">@qr.question</td>
             </tr>
             <tr>
-                <td class="focal" colspan="6">@Constants.UIString.FieldLabel.RESPONSE</td>
+                <td class="focal tbl-border" colspan="6">@Constants.UIString.FieldLabel.RESPONSE</td>
             </tr>
             <tr>
                 <td  class="response" colspan="6" id="response_@(i)">@qr.response</td>
             </tr>
             <tr>
-                <td class="focal" colspan="6">@Constants.UIString.FieldLabel.SPECIAL_NOTES</td>
+                <td class="focal tbl-border" colspan="6">@Constants.UIString.FieldLabel.SPECIAL_NOTES</td>
             </tr>
             <tr>
                 <td class="special-notes" colspan="6" id="specialNotes_@(i)">@qr.specialNotes</td>
             </tr>
             
             <tr>
-                <td class="tbl-label">@Constants.UIString.FieldLabel.QUESTION_TYPE</td>
-                <td class="tbl-content-6">
+                <td class="tbl-label tbl-border">@Constants.UIString.FieldLabel.QUESTION_TYPE</td>
+                <td class="tbl-content-6 tbl-border">
                     @{
                         QuestionType questionType = ((CAIRSDataContext) ViewBag.DataContext)
                             .QuestionTypes
@@ -132,8 +132,8 @@
                     }
                 </td>
 
-                <td class="tbl-label">@Constants.UIString.FieldLabel.TUMOUR_GROUP</td>
-                <td class="tbl-content-6">
+                <td class="tbl-label tbl-border">@Constants.UIString.FieldLabel.TUMOUR_GROUP</td>
+                <td class="tbl-content-6 tbl-border">
                     @{
                         TumourGroup tumourGroup = ((CAIRSDataContext) ViewBag.DataContext)
                             .TumourGroups
@@ -145,8 +145,8 @@
                     }
                 </td>
 
-                <td class="tbl-label">@Constants.UIString.FieldLabel.TIME_SPENT</td>
-                <td class="tbl-content-6 time-spent">@qr.timeSpent mins</td>
+                <td class="tbl-label tbl-border">@Constants.UIString.FieldLabel.TIME_SPENT</td>
+                <td class="tbl-content-6 time-spent tbl-border">@qr.timeSpent mins</td>
             </tr>
         </table>
 
