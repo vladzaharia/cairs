@@ -1,0 +1,23 @@
+﻿@using SasquatchCAIRS.Models.Common
+
+@{
+    ViewBag.Title = "Import Keywords";
+}
+
+<h2>Import Keywords</h2>
+@using (Html.BeginForm("ImportKeywords", "Admin", FormMethod.Post,
+                       new {@class="form", enctype="multipart/form-data"})) {
+    @Html.ValidationSummary()
+    <table class="table unbordered-table valign-middle">
+        <tr>
+            <td class="tbl-label">Keywords CSV File</td>
+            <td class="tbl-field">
+                <input type="file" name="keywords-file" id="keywords-file" accept=".csv"/>
+            </td>
+        </tr>
+    </table>
+
+    <button class="btn btn-custom" type="submit" id="@Constants.UIString.ItemIDs.SUBMIT_BUTTON">
+        <i class="icon-download-alt button-icon"></i> Import Keywords
+    </button>
+}

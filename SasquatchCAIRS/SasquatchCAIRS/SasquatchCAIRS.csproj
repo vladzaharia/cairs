@@ -780,6 +780,7 @@
     <Content Include="Views\Report\Reports.cshtml" />
     <Content Include="Views\Admin\Audit.cshtml" />
     <Content Include="Views\Report\GeneratingReport.cshtml" />
+    <Content Include="Views\Admin\ImportKeywords.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

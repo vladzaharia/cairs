@@ -19,6 +19,13 @@
            class="btn btn-custom">
             <i class="icon-plus button-icon"></i> @Constants.UIString.ButtonText.CREATE @Constants.getDropdownString(dt)
         </a>
+        if (dt == Constants.DropdownTable.Keyword) {
+            <a href="@Url.Action("ImportKeywords", "Admin")" 
+               id="button-import-keywords" 
+               class="btn btn-custom">
+                <i class="icon-download-alt button-icon"></i> Import Keywords
+            </a>
+        }
     }
 </div>
 
@@ -109,6 +116,10 @@
             // Show correct button
             $button.show();
             $button.siblings().hide();
+            
+            if ($this.attr("data-dropdown") == "@(Constants.DropdownTable.Keyword)") {
+                $("#button-import-keywords").show();
+            }
         });
     });
 
