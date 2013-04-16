@@ -694,6 +694,7 @@
     <None Include="Properties\PublishProfiles\Michelle.pubxml" />
     <Content Include="ReportTemplate.xlsx" />
     <Content Include="ReportTemplate.docx" />
+    <None Include="Properties\PublishProfiles\Sasquatch-ZIP.pubxml" />
     <None Include="Properties\PublishProfiles\Sasquatch.pubxml" />
     <Content Include="Scripts\flat-ui\application.js" />
     <Content Include="Scripts\flat-ui\bootstrap-tooltip.js" />
