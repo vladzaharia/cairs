@@ -364,6 +364,7 @@ namespace CAIRSMigrationTool {
                                 default:
                                     qr.Severity = 2;
                                     qr.Consequence = 3;
+                                    break;
                             }
                         } else {
                             qr.Severity = 2;
