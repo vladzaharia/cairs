@@ -9,7 +9,7 @@ namespace CAIRSMigrationTool {
     public class MdbToMssqlTool {
         static void Main(string[] args) {
             if (args.Length != 1) {
-                Console.WriteLine("Usage: $0 <csv_file>");
+                Console.WriteLine("Usage: $0 <mdb_file>");
                 return;
             }
 
@@ -361,6 +361,9 @@ namespace CAIRSMigrationTool {
                                     qr.Severity = 2;
                                     qr.Consequence = 3;
                                     break;
+                                default:
+                                    qr.Severity = 2;
+                                    qr.Consequence = 3;
                             }
                         } else {
                             qr.Severity = 2;
