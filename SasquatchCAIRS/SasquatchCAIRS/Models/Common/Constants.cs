@@ -683,6 +683,9 @@ namespace SasquatchCAIRS.Models.Common
 
                 public const string INVALID_DATES =
                     "The Start Date must be before the End Date.";
+
+                public const string INVALID_DATE_FORMAT =
+                    "Please enter a valid date in the format: MM/DD/YYYY";
             }
 
             public static class TitleText
