@@ -192,7 +192,7 @@ namespace SasquatchCAIRS.Controllers.Search {
             return (from k in _db.Keywords
                     where
                         keywordsToList(keywordString, ", ")
-                        .Contains(k.KeywordValue)
+                        .Contains(k.KeywordValue) && k.Active
                     select k.KeywordID).ToList();
         }
         /// <summary>
@@ -208,9 +208,12 @@ namespace SasquatchCAIRS.Controllers.Search {
             List<string> test = keywordsToList(keywordString, " ,");
             List<long> acc = new List<long>();
             foreach (string s in test) {
-                acc.Union((from qr in _db.QuestionResponses
-                           where qr.Question.Contains(s) && qr.Question!=null
-                           select qr.RequestID).ToList());
+                List<QuestionResponse> temp = (from qr in _db.QuestionResponses
+                                               where qr.Question.Contains(s)
+                                               select qr).ToList();
+                foreach (QuestionResponse questionResponse in temp) {
+                    acc.Add(questionResponse.RequestID);
+                }
 
             }
             return acc;
@@ -230,9 +233,20 @@ namespace SasquatchCAIRS.Controllers.Search {
             // First we grab the keywords
             if (String.IsNullOrEmpty(keywordString))
                 return new List<long>();
-            return (from k in _db.QuestionResponses
-                    where keywordsToList(keywordString, ", ").Contains(k.Response)
-                    select k.RequestID).ToList();
+            List<string> test = keywordsToList(keywordString, " ,");
+            List<long> acc = new List<long>();
+            foreach (string s in test)
+            {
+                List<QuestionResponse> temp = (from qr in _db.QuestionResponses
+                                               where qr.Response.Contains(s)
+                                               select qr).ToList();
+                foreach (QuestionResponse questionResponse in temp)
+                {
+                    acc.Add(questionResponse.RequestID);
+                }
+
+            }
+            return acc;
         }
 
         /// <summary>
@@ -276,7 +290,7 @@ namespace SasquatchCAIRS.Controllers.Search {
                 requests =
                     requests.Where(
                         r => r.TimeOpened.CompareTo(criteria.startTime) >= 0);
-            }
+            }   
 
             // Filter on end time
             if (criteria.completionTime != DateTime.Parse(Constants.EMPTY_DATE)) {
@@ -287,10 +301,15 @@ namespace SasquatchCAIRS.Controllers.Search {
                         (criteria.completionTime.CompareTo(r.TimeClosed) <= 0));
             }
 
-<<<<<<< HEAD:SasquatchCAIRS/SasquatchCAIRS/Controllers/SearchManagementController.cs
+<<<<<<< HEAD
+            
+                   
+                                             
+            
 =======
             // Set Criteria based on Users Role(s)
-            if (Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) {} else if (String.IsNullOrEmpty(criteria.requestStatus) &&
+            if (Roles.IsUserInRole(Constants.Roles.ADMINISTRATOR)) {} 
+            else if (String.IsNullOrEmpty(criteria.requestStatus) &&
                                                                                Roles.IsUserInRole(Constants.Roles.REQUEST_EDITOR)) {
                 criteria.requestStatus = Enum.GetName(
                     typeof (Constants.RequestStatus),
@@ -306,8 +325,8 @@ namespace SasquatchCAIRS.Controllers.Search {
                     Enum.GetName(typeof (Constants.RequestStatus),
                                  Constants.RequestStatus.Completed);
             }
+>>>>>>> d5dc94a091da682103f6198ffca7e20438fe6e43
             
->>>>>>> c10523b8ae7522bc1277bcd5033594b3f1419eb2:SasquatchCAIRS/SasquatchCAIRS/Controllers/Search/SearchManagementController.cs
             // Filter on request status
             if (!String.IsNullOrEmpty(criteria.requestStatus)) {
                 requests =
@@ -358,10 +377,9 @@ namespace SasquatchCAIRS.Controllers.Search {
                         typeIdStringtoList(criteria.questionType, ",")
                             .Contains(qr.QuestionType.QuestionTypeID));
             }
-<<<<<<< HEAD:SasquatchCAIRS/SasquatchCAIRS/Controllers/SearchManagementController.cs
                 List<long>  anyq = getQuestions(criteria.anyKeywordString);
-                List<long> allq = getQuestions(criteria.anyKeywordString);
-                List<long> noneq = getQuestions(criteria.anyKeywordString);
+                List<long> allq = getQuestions(criteria.allKeywordString);
+                List<long> noneq = getQuestions(criteria.noneKeywordString);
             if ((noneq.Any() || anyq.Any() || allq.Any()) &&
                 (criteria.keyQuestResp == "Question")) {
                 if (noneq.Any()) {
@@ -375,7 +393,7 @@ namespace SasquatchCAIRS.Controllers.Search {
                                          select q);
                 }
 
-
+                
 
                 if (allq.Any()) {
                     IQueryable<long> acc = null;
@@ -400,8 +418,8 @@ namespace SasquatchCAIRS.Controllers.Search {
             }
 
             List<long> anyr = getResponse(criteria.anyKeywordString);
-            List<long> allr = getResponse(criteria.anyKeywordString);
-            List<long> noner = getResponse(criteria.anyKeywordString);
+            List<long> allr = getResponse(criteria.allKeywordString);
+            List<long> noner = getResponse(criteria.noneKeywordString);
             if ((noner.Any() || anyr.Any() || allr.Any()) &&
                 (criteria.keyQuestResp == "Response"))
             {
@@ -410,11 +428,11 @@ namespace SasquatchCAIRS.Controllers.Search {
                     List<long> toRemove =
                         (from qr in questionResponses
                          where noner.Contains(qr.RequestID)
-                         select qr.RequestID).ToList();
+                         select qr.QuestionResponseID).ToList();
 
                     questionResponses = (from q in questionResponses
-                                         where !toRemove.Contains(q.RequestID)
-                                         select q).AsQueryable();
+                                         where !toRemove.Contains(q.QuestionResponseID)
+                                         select q);
                 }
 
 
@@ -449,20 +467,12 @@ namespace SasquatchCAIRS.Controllers.Search {
                                          select q);
                 }
             }
-=======
-
->>>>>>> c10523b8ae7522bc1277bcd5033594b3f1419eb2:SasquatchCAIRS/SasquatchCAIRS/Controllers/Search/SearchManagementController.cs
             List<int> any = getKeywords(criteria.anyKeywordString);
             List<int> none = getKeywords(criteria.noneKeywordString);
             List<int> all = getKeywords(criteria.allKeywordString);
 
             // Filter QRs based on keywords
-<<<<<<< HEAD:SasquatchCAIRS/SasquatchCAIRS/Controllers/SearchManagementController.cs
             if ((none.Any() || any.Any() || all.Any()) && criteria.keyQuestResp == "Keywords") {
-                
-=======
-            if (none.Any() || any.Any() || all.Any()) {
->>>>>>> c10523b8ae7522bc1277bcd5033594b3f1419eb2:SasquatchCAIRS/SasquatchCAIRS/Controllers/Search/SearchManagementController.cs
                 IQueryable<KeywordQuestion> results = _db.KeywordQuestions;
 
                 if (none.Any()) {
@@ -499,11 +509,13 @@ namespace SasquatchCAIRS.Controllers.Search {
                 }
 
                 // Then we intersect Keywords with QuestionResponses through the use of a join
-                questionResponses = (from kq in results
-                                     join qr in questionResponses
-                                         on kq.QuestionResponseID equals
-                                         qr.QuestionResponseID
-                                     select qr);
+                
+                    questionResponses = (from kq in results
+                                         join qr in questionResponses
+                                             on kq.QuestionResponseID equals
+                                             qr.QuestionResponseID
+                                         select qr);
+                
             }
 
             return (from r in requests

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using SasquatchCAIRS.Controllers.Search;
@@ -102,6 +103,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
             if (DateTime.TryParse(form["completionTime"], out temp)) {
                 criteria.completionTime = temp;
             }
+           
             criteria.anyKeywordString = form["anyKeywordString"];
             criteria.allKeywordString = form["allKeywords"];
             criteria.noneKeywordString = form["noneKeywords"];
@@ -114,7 +116,23 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
             criteria.requestorLastName = form["requestorLast"];
             criteria.patientFirstName = form["patientFirst"];
             criteria.patientLastName = form["patientLast"];
-
+            
+            if (!DateTime.TryParseExact(form["startTime"], "yyyy-MM-dd",
+                                    CultureInfo.InvariantCulture,
+                                    DateTimeStyles.None,
+                                    out temp)) {
+                ViewBag.invalidDateFormat = true;
+                setDropdownViewbags();
+                return View("Advanced", criteria);
+            }
+            if (!DateTime.TryParseExact(form["completionTime"], "yyyy-MM-dd",
+                                        CultureInfo.InvariantCulture,
+                                        DateTimeStyles.None,
+                                        out temp)) {
+                ViewBag.invalidDateFormat = true;
+                setDropdownViewbags();
+                return View("Advanced", criteria);
+            }
 
             if (criteria.startTime > criteria.completionTime) {
                 ViewBag.invalidDate = true;

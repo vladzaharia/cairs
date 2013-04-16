@@ -1,0 +1,237 @@
+﻿
+@using System.Web.Script.Serialization
+@using SasquatchCAIRS.Models.Common
+@using SasquatchCAIRS.Models.Service
+@model SasquatchCAIRS.Models.Service.RequestContent
+
+@{
+    ViewBag.Title = "Add New Request";
+    ViewBag.Page = "create";
+}
+
+<h2>Add New Request</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary()
+
+    @Html.HiddenFor(model => model.timeOpened)
+
+    <h3>Caller Information</h3>
+    <table class="table unbordered-table valign-middle">
+        <tr>
+            <td class="tbl-label">@Html.LabelFor(model => model.requestorFirstName)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorFirstName, new {@class = "span4"})</td>
+            <td class="tbl-label">@Html.LabelFor(model => model.requestorLastName)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorLastName, new {@class = "span4"})</td>
+        </tr>
+        <tr>
+            <td class="tbl-label">@Html.LabelFor(model => model.requestorEmail)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorEmail, new {@class = "span4"})</td>
+        </tr>
+        <tr>
+            <td class="tbl-label">@Html.LabelFor(model => model.requestorPhoneNum)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorPhoneNum, new {@class = "span4"})</td>
+            <td class="tbl-label">@Html.LabelFor(model => model.requestorPhoneExt)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.requestorPhoneExt, new {@class = "span4"})</td>
+        </tr>
+        <tr>
+            <td class="tbl-label">@Html.LabelFor(model => model.requestorTypeID)</td>
+            <td class="tbl-content-4">@Html.DropDownListFor(model => model.requestorTypeID,
+                                                            (SelectList) ViewBag.RequestorTypes, "", new {@class = "span4"})</td>
+            <td class="tbl-label">@Html.LabelFor(model => model.regionID)</td>
+            <td class="tbl-content-4">@Html.DropDownListFor(model => model.regionID,
+                                                            (SelectList) ViewBag.Regions, "", new {@class = "span4"})</td>
+        </tr>
+    </table>
+
+    <h3>Patient Information</h3>
+    <table class="table unbordered-table valign-middle">
+        <tr>
+            <td class="tbl-label">@Html.LabelFor(model => model.patientFName)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.patientFName, new {@class = "span4"})</td>
+            <td class="tbl-label">@Html.LabelFor(model => model.patientLName)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.patientLName, new {@class = "span4"})</td>
+        </tr>
+        <tr>
+            <td class="tbl-label">@Html.LabelFor(model => model.patientGender)</td>
+            <td class="tbl-content-4">@Html.DropDownListFor(model => model.patientGender,
+                                                            (SelectList) ViewBag.GenderOptions, "", new {@class = "span4"})</td>
+            <td class="tbl-label">@Html.LabelFor(model => model.patientAge)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.patientAge, new {@class = "span4"})</td>
+        </tr>
+        <tr>
+            <td class="tbl-label">@Html.LabelFor(model => model.patientAgencyID)</td>
+            <td class="tbl-content-4">@Html.TextBoxFor(model => model.patientAgencyID, new {@class = "span4"})</td>
+        </tr>
+    </table>
+
+    <h3>Questions</h3>
+    <div id="qrContainer"></div>
+    <br />
+    <a href="#" class="btn btn-success btn-small add-q" id="qr-add">
+        <i class="icon-plus button-icon"></i> @Constants.UIString.ButtonText.ADD_QUESTION
+    </a>
+
+    <h3>Properties</h3>
+    <table class="table unbordered-table valign-middle">
+        <tr>
+            <td class="tbl-label">@Html.LabelFor(model => model.parentRequestID)</td>
+            <td>@Html.TextBoxFor(model => model.parentRequestID, new {@class = "span4"})</td>
+        </tr>
+    </table>
+
+    <div class="buttons">
+<<<<<<< HEAD
+        <button type="submit" name="save_draft" id="save_draft" class="btn btn-custom">
+=======
+        <button type="submit" name="save_draft" id="save_draft" class="btn btn-custom req-btn">
+>>>>>>> d5dc94a091da682103f6198ffca7e20438fe6e43
+            <i class="icon-save button-icon"></i> @Constants.UIString.ButtonText.SAVE_DRAFT
+        </button>
+        <button type="submit" name="mark_as_complete"
+                class="btn btn-custom req-btn"
+                id="mark_as_complete">
+            <i class="icon-check button-icon"></i> @Constants.UIString.ButtonText.MARK_COMPLETE
+        </button>
+    </div>
+}
+
+<div id="warning_modal" class="modal hide fade">
+    <div class="modal-header">
+        <h3>Warning</h3>
+    </div>
+    <div class="modal-body">
+        <p id="warning_modal_text"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-primary" id="warning_modal_yes_btn"><i class="icon-ok button-icon"></i> Yes</a>
+        <a href="#" class="btn btn-danger" onclick=" return hideModal(); "><i class="icon-remove button-icon"></i> No</a>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function() {
+        $("#qr-add").click(function(e) {
+            e.preventDefault();
+            addQuestion("");
+        });
+
+        @if (Model.questionResponseList.Count == 0) {
+            @:addQuestion("");
+        } else {
+            foreach (QuestionResponseContent qr in Model.questionResponseList) {
+                @:addQuestion('@(Html.Raw(new JavaScriptSerializer().Serialize(qr)))');
+            }
+        }; // Suppress enter key submit of form
+        $(document).keypress(function(event) {
+            if (event.which == '13') {
+                event.preventDefault();
+            }
+        });
+
+        var submitForComplete = false;
+        $("#mark_as_complete").click(function(e) {
+            if (!submitForComplete &&
+                $("#requestorEmail").val() == "" &&
+                $("#requestorPhoneNum").val() == "") {
+
+                e.preventDefault();
+
+                $("#warning_modal_text").text("@Constants.UIString.Messages.NO_CONTACT_WARNING");
+                $("#warning_modal_yes_btn").unbind().click(function() {
+                    submitForComplete = true;
+                    $("#mark_as_complete").click();
+                    return hideModal();
+                });
+
+                $("#warning_modal").modal("show");
+            }
+        });
+    });
+
+    function addQuestion(json) {
+        $.post("@Url.Action("NewQuestionResponse", "Request")", { 'json': json }, function(qr) {
+            $("#qrContainer").append(qr);
+
+            var delBtns = $("#qrContainer .del-question");
+            if (delBtns.length <= 1) {
+                delBtns.attr("disabled", true)
+                    .attr("href", "#")
+                    .removeClass("btn-danger")
+                    .addClass("btn-disabled");
+            } else {
+                delBtns.attr("disabled", false)
+                    .attr("href", "#warning_modal")
+                    .removeClass("btn-disabled")
+                    .addClass("btn-danger");
+            }
+
+            var qrGuid = $("#qrContainer > div:last input[type=hidden]:first").val();
+
+            if (!json || 0 === json.length) {
+                $.post("@Url.Action("NewReference", "Request")/", { 'id': qrGuid }, function(r) {
+                    $("#qr-references-" + qrGuid).append(r);
+                    $("#qr-references-" + qrGuid + " .del-ref")
+                        .attr("disabled", true)
+                        .attr("href", "#")
+                        .removeClass("btn-danger")
+                        .addClass("btn-disabled");
+                });
+            } else {
+                var jsonObject = (new Function("return " + json))();
+                var refListJson = jsonObject.referenceList;
+                
+                for (var i = 0; i < refListJson.length; i++) {
+                    $.post("@Url.Action("NewReference", "Request")/", { 'id': qrGuid, 'json': JSON.stringify(refListJson[i]) }, function(r) {
+                        $("#qr-references-" + qrGuid).append(r);
+                    });
+                }
+                
+                if (refListJson.length <= 1) {
+                    $("#qr-references-" + qrGuid + " .del-ref")
+                        .attr("disabled", true)
+                        .attr("href", "#")
+                        .removeClass("btn-danger")
+                        .addClass("btn-disabled");
+                }
+            }
+        });
+    }
+
+    function deleteQuestion(id) {
+        $("#qr-" + id).remove();
+
+        var qrs = $("#qrContainer > div");
+        if (qrs.length <= 1) {
+            $(qrs[0]).find(".del-question")
+                .attr("disabled", true)
+                .attr("href", "#")
+                .removeClass("btn-danger")
+                .addClass("btn-disabled");
+        }
+
+        return hideModal();
+    }
+
+    function deleteReference(id, refId) {
+        $("#qr-references-" + id + "-" + refId).remove();
+
+        var refRows = $("#qr-references-" + id + " tr");
+        if (refRows.length <= 1) {
+            $(refRows[0]).find(".del-ref")
+                .attr("disabled", true)
+                .attr("href", "#")
+                .removeClass("btn-danger")
+                .addClass("btn-disabled");
+        }
+
+        return hideModal();
+    }
+
+    function hideModal() {
+        $("#warning_modal").modal("hide");
+        return false;
+    }
+</script>
+<script type="text/javascript" src="../../Scripts/json2.js"> </script>
