@@ -140,7 +140,22 @@ namespace SasquatchCAIRS.Controllers.Service {
                     foreach (String kw in qrContent.keywords) {
                         int kwId = getKeywordIdAndActivate(kw);
 
-                        var kq = new KeywordQuestion {
+                        // Check if already associated with Question
+                        var kq =
+                            (from kqs in _db.KeywordQuestions
+                             where kqs.KeywordID == kwId &&
+                                   kqs.RequestID ==
+                                   req.RequestID &&
+                                   kqs.QuestionResponseID ==
+                                   qr.QuestionResponseID
+                             select kqs)
+                                .SingleOrDefault();
+
+                        if (kq != null) {
+                            continue;
+                        }
+
+                        kq = new KeywordQuestion {
                             KeywordID = kwId,
                             RequestID = req.RequestID,
                             QuestionResponseID = qr.QuestionResponseID
@@ -344,7 +359,23 @@ namespace SasquatchCAIRS.Controllers.Service {
 
                             if (!currKwIds.Remove(kwId)) {
                                 // Set Keyword for QuestionResponse
-                                var kq = new KeywordQuestion {
+
+                                // Check if already associated with Question
+                                var kq =
+                                    (from kqs in _db.KeywordQuestions
+                                     where kqs.KeywordID == kwId &&
+                                           kqs.RequestID ==
+                                           req.RequestID &&
+                                           kqs.QuestionResponseID ==
+                                           qr.QuestionResponseID
+                                     select kqs)
+                                        .SingleOrDefault();
+
+                                if (kq != null) {
+                                    continue;
+                                }
+
+                                kq = new KeywordQuestion {
                                     KeywordID = kwId,
                                     RequestID = reqContent.requestID,
                                     QuestionResponseID =
@@ -419,8 +450,23 @@ namespace SasquatchCAIRS.Controllers.Service {
                         foreach (String kw in qrContent.keywords) {
                             int kwId = getKeywordIdAndActivate(kw);
 
+                            // Check if already associated with Question
+                            var kq =
+                                (from kqs in _db.KeywordQuestions
+                                 where kqs.KeywordID == kwId &&
+                                       kqs.RequestID ==
+                                       req.RequestID &&
+                                       kqs.QuestionResponseID ==
+                                       qr.QuestionResponseID
+                                 select kqs)
+                                    .SingleOrDefault();
+
+                            if (kq != null) {
+                                continue;
+                            }
+
                             // Set Keyword for QuestionResponse
-                            var kq = new KeywordQuestion {
+                            kq = new KeywordQuestion {
                                 KeywordID = kwId,
                                 RequestID = req.RequestID,
                                 QuestionResponseID = qr.QuestionResponseID
