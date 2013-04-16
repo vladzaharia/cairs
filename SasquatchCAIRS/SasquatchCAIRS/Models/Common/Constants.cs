@@ -175,12 +175,12 @@ namespace SasquatchCAIRS.Models.Common
         /// <summary>
         ///     Beginning Date
         /// </summary>
-        public const string EMPTY_DATE = "0001-01-01";
+        public const string EMPTY_DATE = "01/01/0001";
 
         /// <summary>
         ///     The Date Format we use.
         /// </summary>
-        public const string DATE_FORMAT = "yyyy-MM-dd";
+        public const string DATE_FORMAT = "MM/dd/yyyy";
 
         /// <summary>
         ///     Full pAge Size.

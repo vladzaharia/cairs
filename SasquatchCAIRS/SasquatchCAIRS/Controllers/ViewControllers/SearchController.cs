@@ -117,18 +117,12 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
             criteria.patientFirstName = form["patientFirst"];
             criteria.patientLastName = form["patientLast"];
             
-            if (!DateTime.TryParseExact(form["startTime"], "MM/dd/yyyy",
-                                    CultureInfo.InvariantCulture,
-                                    DateTimeStyles.None,
-                                    out temp)) {
+            if (!String.IsNullOrWhiteSpace(form["startTime"]) && !DateTime.TryParse(form["startTime"], out temp)) {
                 ViewBag.invalidDateFormat = true;
                 setDropdownViewbags();
                 return View("Advanced", criteria);
             }
-            if (!DateTime.TryParseExact(form["completionTime"], "MM/dd/yyyy",
-                                        CultureInfo.InvariantCulture,
-                                        DateTimeStyles.None,
-                                        out temp)) {
+            if (!String.IsNullOrWhiteSpace(form["completionTime"]) && !DateTime.TryParse(form["completionTime"], out temp)) {
                 ViewBag.invalidDateFormat = true;
                 setDropdownViewbags();
                 return View("Advanced", criteria);
