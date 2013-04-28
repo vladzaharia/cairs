@@ -272,6 +272,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
                 string[] auditRequestsString =
                     model.requestID.Split(',')
                          .Select(sValue => sValue.Trim())
+                         .Select(sValue => sValue.Replace(" ", string.Empty))
                          .ToArray();
 
                 // create list of long request IDs that will be audited (deal with ranges)
@@ -279,7 +280,8 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
 
                 foreach (string rID in auditRequestsString) {
                     long i = 0;
-                    if (!(long.TryParse(rID, out i)) || !(long.TryParse(rID.Replace('-', '2'), out i))) {
+
+                    if (!(long.TryParse(rID, out i)) && !(long.TryParse(rID.Replace('-', '2'), out i))) {
                         ModelState.AddModelError("requestID",
                                                  "A non-numeric request ID was entered.");
 
