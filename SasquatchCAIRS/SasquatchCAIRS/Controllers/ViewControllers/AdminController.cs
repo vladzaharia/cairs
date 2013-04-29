@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -266,6 +267,7 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
             // check if user selected search by Request ID
             if (model.criteriaType != null &&
                 model.criteriaType.Equals("rCriteria")) {
+
                 // parse comma delimited IDs entered
                 string[] auditRequestsString =
                     model.requestID.Split(',')
@@ -276,6 +278,13 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
                 var requestsForAudit = new List<long>();
 
                 foreach (string rID in auditRequestsString) {
+                    long i = 0;
+                    if (!(long.TryParse(rID, out i)) || !(long.TryParse(rID.Replace('-', '2'), out i))) {
+                        ModelState.AddModelError("requestID",
+                                                 "A non-numeric request ID was entered.");
+
+                        return View(model);
+                    }                    
                     if (rID.Contains("-")) {
                         long rangeStart = Convert.ToInt64(rID.Split('-')
                                                              .Select(
