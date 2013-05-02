@@ -68,7 +68,9 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
                     QuestionResponseContent qrContent in
                         reqContent.questionResponseList) {
                     if (String.IsNullOrEmpty(qrContent.question) ||
+                        removeNewLinesAndTabs(qrContent.question).Equals("<br />") ||
                         String.IsNullOrEmpty(qrContent.response) ||
+                        removeNewLinesAndTabs(qrContent.response).Equals("<br />") ||
                         qrContent.questionTypeID == null ||
                         qrContent.tumourGroupID == null ||
                         qrContent.timeSpent == null ||
@@ -120,14 +122,12 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
                 }
 
                 foreach (
-                    ReferenceContent refContent in
-                        qrContent.referenceList) {
+                    ReferenceContent refContent in qrContent.referenceList) {
 
-                    if (refContent.referenceString == null) {
-                        refContent.referenceString = "";
-                    } else {
-                        refContent.referenceString = refContent.referenceString.Replace("\\", "\\\\");
-                    }
+                    refContent.referenceString =
+                        refContent.referenceString == null ?
+                            "" :
+                            refContent.referenceString.Replace("\\", "\\\\");
                 }
             }
 
@@ -243,7 +243,9 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
                 return RedirectToAction("Index", "Home", new {
                     status = Constants.URLStatus.NotLockedToYou
                 });
-            } else if (rl.UserID != up.UserId) {
+            }
+
+            if (rl.UserID != up.UserId) {
                 return RedirectToAction("Index", "Home", new {
                     status = Constants.URLStatus.AccessingLocked
                 });
@@ -295,7 +297,9 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
                     QuestionResponseContent qrContent in
                         reqContent.questionResponseList) {
                     if (String.IsNullOrEmpty(qrContent.question) ||
+                        removeNewLinesAndTabs(qrContent.question).Equals("<br />") ||
                         String.IsNullOrEmpty(qrContent.response) ||
+                        removeNewLinesAndTabs(qrContent.response).Equals("<br />") ||
                         qrContent.questionTypeID == null ||
                         qrContent.tumourGroupID == null ||
                         qrContent.timeSpent == null ||
@@ -350,11 +354,10 @@ namespace SasquatchCAIRS.Controllers.ViewControllers {
                     ReferenceContent refContent in
                         qrContent.referenceList) {
 
-                    if (refContent.referenceString == null) {
-                        refContent.referenceString = "";
-                    } else {
-                        refContent.referenceString = refContent.referenceString.Replace("\\", "\\\\");
-                    }
+                    refContent.referenceString =
+                        refContent.referenceString == null
+                            ? ""
+                            : refContent.referenceString.Replace("\\", "\\\\");
                 }
             }
 

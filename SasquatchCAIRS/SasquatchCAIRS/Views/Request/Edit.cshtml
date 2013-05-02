@@ -179,7 +179,7 @@
             if (!json || 0 === json.length) {
                 $.post("@Url.Action("NewReference", "Request")/", { 'id': qrGuid }, function(r) {
                     $("#qr-references-" + qrGuid).append(r);
-                    $(".del-ref")
+                    $("#qr-references-" + qrGuid + " .del-ref")
                         .attr("disabled", true)
                         .attr("href", "#")
                         .removeClass("btn-danger")
@@ -192,15 +192,15 @@
                 for (var i = 0; i < refListJson.length; i++) {
                     $.post("@Url.Action("NewReference", "Request")/", { 'id': qrGuid, 'json': JSON.stringify(refListJson[i]) }, function (r) {
                         $("#qr-references-" + qrGuid).append(r);
-                    });
-                }
 
-                if (refListJson.length <= 1) {
-                    $("#qr-references-" + qrGuid + " .del-ref")
-                        .attr("disabled", true)
-                        .attr("href", "#")
-                        .removeClass("btn-danger")
-                        .addClass("btn-disabled");
+                        if (refListJson.length == 1) {
+                            $("#qr-references-" + qrGuid + " .del-ref")
+                                .attr("disabled", true)
+                                .attr("href", "#")
+                                .removeClass("btn-danger")
+                                .addClass("btn-disabled");
+                        }
+                    });
                 }
             }
         });
