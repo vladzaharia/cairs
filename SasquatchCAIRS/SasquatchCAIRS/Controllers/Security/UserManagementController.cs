@@ -48,7 +48,7 @@ namespace SasquatchCAIRS.Controllers.Security {
             if (!WebSecurity.UserExists(username)) {
                 // Register the User as a local user in the database w/ AD info
                 string[] adUser = getADInformation(username.ToLower());
-                WebSecurity.CreateUserAndAccount(username, username, new {
+                WebSecurity.CreateUserAndAccount(username, username + "12345678@", new {
                     UserFullName = adUser[0],
                     UserEmail = adUser[1],
                     UserStatus = true
@@ -109,30 +109,33 @@ namespace SasquatchCAIRS.Controllers.Security {
         [ExcludeFromCodeCoverage]
         private String[] getADInformation(string loginUsername) {
             var adInfo = new String[2];
-            using (HostingEnvironment.Impersonate()) {
-                _adSearch.PropertiesToLoad.Add(USER_DISPLAY_NAME);
-                _adSearch.PropertiesToLoad.Add(USER_EMAIL);
-                String username = loginUsername.Split('\\')[1];
+            try {
+                    _adSearch.PropertiesToLoad.Add(USER_DISPLAY_NAME);
+                    _adSearch.PropertiesToLoad.Add(USER_EMAIL);
+                    String[] usernameArr = loginUsername.Split('\\');
+                    String username = usernameArr.Length > 1
+                                          ? usernameArr[1]
+                                          : loginUsername;
 
-                _adSearch.Filter = "(sAMAccountName=" + username + ")";
-                SearchResult adSearchResult = _adSearch.FindOne();
+                    _adSearch.Filter = "(sAMAccountName=" + username + ")";
+                    SearchResult adSearchResult = _adSearch.FindOne();
 
-                // Return Array with Blank Values if user not found
-                if (adSearchResult == null) {
-                    adInfo[0] = "";
-                    adInfo[1] = "";
-                    return adInfo;
-                }
+                    // Return Array with Blank Values if user not found
+                    if (adSearchResult == null) {
+                        adInfo[0] = "";
+                        adInfo[1] = "";
+                        return adInfo;
+                    }
 
-                if (adSearchResult
-                        .Properties[USER_DISPLAY_NAME]
-                        .Count == 0) {
-                    adInfo[0] = "";
-                } else {
-                    adInfo[0] = adSearchResult
-                        .Properties[USER_DISPLAY_NAME][0]
-                        .ToString();
-                }
+                    if (adSearchResult
+                            .Properties[USER_DISPLAY_NAME]
+                            .Count == 0) {
+                        adInfo[0] = "";
+                    } else {
+                        adInfo[0] = adSearchResult
+                            .Properties[USER_DISPLAY_NAME][0]
+                            .ToString();
+                    }
 
                 if (adSearchResult
                         .Properties[USER_EMAIL]
@@ -143,9 +146,13 @@ namespace SasquatchCAIRS.Controllers.Security {
                         .Properties[USER_EMAIL][0]
                         .ToString();
                 }
-
-                return adInfo;
+            } catch (Exception e) {
+                adInfo[0] = "";
+                adInfo[1] = "";
             }
+
+            return adInfo;
+
         }
     }
 }

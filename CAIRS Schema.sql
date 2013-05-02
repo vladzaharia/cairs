@@ -308,7 +308,7 @@ go
  */
 
 CREATE TABLE UserProfile(
-    UserId          int              NOT NULL,
+    UserId          int              IDENTITY(1,1),
     UserName        nvarchar(56)     NOT NULL,
     UserFullName    nvarchar(max)    NULL,
     UserEmail       nvarchar(max)    NULL,
@@ -385,7 +385,7 @@ go
  */
 
 CREATE TABLE webpages_Roles(
-    RoleId          int             NOT NULL,
+    RoleId          int             IDENTITY(1,1),
     RoleName        nvarchar(256)   NOT NULL,
     CONSTRAINT PK__webpages__8AFACE1A3D5E1FD2 PRIMARY KEY CLUSTERED (RoleId),
     CONSTRAINT UQ__webpages__8A2B6160403A8C7D UNIQUE (RoleName)

@@ -37,19 +37,21 @@ namespace SasquatchCAIRS.Filters {
                                 .CreateDatabase();
                         }
                     }
-
-                    WebSecurity.InitializeDatabaseConnection(
-                        "sasquatchConnectionString", 
-                        "UserProfile", 
-                        "UserId", 
-                        "UserName", 
-                        autoCreateTables: true);
+                    if (!WebMatrix.WebData.WebSecurity.Initialized) {
+                        WebSecurity.InitializeDatabaseConnection(
+                            "sasquatchConnectionString",
+                            "UserProfile",
+                            "UserId",
+                            "UserName",
+                            autoCreateTables: true);
+                    }
 
                     // Initialize Roles
                     initializeRole(Constants.Roles.ADMINISTRATOR);
                     initializeRole(Constants.Roles.REPORT_GENERATOR);
                     initializeRole(Constants.Roles.REQUEST_EDITOR);
                     initializeRole(Constants.Roles.VIEWER);
+
                 } catch (Exception ex) {
                     throw new InvalidOperationException(
                         "Database could not be initialized!", ex);
