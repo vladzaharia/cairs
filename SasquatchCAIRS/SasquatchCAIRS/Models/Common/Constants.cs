@@ -141,7 +141,7 @@ namespace SasquatchCAIRS.Models.Common
         {
             None = 0,
             Region = 1,
-            CallerType = 2,
+            RequestorType = 2,
             TumorGroup = 3
         }
 
@@ -227,10 +227,10 @@ namespace SasquatchCAIRS.Models.Common
             "Avg Time To Complete Stratified by Geographical Region",
             "Total Number of Requests Stratified by Geographical Region",
             "Total Time Spent Stratified by Geographical Region",
-            "Avg Time Per Request Stratified by Caller Type",
-            "Avg Time To Complete Stratified by Caller Type",
-            "Total Number of Requests Stratified by Caller Type",
-            "Total Time Spent Stratified by Caller Type",
+            "Avg Time Per Request Stratified by Requestor Type",
+            "Avg Time To Complete Stratified by Requestor Type",
+            "Total Number of Requests Stratified by Requestor Type",
+            "Total Time Spent Stratified by Requestor Type",
             "Avg Time Per Question Stratified by Tumour Group",
             "Avg Time To Complete Stratified by Tumour Group",
             "Total Number of Questions Stratified by Tumour Group",
@@ -575,12 +575,12 @@ namespace SasquatchCAIRS.Models.Common
 
                 // Caller Information
                 public const string CALLER_NAME = "Name";
-                public const string CALLER_NAME_TABLE = "Caller Name";
+                public const string CALLER_NAME_TABLE = "Requestor Name";
                 public const string CALLER_FNAME = "First Name";
                 public const string CALLER_LNAME = "Last Name";
                 public const string CALLER_EMAIL = "Email";
                 public const string CALLER_PHONE = "Phone Number";
-                public const string CALLER_TYPE = "Caller Type";
+                public const string CALLER_TYPE = "Requestor Type";
                 public const string CALLER_REGION = "Region";
 
                 // Patient Information
@@ -593,7 +593,7 @@ namespace SasquatchCAIRS.Models.Common
 
                 // Search Information
                 public const string PATIENT_NAME_LABEL = "Patient Name";
-                public const string CALLER_NAME_LABEL = "Caller Name";
+                public const string CALLER_NAME_LABEL = "Requestor Name";
 
                 // Question Information
                 public const string QUESTION = "Question";

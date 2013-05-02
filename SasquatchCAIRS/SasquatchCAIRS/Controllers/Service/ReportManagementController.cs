@@ -146,7 +146,7 @@ namespace SasquatchCAIRS.Controllers.Service {
                     }
 
                     break;
-                case Constants.StratifyOption.CallerType:
+                case Constants.StratifyOption.RequestorType:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the callerType
                     Dictionary<int, List<Request>> callerDictionary = (from reqs
@@ -439,7 +439,7 @@ namespace SasquatchCAIRS.Controllers.Service {
                                                       regionAndYear));
                     }
                     break;
-                case Constants.StratifyOption.CallerType:
+                case Constants.StratifyOption.RequestorType:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the callerType
                     Dictionary<int, List<Request>> callerDictionary = (from reqs
@@ -722,7 +722,7 @@ namespace SasquatchCAIRS.Controllers.Service {
                     }
 
                     break;
-                case Constants.StratifyOption.CallerType:
+                case Constants.StratifyOption.RequestorType:
                     //Retrieves the requests from the database which opened within the given timeFrame
                     //then group them by the callerType
                     Dictionary<int, List<Request>> callerDictionary = (from reqs
@@ -1643,7 +1643,7 @@ namespace SasquatchCAIRS.Controllers.Service {
                              select region).ToDictionary(
                                  region => region.RegionID, r => r.Code);
                     break;
-                case Constants.StratifyOption.CallerType:
+                case Constants.StratifyOption.RequestorType:
                     codes = (from callerType in _db.Repository<RequestorType>()
                              orderby callerType.Value
                              select callerType).ToDictionary(

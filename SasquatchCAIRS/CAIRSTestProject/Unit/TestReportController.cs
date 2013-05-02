@@ -115,7 +115,7 @@ namespace CAIRSTestProject {
                                               new DateTime(2013, 06, 01),
                                               _dataTypes,
                                               Constants.StratifyOption
-                                                       .CallerType);
+                                                       .RequestorType);
 
             //Tests if all dataTable is included
             Assert.True(results.ContainsKey(Constants.DATATABLE_TITLES[5]));
@@ -301,7 +301,7 @@ namespace CAIRSTestProject {
                                                    2013, 2014,
                                                    _dataTypes,
                                                    Constants.StratifyOption
-                                                            .CallerType);
+                                                            .RequestorType);
 
             //Tests if all dataTable is included
             Assert.True(results.ContainsKey(Constants.DATATABLE_TITLES[5]));
@@ -452,7 +452,7 @@ namespace CAIRSTestProject {
             Dictionary<string, DataTable> results =
                 reportC.generateYearlyReport(2011, 2013,
                                              _dataTypes,
-                                             Constants.StratifyOption.CallerType);
+                                             Constants.StratifyOption.RequestorType);
 
             //Tests if all dataTable is included
             Assert.True(results.ContainsKey(Constants.DATATABLE_TITLES[5]));
