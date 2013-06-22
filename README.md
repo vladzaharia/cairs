@@ -1,13 +1,13 @@
-# Sasquatch Repo
+# CAIRS Repo
 
-Welcome to the Sasquatch GitHub Repository.
+Welcome to the Sasquatch CAIRS GitHub Repository.
 
 ## Branch Setup
 - **master** - The master branch. Needs to be pushed according to specific procedure; see below.
 - **site** - Contains the website.
+- **brand** - Contains the Sasquatch/CAIRS Branding Documents.
 - **dev/** ***name*** - Development Branch for Misc. (non-Feature) work. Replace *name* with your name.
 - **feature/** ***name*** - Development Branch for Feature work. Replace *name* with the feature's name.
- 
 
 ## Pushing to master
 Merging to master should be done very rarely, after approval from the team.
